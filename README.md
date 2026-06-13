@@ -1,22 +1,26 @@
-# PitchIQ Sprint 1 — AAA Home Experience
+# PitchIQ Sprints 2–9 Integrated Build
 
-GitHub-ready integrated PitchIQ build with AAA Home Experience.
+GitHub-ready PitchIQ build integrating Sprints 2–9.
 
-## New in this sprint
-- Hero dashboard
-- Dynamic animated stadium background
-- Live player card
-- XP progress system
-- Daily mission widget
-- Career ladder preview
-- Continue Training CTA
-- Reward preview
-- Bottom navigation retained
+## Includes
+- AAA Home Experience
+- Training Engine with 16 drills
+- Dynamic cue generation
+- Adaptive difficulty
+- Position-specific drills
+- Camera Engine 2.0 UI with calibration
+- Voice Engine integration
+- Reward packs and collections
+- Career mode
+- Achievement framework
+- Analytics, spider/radar chart, heatmap
+- Parent and coach summaries
+- Expanded art assets
+- Motion/micro-interaction system
 - iPhone Safari/PWA optimisation
-- Existing gameplay, camera, voice, rewards and analytics preserved
 
 ## Upload
-Upload the full contents of this folder to the root of the `PitchIQ` repository.
+Upload all contents to the root of your PitchIQ GitHub repository.
 
 Expected URL:
 https://resiliencyhq-design.github.io/PitchIQ/

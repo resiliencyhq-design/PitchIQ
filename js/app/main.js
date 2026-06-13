@@ -1,17 +1,20 @@
 import { loadState, saveState, resetState } from "../services/storage.js";
 import { addXP, completeDaily, openReward } from "../game/progression.js";
-import { CORE_CUES } from "../data/cues.js";
+import { CORE_CUES, getCue } from "../data/cues.js";
+import { createSession, nextCue as sessionNextCue, adaptiveDifficulty, cueTimeoutForDifficulty } from "../game/session.js";
 import { REWARDS } from "../data/rewards.js";
 import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 
 let state = loadState();
 let selectedPosition = state.profile.position || "Winger";
 let currentRoute = "splash";
 let cue = CORE_CUES[0];
+let selectedDrillId = null;
+let activeSession = null;
 let training = { time:45, score:0, combo:1, timer:null };
 let camera = null;
 let voice = null;
@@ -31,6 +34,9 @@ function render(route="splash"){
   if(route === "reward") app.innerHTML = renderReward(state);
   if(route === "player") app.innerHTML = renderPlayer(state);
   if(route === "analytics") app.innerHTML = renderAnalytics(state);
+  if(route === "career") app.innerHTML = renderCareer(state);
+  if(route === "collection") app.innerHTML = renderCollection(state);
+  if(route === "art") app.innerHTML = renderArt(state);
   if(route === "settings") app.innerHTML = renderSettings(state);
   nav.innerHTML = renderNav();
   nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
@@ -48,6 +54,11 @@ function bindScreen(){
   document.querySelectorAll("[data-pos]").forEach(btn=>btn.addEventListener("click",()=>{
     document.querySelectorAll("[data-pos]").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected"); selectedPosition = btn.dataset.pos;
+  }));
+  document.querySelectorAll("[data-drill]").forEach(btn=>btn.addEventListener("click",()=>{
+    document.querySelectorAll("[data-drill]").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active"); selectedDrillId = btn.dataset.drill;
+    toast("Selected: "+btn.querySelector("b").textContent);
   }));
   const sens = document.getElementById("sensitivity");
   if(sens) sens.addEventListener("input", e=>camera?.setSensitivity(Number(e.target.value)));
@@ -75,35 +86,54 @@ function saveProfile(){
 }
 function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = loadState(); render("splash"); } }
 
-function randomCue(){ cue = CORE_CUES[Math.floor(Math.random()*CORE_CUES.length)]; return cue; }
+function randomCue(){ 
+  if(activeSession?.drill) return sessionNextCue(activeSession.drill);
+  cue = CORE_CUES[Math.floor(Math.random()*CORE_CUES.length)]; 
+  return cue; 
+}
 function startTraining(){
-  training = { time:45, score:0, combo:1, timer:null };
+  activeSession = createSession({ position:state.profile.position, drillId:selectedDrillId, level:state.game.level });
+  training = { time:activeSession.drill.seconds, score:0, combo:1, timer:null };
   state.game.lastXp = 0; updateTraining();
   nextCue();
   training.timer = setInterval(()=>{ training.time--; updateTraining(); if(training.time<=0) finishTraining(); },1000);
+  toast("Started: "+activeSession.drill.name);
 }
 function updateTraining(){
   const t = document.getElementById("time"), s = document.getElementById("score"), c = document.getElementById("combo");
   if(t) t.textContent = training.time; if(s) s.textContent = training.score; if(c) c.textContent = training.combo;
 }
 function nextCue(){
-  const c = randomCue();
-  document.getElementById("cue").textContent = c.display;
-  document.getElementById("instruction").textContent = "Say or tap: " + c.acceptedResponses[0].toUpperCase();
-  voice?.updateCue?.(c);
+  cue = randomCue();
+  if(activeSession) activeSession.currentCue = cue;
+  document.getElementById("cue").textContent = cue.display;
+  const difficulty = activeSession ? adaptiveDifficulty(activeSession) : 1;
+  document.getElementById("instruction").textContent = "Say or tap: " + cue.acceptedResponses[0].toUpperCase() + " • D" + difficulty;
+  voice?.updateCue?.(cue);
 }
 function manualAnswer(ans){ cue.acceptedResponses.includes(ans) ? correct() : wrong(); }
 function correct(){
   const gain = cue.xpBase * training.combo;
   training.score += gain;
+  if(activeSession) activeSession.results.push({ cueId:cue.id, correct:true, xpAwarded:gain, reactionMs:null, detected:false, timestamp:Date.now() });
   const leveled = addXP(state, gain);
   training.combo = Math.min(9, training.combo + 1);
   state.game.bestCombo = Math.max(state.game.bestCombo, training.combo);
   toast(leveled ? "LEVEL UP 🏆" : "+"+gain+" XP 🔥");
   updateTraining(); nextCue();
 }
-function wrong(){ training.combo = 1; training.score = Math.max(0, training.score-10); toast("Reset. Next cue."); updateTraining(); nextCue(); }
-function finishTraining(){ if(training.timer) clearInterval(training.timer); completeDaily(state); toast("Session complete 🏆"); goto("reward"); }
+function wrong(){ 
+  if(activeSession) activeSession.results.push({ cueId:cue.id, correct:false, xpAwarded:0, reactionMs:null, detected:false, timestamp:Date.now() });
+  training.combo = 1; training.score = Math.max(0, training.score-10); toast("Reset. Next cue."); updateTraining(); nextCue(); 
+}
+function finishTraining(){ 
+  if(training.timer) clearInterval(training.timer); 
+  completeDaily(state); 
+  if(activeSession){
+    state.analytics.sessions.push({ id:activeSession.id, drill:activeSession.drill.id, score:training.score, results:activeSession.results, endedAt:Date.now() });
+  }
+  toast("Session complete 🏆"); goto("reward"); 
+}
 
 function startVoice(){
   voice = new PitchIQVoiceEngine({
@@ -123,8 +153,8 @@ async function testVideo(){
 async function startCamera(mode){
   const video = document.getElementById("video"), canvas = document.getElementById("motion"), cueEl = document.getElementById("cameraCue");
   camera = new PitchIQCameraEngine(video, canvas, {
-    onStatus:(s)=>{ if(cueEl && s==="missed"){ cueEl.textContent="MISS"; cueEl.className="camera-cue miss"; } },
-    onMotionScore:(m)=>{},
+    onStatus:(s)=>{ const st=document.getElementById("cameraStatus"); if(st) st.textContent=s; if(cueEl && s==="missed"){ cueEl.textContent="MISS"; cueEl.className="camera-cue miss"; } },
+    onMotionScore:(m)=>{ const mr=document.getElementById("motionRead"); if(mr) mr.textContent="Motion "+Math.round(m); },
     onResult:(r)=>{
       if(r.detected){
         cueEl.textContent = r.reactionMs+" ms"; cueEl.className = "camera-cue detected";
@@ -144,13 +174,13 @@ function cameraRound(){
   const c = randomCue();
   const cueEl = document.getElementById("cameraCue");
   cueEl.textContent = c.display; cueEl.className = "camera-cue go";
-  camera.beginCue(c);
+  camera.beginCue(c, cueTimeoutForDifficulty(activeSession ? adaptiveDifficulty(activeSession) : 2));
 }
 function openPackAction(){
   if(!state.game.dailyDone){ toast("Complete a mission first"); return; }
   const pack = document.getElementById("pack"); pack?.classList.add("open");
   setTimeout(()=>{
-    const reward = REWARDS[0];
+    const reward = REWARDS[(state.game.unlocked?.length || 0) % REWARDS.length];
     const xp = openReward(state, reward);
     addXP(state, xp);
     document.getElementById("rewardTitle").textContent = reward.name+" Unlocked!";

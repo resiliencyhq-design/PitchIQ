@@ -1,0 +1,8 @@
+<svg width="520" height="520" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#D7FF2E"/><stop offset="1" stop-color="#27FF9A"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M260 30 L455 135 L425 390 L260 490 L95 390 L65 135 Z" fill="#06120D" stroke="url(#g)" stroke-width="12" filter="url(#glow)"/>
+<circle cx="260" cy="250" r="98" fill="none" stroke="url(#g)" stroke-width="16"/>
+<circle cx="260" cy="250" r="34" fill="#D7FF2E"/>
+<path d="M110 250 Q260 95 410 250 Q260 405 110 250Z" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="12"/>
+<text x="260" y="418" text-anchor="middle" font-family="Arial Black" font-size="42" fill="#fff">VISION</text>
+</svg>
