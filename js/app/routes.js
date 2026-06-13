@@ -101,13 +101,21 @@ export function renderHome(state){
 }
 
 export function renderTraining(state){
-  const drills = recommendedDrills(state.profile.position || "Winger").slice(0, 8);
+  const drills = recommendedDrills(state.profile.position || "Winger").slice(0, 16);
   return `<section class="screen app active" id="training">
     <header class="sub"><button data-route="home">←</button><h1>Training Engine</h1><button data-action="start-training">Start</button></header>
+    <div class="glass tile">
+      <span class="kicker">Sprint 2 live</span>
+      <b>16-drill adaptive engine</b>
+      <small>Choose a drill below. The cue generator, combo system, timer and XP scoring run through the same session engine.</small>
+    </div>
     <div class="stats">${stat("Time","45","time")}${stat("Score","0","score")}${stat("Combo",'x<span id="combo">1</span>')}</div>
-    <div class="cue glass"><div class="pulse"></div><b id="cue">READY</b><small id="instruction">Choose a drill, then start.</small></div>
-    <div class="drill-grid">
-      ${drills.map((d,i)=>`<button class="glass drill-card ${i===0?'active':''}" data-drill="${d.id}"><span class="kicker">${d.type}</span><b>${d.name}</b><small>${d.seconds}s • Difficulty ${d.difficulty}</small></button>`).join("")}
+    <div class="cue glass"><div class="pulse"></div><b id="cue">READY</b><small id="instruction">Choose a drill, then press Start.</small></div>
+    <div class="drill-grid drill-grid-large">
+      ${drills.map((d,i)=>`<button class="glass drill-card ${i===0?'active':''}" data-drill="${d.id}">
+        <span class="kicker">${d.type}</span><b>${d.name}</b>
+        <small>${d.seconds}s • Difficulty ${d.difficulty} • ${d.positions.includes("ALL") ? "All positions" : d.positions.join(", ")}</small>
+      </button>`).join("")}
     </div>
     <div class="actions"><button data-answer="red">Red</button><button data-answer="blue">Blue</button><button data-answer="left">Left</button><button data-answer="right">Right</button></div>
     <div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Finish</button></div>
@@ -132,11 +140,20 @@ export function renderReward(state){
   const unlocked = state.game.unlocked || [];
   return `<section class="screen center reward active" id="reward">
     <h1>Daily<br>Reward</h1>
+    <div class="glass tile" style="max-width:760px;margin:0 auto 18px;text-align:left">
+      <span class="kicker">Reward rule</span>
+      <b>${state.game.dailyDone ? "Reward earned — open your pack" : "Earn rewards through training first"}</b>
+      <small>Complete Vision Sprint or Camera Challenge to unlock the pack. No pay-to-win.</small>
+    </div>
     <div class="pack-stage"><img id="pack" src="assets/art/pack.svg" alt="Gold pack" data-action="open-pack"></div>
     <h2 id="rewardTitle">${state.game.packOpened ? "Reward Claimed" : "Tap the pack"}</h2>
     <p id="rewardText">${state.game.dailyDone ? "Open your earned reward." : "Complete a mission to unlock Academy Boots."}</p>
     <div class="collection-grid">
-      ${REWARDS.map(r=>`<div class="glass collection-card"><img src="${r.art}" style="width:100%;max-height:140px;object-fit:contain"><span class="kicker">${r.tier}</span><b>${r.name}</b><small>${unlocked.includes(r.id) ? "Unlocked" : "Locked"}</small></div>`).join("")}
+      ${REWARDS.map(r=>`<div class="glass collection-card ${unlocked.includes(r.id) ? "unlocked" : "locked"}">
+        <img src="${r.art}" style="width:100%;max-height:140px;object-fit:contain;${unlocked.includes(r.id) ? "" : "filter:grayscale(1) opacity(.45)"}">
+        <span class="kicker">${r.tier}</span><b>${r.name}</b>
+        <small>${unlocked.includes(r.id) ? "Unlocked" : "Locked — earn through training"}</small>
+      </div>`).join("")}
     </div>
     <button class="primary mega" data-route="analytics">Continue</button>
   </section>`;
@@ -153,9 +170,9 @@ export function renderAnalytics(state){
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
     <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
-      <div class="glass analytics-card"><span class="kicker">Weekly XP</span><div class="chart">${vals.map(v=>`<div class="bar" style="height:${Math.max(12,Math.round(v/max*190))}px"></div>`).join("")}</div></div>
-      <div class="glass analytics-card"><span class="kicker">Player radar</span><div class="spider"><svg viewBox="0 0 300 300"><polygon points="150,30 260,110 220,250 80,250 40,110" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><polygon points="${points}" fill="rgba(215,255,46,.22)" stroke="#D7FF2E" stroke-width="5"/></svg></div></div>
-      <div class="glass analytics-card"><span class="kicker">Training heatmap</span><div class="heatmap">${vals.map(v=>`<div class="heat ${v>0?'on':''}"></div>`).join("")}</div><small>Green days show completed activity.</small></div>
+      <div class="glass analytics-card"><span class="kicker">Weekly XP bar chart</span><div class="chart">${vals.map((v,i)=>`<div class="bar-wrap"><div class="bar" style="height:${Math.max(12,Math.round(v/max*190))}px"></div><small>${["M","T","W","T","F","S","S"][i]}</small></div>`).join("")}</div></div>
+      <div class="glass analytics-card"><span class="kicker">Player radar / spider chart</span><div class="spider"><svg viewBox="0 0 300 300"><polygon points="150,30 260,110 220,250 80,250 40,110" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><polygon points="${points}" fill="rgba(215,255,46,.22)" stroke="#D7FF2E" stroke-width="5"/><text x="150" y="24" text-anchor="middle" fill="#D7FF2E" font-size="14">Vision</text><text x="270" y="110" fill="#D7FF2E" font-size="14">Reaction</text><text x="218" y="272" fill="#D7FF2E" font-size="14">Decision</text><text x="38" y="272" fill="#D7FF2E" font-size="14">Composure</text><text x="2" y="110" fill="#D7FF2E" font-size="14">Scan</text></svg></div></div>
+      <div class="glass analytics-card"><span class="kicker">Training heatmap</span><div class="heatmap">${vals.map((v,i)=>`<div class="heat ${v>0?'on':''}"><small>${["M","T","W","T","F","S","S"][i]}</small></div>`).join("")}</div><small>Green days show completed activity.</small></div>
       <div class="parent-coach"><div class="glass analytics-card"><span class="kicker">Parent view</span><b>Consistency ${vals.filter(v=>v>0).length}/7</b><small>Simple effort summary.</small></div><div class="glass analytics-card"><span class="kicker">Coach view</span><b>${state.profile.position} pathway</b><small>Training indicators only.</small></div></div>
     </div>
     <button class="primary mega" data-route="home">Return Home</button></section>`;

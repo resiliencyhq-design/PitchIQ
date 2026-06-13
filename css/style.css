@@ -39,3 +39,16 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 .parent-coach{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .art-wall{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.art-wall img{width:100%;background:rgba(255,255,255,.06);border-radius:22px;padding:10px}
 @media(max-width:720px){.drill-grid,.collection-grid,.career-grid,.analytics-grid,.calibration,.parent-coach,.art-wall{grid-template-columns:1fr}}
+
+
+/* Hotfix: make Sprints 2-9 systems visibly obvious */
+.drill-grid-large{grid-template-columns:repeat(2,1fr)}
+.collection-card.locked{opacity:.72}
+.collection-card.unlocked{border-color:var(--lime);box-shadow:var(--glow-lime)}
+.chart{align-items:end}
+.bar-wrap{flex:1;display:grid;align-items:end;gap:6px;text-align:center;color:var(--muted)}
+.bar-wrap .bar{width:100%}
+.heat{display:grid;place-items:center;color:#06130c;font-weight:1000}
+.heat:not(.on){color:var(--muted)}
+.spider text{font-family:Arial Black,Arial}
+@media(max-width:720px){.drill-grid-large{grid-template-columns:1fr}.analytics-card b{font-size:28px}}

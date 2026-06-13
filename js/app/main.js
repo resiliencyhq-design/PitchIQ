@@ -92,6 +92,7 @@ function randomCue(){
   return cue; 
 }
 function startTraining(){
+  selectedDrillId = selectedDrillId || document.querySelector("[data-drill].active")?.dataset?.drill || null;
   activeSession = createSession({ position:state.profile.position, drillId:selectedDrillId, level:state.game.level });
   training = { time:activeSession.drill.seconds, score:0, combo:1, timer:null };
   state.game.lastXp = 0; updateTraining();
