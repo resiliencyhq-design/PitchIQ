@@ -143,10 +143,10 @@ function refreshDashboard(){
   document.querySelectorAll(".playerName").forEach(el=>el.textContent = state.name || "Player");
   document.getElementById("dashStreak").textContent = state.streak;
   document.getElementById("levelNum").textContent = state.level;
-  document.getElementById("rankName").textContent = rankName();
-  document.getElementById("xpText").textContent = state.xp;
+  document.getElementById("rankName").textContent = rankName(); if(document.getElementById("levelTag")) document.getElementById("levelTag").textContent = rankName(); if(document.getElementById("nextRank")) document.getElementById("nextRank").textContent = state.level < 3 ? "Local Club" : state.level < 6 ? "Division 1" : "Academy";
+  document.getElementById("xpText").textContent = state.xp; if(document.getElementById("xpNeed")) document.getElementById("xpNeed").textContent = xpForNextLevel();
   document.getElementById("playerPosition").textContent = state.position;
-  document.getElementById("ovr").textContent = Math.min(99, 60 + state.level + Math.floor((state.bestRT ? Math.max(0, 900-state.bestRT)/80 : 0)));
+  const ovrVal = Math.min(99, 60 + state.level + Math.floor((state.bestRT ? Math.max(0, 900-state.bestRT)/80 : 0))); document.getElementById("ovr").textContent = ovrVal; if(document.getElementById("statVision")) document.getElementById("statVision").textContent = Math.min(99, 63 + state.level); if(document.getElementById("statReaction")) document.getElementById("statReaction").textContent = Math.min(99, 60 + state.level + (state.bestRT ? 4 : 0)); if(document.getElementById("statDecision")) document.getElementById("statDecision").textContent = Math.min(99, 62 + state.level);
   document.getElementById("leaderXp").textContent = (state.xp + (state.level-1)*600) + " XP";
   const pct = Math.min(100, Math.round(state.xp / xpForNextLevel()*100));
   document.getElementById("heroXpBar").style.width = pct + "%";

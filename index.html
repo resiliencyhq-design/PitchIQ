@@ -6,12 +6,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="PitchIQ" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>PitchIQ Sprint 1</title>
+  <title>PitchIQ Sprint 2</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="stadium-bg"></div>
+  <div class="arena-bg"></div>
+  <div class="lights"></div>
   <div class="grain"></div>
 
   <main id="app">
@@ -43,73 +44,106 @@
     <section id="dashboard" class="screen dashboard">
       <aside class="side">
         <img src="assets/art/logo.svg" class="nav-logo" alt="PitchIQ" />
-        <button class="nav active" onclick="show('dashboard')">🏠 Home</button>
-        <button class="nav" onclick="show('training')">⚽ Train</button>
-        <button class="nav" onclick="show('camera')">📷 Camera</button>
-        <button class="nav" onclick="show('reward')">🎁 Rewards</button>
-        <button class="nav" onclick="show('summary')">📊 Summary</button>
-        <button class="nav" onclick="resetProfile()">👤 Reset</button>
+        <button class="nav active" onclick="show('dashboard')"><span>🏠</span><b>Home</b></button>
+        <button class="nav" onclick="show('training')"><span>⚽</span><b>Train</b></button>
+        <button class="nav" onclick="show('camera')"><span>📷</span><b>Camera</b></button>
+        <button class="nav" onclick="show('reward')"><span>🎁</span><b>Rewards</b></button>
+        <button class="nav" onclick="show('summary')"><span>📊</span><b>Summary</b></button>
+        <button class="nav reset" onclick="resetProfile()"><span>👤</span><b>Reset</b></button>
       </aside>
 
-      <section class="content">
+      <section class="content aaa-dashboard">
         <header class="top">
           <div>
             <span class="eyebrow">🔥 <span id="dashStreak">1</span> day streak</span>
-            <h1>Good session, <span class="playerName">Player</span></h1>
+            <h1>Welcome back, <span class="playerName">Player</span></h1>
           </div>
-          <button class="pill" onclick="show('training')">▶ Continue</button>
+          <div class="top-actions">
+            <button class="ghost" onclick="show('camera')">📷 Camera Test</button>
+            <button class="pill" onclick="show('training')">▶ Continue Mission</button>
+          </div>
         </header>
 
-        <div class="dash-grid">
-          <article class="hero glass">
-            <div>
+        <div class="premium-grid">
+          <article class="hero-premium glass">
+            <div class="hero-copy">
               <span class="eyebrow">Today's mission</span>
               <h2>Beat yesterday. Unlock Academy Boots.</h2>
-              <p>Complete one 60-second vision session to protect your streak.</p>
-              <div class="xpbar"><i id="heroXpBar"></i></div>
-              <small><span id="xpText">0</span> / 600 XP to Level 2</small>
-              <button class="primary" onclick="show('training')">Start Training</button>
+              <p>Complete one 60-second vision session to protect your streak and open today’s reward pack.</p>
+              <div class="mission-strip">
+                <div><small>Reward</small><b>Gold Pack</b></div>
+                <div><small>Target</small><b>250 XP</b></div>
+                <div><small>Next Rank</small><b id="nextRank">Local Club</b></div>
+              </div>
+              <div class="xpbar large"><i id="heroXpBar"></i></div>
+              <small><span id="xpText">0</span> / <span id="xpNeed">600</span> XP to next level</small>
+              <button class="primary giant" onclick="show('training')">Start Training</button>
             </div>
-            <img src="assets/art/boots.svg" class="hero-art" alt="Academy boots" />
+            <div class="hero-visual">
+              <img src="assets/art/boots.svg" alt="Academy boots" />
+              <div class="halo"></div>
+            </div>
           </article>
 
-          <article class="level-card glass">
-            <span>LEVEL</span><b id="levelNum">1</b><p id="rankName">Grassroots</p>
+          <article class="player-ultimate glass">
+            <div class="card-top">
+              <span id="playerPosition">Winger</span>
+              <b id="ovr">61</b>
+            </div>
+            <img src="assets/art/player.svg" alt="Player" />
+            <h3 class="playerName">Player</h3>
+            <p id="rankName">Grassroots</p>
+            <div class="stat-row"><span>VIS</span><b id="statVision">64</b></div>
+            <div class="stat-row"><span>REA</span><b id="statReaction">61</b></div>
+            <div class="stat-row"><span>DEC</span><b id="statDecision">62</b></div>
+          </article>
+
+          <article class="level-orb glass">
+            <span>LEVEL</span>
+            <b id="levelNum">1</b>
+            <p id="levelTag">Grassroots</p>
             <div class="xpbar"><i id="levelXpBar"></i></div>
           </article>
 
-          <article class="player-card glass">
-            <h3>My Player</h3>
-            <img src="assets/art/player.svg" alt="Player" />
-            <div class="ovr">OVR <b id="ovr">61</b></div>
-            <p><span id="playerPosition">Winger</span> • Creator</p>
+          <article class="quests glass">
+            <h3>Daily Quests</h3>
+            <div class="quest" id="missionTrain"><i>⏱</i><div><b>Complete a session</b><small>Earn session XP</small></div><strong>250 XP</strong></div>
+            <div class="quest" id="missionCombo"><i>🔥</i><div><b>Combo x5</b><small>Stay composed</small></div><strong>150 XP</strong></div>
+            <div class="quest" id="missionCamera"><i>📷</i><div><b>Camera reaction</b><small>Test first movement</small></div><strong>200 XP</strong></div>
           </article>
 
-          <article class="mission-card glass">
-            <h3>Daily Missions</h3>
-            <div class="mission" id="missionTrain">⏱ <b>Complete a session</b><span>250 XP</span></div>
-            <div class="mission" id="missionCombo">🔥 <b>Combo x5</b><span>150 XP</span></div>
-            <div class="mission" id="missionCamera">📷 <b>Camera reaction</b><span>200 XP</span></div>
-          </article>
-
-          <article class="pack-card glass" onclick="show('reward')">
-            <h3>Reward Pack</h3>
+          <article class="reward-premium glass" onclick="show('reward')">
+            <div>
+              <span class="eyebrow">Mission reward</span>
+              <h3>Gold Pack</h3>
+              <p id="packStatus">Locked: complete today's mission.</p>
+            </div>
             <img src="assets/art/pack.svg" alt="Gold pack" />
-            <p id="packStatus">Locked: complete today's mission.</p>
           </article>
 
           <article class="leader glass">
             <h3>Academy Leaderboard</h3>
             <ol>
-              <li><b class="playerName">Player</b><span id="leaderXp">0 XP</span></li>
-              <li><b>Liam</b><span>420 XP</span></li>
-              <li><b>Noah</b><span>310 XP</span></li>
+              <li><span>🥇 <b class="playerName">Player</b></span><strong id="leaderXp">0 XP</strong></li>
+              <li><span>🥈 Liam</span><strong>420 XP</strong></li>
+              <li><span>🥉 Noah</span><strong>310 XP</strong></li>
+              <li><span>4 Mason</span><strong>260 XP</strong></li>
             </ol>
           </article>
 
           <article class="analytics glass">
-            <h3>Weekly Progress</h3>
-            <canvas id="weeklyChart" width="520" height="220"></canvas>
+            <div class="card-head"><h3>Weekly Intelligence</h3><span>Live</span></div>
+            <canvas id="weeklyChart" width="520" height="240"></canvas>
+          </article>
+
+          <article class="career-road glass">
+            <h3>Career Road</h3>
+            <div class="road">
+              <div class="node done">Grassroots</div>
+              <div class="node current">Local Club</div>
+              <div class="node">Division 1</div>
+              <div class="node">Academy</div>
+            </div>
           </article>
         </div>
       </section>
@@ -174,8 +208,8 @@
           </div>
         </article>
         <article class="glass info">
-          <h2>Best setup</h2>
-          <p>Use Safari on iPhone. Put the phone on a stable surface. Keep the player fully visible with good lighting.</p>
+          <h2>Camera scoring</h2>
+          <p>PitchIQ shows a cue, starts the timer, then estimates the first clear movement from the video feed.</p>
           <label>Motion sensitivity</label>
           <input id="sensitivity" type="range" min="8" max="60" value="24" />
           <label><input id="autoRounds" type="checkbox" checked /> Auto-next round</label>
@@ -187,9 +221,7 @@
     <section id="reward" class="screen reward">
       <div class="reward-stage">
         <h1>Daily Reward</h1>
-        <div class="pack-anim" id="packAnim" onclick="openPack()">
-          <img src="assets/art/pack.svg" alt="Gold pack" />
-        </div>
+        <div class="pack-anim" id="packAnim" onclick="openPack()"><img src="assets/art/pack.svg" alt="Gold pack" /></div>
         <h2 id="rewardTitle">Tap the pack</h2>
         <p id="rewardText">Complete your mission to unlock Academy Boots.</p>
         <button class="primary" onclick="show('summary')">Continue</button>
@@ -206,10 +238,7 @@
           <div><small>Streak</small><b id="summaryStreak">1</b></div>
         </div>
         <div class="rating">
-          <p>Reaction ★★★★☆</p>
-          <p>Scanning ★★★★★</p>
-          <p>Decision ★★★★☆</p>
-          <p>Consistency ★★★★★</p>
+          <p>Reaction ★★★★☆</p><p>Scanning ★★★★★</p><p>Decision ★★★★☆</p><p>Consistency ★★★★★</p>
         </div>
         <h2>Tomorrow: beat your best.</h2>
         <button class="primary" onclick="show('dashboard')">Return Dashboard</button>

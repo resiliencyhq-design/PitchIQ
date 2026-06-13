@@ -1,27 +1,22 @@
-# PitchIQ Build Sprint 1
+# PitchIQ Sprint 2 — AAA Dashboard
 
-This is the first playable vertical slice.
+This sprint rebuilds the dashboard to feel closer to a premium sports game UI while keeping Sprint 1 functionality.
 
 ## Included
-- Animated splash screen
-- Name entry and position selection
-- Premium dashboard
-- XP, level, streak and local save
-- Training session with cues, score, combo and voice option
-- Camera Reaction Mode with front/rear camera, video access test and motion-onset timing
-- Reward pack flow
-- Session summary
+- Premium dashboard rebuild
+- Animated arena background
+- Ultimate Team-style player card
+- Improved daily quest cards
+- Reward pack card
+- Career road
+- Weekly intelligence graph
+- Existing training session
+- Existing camera reaction mode
+- Existing reward and summary flow
 - Responsive desktop and iPhone layout
-- GitHub Pages ready
 
-## Upload to GitHub
-Upload everything in this folder to your PitchIQ repository.
+## Upload
+Upload the full contents of this folder to the PitchIQ GitHub repository.
 
-Expected URL:
+URL:
 https://resiliencyhq-design.github.io/PitchIQ/
-
-## iPhone
-Open in Safari, then Share → Add to Home Screen.
-
-## Camera
-Camera access requires HTTPS. GitHub Pages provides HTTPS.
