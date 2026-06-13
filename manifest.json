@@ -1,0 +1,10 @@
+{
+  "name": "Soccer IQ Voice",
+  "short_name": "Soccer IQ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#072615",
+  "theme_color": "#072615",
+  "description": "Hands-free soccer scanning and decision-making trainer with voice scoring.",
+  "icons": []
+}

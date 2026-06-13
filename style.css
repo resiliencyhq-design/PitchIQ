@@ -1,0 +1,167 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #17a65b, #072615 72%);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  user-select: none;
+}
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 22px;
+  padding-top: max(22px, env(safe-area-inset-top));
+}
+
+.screen { display: none; min-height: 92vh; }
+.screen.active { display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+
+.logo { font-size: 76px; text-align: center; }
+h1 { text-align: center; font-size: 56px; margin: 0; letter-spacing: -1px; }
+h2 { text-align: center; font-size: 34px; margin: 0 0 8px; }
+.tagline, p { text-align: center; font-size: 18px; opacity: .9; }
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  gap: 10px;
+}
+
+.stat {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 20px;
+  padding: 14px 10px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.stat b { display: block; font-size: 22px; }
+.stat span { font-size: 11px; opacity: .72; text-transform: uppercase; letter-spacing: .8px; }
+
+button, select {
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.primary { background: #fff; color: #082416; }
+.secondary {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+}
+
+.small { padding: 12px; font-size: 15px; }
+
+label {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+select {
+  background: #fff;
+  color: #082416;
+}
+
+.gameScreen.active { justify-content: flex-start; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(0,0,0,.26);
+  border-radius: 18px;
+  padding: 14px;
+  font-size: 18px;
+}
+
+.missionText {
+  text-align: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.12);
+  font-weight: 800;
+}
+
+.cue {
+  flex: 1;
+  min-height: 330px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: clamp(70px, 24vw, 150px);
+  font-weight: 900;
+  border-radius: 34px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 20px;
+}
+
+.heard {
+  min-height: 48px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  opacity: .9;
+}
+
+.manual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.manual button:first-child { background: #fff; color: #082416; }
+.manual button:last-child {
+  background: rgba(0,0,0,.32);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+}
+
+.bigScore {
+  text-align: center;
+  font-size: 58px;
+  font-weight: 900;
+}
+
+.careerList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rankRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 16px;
+}
+
+.rankRow.unlocked { background: rgba(255,255,255,.24); }
+
+.correctFlash { animation: correct .35s; }
+.wrongFlash { animation: wrong .35s; }
+
+@keyframes correct {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); background: rgba(255,255,255,.32); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wrong {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}

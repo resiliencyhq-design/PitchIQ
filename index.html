@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Soccer IQ" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Soccer IQ</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+
+    <section id="home" class="screen active">
+      <div class="logo">⚽</div>
+      <h1>Soccer IQ</h1>
+      <p class="tagline">Scan. Decide. Win.</p>
+
+      <div class="statsGrid">
+        <div class="stat"><b id="totalXp">0</b><span>XP</span></div>
+        <div class="stat"><b id="rank">Grassroots</b><span>Rank</span></div>
+        <div class="stat"><b id="streak">0</b><span>Streak</span></div>
+      </div>
+
+      <button class="primary" onclick="showScreen('setup')">Start Training</button>
+      <button class="secondary" onclick="showScreen('progress')">Progress</button>
+      <button class="secondary" onclick="showScreen('settings')">Settings</button>
+    </section>
+
+    <section id="setup" class="screen">
+      <h2>Mission Setup</h2>
+
+      <label>Position</label>
+      <select id="position">
+        <option value="cb">Centre Back</option>
+        <option value="fb">Fullback</option>
+        <option value="cm">Midfielder</option>
+        <option value="winger">Winger</option>
+        <option value="striker">Striker</option>
+      </select>
+
+      <label>Mode</label>
+      <select id="mode">
+        <option value="voice">Voice Scan</option>
+        <option value="decision">Decision Rules</option>
+        <option value="maths">Mental Maths</option>
+        <option value="mixed">Match Simulation</option>
+      </select>
+
+      <label>Difficulty</label>
+      <select id="difficulty">
+        <option value="easy">Academy Start</option>
+        <option value="medium">Division 1</option>
+        <option value="hard">NPL Speed</option>
+        <option value="elite">Champions League</option>
+      </select>
+
+      <label>Length</label>
+      <select id="duration">
+        <option value="30">30 seconds</option>
+        <option value="60" selected>1 minute</option>
+        <option value="120">2 minutes</option>
+        <option value="300">5 minutes</option>
+      </select>
+
+      <button class="primary" onclick="startSession()">Start Hands-Free</button>
+      <button class="secondary" onclick="showScreen('home')">Back</button>
+    </section>
+
+    <section id="game" class="screen gameScreen">
+      <div class="topbar">
+        <span>⏱ <b id="timeLeft">60</b></span>
+        <span>⭐ <b id="score">0</b></span>
+        <span>🔥 x<b id="combo">1</b></span>
+      </div>
+
+      <div id="missionText" class="missionText">Call out the answer</div>
+      <div id="cue" class="cue">Ready</div>
+      <div id="heard" class="heard">Listening...</div>
+
+      <div class="manual">
+        <button onclick="scoreCorrect()">Correct</button>
+        <button onclick="scoreWrong()">Missed</button>
+      </div>
+
+      <button class="secondary small" onclick="endSession()">End Session</button>
+    </section>
+
+    <section id="result" class="screen">
+      <h2>Session Complete</h2>
+      <div class="bigScore" id="finalXp">0 XP</div>
+      <p id="resultMessage">Good work.</p>
+      <button class="primary" onclick="showScreen('setup')">Train Again</button>
+      <button class="secondary" onclick="showScreen('home')">Home</button>
+    </section>
+
+    <section id="progress" class="screen">
+      <h2>Progress</h2>
+      <div id="careerList" class="careerList"></div>
+      <button class="secondary" onclick="showScreen('home')">Back</button>
+    </section>
+
+    <section id="settings" class="screen">
+      <h2>Settings</h2>
+
+      <label>
+        <input type="checkbox" id="voiceToggle" checked />
+        Voice recognition
+      </label>
+
+      <label>
+        <input type="checkbox" id="soundToggle" checked />
+        Cheers and gasps
+      </label>
+
+      <label>
+        <input type="checkbox" id="hapticToggle" checked />
+        Vibration
+      </label>
+
+      <button class="secondary" onclick="resetProgress()">Reset Progress</button>
+      <button class="secondary" onclick="showScreen('home')">Back</button>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
