@@ -1,4 +1,4 @@
-import { loadState, saveState, resetState } from "../services/storage.js";
+import { loadState, saveState, resetState, normalizeState } from "../services/storage.js";
 import { addXP, completeDaily, openReward } from "../game/progression.js";
 import { CORE_CUES, getCue } from "../data/cues.js";
 import { createSession, nextCue as sessionNextCue, adaptiveDifficulty, cueTimeoutForDifficulty } from "../game/session.js";
@@ -7,36 +7,10 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 
 let state = normalizeState(loadState());
 
-function normalizeState(input){
-  const state = input && typeof input === "object" ? input : {};
-  state.profile ||= {};
-  state.profile.name ||= "";
-  state.profile.position ||= "Winger";
-  state.profile.goal ||= "React faster";
-  state.game ||= {};
-  state.game.xp ??= 0;
-  state.game.level ??= 1;
-  state.game.streak ??= 1;
-  state.game.dailyDone ??= false;
-  state.game.packOpened ??= false;
-  state.game.unlocked ||= [];
-  state.game.lastXp ??= 0;
-  state.game.bestCombo ??= 1;
-  state.analytics ||= {};
-  state.analytics.sessions ||= [];
-  state.analytics.bestReaction ??= null;
-  state.analytics.reactionHistory ||= [];
-  state.analytics.weeklyXp ||= [80,140,220,180,310,120,0];
-  state.settings ||= {};
-  state.settings.sound ??= true;
-  state.settings.haptics ??= true;
-  state.settings.cameraPreference ||= "environment";
-  return state;
-}
 let selectedPosition = state.profile.position || "Winger";
 let currentRoute = "splash";
 let cue = CORE_CUES[0];
@@ -49,6 +23,8 @@ let camScore = 0;
 
 const app = document.getElementById("app");
 const nav = document.getElementById("nav");
+const BUILD_ID = "sprint-4.2-stabilisation";
+const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
 
 function showRenderError(error, route){
   console.error("[PitchIQ render error]", route, error);
@@ -58,6 +34,7 @@ function showRenderError(error, route){
 
 function render(route="splash"){
   try {
+    if (!VALID_ROUTES.has(route)) route = "home";
   currentRoute = route;
   if(route === "splash") app.innerHTML = renderSplash();
   if(route === "onboard") app.innerHTML = renderOnboard();
@@ -80,11 +57,19 @@ function render(route="splash"){
     showRenderError(error, route);
   }
 }
-function goto(route){ stopEphemeral(); render(route); }
+function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); if(currentRoute !== "camera") camera?.stop?.(); }
 
 function bindScreen(){
-  document.querySelectorAll("[data-route]").forEach(el=>el.addEventListener("click",()=>goto(el.dataset.route)));
+  document.querySelectorAll("[data-route]").forEach(el=>el.addEventListener("click",()=>{
+    const route = el.dataset.route;
+    if (!VALID_ROUTES.has(route)) {
+      console.warn("[PitchIQ route] Route missing:", route);
+      toast("Route not available yet");
+      return;
+    }
+    goto(route);
+  }));
   document.querySelectorAll("[data-action]").forEach(el=>el.addEventListener("click",()=>handleAction(el.dataset.action)));
   document.querySelectorAll("[data-answer]").forEach(el=>el.addEventListener("click",()=>manualAnswer(el.dataset.answer)));
   document.querySelectorAll("[data-pos]").forEach(btn=>btn.addEventListener("click",()=>{

@@ -1,13 +1,28 @@
-# PitchIQ Patch 0.1 — Import Fix
+# PitchIQ Sprint 4.2 — Repository Stabilisation & Production Recovery
 
-Built from Patch 0 Stability Recovery.
+This build focuses only on stability.
 
-Fix:
-- Removed missing imports `renderCollection` and `renderArt` from `js/app/main.js`.
-- Removed route handlers for `collection` and `art`.
+It does not redesign the app or add new features.
 
-Reason:
-The browser error showed:
-`Importing binding name 'renderCollection' is not found.`
+## What changed
 
-This patch keeps the architecture unchanged and fixes the JavaScript module load failure.
+- Verified and corrected route imports.
+- Added robust state normalization.
+- Hardened localStorage loading and corrupt-data recovery.
+- Added route watchdog.
+- Added render error boundary.
+- Added boot watchdog.
+- Added build identifier.
+- Added audit document.
+
+## Upload
+
+Upload all contents to the root of the PitchIQ GitHub repository.
+
+Then open:
+
+`https://resiliencyhq-design.github.io/PitchIQ/?v=42`
+
+Expected outcome:
+- App boots.
+- If a runtime problem remains, a clear recovery error appears instead of a blank stadium.
