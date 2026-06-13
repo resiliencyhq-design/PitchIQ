@@ -1,13 +1,18 @@
-# PitchIQ Sprint 4.1 — UX Refactor Patch
+# PitchIQ Patch 0 — Stability Recovery
 
-This build is patched from the known-good 42a03cd repository.
+Built from known-good commit `42a03cd`.
 
-Upload all contents to the root of the PitchIQ GitHub repository.
+This patch deliberately preserves the existing architecture.
 
-Focus:
-- Reduce scrolling
-- Guided training flow
-- Analytics tabs
-- Clear rewards progression
-- Improved career ladder
-- Better iPhone layout
+Changed only:
+- `index.html`
+- `js/app/main.js`
+- `README.md`
+
+Purpose:
+- Restore a known-good working build.
+- Add defensive state normalization.
+- Add a render error boundary so future bugs show an error card instead of a blank stadium background.
+- Add a boot watchdog to detect JavaScript failure.
+
+Upload all contents to the root of the GitHub repository.

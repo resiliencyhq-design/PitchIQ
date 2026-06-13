@@ -7,9 +7,36 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderTrainingDrills, renderTrainingPreview, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderAnalyticsRadar, renderAnalyticsHeatmap, renderAnalyticsCoach, renderAnalyticsParent, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 
-let state = loadState();
+let state = normalizeState(loadState());
+
+function normalizeState(input){
+  const state = input && typeof input === "object" ? input : {};
+  state.profile ||= {};
+  state.profile.name ||= "";
+  state.profile.position ||= "Winger";
+  state.profile.goal ||= "React faster";
+  state.game ||= {};
+  state.game.xp ??= 0;
+  state.game.level ??= 1;
+  state.game.streak ??= 1;
+  state.game.dailyDone ??= false;
+  state.game.packOpened ??= false;
+  state.game.unlocked ||= [];
+  state.game.lastXp ??= 0;
+  state.game.bestCombo ??= 1;
+  state.analytics ||= {};
+  state.analytics.sessions ||= [];
+  state.analytics.bestReaction ??= null;
+  state.analytics.reactionHistory ||= [];
+  state.analytics.weeklyXp ||= [80,140,220,180,310,120,0];
+  state.settings ||= {};
+  state.settings.sound ??= true;
+  state.settings.haptics ??= true;
+  state.settings.cameraPreference ||= "environment";
+  return state;
+}
 let selectedPosition = state.profile.position || "Winger";
 let currentRoute = "splash";
 let cue = CORE_CUES[0];
@@ -23,7 +50,14 @@ let camScore = 0;
 const app = document.getElementById("app");
 const nav = document.getElementById("nav");
 
+function showRenderError(error, route){
+  console.error("[PitchIQ render error]", route, error);
+  app.innerHTML = `<section class="screen app active" style="display:grid;place-items:center;min-height:100dvh"><div class="glass" style="padding:24px;max-width:680px"><span class="kicker">Recovery mode</span><h1>PitchIQ could not render ${route}</h1><p style="color:var(--muted)">The app caught a render error instead of showing a blank screen. Open the browser console for details.</p><button class="primary" data-route="splash">Return to splash</button></div></section>`;
+  bindScreen();
+}
+
 function render(route="splash"){
+  try {
   currentRoute = route;
   if(route === "splash") app.innerHTML = renderSplash();
   if(route === "onboard") app.innerHTML = renderOnboard();
@@ -34,10 +68,6 @@ function render(route="splash"){
   if(route === "reward") app.innerHTML = renderReward(state);
   if(route === "player") app.innerHTML = renderPlayer(state);
   if(route === "analytics") app.innerHTML = renderAnalytics(state);
-  if(route === "analytics-radar") app.innerHTML = renderAnalyticsRadar(state);
-  if(route === "analytics-heatmap") app.innerHTML = renderAnalyticsHeatmap(state);
-  if(route === "analytics-coach") app.innerHTML = renderAnalyticsCoach(state);
-  if(route === "analytics-parent") app.innerHTML = renderAnalyticsParent(state);
   if(route === "career") app.innerHTML = renderCareer(state);
   if(route === "collection") app.innerHTML = renderCollection(state);
   if(route === "art") app.innerHTML = renderArt(state);
@@ -47,6 +77,10 @@ function render(route="splash"){
   sparkles(document.getElementById("particles"));
   bindScreen();
   saveState(state);
+
+  } catch(error) {
+    showRenderError(error, route);
+  }
 }
 function goto(route){ stopEphemeral(); render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); if(currentRoute !== "camera") camera?.stop?.(); }
@@ -88,7 +122,12 @@ function saveProfile(){
   state.profile.name = name; state.profile.position = selectedPosition; state.profile.createdAt ||= Date.now();
   toast("Welcome to PitchIQ Academy"); goto("mission");
 }
-function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = loadState(); render("splash"); } }
+function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = normalizeState(loadState()); try {
+  render("splash");
+  window.__PITCHIQ_READY__ = true;
+} catch (error) {
+  showRenderError(error, "splash");
+} } }
 
 function randomCue(){ 
   if(activeSession?.drill) return sessionNextCue(activeSession.drill);
@@ -193,4 +232,9 @@ function openPackAction(){
   },650);
 }
 
-render("splash");
+try {
+  render("splash");
+  window.__PITCHIQ_READY__ = true;
+} catch (error) {
+  showRenderError(error, "splash");
+}
