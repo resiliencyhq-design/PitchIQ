@@ -1,16 +1,29 @@
-# PitchIQ High-Art GitHub Prototype
+# PitchIQ Complete GitHub Pack
 
-Upload all files and the `assets` folder to your PitchIQ GitHub repository.
+Upload everything in this folder to your GitHub Pages repository, including the `assets` folder.
 
-Open:
+Expected URL:
 https://resiliencyhq-design.github.io/PitchIQ/
 
-Includes custom SVG artwork:
-- Stadium background
-- PitchIQ logo
-- Elite boots
-- Gold reward pack
-- Player avatar
-- Apple Watch concept
+## Included
+- Complete HTML/CSS/JS prototype
+- Player name entry and local saving
+- Camera/video access test
+- Camera Reaction Mode with movement-onset timing
+- Best reaction time saved locally
+- Sensitivity slider
+- Premium custom SVG assets:
+  - Logo
+  - App icon
+  - Stadium background
+  - Elite boots
+  - Gold pack
+  - Player front/running/back
+  - Apple Watch concept
+  - Career badges
 
-This is still a GitHub Pages web app. True Apple Watch integration requires native iOS/watchOS development.
+## Camera notes
+Camera access requires HTTPS. GitHub Pages provides HTTPS.
+On iPhone, open in Safari and allow camera permission.
+
+Camera reaction mode is experimental. It estimates movement onset after a cue; it does not validate soccer technique quality.

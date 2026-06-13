@@ -6,17 +6,30 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="PitchIQ" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>PitchIQ</title>
+  <title>PitchIQ Complete Prototype</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="bg"></div>
+  <div class="grain"></div>
+
+  <div id="nameModal" class="modal active">
+    <div class="modal-card">
+      <img src="assets/logo.svg" alt="PitchIQ" />
+      <h1>Welcome to PitchIQ</h1>
+      <p>Enter the player's name for this device.</p>
+      <input id="nameInput" placeholder="Player name" maxlength="18" autocomplete="given-name" />
+      <button class="cta" onclick="savePlayerName()">Start PitchIQ</button>
+    </div>
+  </div>
+
   <aside class="side">
     <img src="assets/logo.svg" class="logo" alt="PitchIQ logo" />
     <nav>
       <button class="nav active" data-screen="home">🏠 <span>Home</span></button>
       <button class="nav" data-screen="train">🏃 <span>Train</span></button>
+      <button class="nav" data-screen="camera">📷 <span>Camera RT</span></button>
       <button class="nav" data-screen="career">🏆 <span>Career</span></button>
       <button class="nav" data-screen="player">👕 <span>Player</span></button>
       <button class="nav" data-screen="rewards">🎁 <span>Rewards</span></button>
@@ -24,30 +37,37 @@
       <button class="nav" data-screen="analytics">📊 <span>Stats</span></button>
       <button class="nav" data-screen="watch">⌚ <span>Watch</span></button>
     </nav>
-    <button class="profile" data-screen="player"><span>H</span><b>Hugo</b><small>Level 12 • Winger</small></button>
+    <button class="profile" data-screen="player">
+      <span id="profileInitial">P</span>
+      <b id="profileName">Player</b>
+      <small>Level 12 • Winger</small>
+    </button>
   </aside>
 
   <main class="app">
     <header class="topbar">
       <div>
-        <small class="streak">🔥 17 day streak</small>
-        <h1 id="title">Good afternoon, Hugo</h1>
+        <small class="streak">🔥 <span id="streakDays">17</span> day streak</small>
+        <h1 id="title">Good afternoon, <span class="playerName">Player</span></h1>
       </div>
-      <div class="top-icons"><button>🔔</button><button>⚙️</button></div>
+      <div class="top-icons">
+        <button onclick="resetName()" title="Change player">👤</button>
+        <button title="Settings">⚙️</button>
+      </div>
     </header>
 
     <section id="home" class="screen active">
       <div class="dash">
         <article class="hero card">
-          <div>
+          <div class="hero-copy">
             <small class="label">Today's mission</small>
             <h2>Beat yesterday. Unlock Elite Boots.</h2>
             <p>3 minutes left to protect your streak.</p>
             <div class="bar"><i style="width:81%"></i></div>
             <small>2,420 / 3,000 XP to Level 13</small>
-            <button class="cta" onclick="showScreen('train')">▶ Continue Training</button>
+            <button class="cta" onclick="showScreen('camera')">📷 Try Camera Reaction Mode</button>
           </div>
-          <img src="assets/elite-boots.svg" class="hero-art" alt="Elite boots" />
+          <img src="assets/rewards/elite-boots.svg" class="hero-art" alt="Elite boots" />
         </article>
 
         <article class="level card">
@@ -58,40 +78,52 @@
           <h3>Daily Missions <small>🎁 Gold Pack</small></h3>
           <div class="mission done">⏱ <b>Train 5 minutes</b><span>100 XP</span></div>
           <div class="mission">🔥 <b>Get combo x10</b><span>150 XP</span></div>
-          <div class="mission">🎯 <b>Scan 50 cues</b><span>150 XP</span></div>
+          <div class="mission">📷 <b>Camera reaction test</b><span>250 XP</span></div>
         </article>
 
         <article class="pack card">
           <h3>Mission Reward</h3>
-          <img src="assets/gold-pack.svg" alt="Gold pack" />
+          <img src="assets/rewards/gold-pack.svg" alt="Gold pack" />
           <p>Complete all missions to unlock.</p>
         </article>
 
         <article class="myplayer card">
           <h3>My Player</h3>
-          <img src="assets/player-hugo.svg" alt="Player avatar" />
+          <img src="assets/players/player-front.svg" alt="Player avatar" />
           <div class="ovr">OVR <b>72</b></div>
           <div class="stat">Vision <span>82</span></div>
           <div class="stat">Decision <span>77</span></div>
-          <div class="stat">Reaction <span>74</span></div>
+          <div class="stat">Reaction <span id="reactionRating">74</span></div>
         </article>
 
         <article class="session card">
           <h3>Training Session <small>Vision Drill</small></h3>
-          <div class="cue-ring"><span id="miniCue">🔴</span></div>
+          <div class="cue-ring"><span>🔴</span></div>
           <div class="session-stats"><b>0:45</b><b>x7</b><b>220</b></div>
           <button class="cta" onclick="showScreen('train')">Start Drill</button>
         </article>
 
         <article class="leader card">
           <h3>Club Leaderboard</h3>
-          <ol><li><b>Hugo</b><span>2,420 XP</span></li><li><b>Liam</b><span>2,150 XP</span></li><li><b>Noah</b><span>1,890 XP</span></li></ol>
+          <ol>
+            <li><b class="playerName">Player</b><span>2,420 XP</span></li>
+            <li><b>Liam</b><span>2,150 XP</span></li>
+            <li><b>Noah</b><span>1,890 XP</span></li>
+            <li><b>Mason</b><span>1,760 XP</span></li>
+          </ol>
         </article>
 
         <article class="battle card">
           <h3>Club Battle</h3>
-          <div class="versus"><b>PitchIQ<br>3,120</b><span>VS</span><b>Macarthur<br>2,870</b></div>
+          <div class="versus"><b>PitchIQ FC<br>3,120</b><span>VS</span><b>Macarthur<br>2,870</b></div>
           <div class="bar red"><i style="width:62%"></i></div>
+        </article>
+
+        <article class="camera-preview card">
+          <h3>Camera Reaction</h3>
+          <p>Experimental movement-onset timing using the iPhone camera.</p>
+          <b id="bestRT">Best: —</b>
+          <button class="cta" onclick="showScreen('camera')">Open Camera Mode</button>
         </article>
 
         <article class="career card">
@@ -100,8 +132,51 @@
         </article>
 
         <article class="watch card">
-          <h3>Apple Watch</h3>
+          <h3>Apple Watch Concept</h3>
           <img src="assets/apple-watch.svg" alt="Apple Watch concept" />
+        </article>
+      </div>
+    </section>
+
+    <section id="camera" class="screen">
+      <div class="camera-grid">
+        <article class="camera-stage card">
+          <div class="train-top">
+            <button onclick="showScreen('home')">←</button>
+            <b>Camera Reaction Mode</b>
+            <button onclick="stopCamera()">Stop Camera</button>
+          </div>
+
+          <div class="camera-wrap">
+            <video id="video" playsinline muted></video>
+            <canvas id="motionCanvas"></canvas>
+            <div id="cameraCue" class="camera-cue">READY</div>
+          </div>
+
+          <div class="camera-metrics">
+            <div><small>Last RT</small><b id="lastRT">—</b></div>
+            <div><small>Best RT</small><b id="bestRT2">—</b></div>
+            <div><small>Score</small><b id="cameraScore">0</b></div>
+            <div><small>Status</small><b id="cameraStatus">Idle</b></div>
+          </div>
+
+          <div class="actions">
+            <button class="cta" onclick="startCamera()">1. Enable Camera</button>
+            <button class="cta" onclick="startCameraRound()">2. Start Reaction Round</button>
+            <button onclick="calibrateMotion()">Calibrate Stillness</button>
+          </div>
+        </article>
+
+        <article class="card modes">
+          <h3>Camera scoring</h3>
+          <p>The app shows an arrow or command. The camera estimates the first clear movement after the cue appears.</p>
+          <p><b>Best setup:</b> phone on tripod, player fully visible, stable background, good lighting.</p>
+          <p><b>Prototype limitation:</b> movement onset is detected; detailed soccer technique is not validated.</p>
+          <label>Motion sensitivity</label>
+          <input type="range" id="sensitivity" min="8" max="60" value="24" />
+          <label><input type="checkbox" id="autoRounds" checked /> Auto-next round after detection</label>
+          <button onclick="testVideoAccess()">Test video access</button>
+          <p id="videoTest">Video status: not tested</p>
         </article>
       </div>
     </section>
@@ -122,11 +197,47 @@
     </section>
 
     <section id="career" class="screen card"><h2>Your Career</h2><div class="career-map" id="careerMap"></div></section>
-    <section id="player" class="screen"><div class="player-screen card"><img src="assets/player-hugo.svg"/><div><h2>Hugo</h2><p>Winger • Creator • Academy FC</p><b class="bigovr">72</b></div></div></section>
-    <section id="rewards" class="screen"><div class="reward-screen card" onclick="openPack()"><img src="assets/gold-pack.svg"/><h2 id="packTitle">Tap to Open</h2></div></section>
-    <section id="club" class="screen card"><h2>Academy FC vs Macarthur</h2><div class="versus huge"><b>3,120 XP</b><span>VS</span><b>2,870 XP</b></div></section>
-    <section id="analytics" class="screen card"><h2>Progress Analytics</h2><canvas id="chart" width="900" height="360"></canvas><div id="heatmap"></div></section>
-    <section id="watch" class="screen"><div class="watch-screen card"><img src="assets/apple-watch.svg"/><div><h2>Apple Watch Concept</h2><p>True watch support needs a native SwiftUI/watchOS app. This web version shows the visual flow.</p></div></div></section>
+
+    <section id="player" class="screen">
+      <div class="player-screen card">
+        <img src="assets/players/player-front.svg"/>
+        <div>
+          <h2 class="playerName">Player</h2>
+          <p>Winger • Creator • Academy FC</p>
+          <b class="bigovr">72</b>
+          <p>Best camera reaction: <b id="playerBestRT">—</b></p>
+          <button class="cta" onclick="resetName()">Change Name</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="rewards" class="screen">
+      <div class="reward-screen card" onclick="openPack()">
+        <img src="assets/rewards/gold-pack.svg"/>
+        <h2 id="packTitle">Tap to Open</h2>
+      </div>
+    </section>
+
+    <section id="club" class="screen card">
+      <h2>PitchIQ FC vs Macarthur</h2>
+      <div class="versus huge"><b>3,120 XP</b><span>VS</span><b>2,870 XP</b></div>
+    </section>
+
+    <section id="analytics" class="screen card">
+      <h2>Progress Analytics</h2>
+      <canvas id="chart" width="900" height="360"></canvas>
+      <div id="heatmap"></div>
+    </section>
+
+    <section id="watch" class="screen">
+      <div class="watch-screen card">
+        <img src="assets/apple-watch.svg"/>
+        <div>
+          <h2>Apple Watch Concept</h2>
+          <p>True watch support needs a native SwiftUI/watchOS app. This web version shows the visual flow.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div id="toast" class="toast">+20 XP</div>

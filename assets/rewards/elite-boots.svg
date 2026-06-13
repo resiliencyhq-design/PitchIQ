@@ -1,0 +1,10 @@
+<svg width="760" height="560" viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="boot" x1="0" x2="1"><stop stop-color="#050505"/><stop offset=".4" stop-color="#303030"/><stop offset="1" stop-color="#080808"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<ellipse cx="390" cy="420" rx="260" ry="58" fill="#c9ff2e" opacity=".18" filter="url(#glow)"/>
+<path d="M110 320 C185 160 340 115 488 150 C590 174 648 238 670 315 C520 346 330 352 110 320Z" fill="url(#boot)" stroke="#c9ff2e" stroke-width="6"/>
+<path d="M160 302 C285 320 450 315 625 288" stroke="#c9ff2e" stroke-width="18" stroke-linecap="round"/>
+<path d="M265 235 L480 218 M245 270 L530 252" stroke="#c9ff2e" stroke-width="14" stroke-linecap="round"/>
+<path d="M445 150 C415 205 410 250 425 320" stroke="#fff" stroke-opacity=".18" stroke-width="20"/>
+<g fill="#c9ff2e"><circle cx="245" cy="348" r="13"/><circle cx="350" cy="356" r="13"/><circle cx="470" cy="350" r="13"/><circle cx="585" cy="330" r="13"/></g>
+<text x="382" y="500" text-anchor="middle" font-family="Arial Black,Arial" font-size="34" fill="#fff">ELITE BOOTS</text>
+</svg>

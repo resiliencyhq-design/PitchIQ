@@ -1,0 +1,11 @@
+<svg width="900" height="760" viewBox="0 0 900 760" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="g" cx="55%" cy="55%" r="60%"><stop stop-color="#c9ff2e" stop-opacity=".22"/><stop offset="1" stop-opacity="0"/></radialGradient></defs>
+<circle cx="480" cy="380" r="340" fill="url(#g)"/>
+<circle cx="480" cy="155" r="70" fill="#e0ad82"/><path d="M405 145 C420 68 560 72 560 160 C515 115 455 112 405 145Z" fill="#22140c"/>
+<path d="M430 245 L585 270 L540 465 L365 430 Z" fill="#06120d" stroke="#c9ff2e" stroke-width="6"/>
+<text x="468" y="360" font-family="Arial Black" font-size="70" fill="#c9ff2e">10</text>
+<path d="M430 270 L295 315" stroke="#06120d" stroke-width="48" stroke-linecap="round"/><path d="M565 292 L720 220" stroke="#06120d" stroke-width="48" stroke-linecap="round"/>
+<path d="M410 430 L305 650" stroke="#06120d" stroke-width="55" stroke-linecap="round"/><path d="M510 450 L660 645" stroke="#06120d" stroke-width="55" stroke-linecap="round"/>
+<path d="M310 650 L245 645" stroke="#c9ff2e" stroke-width="18" stroke-linecap="round"/><path d="M660 645 L735 680" stroke="#c9ff2e" stroke-width="18" stroke-linecap="round"/>
+<circle cx="470" cy="165" r="7" fill="#111"/><circle cx="515" cy="165" r="7" fill="#111"/><circle cx="360" cy="660" r="50" fill="none" stroke="#fff" stroke-width="4"/><path d="M360 610 L390 660 L360 710 L330 660 Z" fill="none" stroke="#fff" stroke-width="4"/>
+</svg>
