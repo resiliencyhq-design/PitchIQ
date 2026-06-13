@@ -1,16 +1,10 @@
 {
-  "name": "PitchIQ Exact Dashboard",
+  "name": "PitchIQ Sprint 1",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020807",
   "theme_color": "#020807",
-  "description": "PitchIQ exact dashboard visual with name entry and camera reaction testing.",
-  "icons": [
-    {
-      "src": "assets/app-icon.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml"
-    }
-  ]
+  "description": "PitchIQ Build Sprint 1 vertical slice: onboarding, dashboard, training, camera mode, rewards and summary.",
+  "icons": []
 }
