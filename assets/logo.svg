@@ -1,12 +1,1 @@
-<svg width="320" height="96" viewBox="0 0 320 96" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#c9ff2e"/><stop offset="1" stop-color="#2dff95"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<rect width="320" height="96" rx="24" fill="#04100b"/>
-<g transform="translate(18 18)" filter="url(#glow)">
-<circle cx="30" cy="30" r="27" fill="#07130d" stroke="url(#g)" stroke-width="4"/>
-<path d="M30 7 L45 21 L39 43 L21 43 L15 21 Z" fill="none" stroke="url(#g)" stroke-width="3"/>
-<path d="M15 21 L4 30 M45 21 L56 30 M21 43 L13 56 M39 43 L47 56" stroke="url(#g)" stroke-width="3"/>
-</g>
-<text x="86" y="48" font-family="Arial Black,Arial" font-size="33" fill="#fff">PITCH</text>
-<text x="204" y="48" font-family="Arial Black,Arial" font-size="33" fill="#c9ff2e">IQ</text>
-<text x="88" y="68" font-family="Arial" font-size="10" fill="#9fb4a8" letter-spacing="2">TRAIN THE BRAIN BEHIND THE GAME</text>
-</svg>
+<svg width="520" height="160" viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#d8ff2f"/><stop offset="1" stop-color="#24ff9a"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="520" height="160" rx="38" fill="#03100b"/><g transform="translate(32 30)" filter="url(#glow)"><circle cx="50" cy="50" r="43" fill="#07130d" stroke="url(#g)" stroke-width="7"/><path d="M50 10 L73 33 L64 72 L36 72 L27 33 Z" fill="none" stroke="url(#g)" stroke-width="5"/></g><text x="150" y="74" font-family="Arial Black,Arial" font-size="50" fill="#fff">PITCH</text><text x="323" y="74" font-family="Arial Black,Arial" font-size="50" fill="#d8ff2f">IQ</text><text x="154" y="108" font-family="Arial" font-size="14" fill="#a5b8aa" letter-spacing="3">TRAIN THE BRAIN BEHIND THE GAME</text></svg>

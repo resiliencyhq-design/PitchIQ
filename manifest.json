@@ -1,9 +1,8 @@
 {
-  "name": "PitchIQ Sprint 3",
+  "name": "PitchIQ v1 Mobile Flow",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020807",
-  "theme_color": "#020807",
-  "description": "PitchIQ Sprint 3 complete rebuild: mobile-first, premium dashboard, training, camera, reward and summary."
+  "theme_color": "#020807"
 }
