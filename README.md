@@ -1,29 +1,16 @@
-# PitchIQ Complete GitHub Pack
+# PitchIQ Exact Dashboard
 
-Upload everything in this folder to your GitHub Pages repository, including the `assets` folder.
+This version displays the exact dashboard mockup image as the home screen.
 
-Expected URL:
+It also includes:
+- Name entry and local saving
+- Clickable dashboard hotspots
+- Camera Reaction Mode
+- Front/rear camera buttons
+- Video access test
+- Training demo
+
+Upload all files and the assets folder to GitHub Pages.
+
+URL:
 https://resiliencyhq-design.github.io/PitchIQ/
-
-## Included
-- Complete HTML/CSS/JS prototype
-- Player name entry and local saving
-- Camera/video access test
-- Camera Reaction Mode with movement-onset timing
-- Best reaction time saved locally
-- Sensitivity slider
-- Premium custom SVG assets:
-  - Logo
-  - App icon
-  - Stadium background
-  - Elite boots
-  - Gold pack
-  - Player front/running/back
-  - Apple Watch concept
-  - Career badges
-
-## Camera notes
-Camera access requires HTTPS. GitHub Pages provides HTTPS.
-On iPhone, open in Safari and allow camera permission.
-
-Camera reaction mode is experimental. It estimates movement onset after a cue; it does not validate soccer technique quality.

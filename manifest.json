@@ -1,11 +1,11 @@
 {
-  "name": "PitchIQ Complete",
+  "name": "PitchIQ Exact Dashboard",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020807",
   "theme_color": "#020807",
-  "description": "PitchIQ complete GitHub prototype with asset pack, player name entry, and camera reaction testing.",
+  "description": "PitchIQ exact dashboard visual with name entry and camera reaction testing.",
   "icons": [
     {
       "src": "assets/app-icon.svg",
