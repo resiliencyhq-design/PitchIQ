@@ -7,7 +7,7 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 
 let state = normalizeState(loadState());
 
@@ -40,7 +40,7 @@ function render(route="splash"){
   if(route === "onboard") app.innerHTML = renderOnboard();
   if(route === "mission") app.innerHTML = renderMission(state);
   if(route === "home") app.innerHTML = renderHome(state);
-  if(route === "training") app.innerHTML = renderTraining();
+  if(route === "training") app.innerHTML = renderTraining(state);
   if(route === "camera") app.innerHTML = renderCamera();
   if(route === "reward") app.innerHTML = renderReward(state);
   if(route === "player") app.innerHTML = renderPlayer(state);

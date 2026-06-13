@@ -1,15 +1,15 @@
-# PitchIQ Sprint 4.2.1 — Dependency Audit & Boot Recovery
+# PitchIQ Sprint 4.2.2 — Fix Training & Career Render Errors
 
-This build repairs the current boot-blocking module error.
+Minimal maintenance patch.
+
+Changed:
+- `js/app/routes.js`
+- `js/app/main.js`
+- `README.md`
+- `docs/SPRINT_4_2_2_FIX_TRAINING_CAREER.md`
 
 Fixes:
-- Adds `renderCollection` compatibility export.
-- Adds `renderArt` compatibility export.
-- Verifies no missing named imports by static audit.
-- Verifies JavaScript syntax.
-- Hardens storage recovery.
+- Training route crashed because `renderTraining()` was called without `state`, but `renderTraining` assumed `state.profile.position`.
+- Career route crashed because `main.js` referenced `renderCareer(state)` but `renderCareer` was not imported/exported consistently.
 
-Upload all contents to the root of the PitchIQ GitHub repository.
-
-Then open:
-https://resiliencyhq-design.github.io/PitchIQ/?v=421
+No architecture changes.

@@ -100,8 +100,10 @@ export function renderHome(state){
   </section>`;
 }
 
-export function renderTraining(state){
-  const drills = recommendedDrills(state.profile.position || "Winger").slice(0, 8);
+export function renderTraining(state = {}){
+  const profile = state.profile || {};
+  const position = profile.position || "Winger";
+  const drills = recommendedDrills(position).slice(0, 8);
   return `<section class="screen app active" id="training">
     <header class="sub"><button data-route="home">←</button><h1>Training Engine</h1><button data-action="start-training">Start</button></header>
     <div class="stats">${stat("Time","45","time")}${stat("Score","0","score")}${stat("Combo",'x<span id="combo">1</span>')}</div>
@@ -159,6 +161,36 @@ export function renderAnalytics(state){
       <div class="parent-coach"><div class="glass analytics-card"><span class="kicker">Parent view</span><b>Consistency ${vals.filter(v=>v>0).length}/7</b><small>Simple effort summary.</small></div><div class="glass analytics-card"><span class="kicker">Coach view</span><b>${state.profile.position} pathway</b><small>Training indicators only.</small></div></div>
     </div>
     <button class="primary mega" data-route="home">Return Home</button></section>`;
+}
+
+
+export function renderCareer(state = {}){
+  const game = state.game || {};
+  const level = game.level || 1;
+  const currentRank = rankForLevel(level);
+  const ranks = [
+    { name:"Grassroots", min:1 },
+    { name:"Local Club", min:4 },
+    { name:"Division 3", min:8 },
+    { name:"Division 2", min:13 },
+    { name:"Division 1", min:19 },
+    { name:"Academy", min:26 },
+    { name:"NPL", min:36 },
+    { name:"Professional", min:51 },
+    { name:"Europe", min:71 },
+    { name:"Legend", min:91 }
+  ];
+  return `<section class="screen app active" id="career">
+    <header class="sub"><button data-route="home">←</button><h1>Career</h1><button data-route="player">Player</button></header>
+    <div class="glass tile"><span class="kicker">Current pathway</span><b>${currentRank}</b><small>Level ${level}. Keep completing sessions to climb the ladder.</small></div>
+    <div class="career-grid">
+      ${ranks.map(r => {
+        const unlocked = level >= r.min;
+        const current = r.name === currentRank || (currentRank === "A-League" && r.name === "Professional") || (currentRank === "Ballon d'Or" && r.name === "Legend");
+        return `<div class="glass career-node ${current ? "current" : ""} ${unlocked ? "unlocked" : "locked"}"><span class="kicker">Level ${r.min}+</span><b>${r.name}</b><small>${current ? "Current rank" : unlocked ? "Unlocked" : "Locked"}</small></div>`;
+      }).join("")}
+    </div>
+  </section>`;
 }
 
 export function renderSettings(state){
