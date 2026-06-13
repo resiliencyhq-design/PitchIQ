@@ -1,0 +1,11 @@
+<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#d8ff2f"/><stop offset="1" stop-color="#24ff9a"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="420" height="120" rx="30" fill="#04100b"/>
+<g transform="translate(28 23)" filter="url(#glow)">
+<circle cx="37" cy="37" r="33" fill="#07130d" stroke="url(#g)" stroke-width="6"/>
+<path d="M37 7 L56 25 L48 55 L26 55 L18 25 Z" fill="none" stroke="url(#g)" stroke-width="4"/>
+</g>
+<text x="120" y="58" font-family="Arial Black,Arial" font-size="40" fill="#fff">PITCH</text>
+<text x="260" y="58" font-family="Arial Black,Arial" font-size="40" fill="#d8ff2f">IQ</text>
+<text x="122" y="83" font-family="Arial" font-size="12" fill="#9fb4a8" letter-spacing="2">TRAIN THE BRAIN BEHIND THE GAME</text>
+</svg>

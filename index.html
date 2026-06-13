@@ -6,122 +6,111 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="PitchIQ" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>PitchIQ Sprint 2</title>
+  <title>PitchIQ Sprint 3</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="arena-bg"></div>
-  <div class="lights"></div>
-  <div class="grain"></div>
+  <div class="background">
+    <div class="stadium">
+      <div class="floodlight left"></div>
+      <div class="floodlight right"></div>
+      <div class="pitch"></div>
+    </div>
+  </div>
 
-  <main id="app">
+  <main>
     <section id="splash" class="screen active splash">
-      <div class="particle-field" id="particles"></div>
-      <img src="assets/art/logo.svg" class="splash-logo" alt="PitchIQ" />
-      <p class="tagline">Train the Brain Behind the Game</p>
-      <button class="start-splash" onclick="continueFromSplash()">Tap to Enter</button>
+      <div class="sparkles" id="sparkles"></div>
+      <img src="assets/art/pitchiq-mark.svg" alt="PitchIQ" class="logo-main" />
+      <p>Train the Brain Behind the Game</p>
+      <button class="primary big" onclick="enterApp()">Enter Academy</button>
     </section>
 
-    <section id="onboarding" class="screen onboarding">
-      <div class="glass intro-card">
-        <img src="assets/art/logo.svg" class="mini-logo" alt="PitchIQ" />
+    <section id="onboard" class="screen onboard">
+      <div class="panel onboard-card">
+        <img src="assets/art/pitchiq-mark.svg" alt="PitchIQ" />
         <h1>Create your player</h1>
-        <p>Build your football intelligence career.</p>
+        <p>Save your name and position on this device.</p>
         <label>Player name</label>
-        <input id="playerNameInput" placeholder="e.g. Hugo" maxlength="18" />
+        <input id="nameInput" placeholder="e.g. Hugo" maxlength="18" />
         <label>Position</label>
-        <div class="position-grid" id="positionGrid">
-          <button data-pos="CB">🛡 CB</button><button data-pos="FB">🏃 FB</button>
-          <button data-pos="CDM">⚙ CDM</button><button data-pos="CM">🧠 CM</button>
-          <button data-pos="CAM">🎩 CAM</button><button data-pos="Winger" class="selected">⚡ Winger</button>
-          <button data-pos="Striker">🎯 Striker</button><button data-pos="GK">🧤 GK</button>
+        <div class="positions">
+          <button data-pos="CB">CB</button><button data-pos="FB">FB</button><button data-pos="CDM">CDM</button><button data-pos="CM">CM</button>
+          <button data-pos="CAM">CAM</button><button data-pos="Winger" class="selected">Winger</button><button data-pos="Striker">Striker</button><button data-pos="GK">GK</button>
         </div>
-        <button class="primary" onclick="finishOnboarding()">Enter Academy</button>
+        <button class="primary full" onclick="completeOnboarding()">Continue</button>
       </div>
     </section>
 
     <section id="dashboard" class="screen dashboard">
-      <aside class="side">
-        <img src="assets/art/logo.svg" class="nav-logo" alt="PitchIQ" />
-        <button class="nav active" onclick="show('dashboard')"><span>🏠</span><b>Home</b></button>
-        <button class="nav" onclick="show('training')"><span>⚽</span><b>Train</b></button>
-        <button class="nav" onclick="show('camera')"><span>📷</span><b>Camera</b></button>
-        <button class="nav" onclick="show('reward')"><span>🎁</span><b>Rewards</b></button>
-        <button class="nav" onclick="show('summary')"><span>📊</span><b>Summary</b></button>
-        <button class="nav reset" onclick="resetProfile()"><span>👤</span><b>Reset</b></button>
-      </aside>
+      <nav class="dock">
+        <button class="active" onclick="showScreen('dashboard')"><span>🏠</span><b>Home</b></button>
+        <button onclick="showScreen('training')"><span>⚽</span><b>Train</b></button>
+        <button onclick="showScreen('camera')"><span>📷</span><b>Camera</b></button>
+        <button onclick="showScreen('reward')"><span>🎁</span><b>Reward</b></button>
+        <button onclick="showScreen('summary')"><span>📊</span><b>Summary</b></button>
+      </nav>
 
-      <section class="content aaa-dashboard">
-        <header class="top">
+      <div class="dash-shell">
+        <header class="dash-header">
           <div>
-            <span class="eyebrow">🔥 <span id="dashStreak">1</span> day streak</span>
+            <span class="kicker">🔥 <span id="streak">1</span> day streak</span>
             <h1>Welcome back, <span class="playerName">Player</span></h1>
           </div>
-          <div class="top-actions">
-            <button class="ghost" onclick="show('camera')">📷 Camera Test</button>
-            <button class="pill" onclick="show('training')">▶ Continue Mission</button>
+          <div class="header-actions">
+            <button class="secondary" onclick="resetProfile()">Reset</button>
+            <button class="primary" onclick="showScreen('training')">Continue Mission</button>
           </div>
         </header>
 
-        <div class="premium-grid">
-          <article class="hero-premium glass">
-            <div class="hero-copy">
-              <span class="eyebrow">Today's mission</span>
+        <section class="dashboard-grid">
+          <article class="panel hero">
+            <div class="hero-content">
+              <span class="kicker">Today's Mission</span>
               <h2>Beat yesterday. Unlock Academy Boots.</h2>
-              <p>Complete one 60-second vision session to protect your streak and open today’s reward pack.</p>
-              <div class="mission-strip">
+              <p>Complete one 60-second session to protect your streak and open today’s Gold Pack.</p>
+              <div class="hero-stats">
                 <div><small>Reward</small><b>Gold Pack</b></div>
                 <div><small>Target</small><b>250 XP</b></div>
                 <div><small>Next Rank</small><b id="nextRank">Local Club</b></div>
               </div>
-              <div class="xpbar large"><i id="heroXpBar"></i></div>
-              <small><span id="xpText">0</span> / <span id="xpNeed">600</span> XP to next level</small>
-              <button class="primary giant" onclick="show('training')">Start Training</button>
+              <div class="xpbar"><i id="xpBar"></i></div>
+              <small><span id="xp">0</span> / <span id="xpNeed">600</span> XP</small>
+              <button class="primary hero-btn" onclick="showScreen('training')">Start Training</button>
             </div>
-            <div class="hero-visual">
-              <img src="assets/art/boots.svg" alt="Academy boots" />
-              <div class="halo"></div>
-            </div>
+            <img src="assets/art/boots.svg" alt="Academy Boots" />
           </article>
 
-          <article class="player-ultimate glass">
-            <div class="card-top">
-              <span id="playerPosition">Winger</span>
-              <b id="ovr">61</b>
-            </div>
-            <img src="assets/art/player.svg" alt="Player" />
-            <h3 class="playerName">Player</h3>
-            <p id="rankName">Grassroots</p>
-            <div class="stat-row"><span>VIS</span><b id="statVision">64</b></div>
-            <div class="stat-row"><span>REA</span><b id="statReaction">61</b></div>
-            <div class="stat-row"><span>DEC</span><b id="statDecision">62</b></div>
+          <article class="panel player-card">
+            <img src="assets/art/player-card.svg" alt="Player card" />
+            <div class="player-card-name playerName">Player</div>
+            <div class="position-badge" id="positionBadge">Winger</div>
           </article>
 
-          <article class="level-orb glass">
+          <article class="panel level">
             <span>LEVEL</span>
-            <b id="levelNum">1</b>
-            <p id="levelTag">Grassroots</p>
-            <div class="xpbar"><i id="levelXpBar"></i></div>
+            <strong id="level">1</strong>
+            <b id="rank">Grassroots</b>
           </article>
 
-          <article class="quests glass">
+          <article class="panel quests">
             <h3>Daily Quests</h3>
-            <div class="quest" id="missionTrain"><i>⏱</i><div><b>Complete a session</b><small>Earn session XP</small></div><strong>250 XP</strong></div>
-            <div class="quest" id="missionCombo"><i>🔥</i><div><b>Combo x5</b><small>Stay composed</small></div><strong>150 XP</strong></div>
-            <div class="quest" id="missionCamera"><i>📷</i><div><b>Camera reaction</b><small>Test first movement</small></div><strong>200 XP</strong></div>
+            <div id="questSession" class="quest"><span>⏱</span><div><b>Complete session</b><small>Earn XP</small></div><strong>250 XP</strong></div>
+            <div id="questCombo" class="quest"><span>🔥</span><div><b>Combo x5</b><small>Stay composed</small></div><strong>150 XP</strong></div>
+            <div id="questCamera" class="quest"><span>📷</span><div><b>Camera reaction</b><small>Move fast</small></div><strong>200 XP</strong></div>
           </article>
 
-          <article class="reward-premium glass" onclick="show('reward')">
+          <article class="panel pack" onclick="showScreen('reward')">
             <div>
-              <span class="eyebrow">Mission reward</span>
+              <span class="kicker">Reward</span>
               <h3>Gold Pack</h3>
-              <p id="packStatus">Locked: complete today's mission.</p>
+              <p id="packText">Locked: complete today’s mission.</p>
             </div>
-            <img src="assets/art/pack.svg" alt="Gold pack" />
+            <img src="assets/art/gold-pack.svg" alt="Gold pack" />
           </article>
 
-          <article class="leader glass">
+          <article class="panel leaderboard">
             <h3>Academy Leaderboard</h3>
             <ol>
               <li><span>🥇 <b class="playerName">Player</b></span><strong id="leaderXp">0 XP</strong></li>
@@ -131,12 +120,12 @@
             </ol>
           </article>
 
-          <article class="analytics glass">
-            <div class="card-head"><h3>Weekly Intelligence</h3><span>Live</span></div>
-            <canvas id="weeklyChart" width="520" height="240"></canvas>
+          <article class="panel chart-panel">
+            <div class="card-topline"><h3>Weekly Intelligence</h3><span>Live</span></div>
+            <canvas id="chart" width="640" height="270"></canvas>
           </article>
 
-          <article class="career-road glass">
+          <article class="panel career">
             <h3>Career Road</h3>
             <div class="road">
               <div class="node done">Grassroots</div>
@@ -145,107 +134,57 @@
               <div class="node">Academy</div>
             </div>
           </article>
-        </div>
-      </section>
-    </section>
-
-    <section id="training" class="screen training">
-      <header class="training-top">
-        <button onclick="show('dashboard')">← Dashboard</button>
-        <div><b>Vision Sprint</b><small>Hands-free decision session</small></div>
-        <button onclick="startTraining()">Start</button>
-      </header>
-      <div class="training-stage glass">
-        <div class="scoreline">
-          <span>⏱ <b id="trainTime">60</b></span>
-          <span>⭐ <b id="trainScore">0</b></span>
-          <span>🔥 x<b id="trainCombo">1</b></span>
-        </div>
-        <div class="cue-wrap">
-          <div class="pulse"></div>
-          <div id="trainingCue" class="big-cue">READY</div>
-          <div id="trainingInstruction" class="instruction">Say or tap the correct answer</div>
-        </div>
-        <div class="answer-row">
-          <button onclick="manualAnswer('red')">Red</button>
-          <button onclick="manualAnswer('blue')">Blue</button>
-          <button onclick="manualAnswer('left')">Left</button>
-          <button onclick="manualAnswer('right')">Right</button>
-        </div>
-        <div class="session-actions">
-          <button onclick="startVoice()">🎤 Enable Voice</button>
-          <button onclick="correctTraining()">Correct</button>
-          <button onclick="wrongTraining()">Missed</button>
-          <button onclick="endTraining()">End Session</button>
-        </div>
+        </section>
       </div>
     </section>
 
-    <section id="camera" class="screen camera">
-      <header class="training-top">
-        <button onclick="show('dashboard')">← Dashboard</button>
-        <div><b>Camera Reaction Mode</b><small>Experimental movement-onset timing</small></div>
-        <button onclick="stopCamera()">Stop</button>
-      </header>
+    <section id="training" class="screen subpage">
+      <header class="sub-header"><button onclick="showScreen('dashboard')">← Dashboard</button><h1>Vision Sprint</h1><button onclick="startTraining()">Start</button></header>
+      <div class="panel training-panel">
+        <div class="metrics"><div><small>Time</small><b id="time">60</b></div><div><small>Score</small><b id="score">0</b></div><div><small>Combo</small><b>x<span id="combo">1</span></b></div></div>
+        <div class="cue-stage"><div class="pulse"></div><div id="cue">READY</div><small id="instruction">Say or tap the answer</small></div>
+        <div class="answers"><button onclick="answer('red')">Red</button><button onclick="answer('blue')">Blue</button><button onclick="answer('left')">Left</button><button onclick="answer('right')">Right</button></div>
+        <div class="answers"><button onclick="startVoice()">🎤 Voice</button><button onclick="correct()">Correct</button><button onclick="wrong()">Missed</button><button onclick="endTraining()">End</button></div>
+      </div>
+    </section>
+
+    <section id="camera" class="screen subpage">
+      <header class="sub-header"><button onclick="showScreen('dashboard')">← Dashboard</button><h1>Camera Reaction</h1><button onclick="stopCamera()">Stop</button></header>
       <div class="camera-grid">
-        <article class="glass">
-          <div class="camera-box">
-            <video id="video" playsinline muted></video>
-            <canvas id="motionCanvas"></canvas>
-            <div id="cameraCue" class="camera-cue">READY</div>
-          </div>
-          <div class="camera-stats">
-            <div><small>Last RT</small><b id="lastRT">—</b></div>
-            <div><small>Best RT</small><b id="bestRT">—</b></div>
-            <div><small>Score</small><b id="cameraScore">0</b></div>
-            <div><small>Status</small><b id="cameraStatus">Idle</b></div>
-          </div>
-          <div class="session-actions">
-            <button onclick="testVideoAccess()">Test Video</button>
-            <button onclick="startCamera('user')">Front Camera</button>
-            <button onclick="startCamera('environment')">Rear Camera</button>
-            <button onclick="startCameraRound()">Start Round</button>
-          </div>
-        </article>
-        <article class="glass info">
-          <h2>Camera scoring</h2>
-          <p>PitchIQ shows a cue, starts the timer, then estimates the first clear movement from the video feed.</p>
-          <label>Motion sensitivity</label>
-          <input id="sensitivity" type="range" min="8" max="60" value="24" />
-          <label><input id="autoRounds" type="checkbox" checked /> Auto-next round</label>
-          <p id="videoTest">Video status: not tested</p>
-        </article>
+        <div class="panel">
+          <div class="video-box"><video id="video" playsinline muted></video><canvas id="motion"></canvas><div id="cameraCue">READY</div></div>
+          <div class="metrics"><div><small>Last RT</small><b id="lastRT">—</b></div><div><small>Best RT</small><b id="bestRT">—</b></div><div><small>Score</small><b id="camScore">0</b></div></div>
+          <div class="answers"><button onclick="testVideo()">Test</button><button onclick="startCamera('user')">Front</button><button onclick="startCamera('environment')">Rear</button><button onclick="cameraRound()">Start Round</button></div>
+        </div>
+        <div class="panel info">
+          <h2>Camera setup</h2>
+          <p>Use Safari on iPhone, allow camera permission, and keep the phone stable.</p>
+          <label>Sensitivity</label><input id="sensitivity" type="range" min="8" max="60" value="24">
+          <p id="videoStatus">Video not tested</p>
+        </div>
       </div>
     </section>
 
     <section id="reward" class="screen reward">
-      <div class="reward-stage">
+      <div class="reward-card">
         <h1>Daily Reward</h1>
-        <div class="pack-anim" id="packAnim" onclick="openPack()"><img src="assets/art/pack.svg" alt="Gold pack" /></div>
+        <img id="rewardPack" src="assets/art/gold-pack.svg" alt="Gold Pack" onclick="openPack()" />
         <h2 id="rewardTitle">Tap the pack</h2>
-        <p id="rewardText">Complete your mission to unlock Academy Boots.</p>
-        <button class="primary" onclick="show('summary')">Continue</button>
+        <p id="rewardText">Complete a mission to unlock Academy Boots.</p>
+        <button class="primary" onclick="showScreen('summary')">Continue</button>
       </div>
     </section>
 
-    <section id="summary" class="screen summary">
-      <div class="summary-card glass">
+    <section id="summary" class="screen subpage summary">
+      <div class="panel summary-panel">
         <h1>Session Complete</h1>
-        <div class="summary-grid">
-          <div><small>XP Earned</small><b id="summaryXp">0</b></div>
-          <div><small>Best Reaction</small><b id="summaryRT">—</b></div>
-          <div><small>Best Combo</small><b id="summaryCombo">x1</b></div>
-          <div><small>Streak</small><b id="summaryStreak">1</b></div>
-        </div>
-        <div class="rating">
-          <p>Reaction ★★★★☆</p><p>Scanning ★★★★★</p><p>Decision ★★★★☆</p><p>Consistency ★★★★★</p>
-        </div>
+        <div class="metrics"><div><small>XP Earned</small><b id="sumXp">0</b></div><div><small>Best RT</small><b id="sumRt">—</b></div><div><small>Best Combo</small><b id="sumCombo">x1</b></div></div>
+        <div class="stars"><p>Reaction ★★★★☆</p><p>Scanning ★★★★★</p><p>Decision ★★★★☆</p></div>
         <h2>Tomorrow: beat your best.</h2>
-        <button class="primary" onclick="show('dashboard')">Return Dashboard</button>
+        <button class="primary" onclick="showScreen('dashboard')">Return Dashboard</button>
       </div>
     </section>
   </main>
-
   <div id="toast" class="toast">+20 XP</div>
   <script src="js/app.js"></script>
 </body>

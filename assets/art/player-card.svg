@@ -1,0 +1,16 @@
+<svg width="520" height="720" viewBox="0 0 520 720" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#182c1f"/><stop offset=".45" stop-color="#08110d"/><stop offset="1" stop-color="#d8ff2f"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="40%" r="60%"><stop stop-color="#d8ff2f" stop-opacity=".28"/><stop offset="1" stop-opacity="0"/></radialGradient>
+</defs>
+<path d="M72 25 L448 25 L490 115 L455 665 L260 705 L65 665 L30 115 Z" fill="url(#card)" stroke="#d8ff2f" stroke-width="6"/>
+<circle cx="260" cy="270" r="185" fill="url(#glow)"/>
+<circle cx="260" cy="185" r="58" fill="#e0ad82"/>
+<path d="M198 180 C210 105 315 100 326 185 C290 148 238 145 198 180Z" fill="#24140d"/>
+<path d="M185 295 C215 255 305 255 335 295 L382 535 C320 585 200 585 138 535 Z" fill="#06120d" stroke="#d8ff2f" stroke-width="5"/>
+<text x="260" y="425" text-anchor="middle" font-family="Arial Black" font-size="78" fill="#d8ff2f">10</text>
+<text x="260" y="505" text-anchor="middle" font-family="Arial Black" font-size="38" fill="#fff">PITCHIQ</text>
+<text x="90" y="100" font-family="Arial Black" font-size="60" fill="#fff">72</text>
+<text x="90" y="135" font-family="Arial Black" font-size="24" fill="#d8ff2f">OVR</text>
+<text x="260" y="640" text-anchor="middle" font-family="Arial Black" font-size="40" fill="#fff">PLAYER</text>
+</svg>

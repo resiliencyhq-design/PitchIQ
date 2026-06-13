@@ -1,10 +1,9 @@
 {
-  "name": "PitchIQ Sprint 2",
+  "name": "PitchIQ Sprint 3",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020807",
   "theme_color": "#020807",
-  "description": "PitchIQ Sprint 2 AAA dashboard rebuild with Sprint 1 training, camera, rewards and summary.",
-  "icons": []
+  "description": "PitchIQ Sprint 3 complete rebuild: mobile-first, premium dashboard, training, camera, reward and summary."
 }
