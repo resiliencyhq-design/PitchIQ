@@ -7,9 +7,10 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderChooseDrill, renderChooseDifficulty, renderSessionPreview, renderLiveSession, renderTrainingResults, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderAnalyticsRadar, renderAnalyticsHeatmap, renderAnalyticsCoach, renderAnalyticsParent, renderSettings, renderNav } from "./routes.js";
 
 let state = loadState();
+state.sessionDraft ||= { drill:'vision', difficulty:'adaptive' };
 let selectedPosition = state.profile.position || "Winger";
 let currentRoute = "splash";
 let cue = CORE_CUES[0];
@@ -45,12 +46,26 @@ function render(route="splash"){
   saveState(state);
 }
 function goto(route){ stopEphemeral(); render(route); }
-function stopEphemeral(){ if(training.timer) clearInterval(training.timer); if(currentRoute !== "camera") camera?.stop?.(); }
+function stopEphemeral(){ if(training.timer && currentRoute !== "liveSession") clearInterval(training.timer); if(currentRoute !== "camera") camera?.stop?.(); }
 
 function bindScreen(){
   document.querySelectorAll("[data-route]").forEach(el=>el.addEventListener("click",()=>goto(el.dataset.route)));
   document.querySelectorAll("[data-action]").forEach(el=>el.addEventListener("click",()=>handleAction(el.dataset.action)));
   document.querySelectorAll("[data-answer]").forEach(el=>el.addEventListener("click",()=>manualAnswer(el.dataset.answer)));
+
+  document.querySelectorAll("[data-select-drill]").forEach(btn=>btn.addEventListener("click",()=>{
+    state.sessionDraft ||= {};
+    state.sessionDraft.drill = btn.dataset.selectDrill;
+    saveState(state);
+    goto("chooseDifficulty");
+  }));
+  document.querySelectorAll("[data-select-difficulty]").forEach(btn=>btn.addEventListener("click",()=>{
+    state.sessionDraft ||= {};
+    state.sessionDraft.difficulty = btn.dataset.selectDifficulty;
+    saveState(state);
+    goto("sessionPreview");
+  }));
+
   document.querySelectorAll("[data-pos]").forEach(btn=>btn.addEventListener("click",()=>{
     document.querySelectorAll("[data-pos]").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected"); selectedPosition = btn.dataset.pos;
@@ -77,6 +92,9 @@ function handleAction(action){
   if(action==="rear-camera") return startCamera("environment");
   if(action==="stop-camera") return camera?.stop();
   if(action==="camera-round") return cameraRound();
+  if(action==="quick-start-training") { state.sessionDraft ||= { drill:"vision", difficulty:"adaptive" }; return goto("sessionPreview"); }
+  if(action==="start-live-session") { return startLiveSession(); }
+  if(action==="finish-live-session") { return finishLiveSession(); }
   if(action==="open-pack") return openPackAction();
 }
 function saveProfile(){
@@ -134,6 +152,43 @@ function finishTraining(){
     state.analytics.sessions.push({ id:activeSession.id, drill:activeSession.drill.id, score:training.score, results:activeSession.results, endedAt:Date.now() });
   }
   toast("Session complete 🏆"); goto("reward"); 
+}
+
+
+function startLiveSession(){
+  state.game.lastXp = 0;
+  const drillMap = {vision:"colour-scan", reaction:"left-right-react", scanning:"shoulder-check", decision:"midfield-picture", dual:"math-pressure", position:"winger-drive", elite:"elite-chaos"};
+  selectedDrillId = drillMap[state.sessionDraft?.drill || "vision"] || "colour-scan";
+  activeSession = createSession({ position:state.profile.position, drillId:selectedDrillId, level:state.game.level });
+  training = { time:activeSession.drill.seconds, score:0, combo:1, timer:null };
+  goto("liveSession");
+  setTimeout(()=>{
+    liveNextCue();
+    training.timer = setInterval(()=>{ 
+      training.time--; 
+      liveUpdate(); 
+      if(training.time<=0) finishLiveSession(); 
+    },1000);
+  },50);
+}
+function liveUpdate(){
+  const t=document.getElementById("liveTime"), c=document.getElementById("liveCombo"), s=document.getElementById("liveScore");
+  if(t) t.textContent=training.time;
+  if(c) c.textContent="x"+training.combo;
+  if(s) s.textContent=training.score;
+}
+function liveNextCue(){
+  cue = randomCue();
+  const el=document.getElementById("liveCue");
+  if(el) { el.textContent=cue.display; el.classList.add("motion-pop"); setTimeout(()=>el.classList.remove("motion-pop"),300); }
+}
+function finishLiveSession(){
+  if(training.timer) clearInterval(training.timer);
+  const bonus = 250;
+  addXP(state, bonus);
+  completeDaily(state);
+  toast("Session complete 🏆");
+  goto("trainingResults");
 }
 
 function startVoice(){

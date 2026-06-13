@@ -52,3 +52,31 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 .heat:not(.on){color:var(--muted)}
 .spider text{font-family:Arial Black,Arial}
 @media(max-width:720px){.drill-grid-large{grid-template-columns:1fr}.analytics-card b{font-size:28px}}
+
+
+/* Sprint 4.0 AAA UX Refactor */
+.ux-screen{max-width:760px}
+.ux-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ux-top .kicker{font-size:14px}
+.ux-hero{min-height:50vh;display:flex;flex-direction:column;justify-content:center;padding:28px;border-radius:36px;background:linear-gradient(145deg,rgba(215,255,46,.16),rgba(255,255,255,.04)),var(--panel);border:1px solid var(--stroke);box-shadow:var(--shadow-card)}
+.ux-hero.compact{min-height:34vh;text-align:center;align-items:center}
+.ux-hero h1{font-size:clamp(54px,12vw,92px);letter-spacing:-.07em;line-height:.84;margin:12px 0}
+.ux-hero p{font-size:20px;color:var(--muted);max-width:560px}
+.ux-actions{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px}
+.ux-actions.two{grid-template-columns:1fr 1fr}
+.ux-tile{text-align:left;padding:22px}
+.ux-tile b{display:block;font-size:26px}
+.ux-tile small{color:var(--muted)}
+.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.category-card{min-height:138px;text-align:left;padding:18px}
+.category-card span{font-size:30px}.category-card b{display:block;font-size:23px;margin:6px 0}.category-card small{color:var(--muted);font-size:14px}
+.difficulty-grid{display:grid;gap:12px}.difficulty-card{text-align:left;padding:22px}.difficulty-card b{display:block;font-size:28px}.difficulty-card small{color:var(--muted)}
+.big-icon{font-size:70px}.full{width:100%}
+.live-session{max-width:900px;padding-bottom:40px}.live-hud{display:flex;justify-content:space-between;align-items:center}.live-hud b{font-size:26px;color:var(--lime);background:rgba(0,0,0,.35);padding:12px 18px;border-radius:18px}
+.live-cue{height:72dvh;display:grid;place-items:center;position:relative}.live-cue b{font-size:clamp(100px,28vw,230px);font-weight:1000;z-index:1}.end-live{position:fixed;left:20px;right:20px;bottom:calc(20px + env(safe-area-inset-bottom))}
+.results-card{width:min(680px,94vw);padding:34px}.results-card h1{font-size:clamp(70px,16vw,140px);margin:10px 0;color:var(--lime);letter-spacing:-.08em}
+.radar-full{height:68dvh;display:grid;place-items:center;padding:16px}.radar-full svg{width:100%;height:100%;max-width:620px}.radar-poly{transform-origin:center;animation:radarIn .8s ease}@keyframes radarIn{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+.heatmap-full{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px}.heatmap-full .heat{aspect-ratio:1;border:0;border-radius:14px;background:rgba(255,255,255,.08);color:var(--muted)}.heatmap-full .heat.on{background:linear-gradient(120deg,var(--lime),var(--green));color:#03100b}
+.reward-flow{padding:24px;text-align:center;margin-bottom:16px}.reward-flow b{display:block;font-size:28px;line-height:1.05;margin-bottom:18px}.flow-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}.flow-row i{display:block;width:34px;height:3px;background:var(--lime);border-radius:99px}.collection-grid.compact{grid-template-columns:repeat(2,1fr)}.collection-card img{width:100%;max-height:115px;object-fit:contain}
+.career-vertical{display:grid;gap:10px}.career-step{display:grid;grid-template-columns:44px 1fr;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:14px}.career-step span{font-size:24px;color:var(--muted)}.career-step b{font-size:24px}.career-step small{grid-column:2;color:var(--muted)}.career-step.current{border-color:var(--lime);box-shadow:var(--glow-lime);background:linear-gradient(135deg,rgba(215,255,46,.16),rgba(255,255,255,.04))}.career-step.current span{color:var(--lime)}
+@media(max-width:520px){.screen{padding-left:16px;padding-right:16px}.ux-actions.two{grid-template-columns:1fr}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:126px;padding:14px}.category-card b{font-size:18px}.category-card small{font-size:12px}.ux-hero{min-height:46vh}.ux-hero h1{font-size:56px}.stats{grid-template-columns:1fr 1fr}.collection-grid.compact{grid-template-columns:1fr 1fr}.nav{height:82px}.nav span{font-size:11px}}
