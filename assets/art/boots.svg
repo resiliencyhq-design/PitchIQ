@@ -1,8 +1,9 @@
-<svg width="560" height="400" viewBox="0 0 560 400" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="boot" x1="0" x2="1"><stop stop-color="#050505"/><stop offset=".42" stop-color="#333"/><stop offset="1" stop-color="#050505"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<ellipse cx="285" cy="315" rx="190" ry="42" fill="#d8ff2f" opacity=".18" filter="url(#glow)"/>
-<path d="M72 235 C130 120 245 82 360 112 C435 132 485 180 505 235 C390 260 230 267 72 235Z" fill="url(#boot)" stroke="#d8ff2f" stroke-width="5"/>
-<path d="M115 220 C215 236 345 232 470 212" stroke="#d8ff2f" stroke-width="14" stroke-linecap="round"/>
-<path d="M205 170 L365 158 M190 198 L400 185" stroke="#d8ff2f" stroke-width="11" stroke-linecap="round"/>
-<text x="282" y="365" text-anchor="middle" font-family="Arial Black" font-size="28" fill="#fff">ACADEMY BOOTS</text>
+<svg width="760" height="520" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="b" x1="0" x2="1"><stop stop-color="#050505"/><stop offset=".5" stop-color="#3a3a3a"/><stop offset="1" stop-color="#050505"/></linearGradient><filter id="x"><feGaussianBlur stdDeviation="14" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<ellipse cx="390" cy="405" rx="275" ry="64" fill="#D7FF2E" opacity=".18" filter="url(#x)"/>
+<path d="M90 300 C175 130 345 88 502 130 C610 160 670 225 692 305 C528 348 316 360 90 300Z" fill="url(#b)" stroke="#D7FF2E" stroke-width="9"/>
+<path d="M150 281 C285 310 465 303 645 266" stroke="#D7FF2E" stroke-width="22" stroke-linecap="round"/>
+<path d="M260 210 L505 190 M235 249 L555 224" stroke="#D7FF2E" stroke-width="17" stroke-linecap="round"/>
+<g fill="#D7FF2E"><circle cx="235" cy="334" r="14"/><circle cx="352" cy="345" r="14"/><circle cx="482" cy="337" r="14"/><circle cx="610" cy="313" r="14"/></g>
+<text x="382" y="482" text-anchor="middle" font-family="Arial Black" font-size="40" fill="#fff">ACADEMY BOOTS</text>
 </svg>

@@ -1,11 +1,10 @@
-<svg width="760" height="920" viewBox="0 0 760 920" xmlns="http://www.w3.org/2000/svg">
-<defs><radialGradient id="glow" cx="50%" cy="45%" r="57%"><stop stop-color="#d6ff2f" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
-<circle cx="380" cy="450" r="345" fill="url(#glow)"/>
-<circle cx="380" cy="210" r="84" fill="#e3b083"/><path d="M286 200 C302 105 470 92 489 205 C438 149 342 150 286 200Z" fill="#23140b"/>
-<path d="M268 365 C305 300 455 300 492 365 L560 770 C475 835 285 835 200 770 Z" fill="#06120d" stroke="#d6ff2f" stroke-width="8"/>
-<text x="380" y="505" text-anchor="middle" font-family="Arial Black,Arial" font-size="98" fill="#d6ff2f">10</text>
-<text x="380" y="600" text-anchor="middle" font-family="Arial Black,Arial" font-size="55" fill="#fff">PITCHIQ</text>
-<path d="M268 375 L150 620" stroke="#06120d" stroke-width="58" stroke-linecap="round"/><path d="M492 375 L612 620" stroke="#06120d" stroke-width="58" stroke-linecap="round"/>
-<path d="M268 375 L150 620" stroke="#d6ff2f" stroke-width="7" stroke-linecap="round"/><path d="M492 375 L612 620" stroke="#d6ff2f" stroke-width="7" stroke-linecap="round"/>
-<circle cx="348" cy="230" r="8" fill="#111"/><circle cx="412" cy="230" r="8" fill="#111"/><path d="M348 270 Q380 292 412 270" fill="none" stroke="#7a3f2f" stroke-width="8" stroke-linecap="round"/>
+<svg width="560" height="740" viewBox="0 0 560 740" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#183622"/><stop offset=".5" stop-color="#07110D"/><stop offset="1" stop-color="#D7FF2E"/></linearGradient><radialGradient id="rg" cx="55%" cy="42%" r="60%"><stop stop-color="#D7FF2E" stop-opacity=".28"/><stop offset="1" stop-opacity="0"/></radialGradient></defs>
+<path d="M72 24 L488 24 L532 120 L494 680 L280 724 L66 680 L28 120 Z" fill="url(#card)" stroke="#D7FF2E" stroke-width="7"/>
+<circle cx="285" cy="320" r="205" fill="url(#rg)"/>
+<circle cx="285" cy="205" r="64" fill="#E0AD82"/><path d="M218 198 C232 110 350 110 362 205 C320 158 260 156 218 198Z" fill="#24140D"/>
+<path d="M202 325 C235 275 335 275 368 325 L420 570 C345 625 225 625 150 570 Z" fill="#06120D" stroke="#D7FF2E" stroke-width="6"/>
+<text x="285" y="455" text-anchor="middle" font-family="Arial Black" font-size="88" fill="#D7FF2E">10</text>
+<text x="285" y="540" text-anchor="middle" font-family="Arial Black" font-size="42" fill="#fff">PITCHIQ</text>
+<text x="92" y="104" font-family="Arial Black" font-size="66" fill="#fff">72</text><text x="92" y="142" font-family="Arial Black" font-size="25" fill="#D7FF2E">OVR</text>
 </svg>

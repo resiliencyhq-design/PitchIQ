@@ -1,21 +1,31 @@
-# PitchIQ Camera & Voice Engine v1.0
+# PitchIQ Integrated v1
 
-Reusable engine modules for PitchIQ.
+GitHub-ready integrated PitchIQ repository.
 
 ## Includes
-- front/rear camera service
-- iPhone Safari `playsinline` handling
-- canvas-based movement detection
-- reaction timing
-- cue presentation
-- voice recognition using Web Speech API
-- scoring engine
-- camera and voice controllers
-- session summaries
+- Mobile-first PWA shell
+- Product strategy docs
+- Design system docs
+- Modular route system
+- Reusable UI utilities
+- XP/progression/game engine
+- Daily mission loop
+- Reward pack/unlock flow
+- Camera reaction engine
+- Voice recognition engine
+- Player card
+- Analytics summary
+- Settings screen
+- Local-first storage
 
-## Important limits
-Browser reaction timing is a training estimate, not lab-grade measurement.
-Voice recognition support varies by browser, so manual fallback is required.
+## Upload to GitHub
+Upload the contents of this folder to the root of the `PitchIQ` repository.
 
-## Integration target
-Move `src/` into the future React/Vite repository.
+Expected URL:
+https://resiliencyhq-design.github.io/PitchIQ/
+
+## iPhone
+Use Safari, then Share → Add to Home Screen.
+
+## Notes
+Camera and voice APIs require HTTPS and user permission. Reaction timing is a training estimate, not lab-grade measurement.

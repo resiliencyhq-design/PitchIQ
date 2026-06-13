@@ -1,0 +1,9 @@
+:root{
+  --bg:#020807; --surface:#06120D; --panel:rgba(8,25,19,.72);
+  --lime:#D7FF2E; --green:#27FF9A; --purple:#8F45FF; --gold:#FFD84D; --red:#FF3D57;
+  --text:#F7FFF8; --muted:#A9B8AD; --stroke:rgba(255,255,255,.15);
+  --r-sm:14px; --r-md:22px; --r-lg:34px; --r-xl:46px;
+  --shadow-card:0 30px 90px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.10);
+  --glow-lime:0 0 42px rgba(215,255,46,.22);
+  --safe-bottom:calc(106px + env(safe-area-inset-bottom));
+}

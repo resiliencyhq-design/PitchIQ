@@ -1,8 +1,10 @@
 {
-  "name": "PitchIQ Sprint 3.5 AAA Polish",
+  "name": "PitchIQ Integrated v1",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020807",
-  "theme_color": "#020807"
+  "theme_color": "#020807",
+  "description": "Football cognition training with daily missions, camera reaction, voice cues, XP and rewards.",
+  "icons": []
 }
