@@ -1,9 +1,9 @@
 {
-  "name": "PitchIQ Premium Prototype",
+  "name": "PitchIQ",
   "short_name": "PitchIQ",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#04170d",
-  "theme_color": "#04170d",
-  "description": "Premium desktop prototype for PitchIQ soccer intelligence training."
+  "background_color": "#020807",
+  "theme_color": "#020807",
+  "description": "Gamified soccer intelligence training prototype."
 }

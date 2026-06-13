@@ -1,165 +1,151 @@
+const navs = document.querySelectorAll(".nav, .profile");
 const screens = document.querySelectorAll(".screen");
-const navs = document.querySelectorAll(".nav");
-const cueEl = document.getElementById("cue");
-let liveScore = 0;
-let combo = 1;
-let timer = null;
-
-const cues = [
-  {cue:"🔴", coach:"Red = pass. Call it.", answer:"RED"},
-  {cue:"🔵", coach:"Blue = turn. Call it.", answer:"BLUE"},
-  {cue:"🟢", coach:"Green = drive. Call it.", answer:"GREEN"},
-  {cue:"←", coach:"Cut left.", answer:"LEFT"},
-  {cue:"→", coach:"Cut right.", answer:"RIGHT"},
-  {cue:"CHECK", coach:"Check shoulder.", answer:"CHECK"},
-  {cue:"DRIVE", coach:"Attack space.", answer:"DRIVE"},
-  {cue:"8 - 3", coach:"Solve while moving.", answer:"FIVE"},
-  {cue:"4 + 5", coach:"Solve while scanning.", answer:"NINE"},
-  {cue:"CROSS", coach:"Winger decision.", answer:"CROSS"}
+const titles = {
+  home:"Good afternoon, Hugo",
+  train:"Training session",
+  career:"Your career",
+  player:"Build your player",
+  rewards:"Daily rewards",
+  club:"Club battles",
+  analytics:"Progress analytics",
+  watch:"Apple Watch concept"
+};
+let score = 0, combo = 1, timer = null, timeLeft = 45;
+const cueData = [
+  ["🔴","Say: RED"],["🔵","Say: BLUE"],["🟢","Say: GREEN"],["←","Cut LEFT"],["→","Cut RIGHT"],
+  ["CHECK","Check shoulder"],["DRIVE","Attack space"],["CROSS","Winger cue"],["8 - 3","Say: FIVE"],["4 + 5","Say: NINE"],
+  ["TURN","Open body"],["SCAN","Look early"],["PRESS","React fast"]
 ];
 
-const ranks = [
-  ["Grassroots",0],["Division 2",250],["Division 1",600],["Academy",1200],
-  ["NPL",2200],["A-League",4000],["Champions League",7000],["Ballon d'Or",11000]
-];
-
-navs.forEach(btn => btn.addEventListener("click", () => showScreen(btn.dataset.screen)));
+navs.forEach(n => n.addEventListener("click", () => showScreen(n.dataset.screen)));
+document.querySelectorAll(".mode").forEach(m => m.addEventListener("click", () => {
+  document.querySelectorAll(".mode").forEach(x => x.classList.remove("active"));
+  m.classList.add("active");
+  document.getElementById("sessionMode").textContent = m.dataset.mode;
+}));
 
 function showScreen(id){
   screens.forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  navs.forEach(n => n.classList.toggle("active", n.dataset.screen === id));
-  if(id === "analytics") drawChart();
+  document.querySelectorAll(".nav").forEach(n => n.classList.toggle("active", n.dataset.screen === id));
+  document.getElementById("screenTitle").textContent = titles[id] || "PitchIQ";
+  if(id==="analytics") drawChart();
 }
 
-function openTraining(){ showScreen("train"); }
-
-function startLiveSession(){
-  liveScore = 0; combo = 1;
-  updateScore();
+function startDemo(){
+  score = 0; combo = 1; timeLeft = 45;
+  updateStats();
   nextCue();
   clearInterval(timer);
-  timer = setInterval(nextCue, 2400);
-  speak("Three, two, one, go.");
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById("time").textContent = "0:" + String(timeLeft).padStart(2,"0");
+    if(timeLeft <= 0){ clearInterval(timer); toast("Session complete 🏆"); speak("Session complete"); }
+  }, 1000);
+  speak("Three. Two. One. Go.");
 }
 
 function nextCue(){
-  const item = cues[Math.floor(Math.random()*cues.length)];
-  cueEl.textContent = item.cue;
-  document.getElementById("coachLine").textContent = item.coach;
-  cueEl.animate([{transform:"scale(.94)",opacity:.4},{transform:"scale(1)",opacity:1}], {duration:240, easing:"ease-out"});
-  beep(860, .06);
+  const [cue, instruction] = cueData[Math.floor(Math.random()*cueData.length)];
+  const cueEl = document.getElementById("cue");
+  cueEl.textContent = cue;
+  document.getElementById("instruction").textContent = instruction;
+  cueEl.animate([{transform:"scale(.85)", opacity:.25},{transform:"scale(1)", opacity:1}], {duration:260, easing:"ease-out"});
+  beep(900,.06);
 }
 
-function scoreCorrect(){
-  liveScore += 20 * combo;
-  combo = Math.min(combo+1, 9);
-  updateScore();
-  showToast(`+${20*(combo-1)} XP 🔥`);
-  beep(980,.07); setTimeout(()=>beep(1320,.08),90);
+function correct(){
+  score += 20 * combo;
+  combo = Math.min(combo + 1, 9);
+  updateStats();
+  toast(`+${20*(combo-1)} XP 🔥`);
+  beep(1000,.07); setTimeout(()=>beep(1350,.08),90);
   nextCue();
 }
-
-function scoreWrong(){
-  liveScore = Math.max(0, liveScore - 10);
+function wrong(){
+  score = Math.max(0, score - 10);
   combo = 1;
-  updateScore();
-  showToast("-10 XP 😮");
+  updateStats();
+  toast("-10 XP 😮");
   beep(180,.18);
   nextCue();
 }
-
-function updateScore(){
-  document.getElementById("liveScore").textContent = liveScore;
-  document.getElementById("combo").textContent = combo;
+function updateStats(){
+  document.getElementById("score").textContent = score;
+  document.getElementById("combo").textContent = "x" + combo;
+  document.getElementById("time").textContent = "0:" + String(timeLeft).padStart(2,"0");
 }
-
-function showToast(text){
+function toast(text){
   const t = document.getElementById("toast");
-  t.textContent = text; t.classList.add("show");
+  t.textContent = text;
+  t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),1100);
 }
-
-function beep(freq, dur){
+function beep(freq,dur){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.frequency.value = freq; gain.gain.value = .055;
+    osc.frequency.value = freq;
+    gain.gain.value = .055;
     osc.connect(gain); gain.connect(ctx.destination);
     osc.start(); osc.stop(ctx.currentTime + dur);
   }catch(e){}
 }
-
 function speak(text){
   try{
     const msg = new SpeechSynthesisUtterance(text);
-    msg.rate = 1.02; window.speechSynthesis.speak(msg);
+    msg.rate = 1.05;
+    speechSynthesis.speak(msg);
   }catch(e){}
 }
-
-function buildHeatmap(){
+function openPack(el){
+  el.querySelector(".pack").textContent = "🏟️";
+  el.querySelector("h3").textContent = "New Stadium!";
+  toast("Reward unlocked 🏟️");
+  speak("Reward unlocked");
+}
+function buildCareer(){
+  const ranks = ["Grassroots","Local Club","Division 3","Division 2","Division 1","Academy","NPL","A-League","Champions League","Ballon d’Or"];
+  const map = document.getElementById("careerMap");
+  map.innerHTML = "";
+  ranks.forEach((r,i)=>{
+    const n = document.createElement("div");
+    n.className = "node " + (i<5?"done":i===5?"current":"");
+    n.innerHTML = `<div class="badge">${i<5?"✅":i===5?"⭐":"🔒"}</div><b>${r}</b>`;
+    map.appendChild(n);
+  });
+}
+function buildHeat(){
   const hm = document.getElementById("heatmap");
   if(!hm) return;
   hm.innerHTML = "";
-  for(let i=0;i<56;i++){
-    const d = document.createElement("div");
-    const v = Math.random();
-    d.className = "heat " + (v>.72 ? "on3" : v>.48 ? "on2" : v>.28 ? "on1" : "");
-    hm.appendChild(d);
+  for(let i=0;i<156;i++){
+    const c=document.createElement("div");
+    const v=Math.random();
+    c.className = "hcell " + (v>.8?"h3":v>.55?"h2":v>.35?"h1":"");
+    hm.appendChild(c);
   }
 }
-
-function buildCareer(){
-  const cp = document.getElementById("careerPath");
-  if(!cp) return;
-  cp.innerHTML = "";
-  ranks.forEach(([name,xp], idx)=>{
-    const card = document.createElement("div");
-    card.className = "rankCard " + (idx < 3 ? "unlocked" : "");
-    card.innerHTML = `<b>${idx < 3 ? "✅" : "🔒"} ${name}</b><p>${idx < 3 ? "Unlocked" : "Keep training to unlock"}</p><span>${xp} XP</span>`;
-    cp.appendChild(card);
-  });
-}
-
 function drawChart(){
-  const c = document.getElementById("chart");
+  const c = document.getElementById("barChart");
   if(!c) return;
   const ctx = c.getContext("2d");
   ctx.clearRect(0,0,c.width,c.height);
-  const data = [220,420,180,520,610,300,720];
-  const max = 800;
-  ctx.font = "700 16px system-ui";
-  ctx.fillStyle = "rgba(255,255,255,.75)";
-  ["M","T","W","T","F","S","S"].forEach((d,i)=>ctx.fillText(d, 42+i*70, 300));
+  const data = [180,310,420,300,520,260,360];
+  const days = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
+  const max = 600;
+  ctx.font = "900 15px system-ui";
   data.forEach((v,i)=>{
-    const h = (v/max)*230;
-    const x = 35+i*70;
-    const y = 270-h;
-    const grad = ctx.createLinearGradient(0,y,0,270);
-    grad.addColorStop(0,"#b7ff4a");
-    grad.addColorStop(1,"#27e58b");
-    ctx.fillStyle = grad;
-    roundRect(ctx,x,y,42,h,14);
-    ctx.fill();
+    const x=42+i*90, h=(v/max)*240, y=280-h;
+    const grad = ctx.createLinearGradient(0,y,0,280);
+    grad.addColorStop(0,"#b8ff22"); grad.addColorStop(1,"#2dff95");
+    ctx.fillStyle=grad; roundRect(ctx,x,y,48,h,14); ctx.fill();
+    ctx.fillStyle="rgba(245,255,247,.65)"; ctx.fillText(days[i],x+5,315);
   });
+  ctx.fillStyle="#b8ff22"; ctx.fillText("520 XP", 405, 38);
 }
-
 function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
+  ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
 }
-
-document.querySelectorAll(".position").forEach(p => p.addEventListener("click", () => {
-  document.querySelectorAll(".position").forEach(x => x.classList.remove("selected"));
-  p.classList.add("selected");
-}));
-
-buildHeatmap();
-buildCareer();
-drawChart();
+buildCareer(); buildHeat(); drawChart();
