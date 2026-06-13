@@ -1,18 +1,13 @@
-# PitchIQ Patch 0 — Stability Recovery
+# PitchIQ Patch 0.1 — Import Fix
 
-Built from known-good commit `42a03cd`.
+Built from Patch 0 Stability Recovery.
 
-This patch deliberately preserves the existing architecture.
+Fix:
+- Removed missing imports `renderCollection` and `renderArt` from `js/app/main.js`.
+- Removed route handlers for `collection` and `art`.
 
-Changed only:
-- `index.html`
-- `js/app/main.js`
-- `README.md`
+Reason:
+The browser error showed:
+`Importing binding name 'renderCollection' is not found.`
 
-Purpose:
-- Restore a known-good working build.
-- Add defensive state normalization.
-- Add a render error boundary so future bugs show an error card instead of a blank stadium background.
-- Add a boot watchdog to detect JavaScript failure.
-
-Upload all contents to the root of the GitHub repository.
+This patch keeps the architecture unchanged and fixes the JavaScript module load failure.

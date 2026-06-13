@@ -7,7 +7,7 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderCollection, renderArt, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 
 let state = normalizeState(loadState());
 
@@ -69,8 +69,6 @@ function render(route="splash"){
   if(route === "player") app.innerHTML = renderPlayer(state);
   if(route === "analytics") app.innerHTML = renderAnalytics(state);
   if(route === "career") app.innerHTML = renderCareer(state);
-  if(route === "collection") app.innerHTML = renderCollection(state);
-  if(route === "art") app.innerHTML = renderArt(state);
   if(route === "settings") app.innerHTML = renderSettings(state);
   nav.innerHTML = renderNav();
   nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
