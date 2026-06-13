@@ -16,8 +16,88 @@ export function renderHome(state){
   const need = xpNeed(state.game.level);
   const rank = rankForLevel(state.game.level);
   const pct = Math.min(100, Math.round(state.game.xp/need*100));
-  return `<section class="screen app active" id="home"><header class="top"><div><span class="kicker">Level ${state.game.level} • ${rank}</span><h1>Hi, ${state.profile.name || "Player"}</h1></div><button class="ghost" data-action="reset">Reset</button></header><div class="xpbar"><i style="width:${pct}%"></i></div><small class="xptext">${state.game.xp} / ${need} XP</small><div class="tiles"><button class="tile wide" data-route="training"><span>Today's Mission</span><b>Start Vision Sprint</b><small>Earn 250 XP</small></button><button class="tile" data-route="camera"><span>Camera</span><b>Reaction Mode</b><small>${state.analytics.bestReaction ? "Best " + state.analytics.bestReaction + " ms" : "Best —"}</small></button><button class="tile" data-route="reward"><span>Reward</span><b>Gold Pack</b><small>${state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Unlocked") : "Locked"}</small></button></div><div class="player glass"><img src="assets/art/player.svg" alt="Player card"><div><span class="kicker">My Player</span><h2>${state.profile.name || "Player"}</h2><p>${state.profile.position}</p></div></div></section>`;
+  const ovr = Math.min(99, 60 + state.game.level + (state.analytics.bestReaction ? 4 : 0));
+  const best = state.analytics.bestReaction ? state.analytics.bestReaction + " ms" : "—";
+  const rewardState = state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Unlocked") : "Locked";
+  return `<section class="screen app home-aaa active" id="home">
+    <header class="top">
+      <div>
+        <span class="kicker">🔥 ${state.game.streak} day streak • ${rank}</span>
+        <h1>Hi, ${state.profile.name || "Player"}</h1>
+      </div>
+      <button class="ghost" data-action="reset">Reset</button>
+    </header>
+
+    <section class="home-hero">
+      <article class="glass hero-panel">
+        <span class="kicker">Today's mission</span>
+        <h1>Beat yesterday.<br>Think faster.</h1>
+        <p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily academy reward.</p>
+        <div class="mini-strip">
+          <div><small>Reward</small><b>Gold Pack</b></div>
+          <div><small>Target</small><b>250 XP</b></div>
+          <div><small>Best RT</small><b>${best}</b></div>
+        </div>
+        <div class="hero-actions">
+          <button class="primary mega" data-route="training">Continue Training</button>
+          <button data-route="camera">Camera Challenge</button>
+        </div>
+        <img src="assets/art/boots.svg" class="hero-art" alt="Academy boots">
+      </article>
+
+      <article class="glass live-card">
+        <div class="ovr-badge">OVR ${ovr}</div>
+        <img src="assets/art/player.svg" alt="Live player card">
+        <span class="kicker">My Player</span>
+        <h2>${state.profile.name || "Player"}</h2>
+        <p>${state.profile.position}</p>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="glass tile">
+        <span>Level progress</span>
+        <b>Level ${state.game.level}</b>
+        <div class="xpbar"><i style="width:${pct}%"></i></div>
+        <small>${state.game.xp} / ${need} XP to next level</small>
+      </article>
+
+      <button class="tile" data-route="reward">
+        <span>Reward preview</span>
+        <b>${rewardState}</b>
+        <small>${state.game.dailyDone ? "Tap to open today's pack." : "Complete the mission to unlock."}</small>
+      </button>
+
+      <button class="tile" data-route="analytics">
+        <span>Weekly form</span>
+        <b>${state.analytics.weeklyXp.reduce((a,b)=>a+b,0)} XP</b>
+        <small>Tap for summary and trends.</small>
+      </button>
+
+      <article class="glass career-card">
+        <span class="kicker">Career ladder</span>
+        <h2>Next: ${state.game.level < 4 ? "Local Club" : state.game.level < 8 ? "Division 3" : "Academy"}</h2>
+        <img src="assets/art/career-ladder.svg" alt="Career ladder preview">
+      </article>
+
+      <article class="glass reward-preview">
+        <div>
+          <span class="kicker">Daily pack</span>
+          <h2>Academy Boots</h2>
+          <p>Earned through training effort. No pay-to-win.</p>
+        </div>
+        <img src="assets/art/pack.svg" alt="Gold pack">
+      </article>
+
+      <article class="quick-stat">
+        ${stat("Vision", 65 + state.game.level)}
+        ${stat("Reaction", best)}
+        ${stat("Combo", "x" + state.game.bestCombo)}
+      </article>
+    </section>
+  </section>`;
 }
+
 export function renderTraining(){
   return `<section class="screen app active" id="training"><header class="sub"><button data-route="home">←</button><h1>Vision Sprint</h1><button data-action="start-training">Start</button></header><div class="stats">${stat("Time","45","time")}${stat("Score","0","score")}${stat("Combo",'x<span id="combo">1</span>')}</div><div class="cue glass"><div class="pulse"></div><b id="cue">READY</b><small id="instruction">Say or tap the answer</small></div><div class="actions"><button data-answer="red">Red</button><button data-answer="blue">Blue</button><button data-answer="left">Left</button><button data-answer="right">Right</button></div><div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Finish</button></div></section>`;
 }

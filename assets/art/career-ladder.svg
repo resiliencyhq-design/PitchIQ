@@ -1,0 +1,12 @@
+<svg width="900" height="260" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#D7FF2E"/><stop offset="1" stop-color="#27FF9A"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M70 135 H830" stroke="rgba(255,255,255,.18)" stroke-width="12" stroke-linecap="round"/>
+<path d="M70 135 H330" stroke="url(#g)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+<g font-family="Arial Black,Arial" font-size="18" fill="#F7FFF8" text-anchor="middle">
+<g><circle cx="70" cy="135" r="34" fill="#06120D" stroke="#27FF9A" stroke-width="6"/><text x="70" y="195">Grassroots</text></g>
+<g><circle cx="280" cy="135" r="42" fill="#06120D" stroke="#D7FF2E" stroke-width="7" filter="url(#glow)"/><text x="280" y="200" fill="#D7FF2E">Local Club</text></g>
+<g opacity=".55"><circle cx="490" cy="135" r="34" fill="#06120D" stroke="#fff" stroke-width="4"/><text x="490" y="195">Division 3</text></g>
+<g opacity=".38"><circle cx="690" cy="135" r="34" fill="#06120D" stroke="#fff" stroke-width="4"/><text x="690" y="195">Academy</text></g>
+<g opacity=".28"><circle cx="830" cy="135" r="28" fill="#06120D" stroke="#fff" stroke-width="4"/><text x="830" y="195">Pro</text></g>
+</g>
+</svg>

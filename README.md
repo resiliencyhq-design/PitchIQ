@@ -1,31 +1,22 @@
-# PitchIQ Integrated v1
+# PitchIQ Sprint 1 — AAA Home Experience
 
-GitHub-ready integrated PitchIQ repository.
+GitHub-ready integrated PitchIQ build with AAA Home Experience.
 
-## Includes
-- Mobile-first PWA shell
-- Product strategy docs
-- Design system docs
-- Modular route system
-- Reusable UI utilities
-- XP/progression/game engine
-- Daily mission loop
-- Reward pack/unlock flow
-- Camera reaction engine
-- Voice recognition engine
-- Player card
-- Analytics summary
-- Settings screen
-- Local-first storage
+## New in this sprint
+- Hero dashboard
+- Dynamic animated stadium background
+- Live player card
+- XP progress system
+- Daily mission widget
+- Career ladder preview
+- Continue Training CTA
+- Reward preview
+- Bottom navigation retained
+- iPhone Safari/PWA optimisation
+- Existing gameplay, camera, voice, rewards and analytics preserved
 
-## Upload to GitHub
-Upload the contents of this folder to the root of the `PitchIQ` repository.
+## Upload
+Upload the full contents of this folder to the root of the `PitchIQ` repository.
 
 Expected URL:
 https://resiliencyhq-design.github.io/PitchIQ/
-
-## iPhone
-Use Safari, then Share → Add to Home Screen.
-
-## Notes
-Camera and voice APIs require HTTPS and user permission. Reaction timing is a training estimate, not lab-grade measurement.
