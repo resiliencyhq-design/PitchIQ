@@ -1,0 +1,9 @@
+{
+  "name": "pitchiq-camera-voice-engine",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}
