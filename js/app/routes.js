@@ -173,3 +173,15 @@ export function renderNav(){
     ["player","👤","Player"]
   ].map(([r,icon,label])=>`<button data-route="${r}" aria-label="${label}">${icon}<span>${label}</span></button>`).join("");
 }
+
+
+// Compatibility exports added in Sprint 4.2.1.
+// Older deployed main.js versions may still import these functions.
+// Keeping these exports prevents a module-load crash.
+export function renderCollection(state){
+  return renderReward(state);
+}
+
+export function renderArt(state){
+  return renderHome(state);
+}

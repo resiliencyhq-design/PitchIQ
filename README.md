@@ -1,28 +1,13 @@
-# PitchIQ Sprint 4.2 — Repository Stabilisation & Production Recovery
+# PitchIQ Patch 4.2.1 — Route Export Compatibility Fix
 
-This build focuses only on stability.
+Fixes the live error:
 
-It does not redesign the app or add new features.
+`Importing binding name 'renderCollection' is not found.`
 
-## What changed
+This patch adds compatibility exports to `js/app/routes.js` so any main.js version that imports `renderCollection` or `renderArt` will not crash.
 
-- Verified and corrected route imports.
-- Added robust state normalization.
-- Hardened localStorage loading and corrupt-data recovery.
-- Added route watchdog.
-- Added render error boundary.
-- Added boot watchdog.
-- Added build identifier.
-- Added audit document.
+Changed:
+- `js/app/routes.js`
+- `README.md`
 
-## Upload
-
-Upload all contents to the root of the PitchIQ GitHub repository.
-
-Then open:
-
-`https://resiliencyhq-design.github.io/PitchIQ/?v=42`
-
-Expected outcome:
-- App boots.
-- If a runtime problem remains, a clear recovery error appears instead of a blank stadium.
+Upload all contents to the root of the GitHub repository.
