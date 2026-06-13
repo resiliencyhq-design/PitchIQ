@@ -1,0 +1,17 @@
+<svg width="800" height="900" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="glow" cx="50%" cy="45%" r="55%"><stop stop-color="#b8ff22" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="800" height="900" fill="none"/>
+<circle cx="400" cy="430" r="330" fill="url(#glow)"/>
+<circle cx="400" cy="220" r="92" fill="#e1b085"/>
+<path d="M300 205 C310 110 495 90 510 215 C462 160 360 160 300 205Z" fill="#21140c"/>
+<path d="M275 376 C310 305 490 305 525 376 L590 760 C500 820 300 820 210 760 Z" fill="#07130d" stroke="#b8ff22" stroke-width="7"/>
+<path d="M320 395 L480 395 L450 610 L350 610 Z" fill="#111"/>
+<text x="400" y="500" text-anchor="middle" font-family="Arial Black,Arial" font-size="92" fill="#b8ff22">10</text>
+<text x="400" y="590" text-anchor="middle" font-family="Arial Black,Arial" font-size="54" fill="#fff">PITCHIQ</text>
+<path d="M275 380 L160 610" stroke="#07130d" stroke-width="60" stroke-linecap="round"/>
+<path d="M525 380 L640 610" stroke="#07130d" stroke-width="60" stroke-linecap="round"/>
+<path d="M277 382 L160 610" stroke="#b8ff22" stroke-width="8" stroke-linecap="round"/>
+<path d="M523 382 L640 610" stroke="#b8ff22" stroke-width="8" stroke-linecap="round"/>
+<circle cx="365" cy="230" r="8" fill="#111"/><circle cx="435" cy="230" r="8" fill="#111"/>
+<path d="M365 270 Q400 295 435 270" fill="none" stroke="#7a3f2f" stroke-width="8" stroke-linecap="round"/>
+</svg>

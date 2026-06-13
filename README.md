@@ -1,27 +1,16 @@
-# PitchIQ AAA Prototype
+# PitchIQ High-Art GitHub Prototype
 
-A premium GitHub Pages prototype inspired by Duolingo + EA FC Career Mode for soccer intelligence training.
+Upload all files and the `assets` folder to your PitchIQ GitHub repository.
 
-## Upload to GitHub
-Replace your PitchIQ repository files with:
-- index.html
-- style.css
-- app.js
-- manifest.json
-- README.md
-
-Then open:
+Open:
 https://resiliencyhq-design.github.io/PitchIQ/
 
-## Included
-- Premium home screen
-- Daily missions
-- Player card and attributes
-- Training demo with animated cues, XP, combo and sounds
-- Career map
-- Rewards pack opening
-- Club battle
-- Analytics and heatmap
-- Apple Watch concept screen
+Includes custom SVG artwork:
+- Stadium background
+- PitchIQ logo
+- Elite boots
+- Gold reward pack
+- Player avatar
+- Apple Watch concept
 
-This is still a web prototype. True Apple Watch support requires a native SwiftUI/watchOS app.
+This is still a GitHub Pages web app. True Apple Watch integration requires native iOS/watchOS development.

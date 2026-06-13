@@ -11,257 +11,122 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="grain"></div>
-  <div class="stadium-bg">
-    <div class="spotlight left"></div>
-    <div class="spotlight right"></div>
-    <div class="pitch-lines"></div>
-  </div>
-
+  <div class="bg"></div>
   <aside class="side">
-    <div class="brand">
-      <div class="mark">⚽</div>
-      <div>
-        <h1>Pitch<span>IQ</span></h1>
-        <small>Train the brain behind the game</small>
-      </div>
-    </div>
-
+    <img src="assets/logo.svg" class="logo" alt="PitchIQ logo" />
     <nav>
-      <button class="nav active" data-screen="home"><i>🏠</i><span>Home</span></button>
-      <button class="nav" data-screen="train"><i>🏃</i><span>Train</span></button>
-      <button class="nav" data-screen="career"><i>🏆</i><span>Career</span></button>
-      <button class="nav" data-screen="player"><i>👕</i><span>Player</span></button>
-      <button class="nav" data-screen="rewards"><i>🎁</i><span>Rewards</span></button>
-      <button class="nav" data-screen="club"><i>👥</i><span>Club</span></button>
-      <button class="nav" data-screen="analytics"><i>📊</i><span>Stats</span></button>
-      <button class="nav" data-screen="watch"><i>⌚</i><span>Watch</span></button>
+      <button class="nav active" data-screen="home">🏠 <span>Home</span></button>
+      <button class="nav" data-screen="train">🏃 <span>Train</span></button>
+      <button class="nav" data-screen="career">🏆 <span>Career</span></button>
+      <button class="nav" data-screen="player">👕 <span>Player</span></button>
+      <button class="nav" data-screen="rewards">🎁 <span>Rewards</span></button>
+      <button class="nav" data-screen="club">👥 <span>Club</span></button>
+      <button class="nav" data-screen="analytics">📊 <span>Stats</span></button>
+      <button class="nav" data-screen="watch">⌚ <span>Watch</span></button>
     </nav>
-
-    <button class="profile" data-screen="player">
-      <span class="face">H</span>
-      <b>Hugo</b>
-      <small>Level 12 • Winger</small>
-    </button>
+    <button class="profile" data-screen="player"><span>H</span><b>Hugo</b><small>Level 12 • Winger</small></button>
   </aside>
 
   <main class="app">
     <header class="topbar">
       <div>
-        <span class="kicker">🔥 17 day streak</span>
-        <h2 id="screenTitle">Good afternoon, Hugo</h2>
+        <small class="streak">🔥 17 day streak</small>
+        <h1 id="title">Good afternoon, Hugo</h1>
       </div>
-      <div class="topActions">
-        <button class="pill">🔔</button>
-        <button class="pill">⚙️</button>
-      </div>
+      <div class="top-icons"><button>🔔</button><button>⚙️</button></div>
     </header>
 
     <section id="home" class="screen active">
-      <div class="home-grid">
-        <article class="hero">
-          <div class="hero-copy">
-            <span class="label">Today’s Mission</span>
-            <h3>Beat yesterday. Unlock Elite Boots.</h3>
+      <div class="dash">
+        <article class="hero card">
+          <div>
+            <small class="label">Today's mission</small>
+            <h2>Beat yesterday. Unlock Elite Boots.</h2>
             <p>3 minutes left to protect your streak.</p>
-            <div class="xpbar"><i style="width:81%"></i></div>
+            <div class="bar"><i style="width:81%"></i></div>
             <small>2,420 / 3,000 XP to Level 13</small>
             <button class="cta" onclick="showScreen('train')">▶ Continue Training</button>
           </div>
-          <div class="avatar-card">
-            <div class="avatar-glow"></div>
-            <div class="avatar-head">🙂</div>
-            <div class="kit">10</div>
-            <b>OVR 72</b>
-          </div>
+          <img src="assets/elite-boots.svg" class="hero-art" alt="Elite boots" />
         </article>
 
-        <article class="mission card">
-          <div class="card-head">
-            <h3>Daily Missions</h3><span>Reward: 🎁 Gold Pack</span>
-          </div>
-          <div class="mission-row done"><i>⏱</i><div><b>Train 5 minutes</b><small>Complete</small></div><strong>100 XP</strong></div>
-          <div class="mission-row done"><i>🔥</i><div><b>Get combo x10</b><small>6 / 10</small></div><strong>150 XP</strong></div>
-          <div class="mission-row"><i>🎯</i><div><b>Scan 50 cues</b><small>38 / 50</small></div><strong>150 XP</strong></div>
+        <article class="level card">
+          <span>LEVEL</span><b>12</b><p>2,420 / 3,000 XP</p><div class="bar"><i style="width:81%"></i></div>
         </article>
 
-        <article class="reward card">
-          <span class="label">Mission reward</span>
-          <div class="boot">👟</div>
-          <h3>Elite Boots</h3>
-          <p>Unlock at 300 XP today</p>
+        <article class="missions card">
+          <h3>Daily Missions <small>🎁 Gold Pack</small></h3>
+          <div class="mission done">⏱ <b>Train 5 minutes</b><span>100 XP</span></div>
+          <div class="mission">🔥 <b>Get combo x10</b><span>150 XP</span></div>
+          <div class="mission">🎯 <b>Scan 50 cues</b><span>150 XP</span></div>
         </article>
 
-        <article class="player-mini card">
+        <article class="pack card">
+          <h3>Mission Reward</h3>
+          <img src="assets/gold-pack.svg" alt="Gold pack" />
+          <p>Complete all missions to unlock.</p>
+        </article>
+
+        <article class="myplayer card">
           <h3>My Player</h3>
-          <div class="mini-flex">
-            <div class="overall"><span>OVR</span><b>72</b></div>
-            <div class="mini-bars">
-              <label>Vision <span>82</span></label><div><i style="width:82%"></i></div>
-              <label>Decision <span>77</span></label><div><i style="width:77%"></i></div>
-              <label>Reaction <span>74</span></label><div><i style="width:74%"></i></div>
-            </div>
-          </div>
+          <img src="assets/player-hugo.svg" alt="Player avatar" />
+          <div class="ovr">OVR <b>72</b></div>
+          <div class="stat">Vision <span>82</span></div>
+          <div class="stat">Decision <span>77</span></div>
+          <div class="stat">Reaction <span>74</span></div>
+        </article>
+
+        <article class="session card">
+          <h3>Training Session <small>Vision Drill</small></h3>
+          <div class="cue-ring"><span id="miniCue">🔴</span></div>
+          <div class="session-stats"><b>0:45</b><b>x7</b><b>220</b></div>
+          <button class="cta" onclick="showScreen('train')">Start Drill</button>
         </article>
 
         <article class="leader card">
           <h3>Club Leaderboard</h3>
-          <ol>
-            <li><span>🥇 Hugo</span><b>2,420 XP</b></li>
-            <li><span>🥈 Liam</span><b>2,150 XP</b></li>
-            <li><span>🥉 Noah</span><b>1,890 XP</b></li>
-          </ol>
+          <ol><li><b>Hugo</b><span>2,420 XP</span></li><li><b>Liam</b><span>2,150 XP</span></li><li><b>Noah</b><span>1,890 XP</span></li></ol>
+        </article>
+
+        <article class="battle card">
+          <h3>Club Battle</h3>
+          <div class="versus"><b>PitchIQ<br>3,120</b><span>VS</span><b>Macarthur<br>2,870</b></div>
+          <div class="bar red"><i style="width:62%"></i></div>
+        </article>
+
+        <article class="career card">
+          <h3>Career Path</h3>
+          <div class="mini-career" id="miniCareer"></div>
+        </article>
+
+        <article class="watch card">
+          <h3>Apple Watch</h3>
+          <img src="assets/apple-watch.svg" alt="Apple Watch concept" />
         </article>
       </div>
     </section>
 
     <section id="train" class="screen">
-      <div class="train-layout">
-        <article class="session-panel">
-          <div class="session-top">
-            <button class="back" onclick="showScreen('home')">←</button>
-            <div><b>Training Session</b><small id="sessionMode">Vision Drill</small></div>
-            <button class="pause">Ⅱ Pause</button>
-          </div>
-          <div class="score-row">
-            <div><span>Time</span><b id="time">0:45</b></div>
-            <div><span>Combo</span><b id="combo">x1</b></div>
-            <div><span>Score</span><b id="score">0</b></div>
-          </div>
-          <div class="cue-stage">
-            <div class="pulse"></div>
-            <div id="cue" class="big-cue">READY</div>
-            <div id="instruction" class="instruction">Say the answer</div>
-            <div class="wave"></div>
-          </div>
-          <div class="train-buttons">
-            <button class="cta" onclick="startDemo()">Start Demo</button>
-            <button class="good" onclick="correct()">Correct</button>
-            <button class="bad" onclick="wrong()">Missed</button>
-          </div>
+      <div class="train-grid">
+        <article class="train-stage card">
+          <div class="train-top"><button onclick="showScreen('home')">←</button><b>Training Session</b><button>Ⅱ Pause</button></div>
+          <div class="score-row"><div>Time<b id="time">0:45</b></div><div>Combo<b id="combo">x1</b></div><div>Score<b id="score">0</b></div></div>
+          <div class="big-stage"><div class="pulse"></div><div id="cue">READY</div><small id="instruction">Say the answer</small></div>
+          <div class="actions"><button class="cta" onclick="startDemo()">Start Demo</button><button onclick="correct()">Correct</button><button onclick="wrong()">Missed</button></div>
         </article>
-
-        <aside class="mode-panel">
+        <article class="card modes">
           <h3>Choose Mode</h3>
-          <button class="mode active" data-mode="Vision Drill">👀 Vision Drill <small>Colours, numbers, arrows</small></button>
-          <button class="mode" data-mode="Winger 1v1">⚡ Winger 1v1 <small>Inside, outside, cross, shoot</small></button>
-          <button class="mode" data-mode="Centre Back">🛡 Centre Back <small>Check, drop, step, switch</small></button>
-          <button class="mode" data-mode="Mental Maths">🧠 Mental Maths <small>Dual-task scanning</small></button>
-          <button class="mode" data-mode="Match Storm">🏟 Match Storm <small>Fast mixed cues</small></button>
-        </aside>
-      </div>
-    </section>
-
-    <section id="career" class="screen">
-      <div class="career-map card">
-        <h3>Your Career</h3>
-        <div class="map" id="careerMap"></div>
-      </div>
-      <div class="unlock-grid">
-        <div class="card unlock"><span>🏆</span><h3>Promotion Match</h3><p>Win 3 sessions to reach Academy</p></div>
-        <div class="card unlock"><span>🌍</span><h3>Season 1</h3><p>Bronze → Silver → Gold → Elite</p></div>
-        <div class="card unlock"><span>👑</span><h3>Ballon d’Or Path</h3><p>Long-term mastery journey</p></div>
-      </div>
-    </section>
-
-    <section id="player" class="screen">
-      <div class="player-grid">
-        <article class="player-card-xl">
-          <div class="player-img">🙂</div>
-          <h3>Hugo</h3>
-          <p>Winger • Creator • Academy FC</p>
-          <div class="rating">72</div>
-        </article>
-        <article class="card attributes">
-          <h3>Attributes</h3>
-          <div class="attr"><span>Vision</span><b>82</b><i style="width:82%"></i></div>
-          <div class="attr"><span>Decision Making</span><b>77</b><i style="width:77%"></i></div>
-          <div class="attr"><span>Reaction</span><b>74</b><i style="width:74%"></i></div>
-          <div class="attr"><span>Composure</span><b>69</b><i style="width:69%"></i></div>
-          <div class="attr"><span>Awareness</span><b>81</b><i style="width:81%"></i></div>
-        </article>
-        <article class="card style-card">
-          <h3>Play Style</h3>
-          <div class="styles">
-            <button class="style active">🎩 Creator</button>
-            <button class="style">⚡ Runner</button>
-            <button class="style">🛡 Defender</button>
-            <button class="style">🎯 Finisher</button>
-          </div>
+          <button>👀 Vision Drill</button><button>⚡ Winger 1v1</button><button>🛡 Centre Back</button><button>🧠 Mental Maths</button><button>🏟 Match Storm</button>
         </article>
       </div>
     </section>
 
-    <section id="rewards" class="screen">
-      <div class="packs">
-        <article class="pack-card gold" onclick="openPack(this)">
-          <span>Daily Reward</span><h3>Tap to Open</h3><div class="pack">🎁</div>
-        </article>
-        <article class="card reward-list">
-          <h3>Possible Rewards</h3>
-          <div class="reward-items">
-            <div>+150 XP</div><div>x2 Streak Boost</div><div>New Stadium</div><div>Elite Boots</div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="club" class="screen">
-      <div class="club-grid">
-        <article class="card">
-          <h3>Academy FC vs Macarthur</h3>
-          <div class="versus"><b>3,120 XP</b><span>VS</span><b>3,080 XP</b></div>
-          <p>Only 40 XP ahead. Complete a session to protect the lead.</p>
-        </article>
-        <article class="card">
-          <h3>Team Session QR</h3>
-          <div class="qr">QR</div>
-        </article>
-      </div>
-    </section>
-
-    <section id="analytics" class="screen">
-      <div class="analytics-grid">
-        <article class="card">
-          <h3>Weekly Progress</h3>
-          <canvas id="barChart" width="700" height="340"></canvas>
-        </article>
-        <article class="card">
-          <h3>Training Profile</h3>
-          <div class="radar">
-            <div>Vision<br><b>84</b></div><div>Decision<br><b>78</b></div><div>Reaction<br><b>72</b></div><div>Memory<br><b>69</b></div><div>Composure<br><b>81</b></div>
-          </div>
-        </article>
-        <article class="card heat">
-          <h3>365 Day Heatmap</h3>
-          <div id="heatmap"></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="watch" class="screen">
-      <div class="watch-grid">
-        <div class="watch">
-          <div class="watch-screen">
-            <span>🎤</span>
-            <h3>Listening</h3>
-            <b>🔴</b>
-            <p>Say: Red</p>
-            <small>Combo x7</small>
-          </div>
-        </div>
-        <article class="card">
-          <h3>Apple Watch Concept</h3>
-          <p>This web prototype shows the flow. A real Watch app would require SwiftUI, WatchConnectivity, Speech Recognition, HealthKit and haptics.</p>
-          <ul class="tick-list">
-            <li>Watch listens to the answer</li>
-            <li>Watch vibrates on new cue</li>
-            <li>Phone displays stadium and scoring</li>
-            <li>Player never touches the phone</li>
-          </ul>
-        </article>
-      </div>
-    </section>
+    <section id="career" class="screen card"><h2>Your Career</h2><div class="career-map" id="careerMap"></div></section>
+    <section id="player" class="screen"><div class="player-screen card"><img src="assets/player-hugo.svg"/><div><h2>Hugo</h2><p>Winger • Creator • Academy FC</p><b class="bigovr">72</b></div></div></section>
+    <section id="rewards" class="screen"><div class="reward-screen card" onclick="openPack()"><img src="assets/gold-pack.svg"/><h2 id="packTitle">Tap to Open</h2></div></section>
+    <section id="club" class="screen card"><h2>Academy FC vs Macarthur</h2><div class="versus huge"><b>3,120 XP</b><span>VS</span><b>2,870 XP</b></div></section>
+    <section id="analytics" class="screen card"><h2>Progress Analytics</h2><canvas id="chart" width="900" height="360"></canvas><div id="heatmap"></div></section>
+    <section id="watch" class="screen"><div class="watch-screen card"><img src="assets/apple-watch.svg"/><div><h2>Apple Watch Concept</h2><p>True watch support needs a native SwiftUI/watchOS app. This web version shows the visual flow.</p></div></div></section>
   </main>
 
   <div id="toast" class="toast">+20 XP</div>

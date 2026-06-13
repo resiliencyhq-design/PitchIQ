@@ -1,0 +1,10 @@
+<svg width="520" height="720" viewBox="0 0 520 720" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c1234"/><stop offset=".45" stop-color="#080812"/><stop offset="1" stop-color="#b8ff22"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="520" height="720" fill="none"/>
+<path d="M100 60 L420 105 L390 650 L80 600 Z" fill="url(#p)" stroke="#b8ff22" stroke-width="6" filter="url(#glow)"/>
+<path d="M145 125 L360 155 L345 560 L130 530 Z" fill="#090b10" stroke="#704cff" stroke-width="3"/>
+<circle cx="252" cy="330" r="72" fill="none" stroke="#b8ff22" stroke-width="7"/>
+<path d="M252 258 L292 302 L275 370 L229 370 L212 302 Z" fill="none" stroke="#b8ff22" stroke-width="6"/>
+<text x="260" y="455" text-anchor="middle" font-family="Arial Black,Arial" font-size="38" fill="#fff">PITCHIQ</text>
+<text x="260" y="502" text-anchor="middle" font-family="Arial Black,Arial" font-size="32" fill="#b8ff22">GOLD PACK</text>
+</svg>

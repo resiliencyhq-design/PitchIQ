@@ -1,0 +1,11 @@
+<svg width="500" height="700" viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="s" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#16241d"/><stop offset="1" stop-color="#020807"/></linearGradient></defs>
+<rect x="165" y="0" width="170" height="700" rx="70" fill="#111"/>
+<rect x="95" y="130" width="310" height="440" rx="86" fill="#050505"/>
+<rect x="125" y="160" width="250" height="380" rx="62" fill="url(#s)" stroke="#333" stroke-width="6"/>
+<circle cx="250" cy="240" r="24" fill="#b8ff22"/>
+<text x="250" y="310" text-anchor="middle" font-family="Arial Black,Arial" font-size="32" fill="#fff">Listening</text>
+<text x="250" y="385" text-anchor="middle" font-family="Arial Black,Arial" font-size="74" fill="#ff3d57">🔴</text>
+<text x="250" y="455" text-anchor="middle" font-family="Arial Black,Arial" font-size="36" fill="#b8ff22">0:45</text>
+<text x="250" y="500" text-anchor="middle" font-family="Arial" font-size="22" fill="#fff">Combo x7 • 132 BPM</text>
+</svg>
