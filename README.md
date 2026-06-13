@@ -1,16 +1,31 @@
-# Soccer IQ Voice
+# PitchIQ Premium Prototype
 
-Hands-free soccer scanning and decision-making trainer.
+This is a desktop-first premium concept prototype to show the commercial potential of PitchIQ.
 
-## Important
-Voice recognition in iPhone Safari may vary. It usually works best in Safari with microphone permission allowed. If voice is unreliable outdoors, use the manual Correct/Missed buttons as fallback.
-
-## Upload to GitHub
-Replace your current files with:
+## How to test on GitHub Pages
+Upload these files to your PitchIQ repository:
 - index.html
 - style.css
 - app.js
 - manifest.json
 - README.md
 
-Then wait for GitHub Pages to update.
+Then go to:
+Settings → Pages → Deploy from branch → main → /(root)
+
+Your URL should be:
+https://resiliencyhq-design.github.io/PitchIQ/
+
+## What is included
+- Premium dashboard
+- Training centre
+- Live cue demo
+- Career mode
+- Coach dashboard
+- Parent view
+- Apple Watch concept screen
+- Analytics screen
+- XP, combo, cues, animations and sounds
+
+## Note
+This is still a web prototype. Real Apple Watch integration requires a native SwiftUI iPhone + watchOS app.

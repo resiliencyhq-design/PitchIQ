@@ -2,129 +2,225 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Soccer IQ" />
+  <meta name="apple-mobile-web-app-title" content="PitchIQ" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Soccer IQ</title>
+  <title>PitchIQ Prototype</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
+  <div class="noise"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logoMark">⚽</div>
+      <div>
+        <h1>PitchIQ</h1>
+        <p>Train the brain behind the game</p>
+      </div>
+    </div>
 
-    <section id="home" class="screen active">
-      <div class="logo">⚽</div>
-      <h1>Soccer IQ</h1>
-      <p class="tagline">Scan. Decide. Win.</p>
+    <nav>
+      <button class="nav active" data-screen="dashboard">Dashboard</button>
+      <button class="nav" data-screen="train">Train</button>
+      <button class="nav" data-screen="career">Career</button>
+      <button class="nav" data-screen="coach">Coach</button>
+      <button class="nav" data-screen="parent">Parent</button>
+      <button class="nav" data-screen="watch">Apple Watch</button>
+      <button class="nav" data-screen="analytics">Analytics</button>
+    </nav>
 
-      <div class="statsGrid">
-        <div class="stat"><b id="totalXp">0</b><span>XP</span></div>
-        <div class="stat"><b id="rank">Grassroots</b><span>Rank</span></div>
-        <div class="stat"><b id="streak">0</b><span>Streak</span></div>
+    <div class="profileCard">
+      <div class="avatar">H</div>
+      <div>
+        <b>Hugo</b>
+        <span>Level 12 • Winger</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="shell">
+    <section id="dashboard" class="screen active">
+      <div class="heroPanel">
+        <div>
+          <div class="eyebrow">Today’s mission</div>
+          <h2>See earlier. Think faster. Play better.</h2>
+          <p>Complete today’s cognitive pitch session to keep your streak alive.</p>
+          <div class="heroActions">
+            <button class="primary" onclick="openTraining()">▶ Train Now</button>
+            <button class="ghost" onclick="showScreen('analytics')">View Analytics</button>
+          </div>
+        </div>
+        <div class="levelOrb">
+          <span>Level</span>
+          <b>12</b>
+          <small>2,420 / 3,000 XP</small>
+        </div>
       </div>
 
-      <button class="primary" onclick="showScreen('setup')">Start Training</button>
-      <button class="secondary" onclick="showScreen('progress')">Progress</button>
-      <button class="secondary" onclick="showScreen('settings')">Settings</button>
-    </section>
-
-    <section id="setup" class="screen">
-      <h2>Mission Setup</h2>
-
-      <label>Position</label>
-      <select id="position">
-        <option value="cb">Centre Back</option>
-        <option value="fb">Fullback</option>
-        <option value="cm">Midfielder</option>
-        <option value="winger">Winger</option>
-        <option value="striker">Striker</option>
-      </select>
-
-      <label>Mode</label>
-      <select id="mode">
-        <option value="voice">Voice Scan</option>
-        <option value="decision">Decision Rules</option>
-        <option value="maths">Mental Maths</option>
-        <option value="mixed">Match Simulation</option>
-      </select>
-
-      <label>Difficulty</label>
-      <select id="difficulty">
-        <option value="easy">Academy Start</option>
-        <option value="medium">Division 1</option>
-        <option value="hard">NPL Speed</option>
-        <option value="elite">Champions League</option>
-      </select>
-
-      <label>Length</label>
-      <select id="duration">
-        <option value="30">30 seconds</option>
-        <option value="60" selected>1 minute</option>
-        <option value="120">2 minutes</option>
-        <option value="300">5 minutes</option>
-      </select>
-
-      <button class="primary" onclick="startSession()">Start Hands-Free</button>
-      <button class="secondary" onclick="showScreen('home')">Back</button>
-    </section>
-
-    <section id="game" class="screen gameScreen">
-      <div class="topbar">
-        <span>⏱ <b id="timeLeft">60</b></span>
-        <span>⭐ <b id="score">0</b></span>
-        <span>🔥 x<b id="combo">1</b></span>
+      <div class="grid four">
+        <article class="metric"><span>🔥</span><b id="streak">17</b><p>Day streak</p></article>
+        <article class="metric"><span>⭐</span><b id="xp">2,420</b><p>Total XP</p></article>
+        <article class="metric"><span>🎯</span><b>84%</b><p>Accuracy</p></article>
+        <article class="metric"><span>⚡</span><b>1.2s</b><p>Avg response</p></article>
       </div>
 
-      <div id="missionText" class="missionText">Call out the answer</div>
-      <div id="cue" class="cue">Ready</div>
-      <div id="heard" class="heard">Listening...</div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Daily Missions</h3>
+          <ul class="missions">
+            <li><span>✅</span> Train 5 minutes <b>100 XP</b></li>
+            <li><span>✅</span> Get combo x10 <b>150 XP</b></li>
+            <li><span>⬜</span> Complete Winger Mode <b>250 XP</b></li>
+          </ul>
+        </article>
 
-      <div class="manual">
-        <button onclick="scoreCorrect()">Correct</button>
-        <button onclick="scoreWrong()">Missed</button>
+        <article class="card">
+          <h3>Weekly Heatmap</h3>
+          <div class="heatmap" id="heatmap"></div>
+        </article>
       </div>
 
-      <button class="secondary small" onclick="endSession()">End Session</button>
+      <div class="grid three">
+        <article class="card unlock"><span>🏟️</span><h3>New stadium at Level 13</h3><p>Unlock Night Arena in 580 XP.</p></article>
+        <article class="card unlock"><span>🏆</span><h3>Vision Badge</h3><p>Complete 50 perfect scans.</p></article>
+        <article class="card unlock"><span>👕</span><h3>Elite Kit</h3><p>Reach Academy rank.</p></article>
+      </div>
     </section>
 
-    <section id="result" class="screen">
-      <h2>Session Complete</h2>
-      <div class="bigScore" id="finalXp">0 XP</div>
-      <p id="resultMessage">Good work.</p>
-      <button class="primary" onclick="showScreen('setup')">Train Again</button>
-      <button class="secondary" onclick="showScreen('home')">Home</button>
+    <section id="train" class="screen">
+      <div class="sectionHead">
+        <div>
+          <div class="eyebrow">Training centre</div>
+          <h2>Choose your session</h2>
+        </div>
+        <button class="primary" onclick="startLiveSession()">Start Live Demo</button>
+      </div>
+
+      <div class="grid five">
+        <article class="position selected" data-position="Winger"><span>⚡</span><h3>Winger</h3><p>1v1 decisions, crossing, inside/outside cues</p></article>
+        <article class="position" data-position="Centre Back"><span>🛡️</span><h3>Centre Back</h3><p>Scanning behind, switching play, body shape</p></article>
+        <article class="position" data-position="Midfielder"><span>🧠</span><h3>Midfielder</h3><p>Awareness, memory, tempo, scanning</p></article>
+        <article class="position" data-position="Striker"><span>🎯</span><h3>Striker</h3><p>Timing, finishing cues, first touch</p></article>
+        <article class="position" data-position="Fullback"><span>🏃</span><h3>Fullback</h3><p>Overlap, recovery, transition decisions</p></article>
+      </div>
+
+      <div class="liveSession card">
+        <div class="stadium">
+          <div class="lights"></div>
+          <div id="cue" class="cue">READY</div>
+          <div id="coachLine" class="coachLine">Voice mode: call out the answer</div>
+          <div class="scoreRibbon">
+            <span>⭐ <b id="liveScore">0</b> XP</span>
+            <span>🔥 x<b id="combo">1</b></span>
+            <span>🎤 Listening</span>
+          </div>
+        </div>
+        <div class="sessionControls">
+          <button class="primary" onclick="scoreCorrect()">Correct</button>
+          <button class="danger" onclick="scoreWrong()">Missed</button>
+          <button class="ghost" onclick="nextCue()">Next Cue</button>
+        </div>
+      </div>
     </section>
 
-    <section id="progress" class="screen">
-      <h2>Progress</h2>
-      <div id="careerList" class="careerList"></div>
-      <button class="secondary" onclick="showScreen('home')">Back</button>
+    <section id="career" class="screen">
+      <div class="sectionHead">
+        <div><div class="eyebrow">Career mode</div><h2>Road to Ballon d’Or</h2></div>
+      </div>
+      <div class="careerPath" id="careerPath"></div>
+      <div class="grid three">
+        <article class="card trophy"><span>🏅</span><h3>100 Scans</h3><p>Unlocked</p></article>
+        <article class="card trophy"><span>🔥</span><h3>30 Day Streak</h3><p>Locked</p></article>
+        <article class="card trophy"><span>👑</span><h3>Elite Vision</h3><p>Locked</p></article>
+      </div>
     </section>
 
-    <section id="settings" class="screen">
-      <h2>Settings</h2>
-
-      <label>
-        <input type="checkbox" id="voiceToggle" checked />
-        Voice recognition
-      </label>
-
-      <label>
-        <input type="checkbox" id="soundToggle" checked />
-        Cheers and gasps
-      </label>
-
-      <label>
-        <input type="checkbox" id="hapticToggle" checked />
-        Vibration
-      </label>
-
-      <button class="secondary" onclick="resetProgress()">Reset Progress</button>
-      <button class="secondary" onclick="showScreen('home')">Back</button>
+    <section id="coach" class="screen">
+      <div class="sectionHead">
+        <div><div class="eyebrow">Academy dashboard</div><h2>Coach Command Centre</h2></div>
+        <button class="primary">Create Team Session</button>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>U13 Live Leaderboard</h3>
+          <table>
+            <tr><th>Player</th><th>XP</th><th>Accuracy</th><th>Status</th></tr>
+            <tr><td>Hugo</td><td>620</td><td>88%</td><td>🔥 Live</td></tr>
+            <tr><td>Ethan</td><td>590</td><td>84%</td><td>Live</td></tr>
+            <tr><td>Noah</td><td>510</td><td>79%</td><td>Done</td></tr>
+            <tr><td>Jack</td><td>470</td><td>75%</td><td>Done</td></tr>
+          </table>
+        </article>
+        <article class="card qr">
+          <h3>Join Session</h3>
+          <div class="qrBox">QR</div>
+          <p>Players scan to join today’s winger decision challenge.</p>
+        </article>
+      </div>
     </section>
 
+    <section id="parent" class="screen">
+      <div class="sectionHead">
+        <div><div class="eyebrow">Parent view</div><h2>Progress without pressure</h2></div>
+      </div>
+      <div class="grid three">
+        <article class="metric"><span>⏱️</span><b>18m</b><p>This week</p></article>
+        <article class="metric"><span>📈</span><b>+14%</b><p>Response speed</p></article>
+        <article class="metric"><span>😊</span><b>Low</b><p>Pressure mode</p></article>
+      </div>
+      <article class="card">
+        <h3>Suggested message</h3>
+        <p class="quote">“I noticed you kept scanning even when it got hard. That effort is what we’re building.”</p>
+      </article>
+    </section>
+
+    <section id="watch" class="screen">
+      <div class="sectionHead">
+        <div><div class="eyebrow">Companion concept</div><h2>Apple Watch hands-free flow</h2></div>
+      </div>
+      <div class="watchWrap">
+        <div class="watch">
+          <div class="watchScreen">
+            <span>🎤</span>
+            <b>Listening</b>
+            <small>Combo x7</small>
+            <div class="watchCue">🔵</div>
+            <p>Say: Blue</p>
+          </div>
+        </div>
+        <article class="card">
+          <h3>No phone touching</h3>
+          <p>The iPhone displays cues. Apple Watch listens, vibrates, timestamps answers and sends results to the phone. This screen is a prototype only; true Watch support needs a native SwiftUI app.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="analytics" class="screen">
+      <div class="sectionHead">
+        <div><div class="eyebrow">Player intelligence profile</div><h2>Training metrics</h2></div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Cognitive Profile</h3>
+          <div class="bars">
+            <label>Vision <span>84</span></label><div><i style="width:84%"></i></div>
+            <label>Decision <span>78</span></label><div><i style="width:78%"></i></div>
+            <label>Reaction <span>72</span></label><div><i style="width:72%"></i></div>
+            <label>Memory <span>69</span></label><div><i style="width:69%"></i></div>
+            <label>Composure <span>81</span></label><div><i style="width:81%"></i></div>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Weekly XP</h3>
+          <canvas id="chart" width="560" height="320"></canvas>
+        </article>
+      </div>
+    </section>
   </main>
+
+  <div id="toast" class="toast">+20 XP</div>
 
   <script src="app.js"></script>
 </body>
