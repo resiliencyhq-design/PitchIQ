@@ -71,16 +71,18 @@ function speak(text){
   }catch(e){}
 }
 function continueFromSplash(){
-  if(state.name) { show("dashboard"); refreshDashboard(); }
-  else show("onboarding");
+  if(state.name) {
+    refreshDashboard();
+    show("dashboard");
+  } else {
+    show("onboarding");
+  }
 }
 document.addEventListener("DOMContentLoaded", () => {
   makeParticles();
   bindPositions();
-  if(state.name) {
-    setTimeout(()=>show("dashboard"), 700);
-  }
   refreshDashboard();
+  // Keep splash first on every load. User taps through to onboarding/dashboard.
 });
 function makeParticles(){
   const field = document.getElementById("particles");

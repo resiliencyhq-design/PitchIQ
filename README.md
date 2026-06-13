@@ -20,3 +20,11 @@ Upload the full contents of this folder to the PitchIQ GitHub repository.
 
 URL:
 https://resiliencyhq-design.github.io/PitchIQ/
+
+
+## Sprint 2.1 iPhone Hotfix
+Fixes:
+- Splash screen no longer stays visible over other screens.
+- Onboarding no longer overlaps dashboard.
+- iPhone uses a lighter mobile background fallback so visuals load more reliably.
+- Mobile dashboard cards are tighter and less likely to appear blank or oversized.
