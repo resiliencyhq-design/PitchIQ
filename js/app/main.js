@@ -64,14 +64,20 @@ function render(route="splash"){
 function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); training.timer = null; if(currentRoute !== "camera") camera?.stop?.(); }
 
+function positionDrills(){
+  return recommendedDrills(state.profile.position || "Winger");
+}
 function missionDrill(){
-  return recommendedDrills(state.profile.position || "Winger")[0] || null;
+  return positionDrills()[0] || null;
+}
+function selectedDrill(){
+  return activeSession?.drill || positionDrills().find(drill=>drill.id === selectedDrillId) || missionDrill();
 }
 function trainingView(){
   return {
     stage: trainingStage,
     selectedDrillId,
-    selectedDrill: activeSession?.drill || undefined,
+    selectedDrill: selectedDrill(),
     missionDrill: missionDrill(),
     difficulty: selectedDifficulty,
     summary: trainingSummary,
