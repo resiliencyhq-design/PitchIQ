@@ -12,7 +12,7 @@ import { recommendedDrills } from "../data/drills.js";
 
 let state = normalizeState(loadState());
 
-let selectedPosition = state.profile.position || "Winger";
+let selectedPosition = "";
 let currentRoute = "splash";
 let cue = CORE_CUES[0];
 let selectedDrillId = null;
@@ -92,6 +92,55 @@ function trainingView(){
 function renderTrainingRoute(){ render("training"); }
 function setTrainingStage(stage){ trainingStage = stage; renderTrainingRoute(); }
 
+function bindOnboardPositionSelector(){
+  const pitch = document.querySelector(".academy-pitch");
+  const ball = document.querySelector(".pitch-ball");
+  const confirm = document.querySelector("#positionConfirm");
+  const cta = document.querySelector(".onboard-cta-v1");
+  const nodes = [...document.querySelectorAll(".pitch-node")];
+  if(!pitch || !ball || !nodes.length) return;
+  selectedPosition = "";
+  cta?.setAttribute("disabled", "true");
+
+  const setPosition = (node)=>{
+    if(!node) return;
+    nodes.forEach(n=>n.classList.remove("selected","targeted"));
+    node.classList.add("selected");
+    selectedPosition = node.dataset.pos;
+    ball.dataset.pos = selectedPosition;
+    ball.style.gridArea = node.dataset.slot || node.style.gridArea;
+    if(confirm) confirm.innerHTML = `<span>Selected:</span><b>${selectedPosition}</b>`;
+    cta?.removeAttribute("disabled");
+  };
+  const nearestNode = (clientX, clientY)=>{
+    let nearest = null;
+    let best = Infinity;
+    nodes.forEach(node=>{
+      const r = node.getBoundingClientRect();
+      const x = r.left + r.width/2;
+      const y = r.top + r.height/2;
+      const d = Math.hypot(clientX - x, clientY - y);
+      if(d < best){ best = d; nearest = node; }
+    });
+    return nearest;
+  };
+  nodes.forEach(node=>node.addEventListener("click",()=>setPosition(node)));
+  let dragging = false;
+  ball.addEventListener("pointerdown", e=>{ dragging = true; ball.setPointerCapture?.(e.pointerId); ball.classList.add("dragging"); });
+  ball.addEventListener("pointermove", e=>{
+    if(!dragging) return;
+    const node = nearestNode(e.clientX, e.clientY);
+    nodes.forEach(n=>n.classList.toggle("targeted", n === node));
+  });
+  ball.addEventListener("pointerup", e=>{
+    if(!dragging) return;
+    dragging = false;
+    ball.classList.remove("dragging");
+    const node = nearestNode(e.clientX, e.clientY);
+    setPosition(node);
+  });
+}
+
 function bindScreen(){
   document.querySelectorAll("[data-route]").forEach(el=>el.addEventListener("click",()=>{
     const route = el.dataset.route;
@@ -104,7 +153,8 @@ function bindScreen(){
   }));
   document.querySelectorAll("[data-action]").forEach(el=>el.addEventListener("click",()=>handleAction(el.dataset.action, el)));
   document.querySelectorAll("[data-answer]").forEach(el=>el.addEventListener("click",()=>manualAnswer(el.dataset.answer)));
-  document.querySelectorAll("[data-pos]").forEach(btn=>btn.addEventListener("click",()=>{
+  bindOnboardPositionSelector();
+  document.querySelectorAll("[data-pos]:not(.pitch-node)").forEach(btn=>btn.addEventListener("click",()=>{
     document.querySelectorAll("[data-pos]").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected"); selectedPosition = btn.dataset.pos;
   }));
@@ -140,11 +190,12 @@ function handleAction(action, el){
   if(action==="open-pack") return openPackAction();
 }
 function saveProfile(){
+  if(!selectedPosition) return toast("Choose your position");
   const name = document.getElementById("nameInput")?.value?.trim() || "Player";
   state.profile.name = name; state.profile.position = selectedPosition; state.profile.createdAt ||= Date.now();
   toast("Welcome to PitchIQ Academy"); goto("mission");
 }
-function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = normalizeState(loadState()); try {
+function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = normalizeState(loadState()); selectedPosition = ""; try {
   render("splash");
   window.__PITCHIQ_READY__ = true;
 } catch (error) {
@@ -249,38 +300,27 @@ async function startCamera(mode){
         cueEl.textContent = r.reactionMs+" ms"; cueEl.className = "camera-cue detected";
         document.getElementById("lastRT").textContent = r.reactionMs+" ms";
         camScore += r.xpAwarded; document.getElementById("camScore").textContent = camScore;
-        if(!state.analytics.bestReaction || r.reactionMs < state.analytics.bestReaction) state.analytics.bestReaction = r.reactionMs;
-        state.analytics.reactionHistory.push(r.reactionMs);
-        addXP(state, r.xpAwarded); completeDaily(state); toast("Reaction "+r.reactionMs+" ms");
+        if(!state.analytics.bestReaction || r.reactionMs < state.analytics.bestReaction){ state.analytics.bestReaction = r.reactionMs; document.getElementById("camBest").textContent = r.reactionMs+" ms"; }
+        const leveled = addXP(state, r.xpAwarded); toast(leveled ? "LEVEL UP 🏆" : "+"+r.xpAwarded+" XP");
       }
-    },
-    onError:(e)=>toast(e.message)
+    }
   });
-  await camera.start(mode); toast("Camera on");
+  const ok = await camera.start(mode);
+  toast(ok ? "Camera started" : "Camera unavailable");
 }
-function cameraRound(){
-  if(!camera){ toast("Enable camera first"); return; }
-  const c = randomCue();
-  const cueEl = document.getElementById("cameraCue");
-  cueEl.textContent = c.display; cueEl.className = "camera-cue go";
-  camera.beginCue(c, cueTimeoutForDifficulty(activeSession ? adaptiveDifficulty(activeSession) : 2));
-}
+function cameraRound(){ cue = getCue("red"); const el=document.getElementById("cameraCue"); el.textContent="MOVE"; el.className="camera-cue go"; camera?.startRound?.(cue); }
 function openPackAction(){
-  if(!state.game.dailyDone){ toast("Complete a mission first"); return; }
-  const pack = document.getElementById("pack"); pack?.classList.add("open");
-  setTimeout(()=>{
-    const reward = REWARDS[(state.game.unlocked?.length || 0) % REWARDS.length];
-    const xp = openReward(state, reward);
-    addXP(state, xp);
-    document.getElementById("rewardTitle").textContent = reward.name+" Unlocked!";
-    document.getElementById("rewardText").textContent = "+"+xp+" XP bonus added.";
-    toast("Reward unlocked 🎁");
-  },650);
+  if(!state.game.dailyDone) return toast("Complete today's mission first");
+  const reward = openReward(state, REWARDS);
+  document.getElementById("pack")?.classList.add("open");
+  document.getElementById("rewardTitle").textContent = reward.name;
+  document.getElementById("rewardText").textContent = "Unlocked " + reward.tier + " reward";
+  toast("Unlocked: "+reward.name); saveState(state);
 }
 
 try {
-  render("splash");
+  render(state.profile.name ? "home" : "splash");
   window.__PITCHIQ_READY__ = true;
 } catch (error) {
-  showRenderError(error, "splash");
+  showRenderError(error, currentRoute || "startup");
 }

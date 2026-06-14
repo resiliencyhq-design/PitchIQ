@@ -6,10 +6,38 @@ import { REWARDS, CAREER_RANKS, ACHIEVEMENTS } from "../data/rewards.js";
 export const routeNames = ["home","training","camera","reward","player","career","analytics","collection","art","settings"];
 
 export function renderSplash(){
-  return `<section class="screen center active" id="splash"><div class="particles" id="particles"></div><img class="logo hero-logo" src="assets/brand/logo.svg" alt="PitchIQ"><h1 class="splash-title">See earlier.<br>Think faster.</h1><button class="primary mega" data-action="enter">Enter Academy</button></section>`;
+  return `<section class="screen center active splash-v1" id="splash">
+    <div class="splash-atmosphere"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="splash-spotlight"></div>
+    <div class="splash-content">
+      <img class="logo hero-logo splash-logo-v1" src="assets/brand/logo.svg" alt="PitchIQ">
+      <h1 class="splash-title-v1">See earlier.<br>Think faster.</h1>
+      <button class="primary mega splash-cta-v1" data-action="enter">ENTER ACADEMY →</button>
+    </div>
+    <div class="splash-floor"></div>
+  </section>`;
 }
 export function renderOnboard(){
-  return `<section class="screen center active" id="onboard"><div class="glass form-card"><img src="assets/brand/logo.svg" class="logo small-logo" alt="PitchIQ"><h1>Create<br>your player</h1><label>Name</label><input id="nameInput" placeholder="Player name" maxlength="18"><label>Position</label><div class="pos-grid">${["CB","FB","CDM","CM","CAM","Winger","Striker","GK"].map(p=>`<button data-pos="${p}" class="${p==="Winger"?"selected":""}">${p}</button>`).join("")}</div><button class="primary full" data-action="save-profile">Continue</button></div></section>`;
+  const positions = [
+    ["ST","st"],["LW","lw"],["CAM","cam"],["RW","rw"],["CM","cm"],["CDM","cdm"],["LB","lb"],["CB","cb1"],["CB","cb2"],["RB","rb"],["GK","gk"]
+  ];
+  return `<section class="screen center active onboard-v1" id="onboard">
+    <div class="splash-atmosphere"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="splash-spotlight"></div>
+    <div class="onboard-content">
+      <img src="assets/brand/logo.svg" class="logo onboard-logo-v1" alt="PitchIQ">
+      <h1>Where do<br>you play?</h1>
+      <label for="nameInput">Name</label>
+      <input id="nameInput" placeholder="Player name" maxlength="18">
+      <span class="position-title">Drag the ball or tap a position</span>
+      <div class="academy-pitch" role="group" aria-label="Choose Position">
+        ${positions.map(([p,slot])=>`<button type="button" data-pos="${p}" data-slot="${slot}" class="pitch-node" style="grid-area:${slot}">${p}</button>`).join("")}
+        <button type="button" class="pitch-ball" aria-label="Drag football to position">⚽</button>
+      </div>
+      <div id="positionConfirm" class="position-confirm"><span>Selected:</span><b>—</b></div>
+      <button class="primary mega onboard-cta-v1" data-action="save-profile" disabled>ENTER ACADEMY →</button>
+    </div>
+  </section>`;
 }
 export function renderMission(state){
   return `<section class="screen center active" id="mission"><div class="mission-card"><span class="kicker">🔥 Day ${state.game.streak} mission</span><h1>Beat yesterday.</h1><h2>Unlock Academy Boots.</h2><img src="assets/art/boots.svg" class="boots" alt="Academy Boots"><button class="primary mega" data-route="home">Continue</button></div></section>`;
@@ -34,84 +62,53 @@ function homeMetrics(state){
 }
 
 function renderIdentityModule(state, metrics){
-  return `<section class="home-hero">
-    <article class="glass live-card">
-      <div class="ovr-badge">OVR ${metrics.ovr}</div>
-      <img src="assets/art/player.svg" alt="Live player card">
-      <span class="kicker">Player identity • ${metrics.rank}</span>
-      <h2>${state.profile.name || "Player"}</h2>
-      <p>${state.profile.position} • Level ${state.game.level}</p>
-      <div class="mini-strip">
-        <div><small>Vision</small><b>${65 + state.game.level}</b></div>
-        <div><small>Reaction</small><b>${state.analytics.bestReaction ? 78 : 61}</b></div>
-        <div><small>Awareness</small><b>${70 + Math.min(20,state.game.streak)}</b></div>
-      </div>
-    </article>
+  return `<section class="home-hero-card">
+    <div class="home-streak">🔥 ${state.game.streak} day streak • ${metrics.rank}</div>
+    <button class="home-bell" data-route="settings">♢</button>
+    <div class="home-greeting"><span>Good afternoon,</span><b>${state.profile.name || "Player"}</b></div>
+    <div class="home-player-figure"><img src="assets/art/player.svg" alt="Academy player"></div>
+    <div class="home-level-panel"><span>Level <b>${state.game.level}</b></span><small>${metrics.rank}</small><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><em>${state.game.xp} / ${metrics.need} XP</em></div>
+    <div class="home-ovr-panel"><small>OVR</small><b>${metrics.ovr}</b><small>Position</small><strong>${state.profile.position}</strong></div>
   </section>`;
 }
 
 function renderMissionModule(state, metrics){
-  return `<article class="glass hero-panel">
-    <span class="kicker">Today's mission • primary action</span>
-    <h1>Beat yesterday.<br>Think faster.</h1>
-    <p>Complete one focused Vision Sprint to protect your streak and move your player profile forward.</p>
-    <div class="mini-strip">
-      <div><small>Objective</small><b>1 clean rep</b></div>
-      <div><small>Reward</small><b>${metrics.rewardState}</b></div>
-      <div><small>Target</small><b>${Math.max(0, metrics.need - state.game.xp)} XP</b></div>
+  return `<article class="home-mock-mission">
+    <div class="mission-copy"><span class="kicker">Today's Mission</span><h1>Beat yesterday.<br>Think faster.</h1><p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily reward.</p></div>
+    <div class="mission-reward"><span>Mission Reward</span><img src="assets/art/boots.svg" alt="Elite boots"><b>Elite Boots</b><small>Unlock at ${metrics.need} XP</small></div>
+    <div class="mission-objectives">
+      <div><i>◷</i><span>Train for 5 minutes</span><div class="xpbar"><i style="width:60%"></i></div><b>3 / 5</b></div>
+      <div><i>🔥</i><span>Get a combo of 10</span><div class="xpbar"><i style="width:${Math.min(100,state.game.bestCombo*10)}%"></i></div><b>${Math.min(10,state.game.bestCombo)} / 10</b></div>
+      <div><i>◎</i><span>Scan 50 cues</span><div class="xpbar"><i style="width:${metrics.rewardPct}%"></i></div><b>${metrics.rewardPct} / 100</b></div>
     </div>
-    <div class="hero-actions">
-      <button class="primary mega" data-route="training">Continue Training</button>
-      <button data-route="camera">Camera Challenge</button>
-    </div>
+    <button class="primary mega home-continue" data-route="training">▶ Continue Training</button>
   </article>`;
 }
 
-function renderWeeklyProgressModule(state, metrics){
-  return `<button class="tile" data-route="analytics">
-    <span>Weekly progress</span>
-    <b>${metrics.trend >= 0 ? "+" : ""}${metrics.trend}% trend</b>
-    <small>${metrics.weeklyTotal} XP • ${metrics.weeklyTotal >= metrics.lastWeek ? "Best Week pace" : "Steady Growth"}</small>
-  </button>`;
+function renderQuickActionsModule(){
+  return `<section class="home-actions-grid">
+    <button class="home-action-card" data-route="career"><b>⭐</b><span>Career</span><small>Your path to pro</small></button>
+    <button class="home-action-card" data-route="player"><b>👕</b><span>Player</span><small>View stats</small></button>
+    <button class="home-action-card" data-route="analytics"><b>▮▮▮</b><span>Stats</span><small>Progress</small></button>
+    <button class="home-action-card" data-route="reward"><b>🛒</b><span>Shop</span><small>Rewards</small></button>
+  </section>`;
 }
 
-function renderRewardPreviewModule(state, metrics){
-  return `<button class="tile" data-route="reward">
-    <span>Reward preview</span>
-    <b>${metrics.rewardPct}% to unlock</b>
-    <div class="xpbar"><i style="width:${metrics.rewardPct}%"></i></div>
-    <small>${state.game.dailyDone ? "Reward ready — tap to open." : `${100 - metrics.rewardPct}% remaining • complete today's mission.`}</small>
-  </button>`;
-}
-
-function renderCareerLadderModule(state, metrics){
-  return `<article class="glass career-card">
-    <span class="kicker">Career ladder</span>
-    <h2>${metrics.milestonePct}% to ${metrics.nextMilestone}</h2>
-    <div class="xpbar"><i style="width:${metrics.milestonePct}%"></i></div>
-    <small>${Math.max(0,metrics.milestoneLevel - state.game.level)} levels remaining • Level ${state.game.level}/${metrics.milestoneLevel}</small>
-    <img src="assets/art/career-ladder.svg" alt="Career ladder preview">
-  </article>`;
+function renderWeeklyPackModule(metrics){
+  return `<section class="home-secondary-row">
+    <article class="home-weekly-card"><span>Weekly Progress</span><b>${metrics.weeklyTotal}</b><small>XP earned</small><em>${metrics.trend >= 0 ? "▲" : "▼"} ${Math.abs(metrics.trend)}% vs last week</em><div class="mini-bars"><i style="height:36%"></i><i style="height:52%"></i><i style="height:66%"></i><i style="height:56%"></i><i class="hot" style="height:78%"></i><i style="height:54%"></i><i style="height:62%"></i></div></article>
+    <button class="home-pack-card" data-route="reward"><span>Daily Pack</span><b>Free pack<br>ready to open!</b><em>Tap to open</em><img src="assets/art/pack.svg" alt="Daily pack"></button>
+  </section>`;
 }
 
 export function renderHome(state){
   const metrics = homeMetrics(state);
-  return `<section class="screen app home-aaa active" id="home">
-    <header class="top">
-      <div>
-        <span class="kicker">🔥 ${state.game.streak} day streak • ${metrics.rank}</span>
-        <h1>Hi, ${state.profile.name || "Player"}</h1>
-      </div>
-      <button class="ghost" data-action="reset">Reset</button>
-    </header>
-    ${renderIdentityModule(state, metrics)}
-    ${renderMissionModule(state, metrics)}
-    <section class="dashboard-grid">
-      <article class="glass tile"><span>XP progress</span><b>Level ${state.game.level}</b><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><small>${state.game.xp} / ${metrics.need} XP to next level</small></article>
-      ${renderWeeklyProgressModule(state, metrics)}
-      ${renderRewardPreviewModule(state, metrics)}
-      ${renderCareerLadderModule(state, metrics)}
-      <article class="quick-stat">${stat("Vision", 65 + state.game.level)}${stat("Reaction", metrics.best)}${stat("Combo", "x" + state.game.bestCombo)}</article>
+  return `<section class="screen app home-aaa home-v7 active" id="home">
+    <section class="home-v7-grid">
+      ${renderIdentityModule(state, metrics)}
+      ${renderMissionModule(state, metrics)}
+      ${renderQuickActionsModule()}
+      ${renderWeeklyPackModule(metrics)}
     </section>
   </section>`;
 }
