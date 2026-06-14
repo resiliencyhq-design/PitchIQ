@@ -18,7 +18,24 @@ export function renderSplash(){
   </section>`;
 }
 export function renderOnboard(){
-  return `<section class="screen center active" id="onboard"><div class="glass form-card"><img src="assets/brand/logo.svg" class="logo small-logo" alt="PitchIQ"><h1>Create<br>your player</h1><label>Name</label><input id="nameInput" placeholder="Player name" maxlength="18"><label>Position</label><div class="pos-grid">${["CB","FB","CDM","CM","CAM","Winger","Striker","GK"].map(p=>`<button data-pos="${p}" class="${p==="Winger"?"selected":""}">${p}</button>`).join("")}</div><button class="primary full" data-action="save-profile">Continue</button></div></section>`;
+  const positions = [
+    ["ST","st"],["LW","lw"],["CAM","cam"],["RW","rw"],["CM","cm"],["CDM","cdm"],["LB","lb"],["CB","cb1"],["CB","cb2"],["RB","rb"],["GK","gk"]
+  ];
+  return `<section class="screen center active onboard-v1" id="onboard">
+    <div class="splash-atmosphere"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="splash-spotlight"></div>
+    <div class="onboard-content">
+      <img src="assets/brand/logo.svg" class="logo onboard-logo-v1" alt="PitchIQ">
+      <h1>Create your<br>Academy Player</h1>
+      <label for="nameInput">Name</label>
+      <input id="nameInput" placeholder="Player name" maxlength="18">
+      <span class="position-title">Choose Position</span>
+      <div class="academy-pitch" role="group" aria-label="Choose Position">
+        ${positions.map(([p,slot])=>`<button type="button" data-pos="${p}" class="pitch-node ${p==="Winger"||slot==="lw"?"selected":""}" style="grid-area:${slot}">${p}</button>`).join("")}
+      </div>
+      <button class="primary mega onboard-cta-v1" data-action="save-profile">ENTER ACADEMY →</button>
+    </div>
+  </section>`;
 }
 export function renderMission(state){
   return `<section class="screen center active" id="mission"><div class="mission-card"><span class="kicker">🔥 Day ${state.game.streak} mission</span><h1>Beat yesterday.</h1><h2>Unlock Academy Boots.</h2><img src="assets/art/boots.svg" class="boots" alt="Academy Boots"><button class="primary mega" data-route="home">Continue</button></div></section>`;
