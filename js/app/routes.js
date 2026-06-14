@@ -261,13 +261,17 @@ export function renderCamera(){
 
 export function renderReward(state){
   const unlocked = state.game.unlocked || [];
+  const need = xpNeed(state.game.level);
+  const pct = state.game.dailyDone ? 100 : Math.min(100, Math.round(state.game.xp/need*100));
+  const remaining = Math.max(0, 100 - pct);
   return `<section class="screen center reward active" id="reward">
     <h1>Daily<br>Reward</h1>
     <div class="pack-stage"><img id="pack" src="assets/art/pack.svg" alt="Gold pack" data-action="open-pack"></div>
-    <h2 id="rewardTitle">${state.game.packOpened ? "Reward Claimed" : "Tap the pack"}</h2>
-    <p id="rewardText">${state.game.dailyDone ? "Open your earned reward." : "Complete a mission to unlock Academy Boots."}</p>
+    <h2 id="rewardTitle">${state.game.packOpened ? "Reward Claimed" : state.game.dailyDone ? "Reward Ready" : pct + "% to unlock"}</h2>
+    <p id="rewardText">${state.game.dailyDone ? "Open your earned reward." : `${remaining}% remaining — complete today's mission to unlock Academy Boots.`}</p>
+    <div class="glass tile"><span>Unlock progress</span><b>${pct}% complete</b><div class="xpbar"><i style="width:${pct}%"></i></div><small>${state.game.dailyDone ? "Daily pack is ready." : `${state.game.xp} / ${need} XP toward the next unlock.`}</small></div>
     <div class="collection-grid">
-      ${REWARDS.map(r=>`<div class="glass collection-card"><img src="${r.art}" style="width:100%;max-height:140px;object-fit:contain"><span class="kicker">${r.tier}</span><b>${r.name}</b><small>${unlocked.includes(r.id) ? "Unlocked" : "Locked"}</small></div>`).join("")}
+      ${REWARDS.map(r=>`<div class="glass collection-card"><img src="${r.art}" style="width:100%;max-height:140px;object-fit:contain"><span class="kicker">${r.tier}</span><b>${r.name}</b><small>${unlocked.includes(r.id) ? "Unlocked" : `${pct}% progress`}</small></div>`).join("")}
     </div>
     <button class="primary mega" data-route="analytics">Continue</button>
   </section>`;
@@ -280,7 +284,7 @@ export function renderAnalytics(state){
   const vals = state.analytics.weeklyXp;
   const max = Math.max(1, ...vals);
   const vision = Math.min(95,65+state.game.level), reaction = state.analytics.bestReaction ? 78 : 61, scan = 70+Math.min(20,state.game.streak), decision = 64+state.game.bestCombo, comp = 62+state.game.bestCombo;
-  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ";
+  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ");
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
     <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
@@ -309,14 +313,17 @@ export function renderCareer(state = {}){
     { name:"Europe", min:71 },
     { name:"Legend", min:91 }
   ];
+  const nextRank = ranks.find(r=>level < r.min);
+  const previousRank = [...ranks].reverse().find(r=>level >= r.min) || ranks[0];
+  const progressToNext = nextRank ? Math.min(100, Math.round((level - previousRank.min) / Math.max(1, nextRank.min - previousRank.min) * 100)) : 100;
   return `<section class="screen app active" id="career">
     <header class="sub"><button data-route="home">←</button><h1>Career</h1><button data-route="player">Player</button></header>
-    <div class="glass tile"><span class="kicker">Current pathway</span><b>${currentRank}</b><small>Level ${level}. Keep completing sessions to climb the ladder.</small></div>
+    <div class="glass tile"><span class="kicker">Current pathway</span><b>${currentRank}</b><small>${nextRank ? `${progressToNext}% to ${nextRank.name} • ${nextRank.min - level} levels remaining.` : "Legend pathway complete."}</small><div class="xpbar"><i style="width:${progressToNext}%"></i></div></div>
     <div class="career-grid">
       ${ranks.map(r => {
         const unlocked = level >= r.min;
         const current = r.name === currentRank || (currentRank === "A-League" && r.name === "Professional") || (currentRank === "Ballon d'Or" && r.name === "Legend");
-        return `<div class="glass career-node ${current ? "current" : ""} ${unlocked ? "unlocked" : "locked"}"><span class="kicker">Level ${r.min}+</span><b>${r.name}</b><small>${current ? "Current rank" : unlocked ? "Unlocked" : "Locked"}</small></div>`;
+        return `<div class="glass career-node ${current ? "current" : ""} ${unlocked ? "unlocked" : "locked"}"><span class="kicker">Level ${r.min}+</span><b>${r.name}</b><small>${current ? "Current rank" : unlocked ? "Unlocked" : `${Math.max(0,r.min-level)} levels away`}</small></div>`;
       }).join("")}
     </div>
   </section>`;
