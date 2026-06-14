@@ -26,14 +26,16 @@ export function renderOnboard(){
     <div class="splash-spotlight"></div>
     <div class="onboard-content">
       <img src="assets/brand/logo.svg" class="logo onboard-logo-v1" alt="PitchIQ">
-      <h1>Create your<br>Academy Player</h1>
+      <h1>Where do<br>you play?</h1>
       <label for="nameInput">Name</label>
       <input id="nameInput" placeholder="Player name" maxlength="18">
-      <span class="position-title">Choose Position</span>
+      <span class="position-title">Drag the ball or tap a position</span>
       <div class="academy-pitch" role="group" aria-label="Choose Position">
-        ${positions.map(([p,slot])=>`<button type="button" data-pos="${p}" class="pitch-node ${p==="Winger"||slot==="lw"?"selected":""}" style="grid-area:${slot}">${p}</button>`).join("")}
+        ${positions.map(([p,slot])=>`<button type="button" data-pos="${p}" data-slot="${slot}" class="pitch-node" style="grid-area:${slot}">${p}</button>`).join("")}
+        <button type="button" class="pitch-ball" aria-label="Drag football to position">⚽</button>
       </div>
-      <button class="primary mega onboard-cta-v1" data-action="save-profile">ENTER ACADEMY →</button>
+      <div id="positionConfirm" class="position-confirm"><span>Selected:</span><b>—</b></div>
+      <button class="primary mega onboard-cta-v1" data-action="save-profile" disabled>ENTER ACADEMY →</button>
     </div>
   </section>`;
 }
