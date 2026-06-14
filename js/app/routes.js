@@ -121,6 +121,7 @@ export function renderTraining(state = {}, trainingView = {}){
   const duration = selectedDrill?.seconds || 45;
   const rewardEstimate = difficulty === "hard" ? "Up to 300 XP" : difficulty === "easy" ? "Up to 180 XP" : "Up to 240 XP";
   const missionStatus = state.game?.dailyDone ? "Mission complete" : "Protect your streak";
+  const resultNote = summary.accuracy >= 80 ? "Strong rep. Keep the streak alive." : summary.attempts ? "Good rep. One more tomorrow builds the habit." : "Session logged. Start with one clean response next time.";
   const header = `<header class="sub"><button data-route="home">←</button><h1>Training</h1><button data-action="training-home">Home</button></header>`;
 
   if(stage === "choose-drill"){
@@ -172,14 +173,14 @@ export function renderTraining(state = {}, trainingView = {}){
   if(stage === "results"){
     return `<section class="screen app active" id="training">
       ${header}
-      <div class="glass tile"><span class="kicker">Step 6</span><b>Results</b><small>${selectedDrill?.name || "Training"} complete.</small></div>
-      <div class="stats">${stat("Difficulty", difficultyInfo.label)}${stat("Accuracy", summary.accuracy + "%")}${stat("XP", summary.xp)}</div>
+      <div class="glass tile"><span class="kicker">Session complete</span><b>${selectedDrill?.name || "Training"}</b><small>${resultNote}</small></div>
+      <div class="stats">${stat("XP earned", "+" + summary.xp)}${stat("Accuracy", summary.accuracy + "%")}${stat("Best combo", "x" + summary.combo)}${stat("Score", summary.score)}</div>
       <div class="dashboard-grid">
-        <article class="glass tile"><span>Completed drill</span><b>${selectedDrill?.name || "—"}</b><small>${summary.correct}/${summary.attempts} correct responses.</small></article>
-        <article class="glass tile"><span>Score</span><b>${summary.score}</b><small>Best combo x${summary.combo}.</small></article>
-        <article class="glass tile"><span>Tomorrow's rep</span><b>${missionDrill?.name || "Training"}</b><small>Come back tomorrow to protect your streak and build XP.</small></article>
+        <article class="glass tile"><span>What happened</span><b>${summary.correct}/${summary.attempts} correct</b><small>${difficultyInfo.label} pressure • ${selectedDrill?.focus || selectedDrill?.type || "Reaction"}</small></article>
+        <article class="glass tile"><span>Reward ready</span><b>${rewardName}</b><small>Claim your completed-session reward and bank the progress.</small></article>
+        <article class="glass tile"><span>Next action</span><b>${missionDrill?.name || "Training"}</b><small>Come back tomorrow to protect your streak and build XP.</small></article>
       </div>
-      <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button></div>
+      <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button><button data-action="training-home">Training Home</button></div>
     </section>`;
   }
 
@@ -260,7 +261,7 @@ export function renderAnalytics(state){
   const vals = state.analytics.weeklyXp;
   const max = Math.max(1, ...vals);
   const vision = Math.min(95,65+state.game.level), reaction = state.analytics.bestReaction ? 78 : 61, scan = 70+Math.min(20,state.game.streak), decision = 64+state.game.bestCombo, comp = 62+state.game.bestCombo;
-  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ");
+  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ";
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
     <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
