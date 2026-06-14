@@ -6,7 +6,16 @@ import { REWARDS, CAREER_RANKS, ACHIEVEMENTS } from "../data/rewards.js";
 export const routeNames = ["home","training","camera","reward","player","career","analytics","collection","art","settings"];
 
 export function renderSplash(){
-  return `<section class="screen center active" id="splash"><div class="particles" id="particles"></div><img class="logo hero-logo" src="assets/brand/logo.svg" alt="PitchIQ"><h1 class="splash-title">See earlier.<br>Think faster.</h1><button class="primary mega" data-action="enter">Enter Academy</button></section>`;
+  return `<section class="screen center active splash-v1" id="splash">
+    <div class="splash-atmosphere"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="splash-spotlight"></div>
+    <div class="splash-content">
+      <img class="logo hero-logo splash-logo-v1" src="assets/brand/logo.svg" alt="PitchIQ">
+      <h1 class="splash-title-v1">See earlier.<br>Think faster.</h1>
+      <button class="primary mega splash-cta-v1" data-action="enter">ENTER ACADEMY →</button>
+    </div>
+    <div class="splash-floor"></div>
+  </section>`;
 }
 export function renderOnboard(){
   return `<section class="screen center active" id="onboard"><div class="glass form-card"><img src="assets/brand/logo.svg" class="logo small-logo" alt="PitchIQ"><h1>Create<br>your player</h1><label>Name</label><input id="nameInput" placeholder="Player name" maxlength="18"><label>Position</label><div class="pos-grid">${["CB","FB","CDM","CM","CAM","Winger","Striker","GK"].map(p=>`<button data-pos="${p}" class="${p==="Winger"?"selected":""}">${p}</button>`).join("")}</div><button class="primary full" data-action="save-profile">Continue</button></div></section>`;
