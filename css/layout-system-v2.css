@@ -1,0 +1,102 @@
+/* PitchIQ Layout System v2.0
+   Mobile-first layout primitives for future screens.
+   This file is intentionally additive: it does not redesign locked screens. */
+
+:root{
+  --app-max-width:430px;
+  --app-pad-x:20px;
+  --app-pad-top:calc(18px + env(safe-area-inset-top));
+  --app-pad-bottom:calc(110px + env(safe-area-inset-bottom));
+  --section-gap:16px;
+  --hero-gap:16px;
+  --hero-visual-width:38%;
+  --type-hero:clamp(44px,12vw,64px);
+  --type-title:clamp(32px,8vw,48px);
+  --type-body:clamp(15px,4vw,18px);
+}
+
+.mobile-app-shell,
+.screen.app{
+  width:100%;
+  max-width:var(--app-max-width);
+  margin:0 auto;
+}
+
+.layout-screen{
+  width:100%;
+  max-width:var(--app-max-width);
+  min-height:100dvh;
+  margin:0 auto;
+  padding:var(--app-pad-top) var(--app-pad-x) var(--app-pad-bottom);
+  display:flex;
+  flex-direction:column;
+  gap:var(--section-gap);
+}
+
+.layout-hero,
+.layout-primary-action,
+.layout-secondary,
+.layout-progress,
+.layout-nav-space{
+  width:100%;
+  min-width:0;
+}
+
+.layout-hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--hero-gap);
+}
+
+.layout-hero-content{
+  flex:1 1 60%;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.layout-hero-visual{
+  flex:0 0 var(--hero-visual-width);
+  max-width:var(--hero-visual-width);
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.layout-hero-visual img,
+.layout-visual-fit{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+.layout-hero-title{
+  font-size:var(--type-hero);
+  line-height:.92;
+  letter-spacing:-.06em;
+  margin:0;
+}
+
+.layout-title{
+  font-size:var(--type-title);
+  line-height:1;
+  margin:0;
+}
+
+.layout-body{
+  font-size:var(--type-body);
+  line-height:1.35;
+}
+
+.layout-stack{display:flex;flex-direction:column;gap:var(--section-gap)}
+.layout-row{display:flex;align-items:center;gap:12px;min-width:0}
+.layout-row-between{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.layout-no-overlap{position:relative;z-index:auto;overflow:visible}
+
+@media(max-width:380px){
+  :root{--app-pad-x:16px;--hero-gap:12px;--hero-visual-width:36%}
+}
