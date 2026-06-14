@@ -29,7 +29,8 @@ const app = document.getElementById("app");
 let nav = document.getElementById("nav");
 const BUILD_ID = "sprint-4.4-daily-mission";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
-const DEV_JUMP_ROUTES = {"1":"splash","2":"onboard","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"player","9":"analytics"};
+const DEV_JUMP_ROUTES = {"0":"home","1":"splash","2":"onboard","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"player","9":"analytics"};
+const DEV_CTRL_JUMP_ROUTES = {"h":"home","m":"mission","t":"training","p":"player","c":"career"};
 const params = new URLSearchParams(window.location.search);
 const IS_LOCAL_DEV = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 const DEV_MODE_ENABLED = params.has("dev") || (IS_LOCAL_DEV && localStorage.getItem("pitchiqDevMode") === "true");
@@ -86,8 +87,9 @@ function bindDeveloperShortcuts(){
   window.addEventListener("keydown", event=>{
     const target = event.target;
     const isTyping = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
-    if(isTyping || event.metaKey || event.ctrlKey || event.altKey) return;
-    const route = DEV_JUMP_ROUTES[event.key];
+    if(isTyping || event.metaKey || event.altKey) return;
+    const key = event.key.toLowerCase();
+    const route = event.ctrlKey ? DEV_CTRL_JUMP_ROUTES[key] : DEV_JUMP_ROUTES[key];
     if(!route) return;
     event.preventDefault();
     console.log(`[PitchIQ Dev] Jump to ${route}`);
