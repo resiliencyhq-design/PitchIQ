@@ -8,6 +8,7 @@ import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
 import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { recommendedDrills } from "../data/drills.js";
 
 let state = normalizeState(loadState());
 
@@ -26,7 +27,7 @@ let camScore = 0;
 
 const app = document.getElementById("app");
 const nav = document.getElementById("nav");
-const BUILD_ID = "sprint-4.3-training-flow";
+const BUILD_ID = "sprint-4.4-daily-mission";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
 
 function showRenderError(error, route){
@@ -63,15 +64,15 @@ function render(route="splash"){
 function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); training.timer = null; if(currentRoute !== "camera") camera?.stop?.(); }
 
-function selectedDrill(){
-  const drills = document.querySelectorAll("[data-drill]");
-  return selectedDrillId;
+function missionDrill(){
+  return recommendedDrills(state.profile.position || "Winger")[0] || null;
 }
 function trainingView(){
-  const profile = state.profile || {};
   return {
     stage: trainingStage,
     selectedDrillId,
+    selectedDrill: activeSession?.drill || undefined,
+    missionDrill: missionDrill(),
     difficulty: selectedDifficulty,
     summary: trainingSummary,
     time: training.time,
@@ -119,6 +120,7 @@ function handleAction(action, el){
   if(action==="choose-drill") return chooseDrill(el);
   if(action==="choose-difficulty") return chooseDifficulty(el);
   if(action==="claim-reward-stage") return setTrainingStage("claim-reward");
+  if(action==="start-mission-training") return startMissionTraining();
   if(action==="start-training") return startTraining();
   if(action==="voice") return startVoice();
   if(action==="correct") return correct();
@@ -146,6 +148,7 @@ function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = n
 function trainingHome(){ stopEphemeral(); activeSession = null; trainingStage = "home"; training = { time:45, score:0, combo:1, timer:null }; renderTrainingRoute(); }
 function chooseDrill(el){ selectedDrillId = el?.dataset?.drill || selectedDrillId; setTrainingStage("choose-difficulty"); }
 function chooseDifficulty(el){ selectedDifficulty = el?.dataset?.difficulty || "medium"; setTrainingStage("preview"); }
+function startMissionTraining(){ selectedDrillId = missionDrill()?.id || selectedDrillId; selectedDifficulty = "medium"; setTrainingStage("preview"); }
 
 function randomCue(){ 
   if(activeSession?.drill) return sessionNextCue(activeSession.drill);

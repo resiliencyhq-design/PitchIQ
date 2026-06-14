@@ -112,6 +112,7 @@ export function renderTraining(state = {}, trainingView = {}){
   const drills = recommendedDrills(position).slice(0, 8);
   const stage = trainingView.stage || "home";
   const selectedDrill = trainingView.selectedDrill || drills[0];
+  const missionDrill = trainingView.missionDrill || drills[0];
   const difficulty = trainingView.difficulty || "medium";
   const difficultyInfo = DIFFICULTY_COPY[difficulty] || DIFFICULTY_COPY.medium;
   const summary = trainingView.summary || { attempts:0, correct:0, accuracy:0, score:0, xp:state.game?.lastXp || 0, combo:state.game?.bestCombo || 1 };
@@ -119,6 +120,7 @@ export function renderTraining(state = {}, trainingView = {}){
   const goal = selectedDrill?.focus || profile.goal || "React faster";
   const duration = selectedDrill?.seconds || 45;
   const rewardEstimate = difficulty === "hard" ? "Up to 300 XP" : difficulty === "easy" ? "Up to 180 XP" : "Up to 240 XP";
+  const missionStatus = state.game?.dailyDone ? "Mission complete" : "Protect your streak";
   const header = `<header class="sub"><button data-route="home">←</button><h1>Training</h1><button data-action="training-home">Home</button></header>`;
 
   if(stage === "choose-drill"){
@@ -175,7 +177,7 @@ export function renderTraining(state = {}, trainingView = {}){
       <div class="dashboard-grid">
         <article class="glass tile"><span>Completed drill</span><b>${selectedDrill?.name || "—"}</b><small>${summary.correct}/${summary.attempts} correct responses.</small></article>
         <article class="glass tile"><span>Score</span><b>${summary.score}</b><small>Best combo x${summary.combo}.</small></article>
-        <article class="glass tile"><span>Reward</span><b>${rewardName}</b><small>Claim your completed-session reward.</small></article>
+        <article class="glass tile"><span>Tomorrow's rep</span><b>${missionDrill?.name || "Training"}</b><small>Come back tomorrow to protect your streak and build XP.</small></article>
       </div>
       <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button></div>
     </section>`;
@@ -186,7 +188,7 @@ export function renderTraining(state = {}, trainingView = {}){
       <div class="glass tile"><span class="kicker">Step 7</span><b>${rewardName}</b><small>Reward confirmed for completing ${selectedDrill?.name || "training"}.</small></div>
       <div class="pack-stage"><img src="assets/art/pack.svg" alt="Gold pack"></div>
       <h2>+${summary.xp} XP banked</h2>
-      <p>Daily mission complete. Keep stacking reps.</p>
+      <p>Daily mission complete. Come back tomorrow for ${missionDrill?.name || "your next rep"}.</p>
       <button class="primary mega" data-action="training-home">Return to Training Home</button>
     </section>`;
   }
@@ -213,6 +215,13 @@ export function renderTraining(state = {}, trainingView = {}){
         <p>${selectedDrill?.focus || "Reaction"}</p>
       </article>
     </section>
+    <article class="glass tile">
+      <span class="kicker">Today's Mission • ${missionStatus}</span>
+      <b>${missionDrill?.name || "Daily Training"}</b>
+      <small>${missionDrill?.description || "Complete one focused rep to build XP and protect your daily rhythm."}</small>
+      <small>${missionDrill?.seconds || 45}s • ${missionDrill?.focus || "Reaction"} • Daily reward progress</small>
+      <div class="actions"><button class="primary" data-action="start-mission-training">Start Today's Mission</button><button data-action="choose-drill-stage">Choose Different Drill</button></div>
+    </article>
   </section>`;
 }
 
