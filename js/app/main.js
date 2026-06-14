@@ -29,6 +29,7 @@ const app = document.getElementById("app");
 let nav = document.getElementById("nav");
 const BUILD_ID = "sprint-4.4-daily-mission";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
+const DEV_JUMP_ROUTES = {"1":"splash","2":"onboard","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"player","9":"analytics"};
 
 function ensureAppShell(){
   app.classList.add("scrollable-content", "app-scroll");
@@ -75,6 +76,19 @@ function render(route="splash"){
 }
 function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); training.timer = null; if(currentRoute !== "camera") camera?.stop?.(); }
+
+function bindDeveloperShortcuts(){
+  window.addEventListener("keydown", event=>{
+    const target = event.target;
+    const isTyping = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
+    if(isTyping || event.metaKey || event.ctrlKey || event.altKey) return;
+    const route = DEV_JUMP_ROUTES[event.key];
+    if(!route) return;
+    event.preventDefault();
+    console.log(`[PitchIQ Dev] Jump to ${route}`);
+    goto(route);
+  });
+}
 
 function positionDrills(){
   return recommendedDrills(state.profile.position || "Winger");
@@ -329,6 +343,8 @@ function openPackAction(){
   document.getElementById("rewardText").textContent = "Unlocked " + reward.tier + " reward";
   toast("Unlocked: "+reward.name); saveState(state);
 }
+
+bindDeveloperShortcuts();
 
 try {
   render(state.profile.name ? "home" : "splash");
