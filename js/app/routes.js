@@ -122,51 +122,54 @@ export function renderTraining(state = {}, trainingView = {}){
   const rewardEstimate = difficulty === "hard" ? "Up to 300 XP" : difficulty === "easy" ? "Up to 180 XP" : "Up to 240 XP";
   const missionStatus = state.game?.dailyDone ? "Mission complete" : "Protect your streak";
   const resultNote = summary.accuracy >= 80 ? "Strong rep. Keep the streak alive." : summary.attempts ? "Good rep. One more tomorrow builds the habit." : "Session logged. Start with one clean response next time.";
-  const header = `<header class="sub"><button data-route="home">←</button><h1>Training</h1><button data-action="training-home">Home</button></header>`;
+  const stepLabel = { home:"Step 1 of 5", "choose-drill":"Step 2 of 5", "choose-difficulty":"Step 3 of 5", preview:"Step 4 of 5", live:"Live rep", results:"Step 5 of 5", "claim-reward":"Reward" }[stage] || "Training";
+  const flowHint = { home:"Choose your rep", "choose-drill":"Pick the focus", "choose-difficulty":"Set the pressure", preview:"Review and start", live:"React and score", results:"Review and claim", "claim-reward":"Bank the progress" }[stage] || "Build the next rep";
+  const header = `<header class="sub"><button data-route="home">←</button><h1>Training</h1><button data-action="training-home">Home</button></header><div class="glass tile"><span class="kicker">${stepLabel}</span><b>${flowHint}</b><small>${selectedDrill?.name || missionDrill?.name || "Training"} • ${difficultyInfo.label}</small></div>`;
 
   if(stage === "choose-drill"){
     return `<section class="screen app active" id="training">
       ${header}
-      <div class="glass tile"><span class="kicker">Step 1</span><b>Choose Drill</b><small>Pick a drill for your ${position} training block.</small></div>
+      <div class="glass tile"><span class="kicker">Choose your drill</span><b>What are you sharpening?</b><small>Pick one focused rep for your ${position} session.</small></div>
       <div class="drill-grid">
         ${drills.map(d=>`<button class="glass drill-card ${selectedDrill?.id===d.id?'active':''}" data-drill="${d.id}" data-action="choose-drill"><span class="kicker">${d.type}</span><b>${d.name}</b><small>${d.description || "Football cognition drill."}</small><small>${d.seconds}s • ${d.focus || d.type}</small></button>`).join("")}
       </div>
-      <div class="actions"><button data-action="training-home">Back</button></div>
+      <div class="actions"><button data-action="training-home">Back to Training Home</button></div>
     </section>`;
   }
 
   if(stage === "choose-difficulty"){
     return `<section class="screen app active" id="training">
       ${header}
-      <div class="glass tile"><span class="kicker">Step 2</span><b>Choose Difficulty</b><small>${selectedDrill?.name || "Selected drill"} • ${duration}s</small></div>
+      <div class="glass tile"><span class="kicker">Pressure level</span><b>${selectedDrill?.name || "Selected drill"}</b><small>Choose how hard this ${duration}s rep should feel.</small></div>
       <div class="drill-grid">
         ${Object.entries(DIFFICULTY_COPY).map(([key, info])=>`<button class="glass drill-card ${difficulty===key?'active':''}" data-difficulty="${key}" data-action="choose-difficulty"><span class="kicker">${key}</span><b>${info.label}</b><small>${info.text}</small></button>`).join("")}
       </div>
-      <div class="actions"><button data-action="choose-drill-stage">Back</button></div>
+      <div class="actions"><button data-action="choose-drill-stage">Change Drill</button></div>
     </section>`;
   }
 
   if(stage === "preview"){
     return `<section class="screen app active" id="training">
       ${header}
-      <div class="glass tile"><span class="kicker">Step 3</span><b>Session Preview</b><small>Check the plan, then start the live rep.</small></div>
-      <div class="stats">${stat("Drill", selectedDrill?.name || "—")}${stat("Difficulty", difficultyInfo.label)}${stat("Duration", duration + "s")}</div>
+      <div class="glass tile"><span class="kicker">Session Preview</span><b>${selectedDrill?.name || "Training"}</b><small>${selectedDrill?.description || "Check the plan, then start the live rep."}</small></div>
+      <div class="stats">${stat("Difficulty", difficultyInfo.label)}${stat("Duration", duration + "s")}${stat("Reward", rewardEstimate)}</div>
       <div class="dashboard-grid">
-        <article class="glass tile"><span>Goal</span><b>${goal}</b><small>${selectedDrill?.description || "Complete the rep with control."}</small></article>
-        <article class="glass tile"><span>Reward</span><b>${rewardEstimate}</b><small>XP depends on correct responses and combo.</small></article>
+        <article class="glass tile"><span>Goal</span><b>${goal}</b><small>One clear focus before you start.</small></article>
+        <article class="glass tile"><span>How to win</span><b>Correct cues + combo</b><small>React cleanly, then protect your streak.</small></article>
         <article class="glass tile"><span>Focus</span><b>${selectedDrill?.focus || selectedDrill?.type || "Reaction"}</b><small>Keep your first action simple.</small></article>
       </div>
-      <div class="actions"><button data-action="choose-difficulty-stage">Back</button><button class="primary mega" data-action="start-training">Start Live Session</button></div>
+      <div class="actions"><button data-action="choose-difficulty-stage">Change Difficulty</button><button class="primary mega" data-action="start-training">Start Rep</button></div>
     </section>`;
   }
 
   if(stage === "live"){
     return `<section class="screen app active" id="training">
-      <header class="sub"><button data-action="training-home">←</button><h1>Live Session</h1><button data-action="finish-training">Finish</button></header>
+      <header class="sub"><button data-action="training-home">←</button><h1>Live Session</h1><button data-action="finish-training">Finish Rep</button></header>
+      <div class="glass tile"><span class="kicker">Live rep</span><b>${selectedDrill?.name || "Training"}</b><small>${difficultyInfo.label} pressure • respond to the cue.</small></div>
       <div class="stats">${stat("Time", trainingView.time ?? duration, "time")}${stat("Score", trainingView.score ?? 0, "score")}${stat("Combo", 'x<span id="combo">'+(trainingView.combo ?? 1)+'</span>')}</div>
       <div class="cue glass"><div class="pulse"></div><b id="cue">${trainingView.cueDisplay || "READY"}</b><small id="instruction">${trainingView.instruction || "Say or tap the cue."}</small></div>
       <div class="actions"><button data-answer="red">Red</button><button data-answer="blue">Blue</button><button data-answer="left">Left</button><button data-answer="right">Right</button></div>
-      <div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Complete Session</button></div>
+      <div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Complete Rep</button></div>
     </section>`;
   }
 
@@ -176,20 +179,20 @@ export function renderTraining(state = {}, trainingView = {}){
       <div class="glass tile"><span class="kicker">Session complete</span><b>${selectedDrill?.name || "Training"}</b><small>${resultNote}</small></div>
       <div class="stats">${stat("XP earned", "+" + summary.xp)}${stat("Accuracy", summary.accuracy + "%")}${stat("Best combo", "x" + summary.combo)}${stat("Score", summary.score)}</div>
       <div class="dashboard-grid">
-        <article class="glass tile"><span>What happened</span><b>${summary.correct}/${summary.attempts} correct</b><small>${difficultyInfo.label} pressure • ${selectedDrill?.focus || selectedDrill?.type || "Reaction"}</small></article>
-        <article class="glass tile"><span>Reward ready</span><b>${rewardName}</b><small>Claim your completed-session reward and bank the progress.</small></article>
-        <article class="glass tile"><span>Next action</span><b>${missionDrill?.name || "Training"}</b><small>Come back tomorrow to protect your streak and build XP.</small></article>
+        <article class="glass tile"><span>Performance</span><b>${summary.correct}/${summary.attempts} correct</b><small>${difficultyInfo.label} pressure • ${selectedDrill?.focus || selectedDrill?.type || "Reaction"}</small></article>
+        <article class="glass tile"><span>Progress</span><b>${rewardName}</b><small>Your session reward is ready to claim.</small></article>
+        <article class="glass tile"><span>Next rep</span><b>${missionDrill?.name || "Training"}</b><small>Return tomorrow to protect the streak.</small></article>
       </div>
-      <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button><button data-action="training-home">Training Home</button></div>
+      <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button><button data-action="training-home">Back to Training</button></div>
     </section>`;
   }
 
   if(stage === "claim-reward"){
     return `<section class="screen center reward active" id="training">
-      <div class="glass tile"><span class="kicker">Step 7</span><b>${rewardName}</b><small>Reward confirmed for completing ${selectedDrill?.name || "training"}.</small></div>
+      <div class="glass tile"><span class="kicker">Reward claimed</span><b>${rewardName}</b><small>${selectedDrill?.name || "Training"} is complete.</small></div>
       <div class="pack-stage"><img src="assets/art/pack.svg" alt="Gold pack"></div>
       <h2>+${summary.xp} XP banked</h2>
-      <p>Daily mission complete. Come back tomorrow for ${missionDrill?.name || "your next rep"}.</p>
+      <p>Progress saved. Come back tomorrow for ${missionDrill?.name || "your next rep"}.</p>
       <button class="primary mega" data-action="training-home">Return to Training Home</button>
     </section>`;
   }
@@ -200,20 +203,20 @@ export function renderTraining(state = {}, trainingView = {}){
       <article class="glass hero-panel">
         <span class="kicker">Training Home</span>
         <h1>Build the next rep.</h1>
-        <p>Choose a drill, set the pressure, preview the goal, then complete a live session.</p>
+        <p>Choose a focused drill, set the pressure, preview the goal, then complete one clean rep.</p>
         <div class="mini-strip">
           <div><small>Position</small><b>${position}</b></div>
           <div><small>Best Combo</small><b>x${state.game?.bestCombo || 1}</b></div>
           <div><small>Today</small><b>${state.game?.dailyDone ? "Complete" : "Open"}</b></div>
         </div>
-        <div class="hero-actions"><button class="primary mega" data-action="choose-drill-stage">Choose Drill</button><button data-action="start-training">Quick Start</button></div>
+        <div class="hero-actions"><button class="primary mega" data-action="start-mission-training">Start Today's Mission</button><button data-action="choose-drill-stage">Choose Drill</button></div>
       </article>
       <article class="glass live-card">
         <div class="ovr-badge">Level ${state.game?.level || 1}</div>
         <img src="assets/art/player.svg" alt="Training player">
         <span class="kicker">Recommended</span>
-        <h2>${selectedDrill?.name || "Vision Sprint"}</h2>
-        <p>${selectedDrill?.focus || "Reaction"}</p>
+        <h2>${missionDrill?.name || "Vision Sprint"}</h2>
+        <p>${missionDrill?.focus || "Reaction"}</p>
       </article>
     </section>
     <article class="glass tile">
@@ -221,7 +224,7 @@ export function renderTraining(state = {}, trainingView = {}){
       <b>${missionDrill?.name || "Daily Training"}</b>
       <small>${missionDrill?.description || "Complete one focused rep to build XP and protect your daily rhythm."}</small>
       <small>${missionDrill?.seconds || 45}s • ${missionDrill?.focus || "Reaction"} • Daily reward progress</small>
-      <div class="actions"><button class="primary" data-action="start-mission-training">Start Today's Mission</button><button data-action="choose-drill-stage">Choose Different Drill</button></div>
+      <div class="actions"><button class="primary" data-action="start-mission-training">Start Mission</button><button data-action="choose-drill-stage">Choose Different Drill</button></div>
     </article>
   </section>`;
 }
@@ -261,7 +264,7 @@ export function renderAnalytics(state){
   const vals = state.analytics.weeklyXp;
   const max = Math.max(1, ...vals);
   const vision = Math.min(95,65+state.game.level), reaction = state.analytics.bestReaction ? 78 : 61, scan = 70+Math.min(20,state.game.streak), decision = 64+state.game.bestCombo, comp = 62+state.game.bestCombo;
-  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ";
+  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ");
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
     <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
