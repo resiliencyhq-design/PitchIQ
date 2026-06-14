@@ -14,88 +14,99 @@ export function renderOnboard(){
 export function renderMission(state){
   return `<section class="screen center active" id="mission"><div class="mission-card"><span class="kicker">🔥 Day ${state.game.streak} mission</span><h1>Beat yesterday.</h1><h2>Unlock Academy Boots.</h2><img src="assets/art/boots.svg" class="boots" alt="Academy Boots"><button class="primary mega" data-route="home">Continue</button></div></section>`;
 }
-export function renderHome(state){
+
+function homeMetrics(state){
   const need = xpNeed(state.game.level);
   const rank = rankForLevel(state.game.level);
   const pct = Math.min(100, Math.round(state.game.xp/need*100));
   const ovr = Math.min(99, 60 + state.game.level + (state.analytics.bestReaction ? 4 : 0));
   const best = state.analytics.bestReaction ? state.analytics.bestReaction + " ms" : "—";
-  const rewardState = state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Unlocked") : "Locked";
+  const weeklyTotal = state.analytics.weeklyXp.reduce((a,b)=>a+b,0);
+  const lastWeek = Math.max(1, Math.round(weeklyTotal * .85));
+  const trend = Math.round((weeklyTotal - lastWeek) / lastWeek * 100);
+  const rewardPct = state.game.dailyDone ? 100 : pct;
+  const rewardState = state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Reward Ready") : rewardPct + "% to unlock";
+  const nextMilestone = state.game.level < 4 ? "Local Club" : state.game.level < 8 ? "Division 3" : "Academy";
+  const milestoneLevel = state.game.level < 4 ? 4 : state.game.level < 8 ? 8 : 26;
+  const previousMilestoneLevel = state.game.level < 4 ? 1 : state.game.level < 8 ? 4 : 8;
+  const milestonePct = Math.min(100, Math.round((state.game.level - previousMilestoneLevel) / Math.max(1, milestoneLevel - previousMilestoneLevel) * 100));
+  return { need, rank, pct, ovr, best, weeklyTotal, lastWeek, trend, rewardPct, rewardState, nextMilestone, milestoneLevel, milestonePct };
+}
+
+function renderIdentityModule(state, metrics){
+  return `<section class="home-hero">
+    <article class="glass live-card">
+      <div class="ovr-badge">OVR ${metrics.ovr}</div>
+      <img src="assets/art/player.svg" alt="Live player card">
+      <span class="kicker">${metrics.rank}</span>
+      <h2>${state.profile.name || "Player"}</h2>
+      <p>${state.profile.position} • Level ${state.game.level}</p>
+    </article>
+  </section>`;
+}
+
+function renderMissionModule(state, metrics){
+  return `<article class="glass hero-panel">
+    <span class="kicker">Today's mission</span>
+    <h1>Beat yesterday.<br>Think faster.</h1>
+    <p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily academy reward.</p>
+    <div class="mini-strip">
+      <div><small>Reward</small><b>${metrics.rewardState}</b></div>
+      <div><small>Target</small><b>${Math.max(0, metrics.need - state.game.xp)} XP</b></div>
+      <div><small>Best RT</small><b>${metrics.best}</b></div>
+    </div>
+    <div class="hero-actions">
+      <button class="primary mega" data-route="training">Continue Training</button>
+      <button data-route="camera">Camera Challenge</button>
+    </div>
+  </article>`;
+}
+
+function renderWeeklyProgressModule(state, metrics){
+  return `<button class="tile" data-route="analytics">
+    <span>Weekly form</span>
+    <b>${metrics.trend >= 0 ? "+" : ""}${metrics.trend}% trend</b>
+    <small>${metrics.weeklyTotal >= metrics.lastWeek ? "Best Week pace" : "Build the week"} • ${metrics.weeklyTotal} XP</small>
+  </button>`;
+}
+
+function renderRewardPreviewModule(state, metrics){
+  return `<button class="tile" data-route="reward">
+    <span>Reward preview</span>
+    <b>${metrics.rewardPct}% to unlock</b>
+    <div class="xpbar"><i style="width:${metrics.rewardPct}%"></i></div>
+    <small>${state.game.dailyDone ? "Reward ready — tap to open." : `${100 - metrics.rewardPct}% remaining • complete today's mission.`}</small>
+  </button>`;
+}
+
+function renderCareerLadderModule(state, metrics){
+  return `<article class="glass career-card">
+    <span class="kicker">Career ladder</span>
+    <h2>${metrics.milestonePct}% to ${metrics.nextMilestone}</h2>
+    <div class="xpbar"><i style="width:${metrics.milestonePct}%"></i></div>
+    <small>${Math.max(0,metrics.milestoneLevel - state.game.level)} levels remaining • Level ${state.game.level}/${metrics.milestoneLevel}</small>
+    <img src="assets/art/career-ladder.svg" alt="Career ladder preview">
+  </article>`;
+}
+
+export function renderHome(state){
+  const metrics = homeMetrics(state);
   return `<section class="screen app home-aaa active" id="home">
     <header class="top">
       <div>
-        <span class="kicker">🔥 ${state.game.streak} day streak • ${rank}</span>
+        <span class="kicker">🔥 ${state.game.streak} day streak • ${metrics.rank}</span>
         <h1>Hi, ${state.profile.name || "Player"}</h1>
       </div>
       <button class="ghost" data-action="reset">Reset</button>
     </header>
-
-    <section class="home-hero">
-      <article class="glass hero-panel">
-        <span class="kicker">Today's mission</span>
-        <h1>Beat yesterday.<br>Think faster.</h1>
-        <p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily academy reward.</p>
-        <div class="mini-strip">
-          <div><small>Reward</small><b>Gold Pack</b></div>
-          <div><small>Target</small><b>250 XP</b></div>
-          <div><small>Best RT</small><b>${best}</b></div>
-        </div>
-        <div class="hero-actions">
-          <button class="primary mega" data-route="training">Continue Training</button>
-          <button data-route="camera">Camera Challenge</button>
-        </div>
-        <img src="assets/art/boots.svg" class="hero-art" alt="Academy boots">
-      </article>
-
-      <article class="glass live-card">
-        <div class="ovr-badge">OVR ${ovr}</div>
-        <img src="assets/art/player.svg" alt="Live player card">
-        <span class="kicker">My Player</span>
-        <h2>${state.profile.name || "Player"}</h2>
-        <p>${state.profile.position}</p>
-      </article>
-    </section>
-
+    ${renderIdentityModule(state, metrics)}
+    ${renderMissionModule(state, metrics)}
     <section class="dashboard-grid">
-      <article class="glass tile">
-        <span>Level progress</span>
-        <b>Level ${state.game.level}</b>
-        <div class="xpbar"><i style="width:${pct}%"></i></div>
-        <small>${state.game.xp} / ${need} XP to next level</small>
-      </article>
-
-      <button class="tile" data-route="reward">
-        <span>Reward preview</span>
-        <b>${rewardState}</b>
-        <small>${state.game.dailyDone ? "Tap to open today's pack." : "Complete the mission to unlock."}</small>
-      </button>
-
-      <button class="tile" data-route="analytics">
-        <span>Weekly form</span>
-        <b>${state.analytics.weeklyXp.reduce((a,b)=>a+b,0)} XP</b>
-        <small>Tap for summary and trends.</small>
-      </button>
-
-      <article class="glass career-card">
-        <span class="kicker">Career ladder</span>
-        <h2>Next: ${state.game.level < 4 ? "Local Club" : state.game.level < 8 ? "Division 3" : "Academy"}</h2>
-        <img src="assets/art/career-ladder.svg" alt="Career ladder preview">
-      </article>
-
-      <article class="glass reward-preview">
-        <div>
-          <span class="kicker">Daily pack</span>
-          <h2>Academy Boots</h2>
-          <p>Earned through training effort. No pay-to-win.</p>
-        </div>
-        <img src="assets/art/pack.svg" alt="Gold pack">
-      </article>
-
-      <article class="quick-stat">
-        ${stat("Vision", 65 + state.game.level)}
-        ${stat("Reaction", best)}
-        ${stat("Combo", "x" + state.game.bestCombo)}
-      </article>
+      <article class="glass tile"><span>Level progress</span><b>Level ${state.game.level}</b><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><small>${state.game.xp} / ${metrics.need} XP to next level</small></article>
+      ${renderWeeklyProgressModule(state, metrics)}
+      ${renderRewardPreviewModule(state, metrics)}
+      ${renderCareerLadderModule(state, metrics)}
+      <article class="quick-stat">${stat("Vision", 65 + state.game.level)}${stat("Reaction", metrics.best)}${stat("Combo", "x" + state.game.bestCombo)}</article>
     </section>
   </section>`;
 }
@@ -264,7 +275,7 @@ export function renderAnalytics(state){
   const vals = state.analytics.weeklyXp;
   const max = Math.max(1, ...vals);
   const vision = Math.min(95,65+state.game.level), reaction = state.analytics.bestReaction ? 78 : 61, scan = 70+Math.min(20,state.game.streak), decision = 64+state.game.bestCombo, comp = 62+state.game.bestCombo;
-  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ");
+  const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ";
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
     <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
