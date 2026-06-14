@@ -38,22 +38,27 @@ function renderIdentityModule(state, metrics){
     <article class="glass live-card">
       <div class="ovr-badge">OVR ${metrics.ovr}</div>
       <img src="assets/art/player.svg" alt="Live player card">
-      <span class="kicker">${metrics.rank}</span>
+      <span class="kicker">Player identity • ${metrics.rank}</span>
       <h2>${state.profile.name || "Player"}</h2>
       <p>${state.profile.position} • Level ${state.game.level}</p>
+      <div class="mini-strip">
+        <div><small>Vision</small><b>${65 + state.game.level}</b></div>
+        <div><small>Reaction</small><b>${state.analytics.bestReaction ? 78 : 61}</b></div>
+        <div><small>Awareness</small><b>${70 + Math.min(20,state.game.streak)}</b></div>
+      </div>
     </article>
   </section>`;
 }
 
 function renderMissionModule(state, metrics){
   return `<article class="glass hero-panel">
-    <span class="kicker">Today's mission</span>
+    <span class="kicker">Today's mission • primary action</span>
     <h1>Beat yesterday.<br>Think faster.</h1>
-    <p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily academy reward.</p>
+    <p>Complete one focused Vision Sprint to protect your streak and move your player profile forward.</p>
     <div class="mini-strip">
+      <div><small>Objective</small><b>1 clean rep</b></div>
       <div><small>Reward</small><b>${metrics.rewardState}</b></div>
       <div><small>Target</small><b>${Math.max(0, metrics.need - state.game.xp)} XP</b></div>
-      <div><small>Best RT</small><b>${metrics.best}</b></div>
     </div>
     <div class="hero-actions">
       <button class="primary mega" data-route="training">Continue Training</button>
@@ -64,9 +69,9 @@ function renderMissionModule(state, metrics){
 
 function renderWeeklyProgressModule(state, metrics){
   return `<button class="tile" data-route="analytics">
-    <span>Weekly form</span>
+    <span>Weekly progress</span>
     <b>${metrics.trend >= 0 ? "+" : ""}${metrics.trend}% trend</b>
-    <small>${metrics.weeklyTotal >= metrics.lastWeek ? "Best Week pace" : "Build the week"} • ${metrics.weeklyTotal} XP</small>
+    <small>${metrics.weeklyTotal} XP • ${metrics.weeklyTotal >= metrics.lastWeek ? "Best Week pace" : "Steady Growth"}</small>
   </button>`;
 }
 
@@ -102,7 +107,7 @@ export function renderHome(state){
     ${renderIdentityModule(state, metrics)}
     ${renderMissionModule(state, metrics)}
     <section class="dashboard-grid">
-      <article class="glass tile"><span>Level progress</span><b>Level ${state.game.level}</b><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><small>${state.game.xp} / ${metrics.need} XP to next level</small></article>
+      <article class="glass tile"><span>XP progress</span><b>Level ${state.game.level}</b><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><small>${state.game.xp} / ${metrics.need} XP to next level</small></article>
       ${renderWeeklyProgressModule(state, metrics)}
       ${renderRewardPreviewModule(state, metrics)}
       ${renderCareerLadderModule(state, metrics)}
