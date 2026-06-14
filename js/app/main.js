@@ -152,9 +152,9 @@ function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = n
 } } }
 
 function trainingHome(){ stopEphemeral(); activeSession = null; trainingStage = "home"; training = { time:45, score:0, combo:1, timer:null }; renderTrainingRoute(); }
-function chooseDrill(el){ selectedDrillId = el?.dataset?.drill || selectedDrillId; setTrainingStage("choose-difficulty"); }
-function chooseDifficulty(el){ selectedDifficulty = el?.dataset?.difficulty || "medium"; setTrainingStage("preview"); }
-function startMissionTraining(){ selectedDrillId = missionDrill()?.id || selectedDrillId; selectedDifficulty = "medium"; setTrainingStage("preview"); }
+function chooseDrill(el){ activeSession = null; trainingSummary = null; selectedDrillId = el?.dataset?.drill || selectedDrillId; setTrainingStage("choose-difficulty"); }
+function chooseDifficulty(el){ activeSession = null; trainingSummary = null; selectedDifficulty = el?.dataset?.difficulty || "medium"; setTrainingStage("preview"); }
+function startMissionTraining(){ activeSession = null; trainingSummary = null; selectedDrillId = missionDrill()?.id || selectedDrillId; selectedDifficulty = "medium"; setTrainingStage("preview"); }
 
 function randomCue(){ 
   if(activeSession?.drill) return sessionNextCue(activeSession.drill);
