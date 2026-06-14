@@ -100,19 +100,119 @@ export function renderHome(state){
   </section>`;
 }
 
-export function renderTraining(state = {}){
+const DIFFICULTY_COPY = {
+  easy: { label:"Easy", text:"More time to settle in and build confidence." },
+  medium: { label:"Medium", text:"Balanced pressure for a normal academy rep." },
+  hard: { label:"Hard", text:"Higher pressure. Protect your combo." }
+};
+
+export function renderTraining(state = {}, trainingView = {}){
   const profile = state.profile || {};
   const position = profile.position || "Winger";
   const drills = recommendedDrills(position).slice(0, 8);
+  const stage = trainingView.stage || "home";
+  const selectedDrill = trainingView.selectedDrill || drills[0];
+  const difficulty = trainingView.difficulty || "medium";
+  const difficultyInfo = DIFFICULTY_COPY[difficulty] || DIFFICULTY_COPY.medium;
+  const summary = trainingView.summary || { attempts:0, correct:0, accuracy:0, score:0, xp:state.game?.lastXp || 0, combo:state.game?.bestCombo || 1 };
+  const rewardName = trainingView.rewardName || "Daily Academy Pack";
+  const goal = selectedDrill?.focus || profile.goal || "React faster";
+  const duration = selectedDrill?.seconds || 45;
+  const rewardEstimate = difficulty === "hard" ? "Up to 300 XP" : difficulty === "easy" ? "Up to 180 XP" : "Up to 240 XP";
+  const header = `<header class="sub"><button data-route="home">←</button><h1>Training</h1><button data-action="training-home">Home</button></header>`;
+
+  if(stage === "choose-drill"){
+    return `<section class="screen app active" id="training">
+      ${header}
+      <div class="glass tile"><span class="kicker">Step 1</span><b>Choose Drill</b><small>Pick a drill for your ${position} training block.</small></div>
+      <div class="drill-grid">
+        ${drills.map(d=>`<button class="glass drill-card ${selectedDrill?.id===d.id?'active':''}" data-drill="${d.id}" data-action="choose-drill"><span class="kicker">${d.type}</span><b>${d.name}</b><small>${d.description || "Football cognition drill."}</small><small>${d.seconds}s • ${d.focus || d.type}</small></button>`).join("")}
+      </div>
+      <div class="actions"><button data-action="training-home">Back</button></div>
+    </section>`;
+  }
+
+  if(stage === "choose-difficulty"){
+    return `<section class="screen app active" id="training">
+      ${header}
+      <div class="glass tile"><span class="kicker">Step 2</span><b>Choose Difficulty</b><small>${selectedDrill?.name || "Selected drill"} • ${duration}s</small></div>
+      <div class="drill-grid">
+        ${Object.entries(DIFFICULTY_COPY).map(([key, info])=>`<button class="glass drill-card ${difficulty===key?'active':''}" data-difficulty="${key}" data-action="choose-difficulty"><span class="kicker">${key}</span><b>${info.label}</b><small>${info.text}</small></button>`).join("")}
+      </div>
+      <div class="actions"><button data-action="choose-drill-stage">Back</button></div>
+    </section>`;
+  }
+
+  if(stage === "preview"){
+    return `<section class="screen app active" id="training">
+      ${header}
+      <div class="glass tile"><span class="kicker">Step 3</span><b>Session Preview</b><small>Check the plan, then start the live rep.</small></div>
+      <div class="stats">${stat("Drill", selectedDrill?.name || "—")}${stat("Difficulty", difficultyInfo.label)}${stat("Duration", duration + "s")}</div>
+      <div class="dashboard-grid">
+        <article class="glass tile"><span>Goal</span><b>${goal}</b><small>${selectedDrill?.description || "Complete the rep with control."}</small></article>
+        <article class="glass tile"><span>Reward</span><b>${rewardEstimate}</b><small>XP depends on correct responses and combo.</small></article>
+        <article class="glass tile"><span>Focus</span><b>${selectedDrill?.focus || selectedDrill?.type || "Reaction"}</b><small>Keep your first action simple.</small></article>
+      </div>
+      <div class="actions"><button data-action="choose-difficulty-stage">Back</button><button class="primary mega" data-action="start-training">Start Live Session</button></div>
+    </section>`;
+  }
+
+  if(stage === "live"){
+    return `<section class="screen app active" id="training">
+      <header class="sub"><button data-action="training-home">←</button><h1>Live Session</h1><button data-action="finish-training">Finish</button></header>
+      <div class="stats">${stat("Time", trainingView.time ?? duration, "time")}${stat("Score", trainingView.score ?? 0, "score")}${stat("Combo", 'x<span id="combo">'+(trainingView.combo ?? 1)+'</span>')}</div>
+      <div class="cue glass"><div class="pulse"></div><b id="cue">${trainingView.cueDisplay || "READY"}</b><small id="instruction">${trainingView.instruction || "Say or tap the cue."}</small></div>
+      <div class="actions"><button data-answer="red">Red</button><button data-answer="blue">Blue</button><button data-answer="left">Left</button><button data-answer="right">Right</button></div>
+      <div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Complete Session</button></div>
+    </section>`;
+  }
+
+  if(stage === "results"){
+    return `<section class="screen app active" id="training">
+      ${header}
+      <div class="glass tile"><span class="kicker">Step 6</span><b>Results</b><small>${selectedDrill?.name || "Training"} complete.</small></div>
+      <div class="stats">${stat("Difficulty", difficultyInfo.label)}${stat("Accuracy", summary.accuracy + "%")}${stat("XP", summary.xp)}</div>
+      <div class="dashboard-grid">
+        <article class="glass tile"><span>Completed drill</span><b>${selectedDrill?.name || "—"}</b><small>${summary.correct}/${summary.attempts} correct responses.</small></article>
+        <article class="glass tile"><span>Score</span><b>${summary.score}</b><small>Best combo x${summary.combo}.</small></article>
+        <article class="glass tile"><span>Reward</span><b>${rewardName}</b><small>Claim your completed-session reward.</small></article>
+      </div>
+      <div class="actions"><button class="primary mega" data-action="claim-reward-stage">Claim Reward</button></div>
+    </section>`;
+  }
+
+  if(stage === "claim-reward"){
+    return `<section class="screen center reward active" id="training">
+      <div class="glass tile"><span class="kicker">Step 7</span><b>${rewardName}</b><small>Reward confirmed for completing ${selectedDrill?.name || "training"}.</small></div>
+      <div class="pack-stage"><img src="assets/art/pack.svg" alt="Gold pack"></div>
+      <h2>+${summary.xp} XP banked</h2>
+      <p>Daily mission complete. Keep stacking reps.</p>
+      <button class="primary mega" data-action="training-home">Return to Training Home</button>
+    </section>`;
+  }
+
   return `<section class="screen app active" id="training">
-    <header class="sub"><button data-route="home">←</button><h1>Training Engine</h1><button data-action="start-training">Start</button></header>
-    <div class="stats">${stat("Time","45","time")}${stat("Score","0","score")}${stat("Combo",'x<span id="combo">1</span>')}</div>
-    <div class="cue glass"><div class="pulse"></div><b id="cue">READY</b><small id="instruction">Choose a drill, then start.</small></div>
-    <div class="drill-grid">
-      ${drills.map((d,i)=>`<button class="glass drill-card ${i===0?'active':''}" data-drill="${d.id}"><span class="kicker">${d.type}</span><b>${d.name}</b><small>${d.seconds}s • Difficulty ${d.difficulty}</small></button>`).join("")}
-    </div>
-    <div class="actions"><button data-answer="red">Red</button><button data-answer="blue">Blue</button><button data-answer="left">Left</button><button data-answer="right">Right</button></div>
-    <div class="actions"><button data-action="voice">🎤 Voice</button><button data-action="correct">Correct</button><button data-action="wrong">Missed</button><button class="primary" data-action="finish-training">Finish</button></div>
+    ${header}
+    <section class="home-hero">
+      <article class="glass hero-panel">
+        <span class="kicker">Training Home</span>
+        <h1>Build the next rep.</h1>
+        <p>Choose a drill, set the pressure, preview the goal, then complete a live session.</p>
+        <div class="mini-strip">
+          <div><small>Position</small><b>${position}</b></div>
+          <div><small>Best Combo</small><b>x${state.game?.bestCombo || 1}</b></div>
+          <div><small>Today</small><b>${state.game?.dailyDone ? "Complete" : "Open"}</b></div>
+        </div>
+        <div class="hero-actions"><button class="primary mega" data-action="choose-drill-stage">Choose Drill</button><button data-action="start-training">Quick Start</button></div>
+      </article>
+      <article class="glass live-card">
+        <div class="ovr-badge">Level ${state.game?.level || 1}</div>
+        <img src="assets/art/player.svg" alt="Training player">
+        <span class="kicker">Recommended</span>
+        <h2>${selectedDrill?.name || "Vision Sprint"}</h2>
+        <p>${selectedDrill?.focus || "Reaction"}</p>
+      </article>
+    </section>
   </section>`;
 }
 
