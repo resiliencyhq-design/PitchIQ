@@ -24,17 +24,15 @@ let training = { time:45, score:0, combo:1, timer:null };
 let camera = null;
 let voice = null;
 let camScore = 0;
-let devSelectionTimer = null;
-let devSelectionActive = false;
 
 const app = document.getElementById("app");
 let nav = document.getElementById("nav");
 const BUILD_ID = "sprint-4.4-daily-mission";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
-const DEV_JUMP_ROUTES = {"1":"splash","2":"player","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"analytics","9":"reward"};
+const DEV_JUMP_ROUTES = {"1":"splash","2":"player","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"analytics"};
+const DEV_HASH_ROUTES = new Set(["splash", "player", "mission", "home", "training", "camera", "career", "analytics"]);
 const params = new URLSearchParams(window.location.search);
-const IS_LOCAL_DEV = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const DEV_MODE_ENABLED = params.has("dev") || (IS_LOCAL_DEV && localStorage.getItem("pitchiqDevMode") === "true");
+const DEV_MODE_ENABLED = params.has("dev");
 
 function ensureAppShell(){
   app.classList.add("scrollable-content", "app-scroll");
@@ -73,6 +71,7 @@ function render(route="splash"){
   nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
   sparkles(document.getElementById("particles"));
   bindScreen();
+  renderDeveloperPanel();
   saveState(state);
 
   } catch(error) {
@@ -82,32 +81,28 @@ function render(route="splash"){
 function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); training.timer = null; if(currentRoute !== "camera") camera?.stop?.(); }
 
-function bindDeveloperShortcuts(){
+function renderDeveloperPanel(){
   if(!DEV_MODE_ENABLED) return;
-  console.log("[PitchIQ Dev] Developer shortcuts active");
-  window.addEventListener("keydown", event=>{
-    const target = event.target;
-    const isTyping = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable);
-    if(isTyping || event.metaKey || event.ctrlKey || event.altKey) return;
-    const key = event.key.toLowerCase();
-    if(key === "d"){
-      devSelectionActive = true;
-      clearTimeout(devSelectionTimer);
-      console.log("[PitchIQ Dev] Awaiting screen selection");
-      toast("DEV MODE\nPress 1-9");
-      devSelectionTimer = setTimeout(()=>{ devSelectionActive = false; }, 3000);
-      return;
-    }
-    if(!devSelectionActive) return;
-    const route = DEV_JUMP_ROUTES[key];
-    if(!route) return;
-    event.preventDefault();
-    event.stopPropagation();
-    devSelectionActive = false;
-    clearTimeout(devSelectionTimer);
+  let panel = document.getElementById("pitchiq-dev-panel");
+  if(!panel){
+    panel = document.createElement("aside");
+    panel.id = "pitchiq-dev-panel";
+    panel.setAttribute("aria-label", "PitchIQ Developer navigation");
+    panel.style.cssText = "position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:calc(env(safe-area-inset-left,0px) + 8px);z-index:9999;background:rgba(10,16,28,.82);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px;font:12px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:150px";
+    document.body.appendChild(panel);
+  }
+  panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${Object.entries(DEV_JUMP_ROUTES).map(([key, route])=>`<button type="button" data-dev-route="${route}" style="display:block;width:100%;margin:3px 0;padding:4px 6px;border:0;border-radius:7px;background:rgba(255,255,255,.12);color:#fff;text-align:left;font:inherit;cursor:pointer">[${key}] ${route.charAt(0).toUpperCase()+route.slice(1)}</button>`).join("")}`;
+  panel.querySelectorAll("[data-dev-route]").forEach(button=>button.addEventListener("click",()=>{
+    const route = button.dataset.devRoute;
     console.log(`[PitchIQ Dev] Jump to ${route}`);
     goto(route);
-  });
+  }));
+}
+
+function devInitialRoute(){
+  if(!DEV_MODE_ENABLED) return state.profile.name ? "home" : "splash";
+  const route = window.location.hash.replace("#", "").toLowerCase();
+  return DEV_HASH_ROUTES.has(route) ? route : (state.profile.name ? "home" : "splash");
 }
 
 function positionDrills(){
@@ -364,10 +359,8 @@ function openPackAction(){
   toast("Unlocked: "+reward.name); saveState(state);
 }
 
-bindDeveloperShortcuts();
-
 try {
-  render(state.profile.name ? "home" : "splash");
+  render(devInitialRoute());
   window.__PITCHIQ_READY__ = true;
 } catch (error) {
   showRenderError(error, currentRoute || "startup");
