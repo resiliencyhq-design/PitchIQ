@@ -34,59 +34,53 @@ function homeMetrics(state){
 }
 
 function renderIdentityModule(state, metrics){
-  return `<article class="glass live-card home-player-card">
-    <div class="ovr-badge">OVR ${metrics.ovr}</div>
-    <img src="assets/art/player.svg" alt="Live player card">
-    <span class="kicker">Good afternoon,</span>
-    <h2>${state.profile.name || "Player"}</h2>
-    <p>${state.profile.position} • ${metrics.rank}</p>
-  </article>`;
-}
-
-function renderLevelProgressModule(state, metrics){
-  return `<article class="glass tile home-xp-card"><span>Level ${state.game.level}</span><b>${metrics.rank}</b><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><small>${state.game.xp} / ${metrics.need} XP</small></article>`;
+  return `<section class="home-hero-card">
+    <div class="home-streak">🔥 ${state.game.streak} day streak • ${metrics.rank}</div>
+    <button class="home-bell" data-route="settings">♢</button>
+    <div class="home-greeting"><span>Good afternoon,</span><b>${state.profile.name || "Player"}</b></div>
+    <div class="home-player-figure"><img src="assets/art/player.svg" alt="Academy player"></div>
+    <div class="home-level-panel"><span>Level <b>${state.game.level}</b></span><small>${metrics.rank}</small><div class="xpbar"><i style="width:${metrics.pct}%"></i></div><em>${state.game.xp} / ${metrics.need} XP</em></div>
+    <div class="home-ovr-panel"><small>OVR</small><b>${metrics.ovr}</b><small>Position</small><strong>${state.profile.position}</strong></div>
+  </section>`;
 }
 
 function renderMissionModule(state, metrics){
-  return `<article class="glass hero-panel home-mission-card">
-    <span class="kicker">Today's Mission</span>
-    <h1>Beat yesterday.<br>Think faster.</h1>
-    <p>Complete one focused Vision Sprint to protect your streak, build XP, and move your player profile forward.</p>
-    <div class="mini-strip">
-      <div><small>Objective</small><b>1 clean rep</b></div>
-      <div><small>Reward</small><b>${metrics.rewardState}</b></div>
-      <div><small>Target</small><b>${Math.max(0, metrics.need - state.game.xp)} XP</b></div>
+  return `<article class="home-mock-mission">
+    <div class="mission-copy"><span class="kicker">Today's Mission</span><h1>Beat yesterday.<br>Think faster.</h1><p>Complete a short Vision Sprint to protect your streak, build XP, and unlock your daily reward.</p></div>
+    <div class="mission-reward"><span>Mission Reward</span><img src="assets/art/boots.svg" alt="Elite boots"><b>Elite Boots</b><small>Unlock at ${metrics.need} XP</small></div>
+    <div class="mission-objectives">
+      <div><i>◷</i><span>Train for 5 minutes</span><div class="xpbar"><i style="width:60%"></i></div><b>3 / 5</b></div>
+      <div><i>🔥</i><span>Get a combo of 10</span><div class="xpbar"><i style="width:${Math.min(100,state.game.bestCombo*10)}%"></i></div><b>${Math.min(10,state.game.bestCombo)} / 10</b></div>
+      <div><i>◎</i><span>Scan 50 cues</span><div class="xpbar"><i style="width:${metrics.rewardPct}%"></i></div><b>${metrics.rewardPct} / 100</b></div>
     </div>
-    <div class="hero-actions">
-      <button class="primary mega" data-route="training">▶ Continue Training</button>
-    </div>
+    <button class="primary mega home-continue" data-route="training">▶ Continue Training</button>
   </article>`;
 }
 
 function renderQuickActionsModule(){
   return `<section class="home-actions-grid">
-    <button class="tile home-action-card" data-route="career"><span>Career</span><b>🏆</b><small>Pathway</small></button>
-    <button class="tile home-action-card" data-route="player"><span>Player</span><b>👤</b><small>Profile</small></button>
-    <button class="tile home-action-card" data-route="analytics"><span>Stats</span><b>📊</b><small>Progress</small></button>
-    <button class="tile home-action-card" data-route="reward"><span>Shop</span><b>🛒</b><small>Rewards</small></button>
+    <button class="home-action-card" data-route="career"><b>⭐</b><span>Career</span><small>Your path to pro</small></button>
+    <button class="home-action-card" data-route="player"><b>👕</b><span>Player</span><small>View stats</small></button>
+    <button class="home-action-card" data-route="analytics"><b>▮▮▮</b><span>Stats</span><small>Progress</small></button>
+    <button class="home-action-card" data-route="reward"><b>🛒</b><span>Shop</span><small>Rewards</small></button>
+  </section>`;
+}
+
+function renderWeeklyPackModule(metrics){
+  return `<section class="home-secondary-row">
+    <article class="home-weekly-card"><span>Weekly Progress</span><b>${metrics.weeklyTotal}</b><small>XP earned</small><em>${metrics.trend >= 0 ? "▲" : "▼"} ${Math.abs(metrics.trend)}% vs last week</em><div class="mini-bars"><i style="height:36%"></i><i style="height:52%"></i><i style="height:66%"></i><i style="height:56%"></i><i class="hot" style="height:78%"></i><i style="height:54%"></i><i style="height:62%"></i></div></article>
+    <button class="home-pack-card" data-route="reward"><span>Daily Pack</span><b>Free pack<br>ready to open!</b><em>Tap to open</em><img src="assets/art/pack.svg" alt="Daily pack"></button>
   </section>`;
 }
 
 export function renderHome(state){
   const metrics = homeMetrics(state);
   return `<section class="screen app home-aaa home-v7 active" id="home">
-    <header class="top home-command">
-      <div>
-        <span class="kicker">🔥 ${state.game.streak} day streak</span>
-        <h1>PitchIQ</h1>
-      </div>
-      <button class="ghost" data-action="reset">Reset</button>
-    </header>
     <section class="home-v7-grid">
       ${renderIdentityModule(state, metrics)}
-      ${renderLevelProgressModule(state, metrics)}
       ${renderMissionModule(state, metrics)}
       ${renderQuickActionsModule()}
+      ${renderWeeklyPackModule(metrics)}
     </section>
   </section>`;
 }
