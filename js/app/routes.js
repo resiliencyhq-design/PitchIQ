@@ -278,18 +278,28 @@ export function renderReward(state){
 }
 
 export function renderPlayer(state){
-  return `<section class="screen app active" id="player"><header class="sub"><button data-route="home">←</button><h1>Player</h1><button data-route="settings">Settings</button></header><div class="player glass"><img src="assets/art/player.svg" alt="Player"><div><span class="kicker">OVR ${60+state.game.level}</span><h2>${state.profile.name||"Player"}</h2><p>${state.profile.position}</p></div></div><div class="stats">${stat("Vision",65+state.game.level)}${stat("Reaction",state.analytics.bestReaction?72:61)}${stat("Composure",60+state.game.bestCombo)}</div></section>`;
+  const ovr = Math.min(99, 60 + state.game.level + (state.analytics.bestReaction ? 4 : 0));
+  const rank = rankForLevel(state.game.level);
+  const vision = 65 + state.game.level;
+  const reaction = state.analytics.bestReaction ? 78 : 61;
+  const awareness = 70 + Math.min(20,state.game.streak);
+  const decision = 64 + state.game.bestCombo;
+  const composure = 62 + state.game.bestCombo;
+  return `<section class="screen app active" id="player"><header class="sub"><button data-route="home">←</button><h1>Player</h1><button data-route="settings">Settings</button></header><div class="player glass"><img src="assets/art/player.svg" alt="Player"><div><span class="kicker">Player identity • ${rank}</span><h2>${state.profile.name||"Player"}</h2><p>OVR ${ovr} • ${state.profile.position} • Level ${state.game.level}</p></div></div><div class="stats">${stat("Vision",vision)}${stat("Reaction",reaction)}${stat("Awareness",awareness)}${stat("Decision",decision)}${stat("Composure",composure)}</div><div class="glass tile"><span>Profile focus</span><b>${state.profile.position || "Player"} pathway</b><small>Identity and attributes mirror the Home player card.</small></div></section>`;
 }
 export function renderAnalytics(state){
   const vals = state.analytics.weeklyXp;
   const max = Math.max(1, ...vals);
+  const weeklyTotal = vals.reduce((a,b)=>a+b,0);
+  const lastWeek = Math.max(1, Math.round(weeklyTotal * .85));
+  const trend = Math.round((weeklyTotal - lastWeek) / lastWeek * 100);
   const vision = Math.min(95,65+state.game.level), reaction = state.analytics.bestReaction ? 78 : 61, scan = 70+Math.min(20,state.game.streak), decision = 64+state.game.bestCombo, comp = 62+state.game.bestCombo;
   const points = [[150,35-vision*.15],[245-reaction*.7,105-reaction*.25],[205-decision*.35,240-decision*.55],[95+comp*.25,240-comp*.55],[55+scan*.65,105-scan*.25]].map(p=>p.join(",")).join(" ");
   return `<section class="screen app summary active" id="analytics"><header class="sub"><button data-route="home">←</button><h1>Analytics</h1><button data-route="career">Career</button></header>
-    <div class="stats">${stat("XP Earned",state.game.lastXp)}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
+    <div class="stats">${stat("Weekly XP",weeklyTotal)}${stat("Trend",(trend >= 0 ? "+" : "") + trend + "%")}${stat("Best RT",state.analytics.bestReaction ? state.analytics.bestReaction+" ms":"—")}${stat("Best Combo","x"+state.game.bestCombo)}</div>
     <div class="analytics-grid">
-      <div class="glass analytics-card"><span class="kicker">Weekly XP</span><div class="chart">${vals.map(v=>`<div class="bar" style="height:${Math.max(12,Math.round(v/max*190))}px"></div>`).join("")}</div></div>
-      <div class="glass analytics-card"><span class="kicker">Player radar</span><div class="spider"><svg viewBox="0 0 300 300"><polygon points="150,30 260,110 220,250 80,250 40,110" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><polygon points="${points}" fill="rgba(215,255,46,.22)" stroke="#D7FF2E" stroke-width="5"/></svg></div></div>
+      <div class="glass analytics-card"><span class="kicker">Weekly progress • ${weeklyTotal >= lastWeek ? "Best Week pace" : "Steady Growth"}</span><div class="chart">${vals.map(v=>`<div class="bar" style="height:${Math.max(12,Math.round(v/max*190))}px"></div>`).join("")}</div><small>${weeklyTotal} XP this week • ${(trend >= 0 ? "+" : "") + trend}% trend</small></div>
+      <div class="glass analytics-card"><span class="kicker">Player radar • ${state.profile.position}</span><div class="spider"><svg viewBox="0 0 300 300"><polygon points="150,30 260,110 220,250 80,250 40,110" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><polygon points="${points}" fill="rgba(215,255,46,.22)" stroke="#D7FF2E" stroke-width="5"/></svg></div></div>
       <div class="glass analytics-card"><span class="kicker">Training heatmap</span><div class="heatmap">${vals.map(v=>`<div class="heat ${v>0?'on':''}"></div>`).join("")}</div><small>Green days show completed activity.</small></div>
       <div class="parent-coach"><div class="glass analytics-card"><span class="kicker">Parent view</span><b>Consistency ${vals.filter(v=>v>0).length}/7</b><small>Simple effort summary.</small></div><div class="glass analytics-card"><span class="kicker">Coach view</span><b>${state.profile.position} pathway</b><small>Training indicators only.</small></div></div>
     </div>
