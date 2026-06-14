@@ -26,9 +26,21 @@ let voice = null;
 let camScore = 0;
 
 const app = document.getElementById("app");
-const nav = document.getElementById("nav");
+let nav = document.getElementById("nav");
 const BUILD_ID = "sprint-4.4-daily-mission";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
+
+function ensureAppShell(){
+  app.classList.add("scrollable-content", "app-scroll");
+  if(!nav){
+    nav = document.createElement("nav");
+    nav.id = "nav";
+    nav.setAttribute("aria-label", "Main navigation");
+    document.body.appendChild(nav);
+  }
+  nav.className = "nav bottom-nav";
+  nav.innerHTML = renderNav();
+}
 
 function showRenderError(error, route){
   console.error("[PitchIQ render error]", route, error);
@@ -38,6 +50,7 @@ function showRenderError(error, route){
 
 function render(route="splash"){
   try {
+    ensureAppShell();
     if (!VALID_ROUTES.has(route)) route = "home";
   currentRoute = route;
   if(route === "splash") app.innerHTML = renderSplash();
@@ -51,7 +64,6 @@ function render(route="splash"){
   if(route === "analytics") app.innerHTML = renderAnalytics(state);
   if(route === "career") app.innerHTML = renderCareer(state);
   if(route === "settings") app.innerHTML = renderSettings(state);
-  nav.innerHTML = renderNav();
   nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
   sparkles(document.getElementById("particles"));
   bindScreen();
