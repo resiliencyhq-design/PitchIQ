@@ -25,7 +25,7 @@ export function renderHome(state){
   const trend = Math.round((weeklyTotal - lastWeek) / lastWeek * 100);
   const nextLevelXp = Math.max(0, need - state.game.xp);
   const rewardPct = state.game.dailyDone ? 100 : pct;
-  const rewardState = state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Ready") : rewardPct + "% unlocked";
+  const rewardState = state.game.dailyDone ? (state.game.packOpened ? "Opened" : "Reward Ready") : rewardPct + "% to unlock";
   const nextMilestone = state.game.level < 4 ? "Local Club" : state.game.level < 8 ? "Division 3" : "Academy";
   const milestoneLevel = state.game.level < 4 ? 4 : state.game.level < 8 ? 8 : 26;
   const previousMilestoneLevel = state.game.level < 4 ? 1 : state.game.level < 8 ? 4 : 8;
@@ -75,30 +75,30 @@ export function renderHome(state){
 
       <button class="tile" data-route="reward">
         <span>Reward preview</span>
-        <b>${rewardState}</b>
+        <b>${rewardPct}% to unlock</b>
         <div class="xpbar"><i style="width:${rewardPct}%"></i></div>
-        <small>${rewardPct}% progress • ${state.game.dailyDone ? "Tap to open today's pack." : "Complete today's mission to unlock."}</small>
+        <small>${state.game.dailyDone ? "Reward ready — tap to open." : `${100 - rewardPct}% remaining • complete today's mission.`}</small>
       </button>
 
       <button class="tile" data-route="analytics">
         <span>Weekly form</span>
-        <b>${trend >= 0 ? "+" : ""}${trend}% • ${weeklyTotal >= lastWeek ? "Best Week" : "Build Week"}</b>
-        <small>${weeklyTotal} XP this week</small>
+        <b>${trend >= 0 ? "+" : ""}${trend}% trend</b>
+        <small>${weeklyTotal >= lastWeek ? "Best Week pace" : "Build the week"} • ${weeklyTotal} XP</small>
       </button>
 
       <article class="glass career-card">
         <span class="kicker">Career ladder</span>
         <h2>${milestonePct}% to ${nextMilestone}</h2>
         <div class="xpbar"><i style="width:${milestonePct}%"></i></div>
-        <small>Level ${state.game.level} / ${milestoneLevel}</small>
+        <small>${Math.max(0,milestoneLevel - state.game.level)} levels remaining • Level ${state.game.level}/${milestoneLevel}</small>
         <img src="assets/art/career-ladder.svg" alt="Career ladder preview">
       </article>
 
       <article class="glass reward-preview">
         <div>
-          <span class="kicker">Daily pack</span>
-          <h2>${rewardState}</h2>
-          <p>${rewardPct}% progress toward today's unlock.</p>
+          <span class="kicker">Daily pack progress</span>
+          <h2>${rewardPct}% to unlock</h2>
+          <p>${state.game.dailyDone ? "Reward earned through training effort." : `${100 - rewardPct}% remaining before today's pack is ready.`}</p>
         </div>
         <img src="assets/art/pack.svg" alt="Gold pack">
       </article>
