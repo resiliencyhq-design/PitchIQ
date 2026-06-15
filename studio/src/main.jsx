@@ -28,7 +28,7 @@ const templates = {
   },
   home: {
     content: [
-      { type: "Heading", props: { id: "Heading-1", text: "Today&apos;s Mission", size: "large" } },
+      { type: "Heading", props: { id: "Heading-1", text: "Today's Mission", size: "large" } },
       { type: "ProgressCard", props: { id: "Progress-1", label: "Level progress", progress: 72 } },
       { type: "Card", props: { id: "Card-1", title: "Vision Sprint", body: "Train scanning and decision speed." } },
       { type: "Card", props: { id: "Card-2", title: "Results", body: "Review your last session." } }
@@ -45,76 +45,37 @@ const templates = {
   }
 };
 
+const renderers = {
+  Heading: ({ text, size }) => <h1 className={`studio-heading ${size}`}>{String(text).split("\n").map((line, i) => <React.Fragment key={i}>{line}{i < String(text).split("\n").length - 1 && <br />}</React.Fragment>)}</h1>,
+  Text: ({ text, align }) => <p className={`studio-text ${align}`}>{text}</p>,
+  Button: ({ label, variant }) => <button className={`studio-button ${variant}`} type="button">{label}</button>,
+  Card: ({ title, body }) => <article className="studio-card"><b>{title}</b><span>{body}</span></article>,
+  ImagePlaceholder: ({ label, height }) => <div className="studio-image" style={{ minHeight: `${height || 220}px` }}><span>{label}</span></div>,
+  PitchSelectorPlaceholder: ({ title }) => <div className="studio-pitch"><span>{title}</span><i>ST</i><i>LW</i><i>CAM</i><i>RW</i><i>CM</i><i>CB</i><i>GK</i></div>,
+  ProgressCard: ({ label, progress }) => <div className="studio-progress"><b>{label}</b><div><i style={{ width: `${Math.max(0, Math.min(100, progress || 0))}%` }} /></div><small>{progress || 0}%</small></div>
+};
+
 const config = {
   components: {
-    Heading: {
-      fields: {
-        text: { type: "textarea" },
-        size: { type: "select", options: [
-          { label: "Hero", value: "hero" },
-          { label: "Large", value: "large" },
-          { label: "Medium", value: "medium" }
-        ] }
-      },
-      defaultProps: { text: "Heading", size: "large" },
-      render: ({ text, size }) => <h1 className={`studio-heading ${size}`}>{String(text).split("\n").map((line, i) => <React.Fragment key={i}>{line}{i < String(text).split("\n").length - 1 && <br />}</React.Fragment>)}</h1>
-    },
-    Text: {
-      fields: {
-        text: { type: "textarea" },
-        align: { type: "select", options: [
-          { label: "Left", value: "left" },
-          { label: "Center", value: "center" }
-        ] }
-      },
-      defaultProps: { text: "Text block", align: "left" },
-      render: ({ text, align }) => <p className={`studio-text ${align}`}>{text}</p>
-    },
-    Button: {
-      fields: {
-        label: { type: "text" },
-        variant: { type: "select", options: [
-          { label: "Primary", value: "primary" },
-          { label: "Secondary", value: "secondary" }
-        ] }
-      },
-      defaultProps: { label: "Button", variant: "primary" },
-      render: ({ label, variant }) => <button className={`studio-button ${variant}`} type="button">{label}</button>
-    },
-    Card: {
-      fields: {
-        title: { type: "text" },
-        body: { type: "textarea" }
-      },
-      defaultProps: { title: "Card", body: "Card body" },
-      render: ({ title, body }) => <article className="studio-card"><b>{title}</b><span>{body}</span></article>
-    },
-    ImagePlaceholder: {
-      fields: {
-        label: { type: "text" },
-        height: { type: "number" }
-      },
-      defaultProps: { label: "Image placeholder", height: 220 },
-      render: ({ label, height }) => <div className="studio-image" style={{ minHeight: `${height || 220}px` }}><span>{label}</span></div>
-    },
-    PitchSelectorPlaceholder: {
-      fields: { title: { type: "text" } },
-      defaultProps: { title: "Pitch selector placeholder" },
-      render: ({ title }) => <div className="studio-pitch"><span>{title}</span><i>ST</i><i>LW</i><i>CAM</i><i>RW</i><i>CM</i><i>CB</i><i>GK</i></div>
-    },
-    ProgressCard: {
-      fields: {
-        label: { type: "text" },
-        progress: { type: "number" }
-      },
-      defaultProps: { label: "Progress", progress: 50 },
-      render: ({ label, progress }) => <div className="studio-progress"><b>{label}</b><div><i style={{ width: `${Math.max(0, Math.min(100, progress || 0))}%` }} /></div><small>{progress || 0}%</small></div>
-    }
+    Heading: { fields: { text: { type: "textarea" }, size: { type: "select", options: [{ label: "Hero", value: "hero" }, { label: "Large", value: "large" }, { label: "Medium", value: "medium" }] } }, defaultProps: { text: "Heading", size: "large" }, render: renderers.Heading },
+    Text: { fields: { text: { type: "textarea" }, align: { type: "select", options: [{ label: "Left", value: "left" }, { label: "Center", value: "center" }] } }, defaultProps: { text: "Text block", align: "left" }, render: renderers.Text },
+    Button: { fields: { label: { type: "text" }, variant: { type: "select", options: [{ label: "Primary", value: "primary" }, { label: "Secondary", value: "secondary" }] } }, defaultProps: { label: "Button", variant: "primary" }, render: renderers.Button },
+    Card: { fields: { title: { type: "text" }, body: { type: "textarea" } }, defaultProps: { title: "Card", body: "Card body" }, render: renderers.Card },
+    ImagePlaceholder: { fields: { label: { type: "text" }, height: { type: "number" } }, defaultProps: { label: "Image placeholder", height: 220 }, render: renderers.ImagePlaceholder },
+    PitchSelectorPlaceholder: { fields: { title: { type: "text" } }, defaultProps: { title: "Pitch selector placeholder" }, render: renderers.PitchSelectorPlaceholder },
+    ProgressCard: { fields: { label: { type: "text" }, progress: { type: "number" } }, defaultProps: { label: "Progress", progress: 50 }, render: renderers.ProgressCard }
   }
 };
 
 function loadSavedData() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || ""); } catch { return templates.splash; }
+}
+
+function LocalPreview({ data }) {
+  return (data?.content || []).map((block, index) => {
+    const Render = renderers[block.type];
+    return Render ? <React.Fragment key={block.props?.id || `${block.type}-${index}`}><Render {...(block.props || {})} /></React.Fragment> : null;
+  });
 }
 
 function App() {
@@ -137,41 +98,16 @@ function App() {
   }
 
   function exportJson() {
-    navigator.clipboard?.writeText(JSON.stringify(data, null, 2));
+    const json = JSON.stringify(data, null, 2);
+    navigator.clipboard?.writeText(json);
     setMessage("Layout JSON copied to clipboard if browser permissions allow.");
   }
 
   return (
     <main className="studio-shell">
-      <header className="studio-topbar">
-        <div>
-          <strong>PitchIQ / WellTrackIQ Studio</strong>
-          <span>{message}</span>
-        </div>
-        <nav>
-          <button onClick={() => saveLayout(data)}>Save Layout</button>
-          <button onClick={exportJson}>Export JSON</button>
-          <a href="../index.html?dev">Open MVP</a>
-        </nav>
-      </header>
-      <section className="studio-template-bar">
-        {Object.keys(templates).map(name => <button key={name} onClick={() => loadTemplate(name)}>{name}</button>)}
-      </section>
-      <section className="studio-grid">
-        <div className="studio-editor">
-          <Puck config={config} data={data} onChange={setData} onPublish={saveLayout} />
-        </div>
-        <aside className="studio-preview-wrap">
-          <h2>iPhone Preview</h2>
-          <div className="studio-phone">
-            <Puck.Render config={config} data={previewData} />
-          </div>
-          <details>
-            <summary>Saved JSON Preview</summary>
-            <pre>{JSON.stringify(previewData, null, 2)}</pre>
-          </details>
-        </aside>
-      </section>
+      <header className="studio-topbar"><div><strong>PitchIQ / WellTrackIQ Studio</strong><span>{message}</span></div><nav><button onClick={() => saveLayout(data)}>Save Layout</button><button onClick={exportJson}>Export JSON</button><a href="../index.html?dev">Open MVP</a></nav></header>
+      <section className="studio-template-bar">{Object.keys(templates).map(name => <button key={name} onClick={() => loadTemplate(name)}>{name}</button>)}</section>
+      <section className="studio-grid"><div className="studio-editor"><Puck config={config} data={data} onChange={setData} onPublish={saveLayout} /></div><aside className="studio-preview-wrap"><h2>iPhone Preview</h2><div className="studio-phone"><LocalPreview data={previewData} /></div><details><summary>Saved JSON Preview</summary><pre>{JSON.stringify(previewData, null, 2)}</pre></details></aside></section>
     </main>
   );
 }
