@@ -6,7 +6,7 @@ import { REWARDS } from "../data/rewards.js";
 import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderResults, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderHome, renderTraining, renderResults, renderPlayer, renderNav } from "./routes.js";
 import { recommendedDrills } from "../data/drills.js";
 
 let state = normalizeState(loadState());
@@ -28,12 +28,46 @@ let devBorderEnabled = localStorage.getItem("pitchiqDevBorderEnabled") !== "fals
 
 const app = document.getElementById("app");
 let nav = document.getElementById("nav");
-const BUILD_ID = "mvp-dev-border-patch";
+const BUILD_ID = "onboarding-blocker-fix";
 const VALID_ROUTES = new Set(["splash", "onboard", "home", "training", "results", "player"]);
+const PROTECTED_ROUTES = new Set(["home", "training", "results", "player"]);
 const DEV_JUMP_ROUTES = {"1":"splash","2":"onboard","3":"home","4":"training","5":"results","6":"player"};
 const DEV_HASH_ROUTES = new Set(["splash", "onboard", "home", "training", "results", "player"]);
+const ONBOARDING_COMPLETE_KEY = "pitchiqOnboardingComplete";
+const PLAYER_NAME_KEY = "pitchiqPlayerName";
+const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
 const params = new URLSearchParams(window.location.search);
 const DEV_MODE_ENABLED = params.has("dev");
+
+function onboardingComplete(){
+  return localStorage.getItem(ONBOARDING_COMPLETE_KEY) === "true"
+    && !!localStorage.getItem(PLAYER_NAME_KEY)
+    && !!localStorage.getItem(SELECTED_POSITION_KEY);
+}
+function syncProfileFromOnboardingKeys(){
+  const name = localStorage.getItem(PLAYER_NAME_KEY);
+  const position = localStorage.getItem(SELECTED_POSITION_KEY);
+  if(name) state.profile.name = name;
+  if(position) state.profile.position = position;
+}
+function completeOnboarding(name, position){
+  localStorage.setItem(PLAYER_NAME_KEY, name);
+  localStorage.setItem(SELECTED_POSITION_KEY, position);
+  localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
+  state.profile.name = name;
+  state.profile.position = position;
+  state.profile.createdAt ||= Date.now();
+  saveState(state);
+}
+function clearOnboardingLock(){
+  localStorage.removeItem(ONBOARDING_COMPLETE_KEY);
+  localStorage.removeItem(PLAYER_NAME_KEY);
+  localStorage.removeItem(SELECTED_POSITION_KEY);
+  state.profile.name = "";
+  state.profile.position = "Winger";
+  state.profile.createdAt = null;
+  saveState(state);
+}
 
 function ensureAppShell(){
   app.classList.add("scrollable-content", "app-scroll");
@@ -57,11 +91,18 @@ function showRenderError(error, route){
   bindScreen();
 }
 
+function guardRoute(route){
+  if (!VALID_ROUTES.has(route)) return "home";
+  if (PROTECTED_ROUTES.has(route) && !onboardingComplete()) return "onboard";
+  if (PROTECTED_ROUTES.has(route)) syncProfileFromOnboardingKeys();
+  return route;
+}
+
 function render(route="splash"){
   try {
     ensureAppShell();
     applyDeveloperBorder();
-    if (!VALID_ROUTES.has(route)) route = "home";
+    route = guardRoute(route);
     currentRoute = route;
     if(route === "splash") app.innerHTML = renderSplash();
     if(route === "onboard") app.innerHTML = renderOnboard();
@@ -78,7 +119,7 @@ function render(route="splash"){
     showRenderError(error, route);
   }
 }
-function goto(route){ if (!VALID_ROUTES.has(route)) route = "home"; stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
+function goto(route){ route = guardRoute(route); stopEphemeral(); if(route === "training") trainingStage ||= "home"; render(route); }
 function stopEphemeral(){ if(training.timer) clearInterval(training.timer); training.timer = null; if(currentRoute !== "camera") camera?.stop?.(); }
 
 function routeLabel(route){
@@ -123,7 +164,7 @@ function renderDeveloperPanel(){
   panel.style.display = devPanelOpen ? "block" : "none";
   if(!devPanelOpen) return;
   const routeButtons = Object.entries(DEV_JUMP_ROUTES).map(([key, route])=>`<button type="button" data-dev-route="${route}" style="display:block;width:100%;margin:3px 0;padding:5px 7px;border:0;border-radius:7px;background:rgba(255,255,255,.12);color:#fff;text-align:left;font:inherit;cursor:pointer">[${key}] ${routeLabel(route)}</button>`).join("");
-  panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${routeButtons}<hr style="border:0;border-top:1px solid rgba(255,255,255,.14);margin:8px 0"><button type="button" data-dev-border-toggle style="display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:rgba(215,255,46,.14);color:#d7ff2e;text-align:left;font:inherit;cursor:pointer">Dev iPhone Border<br><small>${devBorderEnabled ? "Hide dev iPhone border" : "Show dev iPhone border"}</small></button><button type="button" data-dev-route="home" style="display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:rgba(49,247,154,.14);color:#fff;text-align:left;font:inherit;cursor:pointer">Return to Dashboard<br><small>Go back to Control Centre</small></button>`;
+  panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${routeButtons}<hr style="border:0;border-top:1px solid rgba(255,255,255,.14);margin:8px 0"><button type="button" data-dev-border-toggle style="display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:rgba(215,255,46,.14);color:#d7ff2e;text-align:left;font:inherit;cursor:pointer">Dev iPhone Border<br><small>${devBorderEnabled ? "Hide dev iPhone border" : "Show dev iPhone border"}</small></button><button type="button" data-dev-reset-onboarding style="display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:rgba(255,138,138,.14);color:#fff;text-align:left;font:inherit;cursor:pointer">Reset Onboarding<br><small>Restore first-run flow</small></button><button type="button" data-dev-route="home" style="display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:rgba(49,247,154,.14);color:#fff;text-align:left;font:inherit;cursor:pointer">Return to Dashboard<br><small>Requires onboarding complete</small></button>`;
   panel.querySelectorAll("[data-dev-route]").forEach(button=>button.addEventListener("click",()=>{
     const route = button.dataset.devRoute;
     console.log(`[PitchIQ Dev] Jump to ${route}`);
@@ -135,12 +176,18 @@ function renderDeveloperPanel(){
     applyDeveloperBorder();
     renderDeveloperPanel();
   });
+  panel.querySelector("[data-dev-reset-onboarding]")?.addEventListener("click",()=>{
+    clearOnboardingLock();
+    selectedPosition = "";
+    toast("Onboarding reset");
+    goto("splash");
+  });
 }
 
 function devInitialRoute(){
-  if(!DEV_MODE_ENABLED) return state.profile.name ? "home" : "splash";
   const route = window.location.hash.replace("#", "").toLowerCase();
-  return DEV_HASH_ROUTES.has(route) ? route : (state.profile.name ? "home" : "splash");
+  if(DEV_MODE_ENABLED && DEV_HASH_ROUTES.has(route)) return guardRoute(route);
+  return onboardingComplete() ? "home" : "splash";
 }
 
 function positionDrills(){ return recommendedDrills(state.profile.position || "Winger"); }
@@ -174,6 +221,12 @@ function bindOnboardPositionSelector(){
   if(!pitch || !ball || !nodes.length) return;
   selectedPosition = "";
   cta?.setAttribute("disabled", "true");
+  const nameInput = document.getElementById("nameInput");
+  const updateCta = ()=>{
+    const hasName = !!nameInput?.value?.trim();
+    if(selectedPosition && hasName) cta?.removeAttribute("disabled");
+    else cta?.setAttribute("disabled", "true");
+  };
   const setPosition = (node)=>{
     if(!node) return;
     nodes.forEach(n=>n.classList.remove("selected","targeted"));
@@ -182,7 +235,7 @@ function bindOnboardPositionSelector(){
     ball.dataset.pos = selectedPosition;
     ball.style.gridArea = node.dataset.slot || node.style.gridArea;
     if(confirm) confirm.innerHTML = `<span>Selected:</span><b>${selectedPosition}</b>`;
-    cta?.removeAttribute("disabled");
+    updateCta();
   };
   const nearestNode = (clientX, clientY)=>{
     let nearest = null;
@@ -196,11 +249,13 @@ function bindOnboardPositionSelector(){
     });
     return nearest;
   };
+  nameInput?.addEventListener("input", updateCta);
   nodes.forEach(node=>node.addEventListener("click",()=>setPosition(node)));
   let dragging = false;
   ball.addEventListener("pointerdown", e=>{ dragging = true; ball.setPointerCapture?.(e.pointerId); ball.classList.add("dragging"); });
   ball.addEventListener("pointermove", e=>{ if(!dragging) return; const node = nearestNode(e.clientX, e.clientY); nodes.forEach(n=>n.classList.toggle("targeted", n === node)); });
   ball.addEventListener("pointerup", e=>{ if(!dragging) return; dragging = false; ball.classList.remove("dragging"); const node = nearestNode(e.clientX, e.clientY); setPosition(node); });
+  updateCta();
 }
 
 function bindScreen(){
@@ -218,7 +273,7 @@ function bindScreen(){
   if(sens) sens.addEventListener("input", e=>camera?.setSensitivity(Number(e.target.value)));
 }
 function handleAction(action, el){
-  if(action==="enter") return state.profile.name ? goto("home") : goto("onboard");
+  if(action==="enter") return onboardingComplete() ? goto("home") : goto("onboard");
   if(action==="save-profile") return saveProfile();
   if(action==="reset") return reset();
   if(action==="training-home") return trainingHome();
@@ -240,8 +295,15 @@ function handleAction(action, el){
   if(action==="camera-round") return cameraRound();
   if(action==="open-pack") return openPackAction();
 }
-function saveProfile(){ if(!selectedPosition) return toast("Choose your position"); const name = document.getElementById("nameInput")?.value?.trim() || "Player"; state.profile.name = name; state.profile.position = selectedPosition; state.profile.createdAt ||= Date.now(); toast("Welcome to PitchIQ Academy"); goto("home"); }
-function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = normalizeState(loadState()); selectedPosition = ""; try { render("splash"); window.__PITCHIQ_READY__ = true; } catch (error) { showRenderError(error, "splash"); } } }
+function saveProfile(){
+  const name = document.getElementById("nameInput")?.value?.trim();
+  if(!name) return toast("Enter player name");
+  if(!selectedPosition) return toast("Choose your position");
+  completeOnboarding(name, selectedPosition);
+  toast("Welcome to PitchIQ Academy");
+  goto("home");
+}
+function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); clearOnboardingLock(); state = normalizeState(loadState()); selectedPosition = ""; try { render("splash"); window.__PITCHIQ_READY__ = true; } catch (error) { showRenderError(error, "splash"); } } }
 function trainingHome(){ stopEphemeral(); activeSession = null; trainingStage = "home"; training = { time:45, score:0, combo:1, timer:null }; renderTrainingRoute(); }
 function chooseDrill(el){ selectedDrillId = el?.dataset?.drill || selectedDrillId; setTrainingStage("choose-difficulty"); }
 function chooseDifficulty(el){ selectedDifficulty = el?.dataset?.difficulty || "medium"; setTrainingStage("preview"); }
@@ -265,7 +327,7 @@ function updateTraining(){ const t = document.getElementById("time"), s = docume
 function nextCue(){ cue = randomCue(); if(activeSession) activeSession.currentCue = cue; const cueEl = document.getElementById("cue"); const instruction = document.getElementById("instruction"); if(cueEl) cueEl.textContent = cue.display; const difficulty = activeSession ? adaptiveDifficulty(activeSession) : 1; if(instruction) instruction.textContent = "Say or tap: " + cue.acceptedResponses[0].toUpperCase() + " • " + selectedDifficulty.toUpperCase() + " • D" + difficulty; voice?.updateCue?.(cue); }
 function manualAnswer(ans){ if(trainingStage !== "live") return; cue.acceptedResponses.includes(ans) ? correct() : wrong(); }
 function correct(){ if(trainingStage !== "live") return; const gain = cue.xpBase * training.combo; training.score += gain; if(activeSession) activeSession.results.push({ cueId:cue.id, correct:true, xpAwarded:gain, reactionMs:null, detected:false, timestamp:Date.now() }); const leveled = addXP(state, gain); training.combo = Math.min(9, training.combo + 1); state.game.bestCombo = Math.max(state.game.bestCombo, training.combo); toast(leveled ? "LEVEL UP 🏆" : "+"+gain+" XP 🔥"); updateTraining(); nextCue(); }
-function wrong(){ if(trainingStage !== "live") return; if(activeSession) activeSession.results.push({ cueId:cue.id, correct:false, xpAwarded:0, reactionMs:null, detected:false, timestamp:Date.now() }); training.combo = 1; training.score = Math.max(0, training.score-10); toast("Reset. Next cue."); updateTraining(); nextCue(); }
+function wrong(){ if(trainingStage !== "live") return; if(activeSession) activeSession.results.push({ cueId:cue.id, correct:false, xpAwarded:0, reactionMs:null, detected:false, timestamp:r.timestamp }); training.combo = 1; training.score = Math.max(0, training.score-10); toast("Reset. Next cue."); updateTraining(); nextCue(); }
 function finishTraining(){
   if(training.timer) clearInterval(training.timer);
   training.timer = null;
