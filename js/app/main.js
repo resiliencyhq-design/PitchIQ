@@ -24,10 +24,11 @@ let training = { time:45, score:0, combo:1, timer:null };
 let camera = null;
 let voice = null;
 let camScore = 0;
+let devPanelOpen = sessionStorage.getItem("pitchiq-dev-open") === "1";
 
 const app = document.getElementById("app");
 let nav = document.getElementById("nav");
-const BUILD_ID = "sprint-4.4-daily-mission";
+const BUILD_ID = "sprint-5.1-splash-polish";
 const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
 const DEV_JUMP_ROUTES = {"1":"splash","2":"player","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"analytics"};
 const DEV_HASH_ROUTES = new Set(["splash", "player", "mission", "home", "training", "camera", "career", "analytics"]);
@@ -56,24 +57,23 @@ function render(route="splash"){
   try {
     ensureAppShell();
     if (!VALID_ROUTES.has(route)) route = "home";
-  currentRoute = route;
-  if(route === "splash") app.innerHTML = renderSplash();
-  if(route === "onboard") app.innerHTML = renderOnboard();
-  if(route === "mission") app.innerHTML = renderMission(state);
-  if(route === "home") app.innerHTML = renderHome(state);
-  if(route === "training") app.innerHTML = renderTraining(state, trainingView());
-  if(route === "camera") app.innerHTML = renderCamera();
-  if(route === "reward") app.innerHTML = renderReward(state);
-  if(route === "player") app.innerHTML = renderPlayer(state);
-  if(route === "analytics") app.innerHTML = renderAnalytics(state);
-  if(route === "career") app.innerHTML = renderCareer(state);
-  if(route === "settings") app.innerHTML = renderSettings(state);
-  nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
-  sparkles(document.getElementById("particles"));
-  bindScreen();
-  renderDeveloperPanel();
-  saveState(state);
-
+    currentRoute = route;
+    if(route === "splash") app.innerHTML = renderSplash();
+    if(route === "onboard") app.innerHTML = renderOnboard();
+    if(route === "mission") app.innerHTML = renderMission(state);
+    if(route === "home") app.innerHTML = renderHome(state);
+    if(route === "training") app.innerHTML = renderTraining(state, trainingView());
+    if(route === "camera") app.innerHTML = renderCamera();
+    if(route === "reward") app.innerHTML = renderReward(state);
+    if(route === "player") app.innerHTML = renderPlayer(state);
+    if(route === "analytics") app.innerHTML = renderAnalytics(state);
+    if(route === "career") app.innerHTML = renderCareer(state);
+    if(route === "settings") app.innerHTML = renderSettings(state);
+    nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
+    sparkles(document.getElementById("particles"));
+    bindScreen();
+    renderDeveloperPanel();
+    saveState(state);
   } catch(error) {
     showRenderError(error, route);
   }
@@ -83,14 +83,31 @@ function stopEphemeral(){ if(training.timer) clearInterval(training.timer); trai
 
 function renderDeveloperPanel(){
   if(!DEV_MODE_ENABLED) return;
+  let toggle = document.getElementById("pitchiq-dev-toggle");
+  if(!toggle){
+    toggle = document.createElement("button");
+    toggle.id = "pitchiq-dev-toggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-label", "Toggle developer navigation");
+    toggle.style.cssText = "position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:calc(env(safe-area-inset-left,0px) + 8px);z-index:10000;width:44px;height:44px;min-height:44px;padding:0;border-radius:14px;background:rgba(10,16,28,.62);color:#d7ff2e;border:1px solid rgba(215,255,46,.22);font:700 18px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-shadow:0 8px 24px rgba(0,0,0,.22);backdrop-filter:blur(18px)";
+    document.body.appendChild(toggle);
+    toggle.addEventListener("click",()=>{
+      devPanelOpen = !devPanelOpen;
+      sessionStorage.setItem("pitchiq-dev-open", devPanelOpen ? "1" : "0");
+      renderDeveloperPanel();
+    });
+  }
+  toggle.textContent = devPanelOpen ? "×" : "☰";
   let panel = document.getElementById("pitchiq-dev-panel");
   if(!panel){
     panel = document.createElement("aside");
     panel.id = "pitchiq-dev-panel";
     panel.setAttribute("aria-label", "PitchIQ Developer navigation");
-    panel.style.cssText = "position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:calc(env(safe-area-inset-left,0px) + 8px);z-index:9999;background:rgba(10,16,28,.82);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px;font:12px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:150px";
+    panel.style.cssText = "position:fixed;top:calc(env(safe-area-inset-top,0px) + 58px);left:calc(env(safe-area-inset-left,0px) + 8px);z-index:9999;background:rgba(10,16,28,.82);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px;font:12px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:150px;backdrop-filter:blur(18px)";
     document.body.appendChild(panel);
   }
+  panel.style.display = devPanelOpen ? "block" : "none";
+  if(!devPanelOpen) return;
   panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${Object.entries(DEV_JUMP_ROUTES).map(([key, route])=>`<button type="button" data-dev-route="${route}" style="display:block;width:100%;margin:3px 0;padding:4px 6px;border:0;border-radius:7px;background:rgba(255,255,255,.12);color:#fff;text-align:left;font:inherit;cursor:pointer">[${key}] ${route.charAt(0).toUpperCase()+route.slice(1)}</button>`).join("")}`;
   panel.querySelectorAll("[data-dev-route]").forEach(button=>button.addEventListener("click",()=>{
     const route = button.dataset.devRoute;
