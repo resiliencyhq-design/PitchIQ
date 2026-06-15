@@ -1,0 +1,15 @@
+/* Sprint 5.1.4 — onboarding blocker fix */
+.onboard-v1,.onboard-v1 *{box-sizing:border-box;max-width:100%}
+.onboard-v1{width:100%;min-width:0;max-width:100%;min-height:100dvh;padding:calc(8px + env(safe-area-inset-top)) clamp(12px,4vw,18px) calc(16px + env(safe-area-inset-bottom))!important;display:block!important;overflow-x:hidden;overflow-y:auto;overscroll-behavior-x:none}
+.onboard-content{width:100%;max-width:min(100%,390px);min-width:0;margin:0 auto;display:grid;gap:clamp(5px,1vh,10px);align-content:start;justify-items:stretch;overflow-x:hidden}
+#nameInput{width:100%;min-width:0}
+.academy-pitch{width:100%;min-width:0;max-width:100%;min-height:clamp(246px,36dvh,310px);grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-template-rows:repeat(5,minmax(32px,1fr)) minmax(38px,.82fr)!important;gap:clamp(4px,.8vh,7px)!important;padding:clamp(10px,1.5vh,14px) clamp(9px,2.5vw,12px) clamp(8px,1.4vh,12px)!important;overflow:hidden;contain:layout paint}
+.academy-pitch:after{width:clamp(54px,18vw,74px);height:clamp(54px,18vw,74px)}
+.pitch-node{width:100%;min-width:0;min-height:clamp(33px,4.7vh,42px);font-size:clamp(11px,3.4vw,14px);touch-action:manipulation}
+.pitch-ball{width:clamp(40px,11vw,46px);height:clamp(40px,11vw,46px);min-height:clamp(40px,11vw,46px);max-width:46px;touch-action:none}
+.pitch-ball[data-pos]{width:clamp(28px,8vw,34px);height:clamp(28px,8vw,34px);min-height:clamp(28px,8vw,34px);font-size:clamp(15px,4.5vw,18px);justify-self:end;align-self:end;margin:0 1px 1px 0}
+.position-confirm{min-height:42px}
+.onboard-cta-v1{width:min(100%,330px);min-height:72px;font-size:clamp(22px,6vw,32px)!important}
+.onboard-cta-v1:disabled{opacity:.48;filter:grayscale(.35)}
+@media(max-width:390px){.academy-pitch{min-height:270px;gap:5px!important;padding:12px 9px 9px!important}.onboard-logo-v1{width:min(230px,66vw)!important}.onboard-content h1{font-size:clamp(31px,9.3vw,43px)}}
+@media(max-width:360px),(max-height:700px){.onboard-content{gap:5px;align-content:start}.onboard-content h1{font-size:clamp(29px,9vw,39px)}#nameInput{min-height:48px}.academy-pitch{min-height:246px}.pitch-node{min-height:33px}.position-confirm{min-height:38px}.onboard-cta-v1{min-height:64px}}
