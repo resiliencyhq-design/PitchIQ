@@ -7,7 +7,7 @@ import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { scoreVoiceAnswer } from "../game/scoring.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
+import { renderSplash, renderOnboard, renderMission, renderHome, renderTraining, renderResults, renderCamera, renderReward, renderPlayer, renderCareer, renderAnalytics, renderSettings, renderNav } from "./routes.js";
 import { recommendedDrills } from "../data/drills.js";
 
 let state = normalizeState(loadState());
@@ -28,10 +28,10 @@ let devPanelOpen = sessionStorage.getItem("pitchiq-dev-open") === "1";
 
 const app = document.getElementById("app");
 let nav = document.getElementById("nav");
-const BUILD_ID = "sprint-5.1-splash-polish";
-const VALID_ROUTES = new Set(["splash", "onboard", "mission", "home", "training", "camera", "reward", "player", "analytics", "career", "settings"]);
-const DEV_JUMP_ROUTES = {"1":"splash","2":"player","3":"mission","4":"home","5":"training","6":"camera","7":"career","8":"analytics"};
-const DEV_HASH_ROUTES = new Set(["splash", "player", "mission", "home", "training", "camera", "career", "analytics"]);
+const BUILD_ID = "sprint-5.2-mvp-routing-alignment";
+const VALID_ROUTES = new Set(["splash", "onboard", "home", "training", "results", "player"]);
+const DEV_JUMP_ROUTES = {"1":"splash","2":"onboard","3":"home","4":"training","5":"results","6":"player"};
+const DEV_HASH_ROUTES = new Set(["splash", "onboard", "home", "training", "results", "player"]);
 const params = new URLSearchParams(window.location.search);
 const DEV_MODE_ENABLED = params.has("dev");
 
@@ -60,16 +60,11 @@ function render(route="splash"){
     currentRoute = route;
     if(route === "splash") app.innerHTML = renderSplash();
     if(route === "onboard") app.innerHTML = renderOnboard();
-    if(route === "mission") app.innerHTML = renderMission(state);
     if(route === "home") app.innerHTML = renderHome(state);
     if(route === "training") app.innerHTML = renderTraining(state, trainingView());
-    if(route === "camera") app.innerHTML = renderCamera();
-    if(route === "reward") app.innerHTML = renderReward(state);
+    if(route === "results") app.innerHTML = renderResults(state, trainingView());
     if(route === "player") app.innerHTML = renderPlayer(state);
-    if(route === "analytics") app.innerHTML = renderAnalytics(state);
-    if(route === "career") app.innerHTML = renderCareer(state);
-    if(route === "settings") app.innerHTML = renderSettings(state);
-    nav.classList.toggle("visible", !["splash","onboard","mission"].includes(route));
+    nav.classList.toggle("visible", !["splash","onboard"].includes(route));
     sparkles(document.getElementById("particles"));
     bindScreen();
     renderDeveloperPanel();
@@ -108,7 +103,7 @@ function renderDeveloperPanel(){
   }
   panel.style.display = devPanelOpen ? "block" : "none";
   if(!devPanelOpen) return;
-  panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${Object.entries(DEV_JUMP_ROUTES).map(([key, route])=>`<button type="button" data-dev-route="${route}" style="display:block;width:100%;margin:3px 0;padding:4px 6px;border:0;border-radius:7px;background:rgba(255,255,255,.12);color:#fff;text-align:left;font:inherit;cursor:pointer">[${key}] ${route.charAt(0).toUpperCase()+route.slice(1)}</button>`).join("")}`;
+  panel.innerHTML = `<strong style="display:block;margin-bottom:6px">PitchIQ Developer</strong>${Object.entries(DEV_JUMP_ROUTES).map(([key, route])=>`<button type="button" data-dev-route="${route}" style="display:block;width:100%;margin:3px 0;padding:4px 6px;border:0;border-radius:7px;background:rgba(255,255,255,.12);color:#fff;text-align:left;font:inherit;cursor:pointer">[${key}] ${route === "onboard" ? "Create Player" : route.charAt(0).toUpperCase()+route.slice(1)}</button>`).join("")}`;
   panel.querySelectorAll("[data-dev-route]").forEach(button=>button.addEventListener("click",()=>{
     const route = button.dataset.devRoute;
     console.log(`[PitchIQ Dev] Jump to ${route}`);
@@ -225,7 +220,7 @@ function bindScreen(){
   if(sens) sens.addEventListener("input", e=>camera?.setSensitivity(Number(e.target.value)));
 }
 function handleAction(action, el){
-  if(action==="enter") return state.profile.name ? goto("mission") : goto("onboard");
+  if(action==="enter") return state.profile.name ? goto("home") : goto("onboard");
   if(action==="save-profile") return saveProfile();
   if(action==="reset") return reset();
   if(action==="training-home") return trainingHome();
@@ -251,7 +246,7 @@ function saveProfile(){
   if(!selectedPosition) return toast("Choose your position");
   const name = document.getElementById("nameInput")?.value?.trim() || "Player";
   state.profile.name = name; state.profile.position = selectedPosition; state.profile.createdAt ||= Date.now();
-  toast("Welcome to PitchIQ Academy"); goto("mission");
+  toast("Welcome to PitchIQ Academy"); goto("home");
 }
 function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); state = normalizeState(loadState()); selectedPosition = ""; try {
   render("splash");
@@ -329,7 +324,7 @@ function finishTraining(){
     trainingSummary = { attempts:0, correct:0, accuracy:0, score:training.score, xp:state.game.lastXp, combo:state.game.bestCombo };
   }
   trainingStage = "results";
-  toast("Session complete 🏆"); renderTrainingRoute(); 
+  toast("Session complete 🏆"); goto("results"); 
 }
 
 function startVoice(){
