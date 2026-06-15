@@ -1,4 +1,4 @@
-/* Sprint 5.1.11 — landing page layout polish */
+/* Sprint 5.4 — MVP stabilisation: landing hero, CTA and iPhone fit */
 .academy-hero-panel,.AcademyHeroPanel{
   width:100%!important;
   max-width:340px!important;
@@ -8,56 +8,18 @@
   border-radius:24px!important;
   overflow:hidden!important;
   border:1px solid rgba(191,255,0,.24)!important;
-  background:#020806!important;
+  background:linear-gradient(180deg,rgba(6,24,14,.10),rgba(1,8,7,.50)),url("../assets/art/academy-hero-panel.svg") center/cover no-repeat!important;
   box-shadow:0 0 28px rgba(191,255,0,.16)!important;
   position:relative!important;
 }
-.academy-hero-panel img,.AcademyHeroPanel img{
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  object-position:center!important;
-  display:block!important;
-}
+.AcademyHeroPanel::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 74%,rgba(1,8,7,.22));pointer-events:none}
+.AcademyHeroPanel img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block!important}
 .AcademyHeroPanel .academy-hero-svg{display:none!important}
-.splash-academy-content,.splash-content{
-  gap:0!important;
-  align-content:start!important;
-}
-.splash-academy-logo,.splash-logo-v1{
-  margin-top:18px!important;
-  margin-bottom:28px!important;
-}
-.splash-academy-title,.splash-title-v1{
-  margin:0 0 22px!important;
-  line-height:.95!important;
-  color:transparent!important;
-  background:linear-gradient(90deg,#fff 0 42%,#bfff1a 42% 100%)!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  text-shadow:0 0 18px rgba(191,255,26,.16)!important;
-}
-.splash-academy-cta,.splash-cta-v1{
-  white-space:nowrap!important;
-  font-size:clamp(20px,5.2vw,28px)!important;
-  letter-spacing:-.02em!important;
-  padding-inline:clamp(20px,6vw,34px)!important;
-  margin:0 0 18px!important;
-}
-.splash-academy-copy{
-  margin:0!important;
-  line-height:1.18!important;
-}
-@media(max-width:390px){
-  .academy-hero-panel,.AcademyHeroPanel{max-width:306px!important}
-  .splash-academy-logo,.splash-logo-v1{margin-top:14px!important;margin-bottom:22px!important}
-  .splash-academy-title,.splash-title-v1{margin-bottom:18px!important;font-size:clamp(33px,9.2vw,46px)!important}
-  .splash-academy-cta,.splash-cta-v1{font-size:clamp(19px,5vw,25px)!important;margin-bottom:16px!important}
-}
-@media(max-width:360px),(max-height:700px){
-  .academy-hero-panel,.AcademyHeroPanel{max-width:292px!important}
-  .splash-academy-logo,.splash-logo-v1{margin-top:8px!important;margin-bottom:14px!important}
-  .splash-academy-title,.splash-title-v1{margin-bottom:14px!important;font-size:clamp(29px,8.2vw,39px)!important}
-  .splash-academy-cta,.splash-cta-v1{font-size:clamp(17px,4.7vw,22px)!important;min-height:58px!important;margin-bottom:12px!important;padding-inline:18px!important}
-  .splash-academy-copy{font-size:12.5px!important;line-height:1.14!important}
-}
+.splash-academy-content,.splash-content{gap:0!important;align-content:start!important;overflow:hidden!important}
+.splash-academy-logo,.splash-logo-v1{margin-top:18px!important;margin-bottom:28px!important}
+.splash-academy-title,.splash-title-v1{margin:0 0 22px!important;line-height:.95!important;color:transparent!important;background:linear-gradient(90deg,#fff 0 42%,#bfff1a 42% 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;text-shadow:0 0 18px rgba(191,255,26,.16)!important}
+.splash-academy-cta,.splash-cta-v1{white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;font-size:clamp(19px,5vw,27px)!important;letter-spacing:-.02em!important;padding-inline:clamp(16px,5vw,30px)!important;margin:0 0 18px!important;max-width:calc(100vw - 64px)!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:.35em!important;line-height:1!important}
+.splash-academy-copy{margin:0!important;line-height:1.18!important}
+.DeveloperIPhoneFrame .splash-v1,.DeveloperIPhoneFrame .onboard-v1{overflow-x:hidden!important}
+@media(max-width:390px){.academy-hero-panel,.AcademyHeroPanel{max-width:306px!important}.splash-academy-logo,.splash-logo-v1{margin-top:14px!important;margin-bottom:22px!important}.splash-academy-title,.splash-title-v1{margin-bottom:18px!important;font-size:clamp(33px,9.2vw,46px)!important}.splash-academy-cta,.splash-cta-v1{font-size:clamp(18px,4.7vw,24px)!important;margin-bottom:16px!important;padding-inline:16px!important}}
+@media(max-width:360px),(max-height:700px){.academy-hero-panel,.AcademyHeroPanel{max-width:292px!important}.splash-academy-logo,.splash-logo-v1{margin-top:8px!important;margin-bottom:14px!important}.splash-academy-title,.splash-title-v1{margin-bottom:14px!important;font-size:clamp(29px,8.2vw,39px)!important}.splash-academy-cta,.splash-cta-v1{font-size:clamp(16px,4.35vw,21px)!important;min-height:58px!important;margin-bottom:12px!important;padding-inline:14px!important}.splash-academy-copy{font-size:12.5px!important;line-height:1.14!important}}
