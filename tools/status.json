@@ -1,0 +1,21 @@
+{
+  "build": "Sprint 5.2 — Dashboard Auto Sync",
+  "latestCommit": "30cae90",
+  "lastUpdated": "2026-06-15T11:20:00Z",
+  "summary": {
+    "mvpProgress": 76,
+    "currentSprint": "Dashboard auto sync + landing polish",
+    "nextObjective": "Home Dashboard review",
+    "risk": "MEDIUM",
+    "commercialReadiness": 64,
+    "betaEta": "After core screens lock"
+  },
+  "screens": [
+    {"id":"splash","name":"Splash","status":"IN PROGRESS","tag":"warn","completion":94,"risk":"LOW","priority":"Polish now","subtitle":"Academy Entrance landing page.","route":"splash","done":["Academy Entrance headline exists","CTA routes to onboarding","AcademyHeroPanel exists","Supporting copy exists","DeveloperIPhoneFrame supported"],"todo":["Verify approved image renders as binary PNG","Final iPhone visual check","Confirm CTA stays one line"],"review":"Splash is close to ready. Remaining work is visual verification and image asset validation."},
+    {"id":"onboard","name":"Onboarding","status":"IN PROGRESS","tag":"warn","completion":85,"risk":"MEDIUM","priority":"Polish now","subtitle":"Lock-step name, position, confirmation flow.","route":"onboard","done":["Splash → Onboarding route works","Wizard split into Step 1, Step 2, Step 3","Player name entry exists","Position selector exists","Confirmation / Enter Academy step exists","Developer iPhone frame exists","Football progress system exists"],"todo":["Confirm CTA visibility on all iPhone sizes","Verify selected position text displays correctly","Verify Home remains locked until onboarding complete","Verify returning users skip onboarding"],"review":"Onboarding is no longer blocked at architecture level. Remaining work is polish, validation and regression testing before marking READY."},
+    {"id":"home","name":"Home","status":"IN REVIEW","tag":"review","completion":58,"risk":"LOW","priority":"Highest ROI","subtitle":"Main player dashboard.","route":"home","done":["Home route loads","XP and progress widgets exist","Training entry exists"],"todo":["Make one primary action obvious","Reduce clutter","Clarify today's mission"],"review":"Home is the key retention screen and should be reviewed next."},
+    {"id":"training","name":"Training","status":"IN REVIEW","tag":"review","completion":62,"risk":"MEDIUM","priority":"Core loop","subtitle":"Training flow and drills.","route":"training","done":["Training route loads","Cue logic exists","Session loop partly implemented"],"todo":["Test full session loop","Simplify first-use path","Improve scoring clarity"],"review":"Training is the product value. Keep it simple before adding sensors."},
+    {"id":"results","name":"Results","status":"TODO","tag":"todo","completion":18,"risk":"MEDIUM","priority":"After training","subtitle":"Progress and results view.","route":"results","done":["Results route exists"],"todo":["Define key result metrics","Show last session","Avoid complexity"],"review":"Results should show improvement without becoming an advanced analytics suite."},
+    {"id":"player","name":"Player","status":"TODO","tag":"todo","completion":24,"risk":"LOW","priority":"Profile polish","subtitle":"Player identity and settings.","route":"player","done":["Player route exists","Profile data available"],"todo":["Simplify presentation","Add clear profile summary"],"review":"Player supports the loop but is not the main MVP value."}
+  ]
+}
