@@ -1,3 +1,4 @@
+@import url("./academy-hero-asset.css?v=5.1.9");
 /* Sprint 5.1.6 — UI consistency and football progress system */
 :root{--pitchiq-frame-width:390px;--pitchiq-frame-height:844px;--pitchiq-frame-radius:42px;--pitchiq-frame-border:2px;--pitchiq-frame-pad:0px}
 .onboard-v1,.onboard-v1 *{box-sizing:border-box;max-width:100%}
