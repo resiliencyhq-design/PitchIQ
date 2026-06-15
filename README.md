@@ -1,15 +1,15 @@
-# PitchIQ Sprint 4.2.2 — Fix Training & Career Render Errors
+# PitchIQ
 
-Minimal maintenance patch.
+PitchIQ is the flagship soccer performance product from **WellTrack Performance**, powered by the **WellTrackIQ** technology platform.
 
-Changed:
-- `js/app/routes.js`
-- `js/app/main.js`
-- `README.md`
-- `docs/SPRINT_4_2_2_FIX_TRAINING_CAREER.md`
+## Brand Architecture
 
-Fixes:
-- Training route crashed because `renderTraining()` was called without `state`, but `renderTraining` assumed `state.profile.position`.
-- Career route crashed because `main.js` referenced `renderCareer(state)` but `renderCareer` was not imported/exported consistently.
+- Parent company: **WellTrack Performance**
+- Technology platform: **WellTrackIQ**
+- Current product: **PitchIQ**
 
-No architecture changes.
+PitchIQ remains the product display name. Repository names, package names, runtime routes, and application architecture should not be renamed unless explicitly approved.
+
+## Maintenance Note
+
+This repository previously included Sprint 4.2.2 maintenance work to fix Training and Career render errors without architecture changes.
