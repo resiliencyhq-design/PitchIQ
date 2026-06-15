@@ -60,11 +60,11 @@
   position: relative;
 }
 
-/* Developer-only iPhone fit border. Appears only when ?dev creates the dev toggle. */
-body:has(#pitchiq-dev-toggle) .onboard-content::before {
-  content: "DEV BORDER — iPHONE FIT";
+/* Developer-only iPhone fit border. Toggled from the PitchIQ Developer menu. */
+.pitchiq-dev-border .screen.active::before {
+  content: "DEV BORDER — IPHONE FIT";
   position: absolute;
-  inset: -6px;
+  inset: 6px;
   border: 2px dashed rgba(215,255,46,.9);
   border-radius: 30px;
   color: rgba(215,255,46,.95);
