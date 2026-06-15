@@ -2,8 +2,18 @@
   "name": "pitchiq-camera-voice-engine",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "studio": "vite --open /studio/",
+    "build": "vite build"
+  },
   "dependencies": {
+    "@puckeditor/core": "latest",
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
     "typescript": "latest",
     "vite": "latest"
-  }
+  },
+  "devDependencies": {}
 }
