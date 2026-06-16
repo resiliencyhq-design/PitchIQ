@@ -14,7 +14,12 @@ const COLORS = [
   ["Amber", "#FFC96B"],
   ["Red", "#FF8A8A"]
 ];
+const BACKGROUNDS = [["Transparent", "transparent"], ...COLORS.slice(2), COLORS[0], COLORS[1], COLORS[4], COLORS[5], COLORS[6]];
+const BORDER_COLORS = [COLORS[2], COLORS[3], COLORS[0], COLORS[1], COLORS[4], COLORS[5], COLORS[6]];
 const ALIGNMENTS = ["left", "center", "right"];
+const RADIUS = [["Small", 8], ["Medium", 16], ["Large", 24]];
+const SHADOWS = [["None", "none"], ["Subtle", "0 8px 24px rgba(0,0,0,.15)"], ["Standard", "0 12px 32px rgba(0,0,0,.22)"], ["Hero", "0 20px 60px rgba(0,0,0,.30)"]];
+const PADDING = [["XS", 4], ["S", 8], ["M", 16], ["L", 24], ["XL", 32], ["XXL", 48]];
 
 function readJson(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key) || "") || fallback; }
@@ -45,6 +50,10 @@ function styleFor(id) {
   return overrides()[id] || {};
 }
 
+function selectedComponent() {
+  return Boolean(activeLayer());
+}
+
 function selectedTextComponent() {
   const layer = activeLayer();
   if (!layer) return false;
@@ -62,6 +71,15 @@ function applyLayerStyles() {
     if (style.textColor) layer.style.color = style.textColor;
     if (style.align) layer.style.textAlign = style.align;
     layer.style.fontStyle = style.italic ? "italic" : "normal";
+    if (style.backgroundColor) layer.style.backgroundColor = style.backgroundColor;
+    if (style.borderColor) {
+      layer.style.borderColor = style.borderColor;
+      layer.style.borderStyle = "solid";
+      layer.style.borderWidth = "1px";
+    }
+    if (style.borderRadius !== undefined) layer.style.borderRadius = `${style.borderRadius}px`;
+    if (style.shadow) layer.style.boxShadow = style.shadow === "none" ? "none" : style.shadow;
+    if (style.padding !== undefined) layer.style.padding = `${style.padding}px`;
   });
 }
 
@@ -78,7 +96,14 @@ function mergeComponent(component) {
     align: style.align || component.align,
     bold: !!style.bold,
     italic: !!style.italic,
-    fontStyle: style.italic ? "italic" : component.fontStyle
+    fontStyle: style.italic ? "italic" : component.fontStyle,
+    backgroundColor: style.backgroundColor || component.backgroundColor,
+    borderColor: style.borderColor || component.borderColor,
+    borderRadius: style.borderRadius ?? component.borderRadius ?? component.radius,
+    radius: style.borderRadius ?? component.radius,
+    shadow: style.shadow || component.shadow,
+    boxShadow: style.shadow || component.boxShadow,
+    padding: style.padding ?? component.padding
   };
 }
 
@@ -166,12 +191,8 @@ function updateActive(patch) {
   renderPanel();
 }
 
-function renderPanel() {
-  const inspector = document.querySelector("aside.inspector");
-  if (!inspector) return;
-  inspector.querySelector(".typography-panel")?.remove();
+function renderTypographyPanel(inspector) {
   if (!selectedTextComponent()) return;
-
   const id = activeId();
   const layer = activeLayer();
   const style = {
@@ -197,6 +218,47 @@ function renderPanel() {
   panel.appendChild(toggle("Bold", style.bold || style.fontWeight >= 700, bold => updateActive({ bold })));
   panel.appendChild(toggle("Italic", style.italic, italic => updateActive({ italic })));
   inspector.appendChild(panel);
+}
+
+function nearestValue(value, options, fallback) {
+  const values = options.map(item => Number(item[1]));
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) return String(values.reduce((a, b) => Math.abs(b - numeric) < Math.abs(a - numeric) ? b : a, values[0]));
+  return String(fallback);
+}
+
+function renderAppearancePanel(inspector) {
+  if (!selectedComponent()) return;
+  const id = activeId();
+  const layer = activeLayer();
+  const style = styleFor(id);
+  const current = {
+    backgroundColor: style.backgroundColor || layer.style.backgroundColor || "transparent",
+    borderColor: style.borderColor || layer.style.borderColor || "#A7B0AA",
+    borderRadius: nearestValue(style.borderRadius ?? Number.parseInt(layer.style.borderRadius, 10), RADIUS, 16),
+    shadow: style.shadow || layer.style.boxShadow || "none",
+    padding: nearestValue(style.padding ?? Number.parseInt(layer.style.padding, 10), PADDING, 16)
+  };
+  const panel = document.createElement("section");
+  panel.className = "typography-panel appearance-panel";
+  const title = document.createElement("h3");
+  title.textContent = "Appearance";
+  panel.appendChild(title);
+  panel.appendChild(select("Background Color", current.backgroundColor, BACKGROUNDS, backgroundColor => updateActive({ backgroundColor })));
+  panel.appendChild(select("Border Color", current.borderColor, BORDER_COLORS, borderColor => updateActive({ borderColor })));
+  panel.appendChild(select("Border Radius", current.borderRadius, RADIUS, borderRadius => updateActive({ borderRadius: Number(borderRadius) })));
+  panel.appendChild(select("Shadow", current.shadow, SHADOWS, shadow => updateActive({ shadow })));
+  panel.appendChild(select("Padding", current.padding, PADDING, padding => updateActive({ padding: Number(padding) })));
+  inspector.appendChild(panel);
+}
+
+function renderPanel() {
+  const inspector = document.querySelector("aside.inspector");
+  if (!inspector) return;
+  inspector.querySelector(".typography-panel")?.remove();
+  inspector.querySelector(".appearance-panel")?.remove();
+  renderTypographyPanel(inspector);
+  renderAppearancePanel(inspector);
 }
 
 function tick() {
