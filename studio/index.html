@@ -16,16 +16,10 @@
   <nav class="studio-mode-nav" aria-label="Studio navigation">
     <a href="../tools/pitchiq-hq-live.html">🏠 Return to HQ</a>
     <button type="button" class="active" data-studio-mode="studio">◀ Studio</button>
-    <button type="button" data-studio-mode="review">🔍 Review</button>
+    <a href="../tools/review.html">🔍 Review</a>
     <a href="../tools/validation-centre.html">✅ Validation Centre</a>
   </nav>
   <script>
-    function openValidationCentre(){ window.location.href = "../tools/validation-centre.html"; }
-    function openReviewMode(){
-      const reviewButton = [...document.querySelectorAll("button")].find(button => (button.textContent || "").trim() === "Review Changes");
-      if (reviewButton) { reviewButton.click(); return true; }
-      return false;
-    }
     function markMode(mode){
       document.querySelectorAll("[data-studio-mode]").forEach(button => button.classList.toggle("active", button.dataset.studioMode === mode));
     }
@@ -33,20 +27,14 @@
       const link = event.target.closest && event.target.closest("a");
       if (link && (link.textContent || "").trim() === "Open MVP") {
         event.preventDefault();
-        window.open(`${window.location.origin}/index.html`, "_blank", "noopener,noreferrer");
+        window.location.href = `${window.location.origin}/index.html`;
         return;
       }
       const modeButton = event.target.closest && event.target.closest("[data-studio-mode]");
       if (!modeButton) return;
       const mode = modeButton.dataset.studioMode;
-      if (mode === "studio") { markMode("studio"); return; }
-      if (mode === "review") { markMode("review"); openReviewMode(); }
+      if (mode === "studio") markMode("studio");
     });
-    if (new URLSearchParams(window.location.search).has("review")) {
-      markMode("review");
-      const timer = setInterval(() => { if (openReviewMode()) clearInterval(timer); }, 300);
-      setTimeout(() => clearInterval(timer), 5000);
-    }
   </script>
   <script type="module" src="./src/main.jsx"></script>
 </body>
