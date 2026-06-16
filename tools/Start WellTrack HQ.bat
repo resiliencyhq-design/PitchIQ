@@ -40,7 +40,7 @@ if errorlevel 1 (
 
 echo.
 echo Starting server...
-start "WellTrack HQ Server" cmd /k "cd /d "%CD%" && npm run studio"
+start "WellTrack HQ Server" cmd /k "cd /d "%CD%" && npm run dev -- --host 127.0.0.1"
 
 echo Waiting for local server...
 timeout /t 5 /nobreak >nul
@@ -51,5 +51,6 @@ start "" "http://localhost:5173/tools/pitchiq-hq-live.html"
 echo.
 echo WellTrack HQ launcher complete.
 echo Keep the server terminal open while using HQ.
+echo Studio will only open when launched from HQ.
 echo.
 pause
