@@ -30,7 +30,7 @@ if errorlevel 1 (
 
 echo.
 echo Installing dependencies...
-npm install
+call npm install
 if errorlevel 1 (
   echo.
   echo npm install failed. Review the message above.
@@ -39,7 +39,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo Starting local server in a new terminal...
+echo Starting server...
 start "WellTrack HQ Server" cmd /k "cd /d "%CD%" && npm run studio"
 
 echo Waiting for local server...
