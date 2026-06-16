@@ -1,29 +1,30 @@
-# PitchIQ MVP Roadmap
+# WellTrackIQ Roadmap
 
-## MVP Scope
-The MVP is locked to six screens:
+Open the live read-only roadmap dashboard:
 
-| Screen | Status | Notes |
-|---|---|---|
-| Splash | LOCKED | Premium entry point |
-| Create Academy Player | LOCKED | Identity creation |
-| Home | IN REVIEW | Daily hub |
-| Training | LOCKED | Reactive cognition engine |
-| Results | TODO | Performance summary |
-| Player | TODO | Identity and attributes |
+[Open Roadmap Dashboard](../tools/roadmap.html)
 
-## MVP Completion
-Current estimate: 65%
+## Purpose
 
-## Current Objective
-Stabilise product governance and establish PitchIQ HQ as the starting point for every development session.
+The Roadmap is a governance module for planned work, parked ideas, future sprints, and platform progress.
 
-## Deferred Features
-Career, Shop, Analytics, Apple Watch, LiDAR, IMU, AI Coach, Marketplace, and Social Features are Version 2 unless approved.
+It is not an editor.
 
-## MVP Exit Criteria
-- Six core screens complete.
-- No runtime errors.
-- App shell stable.
-- Training loop functional.
-- Product Bible and HQ governance active.
+## Current Dashboard Modules
+
+- Roadmap — Planned and parked work
+- Studio — Build and edit screens
+- Review — Compare and approve changes
+- Validation Centre — QA and user testing
+- Release Manager — Promote, reject, rollback
+- Production App — Launch user experience
+
+## Product Constitution
+
+Studio = Build  
+Review = Approve  
+Validation Centre = Test  
+Release Manager = Promote  
+Production App = User experience
+
+No feature may be built directly in the Validation Centre.
