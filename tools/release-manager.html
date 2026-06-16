@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WellTrackIQ Release Manager</title>
+<style>
+:root{--lime:#d7ff2e;--green:#31f79a;--text:#f6fff7;--muted:rgba(246,255,247,.68);--stroke:rgba(255,255,255,.14);--red:#ff8a8a;--amber:#ffc96b;--blue:#8ab4ff}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:18px;background:radial-gradient(circle at 70% 0,rgba(215,255,46,.18),transparent 30%),linear-gradient(180deg,#07120d,#030504);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.shell{max-width:1180px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}h1{margin:0;font-size:46px;line-height:.86;letter-spacing:-.07em;text-transform:uppercase}h2{margin:0 0 10px;color:var(--lime)}p{color:var(--muted);font-weight:850}.btn,button,a.btn{border:1px solid rgba(215,255,46,.35);background:rgba(215,255,46,.1);color:var(--lime);border-radius:999px;padding:10px 14px;font-weight:1000;text-decoration:none;cursor:pointer}.btn.danger{border-color:rgba(255,138,138,.35);background:rgba(255,138,138,.12);color:var(--red)}.btn:disabled{opacity:.5;cursor:not-allowed}.card{border:1px solid var(--stroke);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));box-shadow:0 24px 80px rgba(0,0,0,.3);padding:16px;margin-bottom:14px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.table{display:grid;gap:10px}.release-row,.history-row{display:grid;grid-template-columns:80px 1fr 150px 130px 360px;gap:8px;align-items:center;border:1px solid var(--stroke);border-radius:16px;background:rgba(0,0,0,.2);padding:10px}.history-row{grid-template-columns:100px 1fr 180px 130px}.tag{display:inline-block;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:1000}.pending{background:rgba(255,201,107,.16);color:var(--amber)}.published{background:rgba(49,247,154,.16);color:var(--green)}.rejected{background:rgba(255,138,138,.15);color:var(--red)}.archived{background:rgba(138,180,255,.16);color:var(--blue)}.actions{display:flex;gap:6px;flex-wrap:wrap}.preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}.phone{height:430px;border:1px solid rgba(215,255,46,.35);border-radius:24px;background:#07120d;overflow:auto;padding:12px}.phone h3{margin:0 0 8px;color:var(--lime)}pre{white-space:pre-wrap;word-break:break-word;background:rgba(0,0,0,.32);border:1px solid var(--stroke);border-radius:14px;padding:12px;color:var(--muted);font-size:11px}.workflow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.workflow div{border:1px solid var(--stroke);border-radius:14px;background:rgba(0,0,0,.18);padding:10px;text-align:center;font-weight:1000}.hint{border:1px dashed rgba(215,255,46,.28);border-radius:16px;padding:12px;background:rgba(215,255,46,.06)}@media(max-width:900px){body{padding:12px}.top,.grid,.preview{display:block}.release-row,.history-row{grid-template-columns:1fr}.workflow{grid-template-columns:1fr 1fr}.actions{margin-top:8px}h1{font-size:34px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="top"><div><h1>Release Manager</h1><p>Controls promotion after Validation Centre. No direct Studio → MVP publishing.</p></div><a class="btn" href="pitchiq-hq-live.html">← Return to HQ</a></header>
+<section class="card workflow"><div>Studio</div><div>Review</div><div>Validation Centre</div><div>Release Manager</div><div>Release</div><div>PitchIQ MVP</div></section>
+<section class="grid">
+<article class="card"><h2>Pending Releases</h2><p class="hint">Current sprint: Publish only marks a candidate as Published, creates a revision, and stores a timestamp. It does not modify PitchIQ MVP.</p><div class="table" id="pending"></div></article>
+<article class="card"><h2>Preview</h2><div class="preview"><div class="phone"><h3>Last Approved</h3><pre id="approvedPreview">Select a release to preview.</pre></div><div class="phone"><h3>Candidate</h3><pre id="candidatePreview">Select a release to preview.</pre></div></div></article>
+</section>
+<section class="card"><h2>Revision History</h2><div class="table" id="history"></div></section>
+</main>
+<script>
+const CANDIDATES_KEY='welltrackiq.release.candidates';
+const HISTORY_KEY='welltrackiq.release.history';
+const APPROVED_KEY='welltrackiq.studio.approvedLayouts';
+const now=()=>new Date().toISOString();
+function read(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'')||fallback}catch{return fallback}}
+function write(key,value){localStorage.setItem(key,JSON.stringify(value,null,2))}
+function seed(){let candidates=read(CANDIDATES_KEY,null);if(candidates)return;const approved=read(APPROVED_KEY,null);const candidate={id:'release-'+Date.now(),revision:1,screen:approved?.screen||'validation-centre',createdAt:now(),status:'Pending Release',approvedLayout:approved,candidateLayout:approved||{screen:'validation-centre',layout:'placeholder',components:[]}};write(CANDIDATES_KEY,{candidates:[candidate]});}
+function tag(status){const s=(status||'').toLowerCase();if(s.includes('publish'))return'published';if(s.includes('reject'))return'rejected';if(s.includes('archive'))return'archived';return'pending'}
+function candidates(){return read(CANDIDATES_KEY,{candidates:[]}).candidates||[]}
+function history(){return read(HISTORY_KEY,{revisions:[]}).revisions||[]}
+function saveCandidates(items){write(CANDIDATES_KEY,{candidates:items})}
+function saveHistory(items){write(HISTORY_KEY,{revisions:items})}
+function render(){const pending=document.getElementById('pending');const rows=candidates();pending.innerHTML=rows.length?rows.map(r=>`<section class="release-row"><b>#${r.revision}</b><span>${r.screen}</span><span>${new Date(r.createdAt).toLocaleString()}</span><span class="tag ${tag(r.status)}">${r.status}</span><div class="actions"><button class="btn" onclick="preview('${r.id}')">Preview</button><button class="btn" onclick="approve('${r.id}')">Approve</button><button class="btn" onclick="rejectRelease('${r.id}')">Reject</button><button class="btn danger" onclick="deleteRelease('${r.id}')">Delete</button><button class="btn" disabled title="Available in future sprint">Rollback</button></div></section>`).join(''):'<p>No pending releases. Approved Review snapshots will appear here in a future promotion sprint.</p>';const h=history();document.getElementById('history').innerHTML=h.length?h.map(r=>`<section class="history-row"><b>#${r.revision}</b><span>${r.screen}</span><span>${new Date(r.publishedAt||r.createdAt).toLocaleString()}</span><span class="tag ${tag(r.status)}">${r.status}</span></section>`).join(''):'<p>No revisions published yet.</p>'}
+function preview(id){const r=candidates().find(x=>x.id===id);if(!r)return;document.getElementById('approvedPreview').textContent=JSON.stringify(r.approvedLayout||null,null,2);document.getElementById('candidatePreview').textContent=JSON.stringify(r.candidateLayout||null,null,2)}
+function approve(id){const rows=candidates();const r=rows.find(x=>x.id===id);if(!r)return;if(!confirm('Publish this release?'))return;const published={...r,status:'Published',publishedAt:now()};saveHistory([published,...history()]);saveCandidates(rows.map(x=>x.id===id?published:x));preview(id);render();alert('Release published. Revision created. PitchIQ MVP was not modified.')}
+function rejectRelease(id){const rows=candidates();const r=rows.find(x=>x.id===id);if(!r)return;if(!confirm('Reject candidate?'))return;saveCandidates(rows.map(x=>x.id===id?{...x,status:'Rejected',rejectedAt:now()}:x));render()}
+function deleteRelease(id){const rows=candidates();const r=rows.find(x=>x.id===id);if(!r)return;if(!confirm('Delete candidate?'))return;saveCandidates(rows.filter(x=>x.id!==id));document.getElementById('approvedPreview').textContent='Select a release to preview.';document.getElementById('candidatePreview').textContent='Select a release to preview.';render()}
+seed();render();
+</script>
+</body>
+</html>
