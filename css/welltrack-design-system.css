@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+:root {
+  --wt-font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --wt-font-accent: 'Oswald', 'Inter', system-ui, sans-serif;
+
+  --wt-type-display-size: 48px;
+  --wt-type-display-weight: 800;
+  --wt-type-h1-size: 32px;
+  --wt-type-h1-weight: 700;
+  --wt-type-h2-size: 24px;
+  --wt-type-h2-weight: 700;
+  --wt-type-h3-size: 20px;
+  --wt-type-h3-weight: 600;
+  --wt-type-body-size: 16px;
+  --wt-type-body-weight: 400;
+  --wt-type-caption-size: 12px;
+  --wt-type-caption-weight: 500;
+
+  --wt-color-lime: #D7FF2E;
+  --wt-color-green: #31F79A;
+  --wt-color-white: #F6FFF7;
+  --wt-color-slate: #A7B0AA;
+  --wt-color-blue: #8AB4FF;
+  --wt-color-amber: #FFC96B;
+  --wt-color-red: #FF8A8A;
+
+  --wt-radius-small: 8px;
+  --wt-radius-medium: 16px;
+  --wt-radius-large: 24px;
+
+  --wt-space-xs: 4px;
+  --wt-space-s: 8px;
+  --wt-space-m: 16px;
+  --wt-space-l: 24px;
+  --wt-space-xl: 32px;
+  --wt-space-xxl: 48px;
+
+  --wt-shadow-subtle: 0 8px 24px rgba(0,0,0,.15);
+  --wt-shadow-standard: 0 12px 32px rgba(0,0,0,.22);
+  --wt-shadow-hero: 0 20px 60px rgba(0,0,0,.30);
+}
+
+body {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-body-size);
+  font-weight: var(--wt-type-body-weight);
+}
+
+.wt-display {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-display-size);
+  font-weight: var(--wt-type-display-weight);
+  line-height: .9;
+}
+
+.wt-h1 {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-h1-size);
+  font-weight: var(--wt-type-h1-weight);
+}
+
+.wt-h2 {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-h2-size);
+  font-weight: var(--wt-type-h2-weight);
+}
+
+.wt-h3 {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-h3-size);
+  font-weight: var(--wt-type-h3-weight);
+}
+
+.wt-body {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-body-size);
+  font-weight: var(--wt-type-body-weight);
+}
+
+.wt-caption {
+  font-family: var(--wt-font-primary);
+  font-size: var(--wt-type-caption-size);
+  font-weight: var(--wt-type-caption-weight);
+}
+
+.wt-metric,
+.wt-kpi,
+.wt-score {
+  font-family: var(--wt-font-accent);
+  font-variant-numeric: tabular-nums;
+}
