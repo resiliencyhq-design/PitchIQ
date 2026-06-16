@@ -1,0 +1,6 @@
+.typography-panel{margin-top:16px;padding:14px;border:1px solid rgba(215,255,46,.24);border-radius:var(--wt-radius-medium,16px);background:rgba(215,255,46,.055);box-shadow:var(--wt-shadow-subtle,0 8px 24px rgba(0,0,0,.15));font-family:var(--wt-font-primary,Inter,system-ui,sans-serif)}
+.typography-panel h3{margin:0 0 10px;color:var(--wt-color-lime,#D7FF2E);font-size:var(--wt-type-h3-size,20px);font-weight:var(--wt-type-h3-weight,600)}
+.typography-panel label{display:grid;gap:6px;margin:10px 0;color:var(--wt-color-slate,#A7B0AA);font-size:var(--wt-type-caption-size,12px);font-weight:800;text-transform:none;letter-spacing:.02em}
+.typography-panel select{width:100%;border:1px solid rgba(255,255,255,.14);border-radius:var(--wt-radius-small,8px);background:#07120d;color:var(--wt-color-white,#F6FFF7);padding:8px 10px;font-family:var(--wt-font-primary,Inter,system-ui,sans-serif);font-weight:700}
+.typography-panel .typography-toggle{display:flex;align-items:center;gap:8px;color:var(--wt-color-white,#F6FFF7);font-weight:900}
+.typography-panel input[type="checkbox"]{accent-color:var(--wt-color-lime,#D7FF2E)}
