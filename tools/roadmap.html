@@ -3,57 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>WellTrackIQ Roadmap</title>
+<title>PitchIQ MVP Roadmap</title>
 <style>
-:root{--lime:#d7ff2e;--green:#31f79a;--text:#f6fff7;--muted:rgba(246,255,247,.68);--stroke:rgba(255,255,255,.14);--amber:#ffc96b;--blue:#8ab4ff;--red:#ff8a8a}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:18px;background:radial-gradient(circle at 70% 0,rgba(215,255,46,.18),transparent 30%),linear-gradient(180deg,#07120d,#030504);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.shell{max-width:1120px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}h1{margin:0;font-size:48px;line-height:.86;letter-spacing:-.07em;text-transform:uppercase}h2{margin:0 0 10px;color:var(--lime)}p{color:var(--muted);font-weight:850}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn,a.btn{border:1px solid rgba(215,255,46,.35);background:rgba(215,255,46,.1);color:var(--lime);border-radius:999px;padding:10px 14px;font-weight:1000;text-decoration:none;cursor:pointer}.card{border:1px solid var(--stroke);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));box-shadow:0 24px 80px rgba(0,0,0,.3);padding:16px;margin-bottom:14px}.metrics,.modules{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.metric,.module,.list-card{border:1px solid var(--stroke);border-radius:16px;background:rgba(0,0,0,.18);padding:12px}.metric small,.module small{display:block;color:var(--muted);font-size:10px;font-weight:1000;text-transform:uppercase;letter-spacing:.08em}.metric strong{display:block;color:var(--lime);font-size:30px;margin-top:5px}.module b{display:block;font-size:16px;margin:6px 0}.tag{display:inline-block;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:1000}.complete{background:rgba(49,247,154,.16);color:var(--green)}.progress{background:rgba(255,201,107,.16);color:var(--amber)}.planned{background:rgba(138,180,255,.16);color:var(--blue)}.notready{background:rgba(255,138,138,.15);color:var(--red)}.bar{height:10px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--lime),var(--green))}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.list-card ul{margin:0;padding-left:18px;color:var(--muted);font-weight:850}.constitution{font-size:18px;line-height:1.35;color:var(--text);font-weight:1000}.readonly{border:1px dashed rgba(215,255,46,.34);border-radius:16px;padding:12px;background:rgba(215,255,46,.06)}@media(max-width:900px){body{padding:12px}.top,.grid{display:block}.metrics,.modules{grid-template-columns:1fr}h1{font-size:36px}.actions{margin-top:10px}}
+:root{--lime:#d7ff2e;--green:#31f79a;--text:#f6fff7;--muted:rgba(246,255,247,.68);--stroke:rgba(255,255,255,.14);--amber:#ffc96b;--blue:#8ab4ff;--red:#ff8a8a}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:18px;background:radial-gradient(circle at 70% 0,rgba(215,255,46,.18),transparent 30%),linear-gradient(180deg,#07120d,#030504);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.shell{max-width:1180px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}h1{margin:0;font-size:48px;line-height:.86;letter-spacing:-.07em;text-transform:uppercase}h2{margin:0 0 10px;color:var(--lime);font-size:20px}p{color:var(--muted);font-weight:850}.subtitle{margin:8px 0 0;color:var(--lime);font-weight:1000}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn,a.btn{border:1px solid rgba(215,255,46,.35);background:rgba(215,255,46,.1);color:var(--lime);border-radius:999px;padding:10px 14px;font-weight:1000;text-decoration:none;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{grid-column:span 4;border:1px solid var(--stroke);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));box-shadow:0 24px 80px rgba(0,0,0,.3);padding:16px;min-height:170px}.wide{grid-column:span 8}.full{grid-column:1/-1}.tag{display:inline-block;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:1000}.active{background:rgba(49,247,154,.16);color:var(--green)}.warn{background:rgba(255,201,107,.16);color:var(--amber)}.done{background:rgba(49,247,154,.16);color:var(--green)}.readonly{border:1px dashed rgba(215,255,46,.34);border-radius:16px;padding:12px;background:rgba(215,255,46,.06)}.big{display:block;color:var(--lime);font-size:44px;font-weight:1000;letter-spacing:-.06em}.bar{height:14px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:12px}.bar i{display:block;height:100%;width:68%;border-radius:inherit;background:linear-gradient(90deg,var(--lime),var(--green))}.flow{white-space:pre;line-height:1.35;color:var(--text);font-weight:1000;background:rgba(0,0,0,.24);border:1px solid var(--stroke);border-radius:16px;padding:14px}.status-list,.criteria,.deferred{display:grid;gap:7px}.status-list div,.criteria div{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--stroke);border-radius:12px;padding:9px;background:rgba(0,0,0,.18);font-weight:900}.deferred ul{columns:2;margin:0;padding-left:18px;color:var(--muted);font-weight:850}.banner{margin-top:10px;border:1px solid rgba(255,201,107,.35);background:rgba(255,201,107,.12);color:var(--amber);border-radius:14px;padding:10px;font-weight:1000}.constitution{white-space:pre-line;font-size:18px;line-height:1.4;color:var(--text);font-weight:1000}.timestamp{color:var(--muted);font-size:12px;font-weight:850;text-align:right;margin-top:10px}@media(max-width:900px){body{padding:12px}.top{display:block}h1{font-size:36px}.card,.wide{grid-column:1/-1}.actions{margin-top:12px}.deferred ul{columns:1}}
 </style>
 </head>
 <body>
 <main class="shell">
 <header class="top">
-<div><h1>Roadmap</h1><p>Read-only executive dashboard for planned work, parked ideas, and release governance.</p></div>
-<nav class="actions"><button class="btn" id="refresh">Refresh</button><button class="btn" id="update">Update Progress</button><a class="btn" href="pitchiq-hq-live.html">Return to HQ</a></nav>
+  <div><h1>🗺️ PitchIQ MVP Roadmap</h1><p class="subtitle">Product Strategy & Governance</p><p>Read-only executive dashboard and Product Bible for every development session.</p></div>
+  <nav class="actions"><button class="btn" id="refresh">🔄 Refresh</button><button class="btn" id="update">📈 Update Progress</button><a class="btn" href="pitchiq-hq-live.html">🏠 Return to HQ</a></nav>
 </header>
-<section class="card readonly"><b>Read-only rule:</b> Roadmap is governance only. No editing, deleting, direct build actions, schema changes, or production-flow changes occur here.</section>
-<section class="card">
-<h2>Status Dashboard</h2>
-<div class="metrics"><div class="metric"><small>Current Sprint</small><strong id="sprintShort">A.1</strong></div><div class="metric"><small>Current Objective</small><strong id="objectiveShort">Roadmap</strong></div><div class="metric"><small>Validation Progress</small><strong id="progressPct">—</strong><div class="bar"><i id="progressBar" style="width:0%"></i></div></div><div class="metric"><small>Completed</small><strong id="completedCount">—</strong></div><div class="metric"><small>Last Updated</small><strong id="updatedAt">—</strong></div></div>
-</section>
-<section class="card">
-<h2>Platform Modules</h2>
-<div class="modules" id="modules"></div>
-</section>
+<section class="card full readonly"><b>Governance rule:</b> Roadmap is read-only. It does not edit Studio, layouts, templates, the MVP, release state, or project files.</section>
 <section class="grid">
-<article class="list-card"><h2>Completed</h2><ul id="completed"></ul></article>
-<article class="list-card"><h2>In Progress</h2><ul id="inProgress"></ul></article>
-<article class="list-card"><h2>Planned</h2><ul id="planned"></ul></article>
-<article class="list-card"><h2>Deferred Features</h2><ul><li>Career expansion</li><li>Shop</li><li>Advanced analytics</li><li>Devices and sensors</li><li>AI Coach</li><li>Marketplace</li><li>Social features</li></ul></article>
+  <article class="card"><h2>Current Sprint</h2><span class="big" id="sprintNo">Sprint 9</span><p><b>End-to-End Flow Certification</b></p><span class="tag active">🟢 Active</span></article>
+  <article class="card wide"><h2>Current Objective</h2><p>Stabilise and certify the complete MVP user journey.</p><div class="flow">Splash
+    ↓
+Create Academy Player
+    ↓
+Home
+    ↓
+Training
+    ↓
+Results
+    ↓
+Player</div></article>
+  <article class="card"><h2>MVP Progress</h2><small>Overall Progress</small><span class="big" id="progressPct">68%</span><div class="bar"><i id="progressBar"></i></div></article>
+  <article class="card"><h2>Platform Status</h2><div class="status-list" id="platformStatus"></div></article>
+  <article class="card"><h2>Deferred Features</h2><p><b>Version 2</b></p><div class="deferred"><ul><li>Career</li><li>Shop</li><li>Analytics</li><li>Apple Watch</li><li>LiDAR</li><li>IMU</li><li>AI Coach</li><li>Marketplace</li><li>Social Features</li></ul></div><div class="banner">Deferred unless explicitly approved</div></article>
+  <article class="card"><h2>MVP Exit Criteria</h2><div class="criteria"><div>☐ Six core screens complete</div><div>☐ No runtime errors</div><div>☐ Stable navigation</div><div>☐ Training loop functional</div><div>☐ Product Bible active</div><div>☐ HQ governance active</div></div></article>
+  <article class="card full"><h2>Product Constitution</h2><div class="constitution">Studio = Build
+
+Review = Approve
+
+Validation Centre = Test
+
+Release Manager = Promote
+
+Production = User Experience
+
+Only Studio edits.
+
+Validation Centre is read-only.
+
+Anything outside the MVP
+is automatically deferred to
+Version 2 unless explicitly approved.</div></article>
 </section>
-<section class="grid">
-<article class="list-card"><h2>Validation Centre Exit Criteria</h2><ul><li>Six core screens complete</li><li>No runtime errors</li><li>App shell stable</li><li>Training loop functional</li><li>HQ governance active</li><li>Validation Centre used for QA only</li></ul></article>
-<article class="list-card"><h2>Product Constitution</h2><p class="constitution">Studio = Build. Review = Approve. Validation Centre = Test. Release Manager = Promote. Production App = User experience.</p><p>No feature may be built directly in the Validation Centre.</p></article>
-</section>
+<p class="timestamp" id="lastUpdated">Last updated: —</p>
 </main>
 <script>
-const moduleDefaults=[
-{name:'HQ',status:'Complete'},
-{name:'Studio',status:'Complete'},
-{name:'Review',status:'Complete'},
-{name:'Validation Centre',status:'Complete'},
-{name:'Release Manager',status:'In Progress'},
-{name:'Production App',status:'Not Ready'},
-{name:'QA Toolbar',status:'Planned'},
-{name:'QA Checklist',status:'Planned'},
-{name:'QA Scoring',status:'Planned'},
-{name:'Issue Tracking',status:'Planned'}
-];
-const statusClass=s=>s==='Complete'?'complete':s==='In Progress'?'progress':s==='Not Ready'?'notready':'planned';
+const platform=[['HQ','✅'],['Studio','✅'],['Review','✅'],['Validation','✅'],['Release Manager','🟡'],['Production','🟡']];
 function now(){return new Date().toLocaleString([], {dateStyle:'medium', timeStyle:'short'});}
-function calculate(mods=moduleDefaults){const weighted=mods.map(m=>m.status==='Complete'?1:m.status==='In Progress'?.65:m.status==='Planned'?.25:0);return Math.round(weighted.reduce((a,b)=>a+b,0)/weighted.length*100)}
-function render(mods=moduleDefaults){const progress=calculate(mods),completed=mods.filter(m=>m.status==='Complete'),inProgress=mods.filter(m=>m.status==='In Progress'),planned=mods.filter(m=>m.status==='Planned'||m.status==='Not Ready');document.getElementById('modules').innerHTML=mods.map(m=>`<article class="module"><small>Status</small><b>${m.name}</b><span class="tag ${statusClass(m.status)}">${m.status}</span></article>`).join('');document.getElementById('progressPct').textContent=progress+'%';document.getElementById('progressBar').style.width=progress+'%';document.getElementById('completedCount').textContent=completed.length;document.getElementById('completed').innerHTML=completed.map(m=>`<li>${m.name}</li>`).join('');document.getElementById('inProgress').innerHTML=inProgress.map(m=>`<li>${m.name}</li>`).join('')||'<li>None</li>';document.getElementById('planned').innerHTML=planned.map(m=>`<li>${m.name} — ${m.status}</li>`).join('');document.getElementById('updatedAt').textContent=now();localStorage.setItem('welltrackiq.roadmap.lastUpdated',new Date().toISOString());}
-function refresh(){document.getElementById('sprintShort').textContent='A.1';document.getElementById('objectiveShort').textContent='Roadmap';render(moduleDefaults)}
-function updateProgress(){const mods=[...moduleDefaults];render(mods)}
-document.getElementById('refresh').onclick=refresh;document.getElementById('update').onclick=updateProgress;refresh();
+function render(){document.getElementById('platformStatus').innerHTML=platform.map(([name,status])=>`<div><span>${name}</span><b>${status}</b></div>`).join('');document.getElementById('progressPct').textContent='68%';document.getElementById('progressBar').style.width='68%';document.getElementById('sprintNo').textContent='Sprint 9';document.getElementById('lastUpdated').textContent='Last updated: '+now();localStorage.setItem('welltrackiq.roadmap.lastUpdated',new Date().toISOString());}
+function refresh(){render();}
+function updateProgress(){render();}
+document.getElementById('refresh').onclick=refresh;document.getElementById('update').onclick=updateProgress;render();
 </script>
 </body>
 </html>
