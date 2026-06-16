@@ -93,6 +93,10 @@ function injectDevButtons(panel) {
     button.style.cssText = `display:block;width:100%;margin:3px 0;padding:6px 7px;border:0;border-radius:7px;background:${bg};color:#fff;text-align:left;font:inherit;cursor:pointer`;
     return button;
   };
+  const validation = make("✅ Validation Centre\nRead-only QA environment\n[ OPEN ]", "rgba(49,247,154,.18)");
+  validation.style.color = "#d7ff2e";
+  validation.style.whiteSpace = "pre-line";
+  validation.addEventListener("click", () => { window.location.href = "tools/validation-centre.html"; });
   const dashboard = make("← Return to Dashboard", "rgba(215,255,46,.18)");
   dashboard.style.color = "#d7ff2e";
   dashboard.addEventListener("click", () => { window.location.href = "tools/pitchiq-hq.html"; });
@@ -106,6 +110,7 @@ function injectDevButtons(panel) {
     });
   });
   panel.appendChild(document.createElement("hr")).style.cssText = "border:0;border-top:1px solid rgba(255,255,255,.14);margin:8px 0";
+  panel.appendChild(validation);
   panel.appendChild(dashboard);
   panel.appendChild(reset);
 }
