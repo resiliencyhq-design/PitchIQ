@@ -4,16 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PitchIQ Studio</title>
+  <style>
+    .studio-mode-nav{position:fixed;left:50%;bottom:14px;z-index:10000;display:flex;gap:8px;align-items:center;transform:translateX(-50%);padding:8px;border:1px solid rgba(215,255,46,.34);border-radius:999px;background:rgba(7,18,13,.92);box-shadow:0 18px 54px rgba(0,0,0,.38);backdrop-filter:blur(18px)}
+    .studio-mode-nav button,.studio-mode-nav a{border:1px solid rgba(215,255,46,.3);border-radius:999px;background:rgba(215,255,46,.1);color:#d7ff2e;text-decoration:none;font:900 12px/1 Inter,system-ui,sans-serif;padding:9px 11px;cursor:pointer;white-space:nowrap}
+    .studio-mode-nav .active{background:rgba(49,247,154,.16);color:#31f79a;border-color:rgba(49,247,154,.4)}
+    @media(max-width:720px){.studio-mode-nav{left:8px;right:8px;bottom:8px;transform:none;overflow:auto;justify-content:flex-start}.studio-mode-nav button,.studio-mode-nav a{font-size:11px}}
+  </style>
 </head>
 <body>
   <div id="studio-root"></div>
+  <nav class="studio-mode-nav" aria-label="Studio navigation">
+    <a href="../tools/pitchiq-hq-live.html">🏠 Return to HQ</a>
+    <button type="button" class="active" data-studio-mode="studio">◀ Studio</button>
+    <button type="button" data-studio-mode="review">🔍 Review</button>
+    <a href="../tools/validation-centre.html">✅ Validation Centre</a>
+  </nav>
   <script>
+    function openValidationCentre(){ window.location.href = "../tools/validation-centre.html"; }
+    function openReviewMode(){
+      const reviewButton = [...document.querySelectorAll("button")].find(button => (button.textContent || "").trim() === "Review Changes");
+      if (reviewButton) { reviewButton.click(); return true; }
+      return false;
+    }
+    function markMode(mode){
+      document.querySelectorAll("[data-studio-mode]").forEach(button => button.classList.toggle("active", button.dataset.studioMode === mode));
+    }
     document.addEventListener("click", function (event) {
       const link = event.target.closest && event.target.closest("a");
-      if (!link || (link.textContent || "").trim() !== "Open MVP") return;
-      event.preventDefault();
-      window.open(`${window.location.origin}/index.html?dev`, "_blank", "noopener,noreferrer");
+      if (link && (link.textContent || "").trim() === "Open MVP") {
+        event.preventDefault();
+        window.open(`${window.location.origin}/index.html`, "_blank", "noopener,noreferrer");
+        return;
+      }
+      const modeButton = event.target.closest && event.target.closest("[data-studio-mode]");
+      if (!modeButton) return;
+      const mode = modeButton.dataset.studioMode;
+      if (mode === "studio") { markMode("studio"); return; }
+      if (mode === "review") { markMode("review"); openReviewMode(); }
     });
+    if (new URLSearchParams(window.location.search).has("review")) {
+      markMode("review");
+      const timer = setInterval(() => { if (openReviewMode()) clearInterval(timer); }, 300);
+      setTimeout(() => clearInterval(timer), 5000);
+    }
   </script>
   <script type="module" src="./src/main.jsx"></script>
 </body>
