@@ -7,6 +7,14 @@
 </head>
 <body>
   <div id="studio-root"></div>
+  <script>
+    document.addEventListener("click", function (event) {
+      const link = event.target.closest && event.target.closest("a");
+      if (!link || (link.textContent || "").trim() !== "Open MVP") return;
+      event.preventDefault();
+      window.open(`${window.location.origin}/index.html?dev`, "_blank", "noopener,noreferrer");
+    });
+  </script>
   <script type="module" src="./src/main.jsx"></script>
 </body>
 </html>
