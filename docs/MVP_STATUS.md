@@ -1,5 +1,5 @@
 Current Sprint:
-MVP UX Polish
+Home Screen Review & Polish
 
 Screen Status:
 
@@ -11,24 +11,20 @@ Results - IN REVIEW
 Player - APPROVED WITH REWORK
 
 Current Objective:
-Results Screen v2
+Polish Home screen for MVP readiness
 
 Reason:
 CTO review completed.
-Results screen received the lowest score (4.5/10) and is now the highest-priority UX issue.
+Home screen is approved with rework and is now the active MVP polish sprint.
 
 Required Fixes:
 
-1. Session Complete state
-2. Accuracy display
-3. Best Combo display
-4. XP Earned display
-5. Score display
-6. Encouragement message
-7. Continue Training CTA
-8. Back to Home CTA
-9. Improved visual hierarchy
-10. Better use of screen space
+1. Improve visual hierarchy
+2. Improve card consistency
+3. Improve typography
+4. Validate bottom navigation
+5. Validate iPhone viewport fit
+6. Improve XP/progress readability
 
 Next Objective:
 Home Hero Rebuild
