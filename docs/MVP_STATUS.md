@@ -1,5 +1,5 @@
 Current Sprint:
-Results Screen UX Polish
+Player Screen UX Polish
 
 Screen Status:
 
@@ -11,19 +11,19 @@ Results - IN REVIEW
 Player - APPROVED WITH REWORK
 
 Current Objective:
-Polish Results screen for MVP readiness
+Polish Player screen for MVP readiness
 
 Reason:
 CTO review completed.
-Results screen is in review and is now the active MVP polish sprint.
+Player screen is approved with rework and is now the active MVP polish sprint.
 
 Required Fixes:
 
-1. Improve results hierarchy
-2. Improve session summary readability
-3. Improve XP and score visibility
-4. Improve CTA hierarchy
-5. Preserve results identity
+1. Resize player card to fit viewport
+2. Prevent clipping
+3. Rebuild profile summary hierarchy
+4. Improve spacing above bottom nav
+5. Preserve player logic and progression
 6. Validate iPhone viewport fit
 
 Next Objective:
