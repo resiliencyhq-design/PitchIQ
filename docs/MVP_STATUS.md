@@ -1,5 +1,5 @@
 Current Sprint:
-Home Screen Review & Polish
+Training Screen UX Polish
 
 Screen Status:
 
@@ -11,20 +11,20 @@ Results - IN REVIEW
 Player - APPROVED WITH REWORK
 
 Current Objective:
-Polish Home screen for MVP readiness
+Polish Training screen for MVP readiness
 
 Reason:
 CTO review completed.
-Home screen is approved with rework and is now the active MVP polish sprint.
+Training screen is approved and is now the active MVP polish sprint.
 
 Required Fixes:
 
-1. Improve visual hierarchy
-2. Improve card consistency
-3. Improve typography
-4. Validate bottom navigation
-5. Validate iPhone viewport fit
-6. Improve XP/progress readability
+1. Fix top clipping
+2. Compress unused vertical space
+3. Improve metrics readability
+4. Improve CTA hierarchy
+5. Preserve training identity
+6. Validate iPhone viewport fit
 
 Next Objective:
 Home Hero Rebuild
