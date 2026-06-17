@@ -2,10 +2,12 @@ const KEY = "pitchiq_integrated_v1";
 
 const defaults = {
   profile: { name: "", position: "Winger", goal: "React faster", createdAt: null },
-  game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 1, lastResult: null },
-  analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [80, 140, 220, 180, 310, 120, 0] },
+  game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 0, trainingSeconds: 0, lastResult: null },
+  analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [0, 0, 0, 0, 0, 0, 0] },
   settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" }
 };
+
+const LEGACY_SEEDED_WEEKLY_XP = [80, 140, 220, 180, 310, 120, 0];
 
 export function loadState() {
   try {
@@ -48,7 +50,8 @@ export function normalizeState(input) {
   state.game.packOpened ??= false;
   state.game.unlocked = Array.isArray(state.game.unlocked) ? state.game.unlocked : [];
   state.game.lastXp ??= 0;
-  state.game.bestCombo ??= 1;
+  state.game.bestCombo ??= 0;
+  state.game.trainingSeconds ??= 0;
   state.game.lastResult = state.game.lastResult && typeof state.game.lastResult === "object" ? state.game.lastResult : null;
 
   state.analytics ||= {};
@@ -57,7 +60,10 @@ export function normalizeState(input) {
   state.analytics.reactionHistory = Array.isArray(state.analytics.reactionHistory) ? state.analytics.reactionHistory : [];
   state.analytics.weeklyXp = Array.isArray(state.analytics.weeklyXp) && state.analytics.weeklyXp.length
     ? state.analytics.weeklyXp
-    : [80, 140, 220, 180, 310, 120, 0];
+    : [0, 0, 0, 0, 0, 0, 0];
+  if (LEGACY_SEEDED_WEEKLY_XP.every((xp, index) => state.analytics.weeklyXp[index] === xp)) {
+    state.analytics.weeklyXp = [0, 0, 0, 0, 0, 0, 0];
+  }
 
   state.settings ||= {};
   state.settings.sound ??= true;

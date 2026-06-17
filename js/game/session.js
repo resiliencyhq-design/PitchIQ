@@ -10,8 +10,8 @@ export function createSession({ position="Winger", drillId=null, level=1 } = {})
     startedAt: Date.now(),
     timeLeft: drill.seconds,
     score: 0,
-    combo: 1,
-    bestCombo: 1,
+    combo: 0,
+    bestCombo: 0,
     results: [],
     currentCue: nextCue(drill)
   };
