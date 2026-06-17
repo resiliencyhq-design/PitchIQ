@@ -69,7 +69,7 @@ function reset(){ if(confirm("Reset PitchIQ profile?")){ resetState(); clearOnbo
 function trainingHome(){ stopEphemeral(); activeSession=null; trainingStage="home"; training={time:45,score:0,combo:1,timer:null}; renderTrainingRoute(); }
 function chooseDrill(el){ selectedDrillId=el?.dataset?.drill||selectedDrillId; setTrainingStage("choose-difficulty"); }
 function chooseDifficulty(el){ selectedDifficulty=el?.dataset?.difficulty||"medium"; setTrainingStage("preview"); }
-function startMissionTraining(){ selectedDrillId=missionDrill()?.id||selectedDrillId; selectedDifficulty="medium"; setTrainingStage("preview"); }
+function startMissionTraining(){ selectedDrillId=missionDrill()?.id||selectedDrillId; selectedDifficulty="medium"; startTraining(); }
 function randomCue(){ if(activeSession?.drill)return sessionNextCue(activeSession.drill); cue=CORE_CUES[Math.floor(Math.random()*CORE_CUES.length)]; return cue; }
 function startTraining(){ if(training.timer)clearInterval(training.timer); activeSession=createSession({position:state.profile.position,drillId:selectedDrillId,level:state.game.level}); selectedDrillId=activeSession.drill.id; training={time:activeSession.drill.seconds,score:0,combo:1,timer:null}; trainingSummary=null; state.game.lastXp=0; trainingStage="live"; renderTrainingRoute(); updateTraining(); nextCue(); training.timer=setInterval(()=>{ training.time--; updateTraining(); if(training.time<=0)finishTraining(); },1000); toast("Started: "+activeSession.drill.name); }
 function updateTraining(){ const t=document.getElementById("time"),s=document.getElementById("score"),c=document.getElementById("combo"); if(t)t.textContent=training.time; if(s)s.textContent=training.score; if(c)c.textContent=training.combo; }
