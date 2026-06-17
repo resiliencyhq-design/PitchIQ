@@ -2,7 +2,7 @@ const KEY = "pitchiq_integrated_v1";
 
 const defaults = {
   profile: { name: "", position: "Winger", goal: "React faster", createdAt: null },
-  game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 1 },
+  game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 1, lastResult: null },
   analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [80, 140, 220, 180, 310, 120, 0] },
   settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" }
 };
@@ -49,6 +49,7 @@ export function normalizeState(input) {
   state.game.unlocked = Array.isArray(state.game.unlocked) ? state.game.unlocked : [];
   state.game.lastXp ??= 0;
   state.game.bestCombo ??= 1;
+  state.game.lastResult = state.game.lastResult && typeof state.game.lastResult === "object" ? state.game.lastResult : null;
 
   state.analytics ||= {};
   state.analytics.sessions = Array.isArray(state.analytics.sessions) ? state.analytics.sessions : [];
