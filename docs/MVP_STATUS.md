@@ -1,30 +1,26 @@
+Current Phase:
+MVP Stabilisation
+
 Current Sprint:
-Player Screen UX Polish
+End-to-End Journey Validation
+
+Current Objective:
+Validate complete player journey and core systems
 
 Screen Status:
 
-Splash - APPROVED
-Create Academy Player - APPROVED
-Home - APPROVED WITH REWORK
-Training - APPROVED
-Results - IN REVIEW
-Player - APPROVED WITH REWORK
+Splash ................ COMPLETE
+Create Academy Player . COMPLETE
+Home .................. COMPLETE
+Training .............. COMPLETE
+Results ............... COMPLETE
+Player ................ COMPLETE
 
-Current Objective:
-Polish Player screen for MVP readiness
+Current Focus:
 
-Reason:
-CTO review completed.
-Player screen is approved with rework and is now the active MVP polish sprint.
-
-Required Fixes:
-
-1. Resize player card to fit viewport
-2. Prevent clipping
-3. Rebuild profile summary hierarchy
-4. Improve spacing above bottom nav
-5. Preserve player logic and progression
-6. Validate iPhone viewport fit
-
-Next Objective:
-Home Hero Rebuild
+1. End-to-End Journey Validation
+2. Persistence Validation
+3. XP / Progression Validation
+4. Reward System Validation
+5. Navigation Regression Testing
+6. Release Readiness Review
