@@ -145,3 +145,8 @@
 /* Onboarding Step 1 — identity copy refinement */
 .onboard-step[data-onboard-step="1"] .onboard-subtitle{margin:0!important;color:#d7ff2e!important;font-size:clamp(23px,6.2vw,34px)!important;font-weight:1000!important;line-height:.95!important;letter-spacing:.02em!important;text-align:center!important;text-transform:uppercase!important;text-shadow:0 0 18px rgba(215,255,46,.28),0 3px 12px rgba(0,0,0,.72)!important}
 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{margin-top:clamp(-2px,-.4svh,0px)!important}
+
+/* Onboarding Step 1 — final jersey alignment polish */
+.onboard-jersey-name{left:50%!important;top:48.6%!important;width:34%!important;font-size:clamp(16px,4.8vw,26px)!important;letter-spacing:-.025em!important;background:transparent!important;-webkit-text-stroke:0!important;text-shadow:0 0 9px rgba(215,255,46,.42),0 2px 7px rgba(0,0,0,.86)!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-icon{left:24%!important;top:50%!important;width:clamp(42px,10.5vw,58px)!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{left:30%!important;right:10%!important;text-align:center!important}
