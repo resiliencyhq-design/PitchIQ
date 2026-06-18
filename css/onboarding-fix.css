@@ -150,3 +150,14 @@
 .onboard-jersey-name{left:50%!important;top:48.6%!important;width:34%!important;font-size:clamp(16px,4.8vw,26px)!important;letter-spacing:-.025em!important;background:transparent!important;-webkit-text-stroke:0!important;text-shadow:0 0 9px rgba(215,255,46,.42),0 2px 7px rgba(0,0,0,.86)!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-icon{left:24%!important;top:50%!important;width:clamp(42px,10.5vw,58px)!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{left:30%!important;right:10%!important;text-align:center!important}
+
+/* Onboarding Step 1 — real iPhone center-axis correction */
+.onboard-content:has(.onboard-step[data-onboard-step="1"]:not([hidden])){width:100%!important;max-width:min(100%,430px)!important;justify-items:center!important;align-items:start!important}
+.onboard-step[data-onboard-step="1"]{width:100%!important;max-width:390px!important;margin-inline:auto!important;justify-items:center!important;align-items:start!important;text-align:center!important}
+.onboard-step[data-onboard-step="1"] .position-title,.onboard-step[data-onboard-step="1"] .onboard-subtitle{display:block!important;width:100%!important;max-width:100%!important;margin-inline:auto!important;text-align:center!important;justify-self:center!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{width:min(100%,390px)!important;max-width:390px!important;height:clamp(274px,36svh,328px)!important;margin-left:auto!important;margin-right:auto!important;justify-self:center!important;overflow:hidden!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{left:50%!important;top:-10%!important;width:108%!important;max-width:none!important;transform:translateX(-50%)!important;object-fit:contain!important;object-position:center top!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-name{left:50%!important;top:47.4%!important;width:30%!important;transform:translate(-50%,-50%)!important;text-align:center!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important;justify-self:center!important}
+.onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important;justify-self:center!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important}
