@@ -101,3 +101,25 @@
 .position-marker b{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);font-size:clamp(11px,3.1vw,15px);font-weight:1000;letter-spacing:-.03em;color:#fff;text-shadow:none;line-height:1}
 .position-marker.active{background-image:url("../assets/onboarding/position-marker-active.png?v=2")!important}
 .position-marker:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:3px}
+
+/* Beta readiness — final onboarding composition */
+.onboard-step[data-onboard-step="1"]{gap:clamp(10px,1.6vh,16px)!important}
+.onboard-step[data-onboard-step="1"] .onboard-subtitle{margin:0!important;max-width:29ch;font-size:clamp(18px,4.6vw,24px);line-height:1.18}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:min(88vw,350px);height:clamp(78px,18vw,98px)}
+.onboard-step[data-onboard-step="1"] .onboard-name-icon{left:21%;width:clamp(54px,13.5vw,76px)}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{left:32%!important;right:6%!important;font-size:clamp(18px,4.55vw,24px)!important;font-weight:700!important}
+.onboard-step[data-onboard-step="1"] .onboard-step-footer{padding-top:clamp(8px,1.8vh,18px)}
+.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(5px + env(safe-area-inset-top))!important;padding-bottom:calc(5px + env(safe-area-inset-bottom))!important}
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:3px!important;padding-top:0!important}
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(140px,38vw,180px)!important}
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:min(72vw,270px)!important}
+.onboard-step[data-onboard-step="2"]{gap:3px!important}
+.onboard-step[data-onboard-step="2"] .position-title{font-size:10px!important}
+.onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:clamp(30px,7.3vw,42px)!important;margin-bottom:1px!important}
+.onboard-step[data-onboard-step="2"] .position-selector{width:min(80vw,306px)!important}
+.onboard-step[data-onboard-step="2"] .position-confirm{min-height:34px!important;padding:2px 8px!important}
+.onboard-step[data-onboard-step="2"] .position-confirm b{font-size:clamp(14px,3.7vw,17px)!important}
+.onboard-step[data-onboard-step="2"] .onboard-cta-v1{min-height:62px!important;height:62px!important}
+.onboard-step[data-onboard-step="3"] .onboard-confirm-card small{font-size:0}
+.onboard-step[data-onboard-step="3"] .onboard-confirm-card small:first-of-type::after{content:"PLAYER";font-size:12px}
+.onboard-step[data-onboard-step="3"] .onboard-confirm-card small:nth-of-type(2)::after{content:"POSITION";font-size:12px}
