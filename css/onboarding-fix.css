@@ -6,7 +6,7 @@
 .onboard-v1 .splash-atmosphere{opacity:.32!important}
 .onboard-v1 .splash-spotlight{opacity:.72!important}
 .onboard-content{width:100%;max-width:min(100%,390px);min-width:0;margin:0 auto;display:grid;gap:clamp(10px,1.9vh,17px);align-content:start;justify-items:center;overflow-x:hidden;padding-top:clamp(15px,2.55vh,26px)}
-.onboard-logo-v1{width:min(220px,58vw)!important;margin:0 auto clamp(4px,.8vh,8px)!important;display:block}
+.onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important;object-fit:contain!important;margin:0 auto clamp(4px,.8vh,8px)!important;display:block}
 .onboard-progress{position:relative;width:min(100%,256px);height:34px;margin:0 auto clamp(2px,.6vh,6px);display:block;color:transparent;font-size:0;--track-fill:0%}
 .onboard-progress::before{content:"";position:absolute;left:8px;right:30px;top:16px;height:5px;border-radius:999px;background:linear-gradient(90deg,#d7ff2e 0 var(--track-fill),rgba(247,255,248,.24) var(--track-fill) 100%);box-shadow:0 0 18px rgba(215,255,46,.12)}
 .onboard-progress::after{content:"⚽";position:absolute;left:8px;top:50%;width:30px;height:30px;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.94);color:#03100b;font-size:18px;line-height:1;transform:translateY(-50%);transition:left .32s ease-in-out;filter:drop-shadow(0 8px 18px rgba(0,0,0,.32));z-index:2}
@@ -45,13 +45,13 @@
 .DeveloperIPhoneFrame .screen{max-width:var(--pitchiq-frame-width)!important;min-height:100%!important}
 .DeveloperIPhoneFrame .bottom-nav,.DeveloperIPhoneFrame .nav{max-width:calc(var(--pitchiq-frame-width) - 24px)!important}
 @keyframes pitchiqBallSettle{0%{scale:1;translate:0 0}70%{scale:1.12;translate:0 -2px}100%{scale:1;translate:0 0}}
-@media(max-width:390px){.onboard-v1{padding-top:calc(24px + env(safe-area-inset-top))!important}.academy-pitch{min-height:270px;gap:5px!important;padding:13px 11px 11px!important}.onboard-logo-v1{width:min(215px,58vw)!important}.onboard-content h1{font-size:clamp(29px,8.4vw,38px)!important}}
+@media(max-width:390px){.onboard-v1{padding-top:calc(24px + env(safe-area-inset-top))!important}.academy-pitch{min-height:270px;gap:5px!important;padding:13px 11px 11px!important}.onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important}.onboard-content h1{font-size:clamp(29px,8.4vw,38px)!important}}
 @media(max-width:360px),(max-height:700px){.onboard-v1{padding-top:calc(18px + env(safe-area-inset-top))!important}.onboard-content{gap:9px;padding-top:12px}.onboard-content h1{font-size:clamp(27px,8vw,35px)!important}#nameInput{min-height:48px}.academy-pitch{min-height:248px}.pitch-node{min-height:33px}.onboard-cta-v1{min-height:64px}.onboard-step-footer{padding-top:16px}}
 
 /* MVP Stabilisation — Onboarding step 2 viewport fit */
 .onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(10px + env(safe-area-inset-bottom))!important}
 .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:8px!important;padding-top:8px!important}
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:min(190px,52vw)!important;max-height:64px!important;margin-bottom:2px!important}
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important;margin-bottom:2px!important}
 .onboard-step[data-onboard-step="2"]{gap:8px!important;min-height:0!important;align-content:start!important}
 .onboard-step[data-onboard-step="2"] .position-title{font-size:12px!important;line-height:1!important}
 .onboard-step[data-onboard-step="2"] h1{font-size:clamp(28px,7.2vw,34px)!important;line-height:.94!important}
