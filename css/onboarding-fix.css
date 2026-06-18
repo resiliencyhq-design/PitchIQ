@@ -134,3 +134,14 @@
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{padding-top:clamp(2px,.8vh,8px)!important}
 @media(max-width:390px){.onboard-jersey-preview{width:min(112vw,420px);height:clamp(238px,33svh,292px)}.onboard-jersey-name{top:55%;font-size:clamp(18px,5.5vw,30px)}}
 @media(max-width:360px),(max-height:700px){.onboard-jersey-preview{height:214px}.onboard-jersey-name{top:55%;font-size:clamp(17px,5.2vw,26px)}}
+
+/* Onboarding Step 1 — jersey cleanup after transparent asset */
+.onboard-jersey-preview img{mix-blend-mode:normal!important;filter:contrast(1.06) saturate(1.1) drop-shadow(0 0 18px rgba(215,255,46,.18))!important}
+.onboard-jersey-name{top:51.5%!important;width:42%!important;font-size:clamp(18px,5.45vw,30px)!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-icon{left:25%!important;width:clamp(46px,11vw,62px)!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{left:31%!important;right:9%!important;text-align:center!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{text-align:center!important}
+
+/* Onboarding Step 1 — identity copy refinement */
+.onboard-step[data-onboard-step="1"] .onboard-subtitle{margin:0!important;color:#d7ff2e!important;font-size:clamp(23px,6.2vw,34px)!important;font-weight:1000!important;line-height:.95!important;letter-spacing:.02em!important;text-align:center!important;text-transform:uppercase!important;text-shadow:0 0 18px rgba(215,255,46,.28),0 3px 12px rgba(0,0,0,.72)!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{margin-top:clamp(-2px,-.4svh,0px)!important}
