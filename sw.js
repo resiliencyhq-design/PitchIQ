@@ -1,10 +1,10 @@
-const CACHE="pitchiq-onboarding-refresh-861bbe24";
+const CACHE="pitchiq-onboarding-refresh-861bbe25";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
   "./css/splash-fit.css?v=861bbe16",
-  "./css/onboarding-fix.css?v=861bbe23",
+  "./css/onboarding-fix.css?v=861bbe25",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
   "./js/app/main.js?v=861bbe23",
