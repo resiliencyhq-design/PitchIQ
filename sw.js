@@ -17,7 +17,7 @@ const ASSETS=[
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
   "./assets/onboarding/name-person-icon.png?v=861bbe4",
-  "./assets/backgrounds/onboarding-background.png?v=861bbe21",
+  "./assets/backgrounds/onboarding-background.png?v=861bbe23",
   "./assets/controls/swipe-bar.png",
   "./assets/controls/swipe-ball.png",
   "./assets/backgrounds/splash-poster.png"
