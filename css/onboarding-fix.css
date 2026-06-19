@@ -88,7 +88,7 @@
 .onboard-step[data-onboard-step="1"] .onboard-name-icon{position:absolute;left:17%;top:50%;z-index:3;width:clamp(36px,9vw,52px);height:auto;transform:translate(-50%,-50%);object-fit:contain;opacity:.9;pointer-events:none;user-select:none}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{position:absolute!important;left:30%!important;right:8%!important;top:50%!important;z-index:4!important;width:auto!important;max-width:none!important;min-width:0!important;height:60%!important;min-height:0!important;margin:0!important;padding:0!important;transform:translateY(-50%)!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:none!important;color:#fff!important;caret-color:#c8ff24!important;text-align:left!important;font-size:clamp(20px,5.5vw,28px)!important;font-weight:600!important;line-height:1!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{color:rgba(255,255,255,.68)}
-.onboard-step[data-onboard-step="2"] .position-selector{position:relative!important;width:min(96vw,376px)!important;aspect-ratio:1023/910!important;height:auto!important;max-height:none!important;min-height:0!important;display:block!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;contain:none!important}
+.onboard-step[data-onboard-step="2"] .position-selector{position:relative!important;width:min(96vw,376px)!important;aspect-ratio:933/850!important;height:auto!important;max-height:none!important;min-height:0!important;display:block!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;contain:none!important}
 .onboard-step[data-onboard-step="2"] .position-selector::before,.onboard-step[data-onboard-step="2"] .position-selector::after{display:none!important;content:none!important}
 /* Onboarding Step 2 — hide exported checkerboard canvas around the pitch art */
 .position-pitch-base{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;object-fit:fill;user-select:none;pointer-events:none;filter:drop-shadow(0 16px 28px rgba(0,0,0,.36))}
@@ -112,7 +112,7 @@
 .onboard-step[data-onboard-step="2"]{gap:3px!important}
 .onboard-step[data-onboard-step="2"] .position-title{font-size:10px!important}
 .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:clamp(30px,7.3vw,42px)!important;margin-bottom:1px!important}
-.onboard-step[data-onboard-step="2"] .position-selector{width:min(96vw,376px)!important;aspect-ratio:1023/910!important}
+.onboard-step[data-onboard-step="2"] .position-selector{width:min(96vw,376px)!important;aspect-ratio:933/850!important}
 .onboard-step[data-onboard-step="2"] .position-confirm{min-height:34px!important;padding:2px 8px!important}
 .onboard-step[data-onboard-step="2"] .position-confirm b{font-size:clamp(14px,3.7vw,17px)!important}
 .onboard-step[data-onboard-step="3"] .onboard-confirm-card small{font-size:0}
