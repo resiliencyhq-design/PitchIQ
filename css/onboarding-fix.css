@@ -201,13 +201,14 @@
 
 /* Onboarding - iPhone overscroll background containment */
 html,body{background:#000!important;overflow-x:hidden!important}
-body:has(.onboard-v1) .world,body:has(.onboard-v1) .world::after{background:#000!important}
-body:has(.onboard-v1) .app-shell,body:has(.onboard-v1) #app,body:has(.onboard-v1) .app-scroll,body:has(.onboard-v1) .scrollable-content{background:#000!important;overflow-x:hidden!important}
 .onboard-v1{background-color:#000!important;min-height:100svh!important;min-height:100dvh!important;overflow-x:hidden!important;isolation:isolate}
-.onboard-v1::before{content:"";position:fixed;inset:0;background:#000;z-index:-1;pointer-events:none}
+.onboard-v1::before{content:"";position:fixed;inset:0;background:#000;z-index:-2;pointer-events:none}
 
-/* Onboarding - poster restored above black fallback */
-.onboard-v1{background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe16")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
+/* Onboarding - visible poster layer over black fallback */
+.onboard-v1{position:relative!important;background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe18")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
+.onboard-v1::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url("../assets/backgrounds/onboarding-background.png?v=861bbe18") center center/cover no-repeat}
+.onboard-v1 .splash-atmosphere,.onboard-v1 .splash-spotlight{display:none!important}
+.onboard-v1 .onboard-content{position:relative!important;z-index:2!important}
 
 /* Onboarding Step 1 - custom name control asset */
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{height:clamp(72px,17vw,92px)!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important}

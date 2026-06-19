@@ -1,10 +1,10 @@
-const CACHE="pitchiq-onboarding-refresh-861bbe17";
+const CACHE="pitchiq-onboarding-refresh-861bbe18";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
   "./css/splash-fit.css?v=861bbe16",
-  "./css/onboarding-fix.css?v=861bbe17",
+  "./css/onboarding-fix.css?v=861bbe18",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
   "./js/app/main.js?v=861bbe14",
@@ -17,6 +17,7 @@ const ASSETS=[
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
   "./assets/onboarding/name-person-icon.png?v=861bbe4",
+  "./assets/backgrounds/onboarding-background.png?v=861bbe18",
   "./assets/controls/swipe-bar.png",
   "./assets/controls/swipe-ball.png",
   "./assets/backgrounds/splash-poster.png"
