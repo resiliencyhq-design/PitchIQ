@@ -204,7 +204,7 @@ html,body{background:#000!important;overflow-x:hidden!important}
 .onboard-v1::before{content:"";position:fixed;inset:0;background:#000;z-index:-2;pointer-events:none}
 
 /* Onboarding - visible poster layer over black fallback */
-.onboard-v1{position:relative!important;background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe19")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
+.onboard-v1{position:relative!important;background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe21")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
 .onboard-v1 .splash-atmosphere,.onboard-v1 .splash-spotlight{display:none!important;opacity:0!important}
 .onboard-v1 .onboard-content,.onboard-v1 .onboarding-wizard,.onboard-v1 .onboard-step{position:relative!important;z-index:1!important}
 
@@ -218,15 +218,15 @@ html,body{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap:focus-within{filter:drop-shadow(0 0 14px rgba(215,255,46,.35))!important}
 
 /* Onboarding Step 1/2 - custom Continue control asset */
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{width:min(86vw,350px)!important;height:clamp(66px,16vw,86px)!important;min-height:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent url("../assets/controls/continue-button.png?v=861bbe15") center/contain no-repeat!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;overflow:hidden!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{width:min(86vw,350px)!important;height:clamp(66px,16vw,86px)!important;min-height:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;overflow:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:4px!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:disabled,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:disabled{opacity:.45!important;filter:grayscale(.35)!important}
 @media(max-width:360px),(max-height:700px){.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{height:62px!important}}
 
 /* PitchIQ Control System v1.0 - onboarding primary controls */
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1,.onboard-step[data-onboard-step="3"] .onboard-cta-v1{width:min(84vw,326px)!important;height:76px!important;min-height:76px!important;max-height:76px!important;padding:0!important;border:0!important;border-radius:38px!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;overflow:hidden!important}
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe17") center/contain no-repeat!important}
-.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe17") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent!important}
+.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="3"] .onboard-cta-v1:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:4px!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:disabled,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:disabled,.onboard-step[data-onboard-step="3"] .onboard-cta-v1:disabled{opacity:.45!important;filter:grayscale(.35)!important}
 
@@ -235,5 +235,5 @@ html,body{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-control{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;transform:none!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:8px!important}
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(84vw,326px)!important;padding-top:22px!important;margin-left:auto!important;margin-right:auto!important}
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe20") center/contain no-repeat!important}
-.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe20") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe21") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe21") center/contain no-repeat!important}
