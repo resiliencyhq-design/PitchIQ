@@ -161,3 +161,10 @@
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important;justify-self:center!important}
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important;justify-self:center!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1{width:min(86vw,350px)!important;margin-left:auto!important;margin-right:auto!important}
+
+/* Onboarding Step 1 — jersey scale and label refinement */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:clamp(304px,39svh,366px)!important;max-width:402px!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-8%!important;width:118%!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:44.8%!important;width:28%!important;font-size:clamp(15px,4.45vw,24px)!important}
+@media(max-width:390px){.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:clamp(292px,38svh,344px)!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{width:116%!important;top:-7%!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:45%!important}}
+@media(max-width:360px),(max-height:700px){.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:254px!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{width:114%!important;top:-6%!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:45.4%!important;font-size:clamp(14px,4.2vw,21px)!important}}
