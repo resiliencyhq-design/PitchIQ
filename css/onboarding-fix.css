@@ -225,5 +225,5 @@ html,body{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-control{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;transform:none!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:8px!important}
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(84vw,326px)!important;padding-top:22px!important;margin-left:auto!important;margin-right:auto!important}
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe22") center/contain no-repeat!important}
-.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe22") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe23") center/contain no-repeat!important}
