@@ -1,16 +1,17 @@
-const CACHE="pitchiq-onboarding-refresh-861bbe15";
+const CACHE="pitchiq-onboarding-refresh-861bbe17";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
-  "./css/splash-fit.css?v=861bbe4",
-  "./css/onboarding-fix.css?v=861bbe15",
+  "./css/splash-fit.css?v=861bbe16",
+  "./css/onboarding-fix.css?v=861bbe17",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
   "./js/app/main.js?v=861bbe14",
   "./js/app/routes.js?v=861bbe14",
   "./assets/controls/your-name.png?v=861bbe14",
-  "./assets/controls/continue-button.png?v=861bbe15",
+  "./assets/controls/continue-button.png?v=861bbe17",
+  "./assets/controls/enter-academy.png?v=861bbe17",
   "./assets/brand/logo.svg",
   "./assets/brand/welltrack-performance-logo.png",
   "./assets/onboarding/position-marker-grey.png",
