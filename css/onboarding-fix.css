@@ -90,7 +90,8 @@
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{color:rgba(255,255,255,.68)}
 .onboard-step[data-onboard-step="2"] .position-selector{position:relative!important;width:min(82vw,318px)!important;height:auto!important;max-height:none!important;min-height:0!important;display:block!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;contain:none!important}
 .onboard-step[data-onboard-step="2"] .position-selector::before,.onboard-step[data-onboard-step="2"] .position-selector::after{display:none!important;content:none!important}
-.position-pitch-base{width:100%;height:auto;display:block;object-fit:contain;user-select:none;pointer-events:none}
+/* Onboarding Step 2 — hide exported checkerboard canvas around the pitch art */
+.position-pitch-base{width:100%;height:auto;display:block;object-fit:contain;user-select:none;pointer-events:none;clip-path:polygon(30.5% 26.5%,69.5% 26.5%,93% 84.5%,7% 84.5%);filter:drop-shadow(0 16px 28px rgba(0,0,0,.36))}
 .position-marker{position:absolute!important;z-index:4;width:clamp(42px,12vw,58px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;transform:translate(-50%,-50%)!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent url("../assets/onboarding/position-marker-grey.png?v=2") center/contain no-repeat!important;box-shadow:none!important;color:#fff!important;font-size:0!important;line-height:1!important;touch-action:manipulation;display:block!important}
 .position-marker span{display:none!important}
 .position-marker b{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);font-size:clamp(11px,3.1vw,15px);font-weight:1000;letter-spacing:-.03em;color:#fff;text-shadow:none;line-height:1}
