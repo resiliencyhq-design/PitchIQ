@@ -3,8 +3,7 @@
 :root{--pitchiq-frame-width:390px;--pitchiq-frame-height:844px;--pitchiq-frame-radius:42px;--pitchiq-frame-border:2px;--pitchiq-frame-pad:0px}
 .onboard-v1,.onboard-v1 *{box-sizing:border-box;max-width:100%}
 .onboard-v1{width:100%;min-width:0;max-width:100%;min-height:100dvh;padding:calc(26px + env(safe-area-inset-top)) clamp(12px,4vw,18px) calc(16px + env(safe-area-inset-bottom))!important;display:block!important;overflow-x:hidden;overflow-y:auto;overscroll-behavior-x:none}
-.onboard-v1 .splash-atmosphere{opacity:.32!important}
-.onboard-v1 .splash-spotlight{opacity:.72!important}
+.onboard-v1 .splash-atmosphere,.onboard-v1 .splash-spotlight{display:none!important;opacity:0!important}
 .onboard-content{width:100%;max-width:min(100%,390px);min-width:0;margin:0 auto;display:grid;gap:clamp(10px,1.9vh,17px);align-content:start;justify-items:center;overflow-x:hidden;padding-top:clamp(15px,2.55vh,26px)}
 .onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important;object-fit:contain!important;margin:0 auto clamp(4px,.8vh,8px)!important;display:block}
 .onboard-progress{position:relative;width:min(100%,256px);height:34px;margin:0 auto clamp(2px,.6vh,6px);display:block;color:transparent;font-size:0;--track-fill:0%}
@@ -205,10 +204,9 @@ html,body{background:#000!important;overflow-x:hidden!important}
 .onboard-v1::before{content:"";position:fixed;inset:0;background:#000;z-index:-2;pointer-events:none}
 
 /* Onboarding - visible poster layer over black fallback */
-.onboard-v1{position:relative!important;background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe18")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
-.onboard-v1::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url("../assets/backgrounds/onboarding-background.png?v=861bbe18") center center/cover no-repeat}
-.onboard-v1 .splash-atmosphere,.onboard-v1 .splash-spotlight{display:none!important}
-.onboard-v1 .onboard-content{position:relative!important;z-index:2!important}
+.onboard-v1{position:relative!important;background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe19")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
+.onboard-v1 .splash-atmosphere,.onboard-v1 .splash-spotlight{display:none!important;opacity:0!important}
+.onboard-v1 .onboard-content,.onboard-v1 .onboarding-wizard,.onboard-v1 .onboard-step{position:relative!important;z-index:1!important}
 
 /* Onboarding Step 1 - custom name control asset */
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{height:clamp(72px,17vw,92px)!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;filter:none!important}
