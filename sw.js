@@ -1,4 +1,4 @@
-const CACHE="pitchiq-onboarding-refresh-861bbe23";
+const CACHE="pitchiq-onboarding-refresh-861bbe24";
 const ASSETS=[
   "./",
   "./index.html",
@@ -16,7 +16,7 @@ const ASSETS=[
   "./assets/brand/welltrack-performance-logo.png",
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
-  "./assets/onboarding/name-person-icon.png?v=861bbe4",
+  "./assets/onboarding/name-person-icon.png?v=861bbe24",
   "./assets/backgrounds/onboarding-background.png?v=861bbe23",
   "./assets/controls/swipe-bar.png",
   "./assets/controls/swipe-ball.png",
