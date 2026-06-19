@@ -177,3 +177,8 @@
 
 /* Onboarding Step 1 - input position refinement */
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-28px,-3svh,-14px)!important}
+
+/* Onboarding Step 1 - transparent name bar final pass */
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-52px,-5.6svh,-34px)!important;filter:drop-shadow(0 0 11px rgba(215,255,46,.3))!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap::before{display:none!important;content:none!important;background:transparent!important;box-shadow:none!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap:focus-within{filter:drop-shadow(0 0 18px rgba(215,255,46,.52))!important}
