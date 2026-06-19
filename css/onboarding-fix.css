@@ -205,3 +205,6 @@ body:has(.onboard-v1) .world,body:has(.onboard-v1) .world::after{background:#000
 body:has(.onboard-v1) .app-shell,body:has(.onboard-v1) #app,body:has(.onboard-v1) .app-scroll,body:has(.onboard-v1) .scrollable-content{background:#000!important;overflow-x:hidden!important}
 .onboard-v1{background-color:#000!important;min-height:100svh!important;min-height:100dvh!important;overflow-x:hidden!important;isolation:isolate}
 .onboard-v1::before{content:"";position:fixed;inset:0;background:#000;z-index:-1;pointer-events:none}
+
+/* Onboarding - poster restored above black fallback */
+.onboard-v1{background-color:#000!important;background-image:url("../assets/backgrounds/onboarding-background.png?v=861bbe13")!important;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important}
