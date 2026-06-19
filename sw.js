@@ -1,18 +1,19 @@
-const CACHE="pitchiq-guide-lights-v20260618";
+const CACHE="pitchiq-onboarding-refresh-861bbe4";
 const ASSETS=[
   "./",
   "./index.html",
-  "./css/style.css?v=asset-audit-20260618",
-  "./css/splash-fit.css?v=guide-lights-20260618",
-  "./css/onboarding-fix.css?v=asset-audit-20260618",
+  "./css/style.css?v=861bbe4",
+  "./css/splash-fit.css?v=861bbe4",
+  "./css/onboarding-fix.css?v=861bbe4",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
-  "./js/app/main.js?v=asset-audit-20260618",
-  "./js/app/routes.js?v=asset-audit-20260618",
+  "./js/app/main.js?v=861bbe4",
+  "./js/app/routes.js?v=861bbe4",
   "./assets/brand/logo.svg",
   "./assets/brand/welltrack-performance-logo.png",
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
+  "./assets/onboarding/name-person-icon.png?v=861bbe4",
   "./assets/controls/swipe-bar.png",
   "./assets/controls/swipe-ball.png",
   "./assets/backgrounds/splash-poster.png"
