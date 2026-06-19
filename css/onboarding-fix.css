@@ -185,3 +185,11 @@
 
 /* Onboarding Step 1 - input touchpoint refinement */
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-76px,-8.2svh,-54px)!important}
+
+/* Onboarding Step 1 - hero scale refinement */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:clamp(338px,43svh,408px)!important;max-width:430px!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-10%!important;width:138%!important}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:43.4%!important;width:25%!important;font-size:clamp(15px,4.35vw,23px)!important}
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-96px,-10svh,-68px)!important}
+@media(max-width:390px){.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:clamp(326px,42svh,384px)!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-9%!important;width:134%!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:43.8%!important}.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-90px,-9.4svh,-64px)!important}}
+@media(max-width:360px),(max-height:700px){.onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:286px!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-7%!important;width:128%!important}.onboard-step[data-onboard-step="1"] .onboard-jersey-name{top:44.2%!important;font-size:clamp(14px,4.1vw,20px)!important}.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:-64px!important}}
