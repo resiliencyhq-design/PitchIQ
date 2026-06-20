@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step1-full-number-20260620";
+const CACHE="pitchiq-step1-art-align-20260620";
 const ASSETS=[
   "./",
   "./index.html",
@@ -7,8 +7,8 @@ const ASSETS=[
   "./css/onboarding-fix.css?v=step1-full-number-20260620",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
-  "./js/app/main.js?v=step1-person-crop-20260620",
-  "./js/app/routes.js?v=step1-person-crop-20260620",
+  "./js/app/main.js?v=step1-art-align-20260620",
+  "./js/app/routes.js?v=step1-art-align-20260620",
   "./assets/controls/your-name.png?v=861bbe23",
   "./assets/controls/continue-button.png?v=861bbe23",
   "./assets/controls/enter-academy.png?v=861bbe23",
@@ -16,7 +16,7 @@ const ASSETS=[
   "./assets/brand/welltrack-performance-logo.png?v=landing-logo-crop-20260620",
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
-  "./assets/onboarding/name-person-icon.png?v=step1-person-crop-20260620",
+  "./assets/onboarding/name-person-icon.png?v=step1-art-align-20260620",
   "./assets/backgrounds/onboarding-background.png?v=861bbe23",
   "./assets/controls/swipe-bar.png",
   "./assets/controls/swipe-ball.png",
