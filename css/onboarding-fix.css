@@ -234,9 +234,19 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important}
 .onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe23") center/contain no-repeat!important}
 
-/* Onboarding Step 1 - iPhone jersey number clearance */
-@media(max-width:430px),(max-height:932px){
-  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-58px,-5svh,-34px)!important}
+/* Onboarding Step 1 - fixed mobile jersey clearance */
+@media(max-width:430px){
+  .onboard-step[data-onboard-step="1"]{gap:8px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:360px!important;margin-top:-44px!important;margin-bottom:0!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:-30px!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{text-align:left!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{text-align:left!important}
+}
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:340px!important;margin-top:-38px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:-26px!important}
+}
+@media(max-width:360px),(max-height:700px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:300px!important;margin-top:-30px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:-22px!important}
 }
