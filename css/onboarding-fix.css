@@ -372,7 +372,7 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"] .position-title{font-size:11px!important;line-height:12px!important}
   .onboard-step[data-onboard-step="1"] .onboard-subtitle{height:30px!important;font-size:27px!important;line-height:30px!important}
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{width:var(--step1-art-w)!important;height:var(--step1-art-h)!important;aspect-ratio:340/286!important;margin:-2px auto 0!important}
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-9%!important;width:118%!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:310px!important;height:66px!important;min-height:66px!important;max-height:66px!important;margin:-14px auto 0!important}
   .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:310px!important;height:72px!important;padding-top:2px!important}
   .onboard-step[data-onboard-step="1"] .onboard-cta-v1{width:310px!important;height:66px!important;min-height:66px!important}
@@ -387,7 +387,7 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"]{grid-template-rows:12px 28px var(--step1-art-h) 62px 68px!important;gap:3px!important}
   .onboard-step[data-onboard-step="1"] .onboard-subtitle{height:28px!important;font-size:25px!important;line-height:28px!important}
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{aspect-ratio:306/264!important}
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-8%!important;width:116%!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:300px!important;height:62px!important;min-height:62px!important;max-height:62px!important;margin:-16px auto 0!important}
   .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:300px!important;height:68px!important;padding-top:2px!important}
   .onboard-step[data-onboard-step="1"] .onboard-cta-v1{width:300px!important;height:62px!important;min-height:62px!important}
