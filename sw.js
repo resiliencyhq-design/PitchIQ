@@ -1,10 +1,10 @@
-const CACHE="pitchiq-step1-person-crop-20260620";
+const CACHE="pitchiq-step1-controls-tight-20260620";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
   "./css/splash-fit.css?v=landing-title-spacing-20260620",
-  "./css/onboarding-fix.css?v=step1-person-crop-20260620",
+  "./css/onboarding-fix.css?v=step1-controls-tight-20260620",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
   "./js/app/main.js?v=step1-person-crop-20260620",
