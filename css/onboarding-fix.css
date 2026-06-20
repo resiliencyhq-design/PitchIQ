@@ -250,3 +250,61 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{height:300px!important;margin-top:-30px!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:-22px!important}
 }
+
+/* MVP Layout Stabilisation Sprint 1 - two-layer onboarding architecture */
+@media(max-width:430px){
+  .onboard-v1{padding:calc(24px + env(safe-area-inset-top)) 18px calc(16px + env(safe-area-inset-bottom))!important}
+  .onboard-content{max-width:390px!important;gap:8px!important;padding-top:0!important;align-content:start!important;grid-auto-rows:auto!important}
+  .onboard-logo-v1{width:220px!important;margin:0 auto!important}
+  .onboard-progress-img{width:326px!important;margin:0 auto!important}
+  .onboard-step{min-height:0!important;gap:8px!important;align-content:start!important;grid-auto-rows:auto!important}
+  .onboard-step .position-title{font-size:12px!important;line-height:14px!important;margin:0!important}
+
+  .onboard-step[data-onboard-step="1"]{max-width:390px!important;grid-template-rows:14px 34px 360px 76px 98px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-subtitle{height:34px!important;font-size:30px!important;line-height:34px!important;margin:0!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{width:390px!important;max-width:100%!important;height:360px!important;margin:0 auto!important;aspect-ratio:390/360!important;overflow:hidden!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{top:-10%!important;width:138%!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{width:326px!important;height:76px!important;margin:10px auto 0!important}
+  .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:326px!important;height:88px!important;margin:0 auto!important;padding-top:12px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-cta-v1{width:326px!important;height:76px!important;min-height:76px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{text-align:left!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{text-align:left!important}
+
+  .onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(12px + env(safe-area-inset-bottom))!important;overflow-y:auto!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:6px!important;min-height:0!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:196px!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:292px!important}
+  .onboard-step[data-onboard-step="2"]{gap:6px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:44px!important;line-height:46px!important;margin:0!important}
+  .onboard-step[data-onboard-step="2"] .position-selector{width:376px!important;max-width:100%!important;aspect-ratio:1023/1537!important;height:auto!important;max-height:none!important;padding:0!important;overflow:visible!important}
+  .onboard-step[data-onboard-step="2"] .position-pitch-base,.onboard-step[data-onboard-step="2"] .position-pitch-layer{inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important}
+  .onboard-step[data-onboard-step="2"] .position-marker{width:54px!important;height:54px!important}
+  .onboard-step[data-onboard-step="2"] .position-confirm{min-height:36px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{width:326px!important;height:82px!important;margin:0 auto!important;padding-top:6px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-cta-v1{width:326px!important;height:76px!important;min-height:76px!important}
+
+  .onboard-step[data-onboard-step="3"]{gap:10px!important;grid-template-rows:14px auto 184px 92px!important}
+  .onboard-step[data-onboard-step="3"] h1{font-size:42px!important;line-height:40px!important;margin:0!important}
+  .onboard-step[data-onboard-step="3"] .onboard-confirm-card{width:326px!important;min-height:168px!important;margin:0 auto!important}
+  .onboard-step[data-onboard-step="3"] .onboard-step-footer{width:326px!important;height:86px!important;margin:0 auto!important;padding-top:10px!important}
+  .onboard-step[data-onboard-step="3"] .onboard-cta-v1{width:326px!important;height:76px!important;min-height:76px!important}
+}
+
+@media(max-width:390px){
+  .onboard-v1{padding-top:calc(22px + env(safe-area-inset-top))!important}
+  .onboard-content{max-width:354px!important;gap:7px!important}
+  .onboard-logo-v1{width:204px!important}
+  .onboard-progress-img{width:300px!important}
+  .onboard-step[data-onboard-step="1"]{max-width:354px!important;grid-template-rows:14px 31px 334px 76px 88px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-subtitle{height:31px!important;font-size:28px!important;line-height:31px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{width:354px!important;height:334px!important;aspect-ratio:354/334!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:10px!important}
+  .onboard-step[data-onboard-step="1"] .onboard-step-footer{height:82px!important;padding-top:6px!important}
+
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:180px!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:270px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:40px!important;line-height:42px!important}
+  .onboard-step[data-onboard-step="2"] .position-selector{width:354px!important}
+  .onboard-step[data-onboard-step="2"] .position-marker{width:50px!important;height:50px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{height:78px!important;padding-top:2px!important}
+}
