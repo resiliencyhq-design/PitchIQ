@@ -6,7 +6,7 @@ import { REWARDS } from "../data/rewards.js";
 import { PitchIQCameraEngine } from "../services/camera.js";
 import { PitchIQVoiceEngine } from "../services/voice.js";
 import { toast, sparkles } from "../components/ui.js";
-import { renderSplash, renderOnboard, renderHome, renderTraining, renderResults, renderPlayer, renderNav } from "./routes.js?v=landing-logo-20260620";
+import { renderSplash, renderOnboard, renderHome, renderTraining, renderResults, renderPlayer, renderNav } from "./routes.js?v=landing-logo-crop-20260620";
 import { recommendedDrills } from "../data/drills.js";
 
 let state = normalizeState(loadState());
