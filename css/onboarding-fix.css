@@ -233,3 +233,10 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(84vw,326px)!important;padding-top:22px!important;margin-left:auto!important;margin-right:auto!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important}
 .onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe23") center/contain no-repeat!important}
+
+/* Onboarding Step 1 - iPhone jersey number clearance */
+@media(max-width:430px),(max-height:932px){
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-58px,-5svh,-34px)!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{text-align:left!important}
+  .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{text-align:left!important}
+}
