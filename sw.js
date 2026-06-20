@@ -1,9 +1,9 @@
-const CACHE="pitchiq-landing-logo-crop-20260620";
+const CACHE="pitchiq-landing-title-spacing-20260620";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
-  "./css/splash-fit.css?v=landing-logo-crop-20260620",
+  "./css/splash-fit.css?v=landing-title-spacing-20260620",
   "./css/onboarding-fix.css?v=861bbe25",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
