@@ -112,7 +112,18 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   background:transparent!important;
 }
 
-.home-hero-bg,
+.home-hero-bg{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  background-image:url("../assets/Home/hero-home-bg.png")!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  z-index:1!important;
+  opacity:1!important;
+}
+
 .home-hero-bg:after{
   display:none!important;
 }
