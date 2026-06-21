@@ -1,14 +1,14 @@
-const CACHE="pitchiq-step2-pitch-bg-20260621";
+const CACHE="pitchiq-step2-transparent-pitch-20260621";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
   "./css/splash-fit.css?v=landing-title-spacing-20260620",
-  "./css/onboarding-fix.css?v=step2-pitch-bg-20260621",
+  "./css/onboarding-fix.css?v=step2-transparent-pitch-20260621",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
-  "./js/app/main.js?v=step1-art-align-20260620",
-  "./js/app/routes.js?v=step1-art-align-20260620",
+  "./js/app/main.js?v=step2-transparent-pitch-20260621",
+  "./js/app/routes.js?v=step2-transparent-pitch-20260621",
   "./assets/controls/your-name.png?v=861bbe23",
   "./assets/controls/continue-button.png?v=861bbe23",
   "./assets/controls/enter-academy.png?v=861bbe23",
@@ -16,6 +16,9 @@ const ASSETS=[
   "./assets/brand/welltrack-performance-logo.png?v=landing-logo-crop-20260620",
   "./assets/onboarding/position-marker-grey.png",
   "./assets/onboarding/position-marker-active.png",
+  "./assets/onboarding/position-pitch.png?v=step2-transparent-20260621",
+  "./assets/onboarding/position-pitch-inactive.png?v=step2-transparent-20260621",
+  "./assets/onboarding/position-pitch-active.png?v=step2-transparent-20260621",
   "./assets/onboarding/name-person-icon.png?v=step1-art-align-20260620",
   "./assets/backgrounds/onboarding-background.png?v=861bbe23",
   "./assets/controls/swipe-bar.png",
