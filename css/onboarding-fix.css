@@ -222,8 +222,8 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{color:rgba(255,255,255,.72)!important;text-align:center!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap:focus-within{filter:drop-shadow(0 0 14px rgba(215,255,46,.35))!important}
 
-/* Onboarding Step 1/2 - custom Continue control asset */
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;overflow:hidden!important}
+/* Onboarding CTA consistency - Step 1 button is the master */
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1,.onboard-step[data-onboard-step="3"] .onboard-cta-v1{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:0!important;text-shadow:none!important;overflow:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:4px!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:disabled,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:disabled{opacity:.45!important;filter:grayscale(.35)!important}
 .onboard-step[data-onboard-step="1"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="2"] .onboard-cta-v1:focus-visible,.onboard-step[data-onboard-step="3"] .onboard-cta-v1:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:4px!important}
@@ -234,8 +234,7 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-control{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;transform:none!important}
 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:clamp(-108px,-11svh,-84px)!important}
 .onboard-step[data-onboard-step="1"] .onboard-step-footer{width:min(84vw,326px)!important;padding-top:22px!important;margin-left:auto!important;margin-right:auto!important}
-.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important}
-.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/enter-academy.png?v=861bbe23") center/contain no-repeat!important}
+.onboard-step[data-onboard-step="1"] .onboard-cta-v1,.onboard-step[data-onboard-step="2"] .onboard-cta-v1,.onboard-step[data-onboard-step="3"] .onboard-cta-v1{background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important}
 
 /* Onboarding Step 1 - fixed mobile jersey clearance */
 @media(max-width:430px){
@@ -407,6 +406,24 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
     justify-self:center!important;
     margin-left:auto!important;
     margin-right:auto!important;
+  }
+}
+
+@media(max-width:430px){
+  .onboard-step[data-onboard-step="2"] .onboard-cta-v1,
+  .onboard-step[data-onboard-step="3"] .onboard-cta-v1{
+    width:310px!important;
+    height:66px!important;
+    min-height:66px!important;
+  }
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="2"] .onboard-cta-v1,
+  .onboard-step[data-onboard-step="3"] .onboard-cta-v1{
+    width:300px!important;
+    height:62px!important;
+    min-height:62px!important;
   }
 }
 
