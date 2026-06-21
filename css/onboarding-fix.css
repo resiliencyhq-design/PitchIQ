@@ -93,19 +93,22 @@
 .position-pitch-base,.position-pitch-layer{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;object-fit:fill;user-select:none;pointer-events:none}
 .position-pitch-base{z-index:1;filter:drop-shadow(0 16px 28px rgba(0,0,0,.36))}
 .position-pitch-inactive{z-index:2}
-.position-pitch-active{z-index:3;opacity:0;clip-path:circle(0 at 50% 50%)}
-.position-selector:has(.position-marker.active[data-slot="st"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 50% 25%)}
-.position-selector:has(.position-marker.active[data-slot="lw"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 18% 25%)}
-.position-selector:has(.position-marker.active[data-slot="rw"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 82% 25%)}
-.position-selector:has(.position-marker.active[data-slot="cam"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 50% 39%)}
-.position-selector:has(.position-marker.active[data-slot="cm"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 35% 53%)}
-.position-selector:has(.position-marker.active[data-slot="cdm"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 65% 53%)}
-.position-selector:has(.position-marker.active[data-slot="lb"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 18% 72%)}
-.position-selector:has(.position-marker.active[data-slot="cb1"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 36% 72%)}
-.position-selector:has(.position-marker.active[data-slot="cb2"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 64% 72%)}
-.position-selector:has(.position-marker.active[data-slot="rb"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 82% 72%)}
-.position-selector:has(.position-marker.active[data-slot="gk"]) .position-pitch-active{opacity:1;clip-path:circle(7.5% at 50% 88%)}
+.position-pitch-active{display:none!important}
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-base,
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-active{display:none!important}
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-inactive{
+  z-index:1!important;
+  filter:drop-shadow(0 16px 28px rgba(0,0,0,.36));
+}
+.position-marker-box{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  display:block;
+  pointer-events:none;
+}
 .position-marker{position:absolute!important;z-index:4;width:clamp(42px,12vw,58px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;transform:translate(-50%,-50%)!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:1!important;touch-action:manipulation;display:block!important}
+.position-marker-box .position-marker{pointer-events:auto}
 .position-marker span{display:none!important}
 .position-marker b{display:none!important}
 .position-marker.active{background-image:none!important}
@@ -494,12 +497,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="2"] .onboard-position-heading{
     font-size:25px!important;
   }
-}
-
-/* Step 2 marker consistency - active state uses the same coordinate box */
-.onboard-step[data-onboard-step="2"] .position-pitch-active{
-  opacity:0!important;
-  clip-path:none!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker,
