@@ -495,3 +495,22 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
     font-size:25px!important;
   }
 }
+
+/* Step 2 marker consistency - active state uses the same coordinate box */
+.onboard-step[data-onboard-step="2"] .position-pitch-active{
+  opacity:0!important;
+  clip-path:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker,
+.onboard-step[data-onboard-step="2"] .position-marker.active{
+  background-color:transparent!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  background-size:contain!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active{
+  background-image:url("../assets/onboarding/position-marker-active.png")!important;
+}
