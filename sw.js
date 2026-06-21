@@ -1,10 +1,10 @@
-const CACHE="pitchiq-step2-transparent-pitch-20260621";
+const CACHE="pitchiq-step2-pitch-lift-20260621";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=861bbe4",
   "./css/splash-fit.css?v=landing-title-spacing-20260620",
-  "./css/onboarding-fix.css?v=step2-transparent-pitch-20260621",
+  "./css/onboarding-fix.css?v=step2-pitch-lift-20260621",
   "./css/academy-hero-asset.css?v=asset-audit-20260618",
   "./css/visual-layout-studio.css?v=asset-audit-20260618",
   "./js/app/main.js?v=step2-transparent-pitch-20260621",

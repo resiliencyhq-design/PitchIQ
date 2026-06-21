@@ -432,3 +432,16 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   border:0!important;
   box-shadow:none!important;
 }
+
+/* Step 2 mobile spacing - lift the pitch art closer to the heading */
+@media(max-width:430px){
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    margin-top:-92px!important;
+  }
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    margin-top:-84px!important;
+  }
+}
