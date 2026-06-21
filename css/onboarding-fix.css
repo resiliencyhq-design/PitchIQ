@@ -544,3 +544,39 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   line-height:1!important;
   text-shadow:0 1px 4px rgba(0,0,0,.9)!important;
 }
+
+/* Step 1 player scale refinement for the transparent v1 artwork */
+@media(max-width:430px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+    overflow:visible!important;
+    contain:layout!important;
+  }
+
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{
+    left:50%!important;
+    top:50%!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:contain!important;
+    object-position:center center!important;
+    transform:translate(-50%,-50%) scale(1.58)!important;
+    transform-origin:center center!important;
+  }
+
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
+    top:40.5%!important;
+    width:34%!important;
+    font-size:clamp(18px,5.8vw,30px)!important;
+  }
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{
+    transform:translate(-50%,-50%) scale(1.62)!important;
+  }
+
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
+    top:40%!important;
+    font-size:clamp(17px,5.6vw,28px)!important;
+  }
+}
