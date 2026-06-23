@@ -121,7 +121,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   background-position:center!important;
   background-repeat:no-repeat!important;
   z-index:0!important;
-  opacity:.28!important;
+  opacity:.75!important;
 }
 
 .home-hero-bg:after{
