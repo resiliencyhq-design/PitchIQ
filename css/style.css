@@ -133,6 +133,18 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   backdrop-filter:blur(18px);
 }
 
+/* Home Hero Bottom Clipping Fix v1 */
+.home-hero-locked{
+  min-height:274px!important;
+  padding-bottom:28px!important;
+}
+
+@media(max-width:360px),(max-height:700px){
+  .home-hero-locked{
+    min-height:252px!important;
+  }
+}
+
 .home-mock-mission,
 .home-action-card,
 .home-weekly-card,
