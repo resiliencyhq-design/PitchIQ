@@ -564,7 +564,7 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   }
 
   .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
-    top:36.5%!important;
+    top:34.5%!important;
     width:34%!important;
     font-size:clamp(18px,5.8vw,30px)!important;
   }
@@ -576,7 +576,7 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   }
 
   .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
-    top:36%!important;
+    top:34%!important;
     font-size:clamp(17px,5.6vw,28px)!important;
   }
 }
