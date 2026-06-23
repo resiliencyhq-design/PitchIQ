@@ -169,7 +169,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   position:relative!important;
   align-self:end!important;
   justify-self:center!important;
-  width:96px!important;
+  width:100%!important;height:100%!important;
   min-height:0!important;
   aspect-ratio:245/472!important;
   display:block!important;
@@ -238,7 +238,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 @media(max-width:360px),(max-height:700px){
-  .home-profile-card-skin{width:88px!important}
+
   .home-profile-card-values span{font-size:9px!important}
   .home-profile-card-values .home-profile-ovr-value{font-size:38px!important}
   .home-profile-card-values .home-profile-position-value,
