@@ -304,3 +304,35 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     justify-self:center !important;
     align-self:center !important;
 }
+
+/* Home Hero Player Focal Patch */
+.home-hero-locked .home-hero-grid{
+    grid-template-columns:minmax(0, .95fr) minmax(145px, 1.35fr) minmax(70px, .62fr) !important;
+    column-gap:8px !important;
+}
+
+.home-hero-locked .home-hero-center{
+    justify-content:center !important;
+    align-items:end !important;
+    overflow:visible !important;
+}
+
+.home-hero-locked .home-player-figure img,
+.home-hero-locked .home-player-avatar{
+    width:clamp(155px, 42vw, 205px) !important;
+    max-width:none !important;
+    transform:translateY(10px) !important;
+}
+
+.home-hero-locked .home-hero-left{
+    min-width:0 !important;
+}
+
+.home-hero-locked .home-hero-right{
+    min-width:70px !important;
+    justify-self:end !important;
+}
+
+.home-hero-locked .home-ovr-panel{
+    width:74px !important;
+}
