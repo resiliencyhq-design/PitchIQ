@@ -1,5 +1,5 @@
 export const REWARDS = [
-  { id:"academy-boots", name:"Academy Boots", tier:"Gold", xp:100, unlockXp:2400, type:"boots", art:"assets/art/boots.svg" },
+  { id:"academy-boots", name:"Academy Boots", tier:"Gold", xp:100, unlockXp:2400, type:"boots", art:"assets/art/mission-reward-elite-boots.png" },
   { id:"vision-badge", name:"Vision Badge", tier:"Silver", xp:50, unlockXp:900, type:"badge", art:"assets/art/badge-vision.svg" },
   { id:"stadium-night", name:"Night Stadium", tier:"Elite", xp:150, unlockXp:1800, type:"stadium", art:"assets/art/stadium-night.svg" },
   { id:"elite-card", name:"Elite Card Frame", tier:"Legendary", xp:200, unlockXp:3600, type:"card", art:"assets/art/card-reveal.svg" }
