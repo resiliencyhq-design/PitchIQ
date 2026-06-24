@@ -244,3 +244,20 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   .home-profile-card-values .home-profile-position-value,
   .home-profile-card-values .home-profile-style-value{font-size:11px!important}
 }
+
+/* Home secondary cards vertical stack */
+.home-v7 .home-secondary-row{
+    grid-template-columns:1fr !important;
+}
+
+.home-v7 .home-pack-card{
+    min-height:180px !important;
+    grid-template-columns:minmax(0,1fr) 104px !important;
+    align-items:center !important;
+}
+
+.home-v7 .home-pack-card img{
+    max-width:92px !important;
+    justify-self:end !important;
+    align-self:center !important;
+}
