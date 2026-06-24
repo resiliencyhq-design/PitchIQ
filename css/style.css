@@ -261,3 +261,46 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     justify-self:end !important;
     align-self:center !important;
 }
+
+/* Home secondary cards vertical stack */
+.home-v7 .home-secondary-row{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+}
+
+.home-v7 .home-training-stats{
+    min-height:150px !important;
+}
+
+.home-v7 .home-pack-card{
+    min-height:150px !important;
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) 96px !important;
+    grid-template-rows:auto 1fr auto !important;
+    gap:6px 12px !important;
+    align-items:center !important;
+    padding:18px !important;
+}
+
+.home-v7 .home-pack-card span{
+    grid-column:1 !important;
+}
+
+.home-v7 .home-pack-card b{
+    grid-column:1 !important;
+    font-size:30px !important;
+    line-height:.9 !important;
+}
+
+.home-v7 .home-pack-card em{
+    grid-column:1 !important;
+    display:block !important;
+}
+
+.home-v7 .home-pack-card img{
+    grid-column:2 !important;
+    grid-row:1 / 4 !important;
+    max-width:86px !important;
+    justify-self:center !important;
+    align-self:center !important;
+}
