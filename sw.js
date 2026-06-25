@@ -1,4 +1,4 @@
-const CACHE="pitchiq-hero-bg-top-20260623";
+const CACHE="pitchiq-bell-20260625202450";
 const ASSETS=[
   "./",
   "./index.html",
@@ -46,3 +46,4 @@ self.addEventListener("fetch",e=>{
   }
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
 });
+
