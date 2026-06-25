@@ -656,3 +656,14 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     text-wrap:balance;
 }
 
+
+/* Home Mission Heading Refinement */
+
+.home-v7 .mission-copy h1{
+    font-size:24px !important;
+    line-height:1.05 !important;
+    letter-spacing:-0.02em !important;
+    max-width:100% !important;
+    text-wrap:balance !important;
+}
+
