@@ -550,3 +550,109 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     overflow:visible !important;
 }
 
+
+/* Home Hero Header / Content Separation */
+
+.home-v7 .home-hero-card {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.home-v7 .home-hero-header {
+  position: absolute !important;
+  top: 18px !important;
+  left: 22px !important;
+  z-index: 6 !important;
+  width: 44% !important;
+  pointer-events: none !important;
+}
+
+.home-v7 .home-hero-header .home-streak,
+.home-v7 .home-hero-header .home-greeting,
+.home-v7 .home-hero-header .home-player-name {
+  margin: 0 !important;
+}
+
+.home-v7 .home-hero-grid {
+  position: relative !important;
+  z-index: 3 !important;
+  height: 100% !important;
+  min-height: 245px !important;
+  display: grid !important;
+  grid-template-columns: 0.82fr 1.25fr 0.9fr !important;
+  align-items: end !important;
+  padding-top: 62px !important;
+}
+
+.home-v7 .home-hero-left {
+  align-self: end !important;
+  justify-self: start !important;
+  z-index: 5 !important;
+}
+
+.home-v7 .home-hero-center {
+  align-self: end !important;
+  justify-self: center !important;
+  z-index: 4 !important;
+  overflow: visible !important;
+}
+
+.home-v7 .home-player-figure {
+  width: 178px !important;
+  height: 248px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  overflow: visible !important;
+  transform: translateY(8px) scale(1.08) !important;
+}
+
+.home-v7 .home-player-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: bottom center !important;
+}
+
+.home-v7 .home-level-panel {
+  width: 145px !important;
+  min-height: 104px !important;
+  padding: 12px 14px !important;
+  transform: translateY(6px) !important;
+}
+
+.home-v7 .home-level-panel strong,
+.home-v7 .home-level-panel .level-title {
+  font-size: 20px !important;
+}
+
+.home-v7 .home-level-panel .level-name {
+  font-size: 13px !important;
+}
+
+.home-v7 .home-level-panel .xp-value,
+.home-v7 .home-level-panel .xp-text {
+  font-size: 14px !important;
+}
+
+.home-v7 .home-level-panel .xp-bar {
+  height: 9px !important;
+}
+
+.home-v7 .home-hero-right {
+  align-self: end !important;
+  justify-self: end !important;
+  z-index: 5 !important;
+}
+
+
+/* Home Mission Heading Refinement */
+
+.home-v7 .mission-copy h1{
+    font-size:46px !important;
+    line-height:0.96 !important;
+    letter-spacing:-0.03em !important;
+    max-width:100% !important;
+    text-wrap:balance;
+}
+
