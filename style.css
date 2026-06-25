@@ -35,3 +35,27 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .hotspot.continue{left:28vw;top:39vh;width:38vw;height:6vh}.hotspot.camera{left:28vw;top:46vh;width:38vw;height:6vh}.hotspot.train{left:28vw;top:67vh;width:32vw;height:6vh}.change-name{left:2vw;bottom:2vh;width:22vw;height:12vh}
 .camera-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}header h1{font-size:28px}.camera-wrap{height:52vh;min-height:380px}.camera-cue{font-size:76px}
 }
+
+/* Force Home bell PNG visibility */
+.home-bell{
+  width:40px !important;
+  height:40px !important;
+  min-height:40px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 !important;
+  font-size:0 !important;
+  color:transparent !important;
+}
+
+.home-bell img,
+.home-bell-icon{
+  width:24px !important;
+  height:24px !important;
+  display:block !important;
+  object-fit:contain !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
