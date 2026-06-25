@@ -667,3 +667,28 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     text-wrap:balance !important;
 }
 
+
+/* Compact bottom navigation */
+
+.nav.bottom-nav {
+  min-height: 62px !important;
+  height: 62px !important;
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom)) !important;
+}
+
+.nav.bottom-nav button {
+  min-height: 44px !important;
+}
+
+.nav.bottom-nav svg,
+.nav.bottom-nav img {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.nav.bottom-nav .label,
+.nav.bottom-nav span {
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+
