@@ -7,3 +7,136 @@ body.vls-active .DeveloperIPhoneFrame::after{content:"";position:absolute;inset:
 .vls-target{outline:1px solid rgba(215,255,46,.72)!important;outline-offset:2px;touch-action:none!important}.vls-target:hover{outline-color:#31f79a!important}.vls-selected{outline:2px solid #31f79a!important;box-shadow:0 0 0 3px rgba(49,247,154,.14),0 0 24px rgba(49,247,154,.18)!important}.vls-target::before{content:attr(data-vls-name);display:none;position:absolute;left:0;top:-18px;z-index:10002;padding:3px 5px;border-radius:5px;background:rgba(4,12,10,.9);color:#d7ff2e;font:10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:nowrap;pointer-events:none}body.vls-names .vls-target::before{display:block}.vls-badge{position:fixed;z-index:10030;pointer-events:none;padding:4px 6px;border-radius:7px;background:rgba(3,10,8,.92);color:#f7fff8;border:1px solid rgba(215,255,46,.3);font:10px/1.25 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.vls-handle{position:fixed;z-index:10025;width:22px;height:22px;border-radius:9px;background:#d7ff2e;color:#03100b;border:2px solid #03100b;box-shadow:0 8px 22px rgba(0,0,0,.32);display:grid;place-items:center;font:900 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;cursor:grab;touch-action:none}.vls-handle::after{content:"↕"}.vls-handle:active{cursor:grabbing}.vls-resize{position:fixed;z-index:10026;width:16px;height:16px;border-radius:50%;background:#31f79a;border:2px solid #03100b;box-shadow:0 8px 18px rgba(0,0,0,.3);cursor:nwse-resize;touch-action:none}.vls-spacing-line{position:fixed;z-index:10001;pointer-events:none;border-top:1px dashed rgba(215,255,46,.5);color:#d7ff2e;font:10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}body:not(.vls-spacing) .vls-spacing-line{display:none!important}
 @media(max-width:900px){.vls-panel{width:240px}.vls-panel:not([hidden]){max-height:40vh}.vls-panel-tab{min-height:108px}.vls-panel:not([hidden])~.vls-panel-tab{display:none!important}}
 @media(max-width:760px){.vls-panel{left:8px;right:8px;top:auto;bottom:8px;width:auto;max-width:none;max-height:46vh}.vls-panel-tab{left:8px;top:auto;bottom:8px;width:auto;min-height:44px;writing-mode:horizontal-tb}.vls-panel textarea{min-height:52px}body.vls-active .app-shell.DeveloperIPhoneFrame{left:0!important;width:100vw!important;max-width:100vw!important}body.vls-active .app-shell.DeveloperIPhoneFrame #app{max-width:100vw!important}body.vls-active .bottom-nav,body.vls-active .nav{width:calc(100vw - 24px)!important;max-width:390px!important}}
+
+/* Home Hero Atmosphere Animation */
+.home-hero-locked{
+  isolation:isolate!important;
+  overflow:hidden!important;
+  contain:paint;
+  transform:translateZ(0);
+}
+
+.home-hero-bg{
+  animation:homeStadiumLightPulse 7s ease-in-out infinite;
+  transform:translateZ(0);
+  will-change:opacity,filter;
+}
+
+.home-hero-locked::before{
+  content:"";
+  position:absolute;
+  inset:-8% -18%;
+  z-index:1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 34% 62%,rgba(106,134,112,.14),transparent 46%),
+    linear-gradient(90deg,transparent 0%,rgba(88,118,96,.12) 34%,rgba(165,188,170,.08) 52%,transparent 78%);
+  opacity:.52;
+  mix-blend-mode:screen;
+  transform:translate3d(-7%,0,0);
+  animation:homeAtmosphereMist 14s ease-in-out infinite alternate;
+  will-change:transform,opacity;
+}
+
+.home-hero-locked::after{
+  content:"";
+  position:absolute;
+  left:53%;
+  bottom:18px;
+  width:44px;
+  height:44px;
+  z-index:1;
+  pointer-events:none;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,transparent 0 48%,rgba(215,255,46,.18) 49% 51%,transparent 52% 100%),
+    radial-gradient(circle,rgba(49,247,154,.10),transparent 62%);
+  opacity:0;
+  transform:translate3d(-50%,0,0) scale(.25);
+  transform-origin:center center;
+  animation:homeRadarScan 9s ease-out infinite;
+  will-change:transform,opacity;
+}
+
+.home-hero-grid,
+.home-hero-left,
+.home-hero-center,
+.home-hero-right{
+  position:relative!important;
+}
+
+.home-hero-grid{z-index:3!important}
+.home-hero-left,.home-hero-right{z-index:5!important}
+.home-hero-center{z-index:4!important}
+
+.home-v7 .home-player-avatar,
+.home-hero-locked .home-player-avatar{
+  filter:drop-shadow(0 18px 22px rgba(0,0,0,.48)) drop-shadow(0 0 16px rgba(215,255,46,.18))!important;
+  animation:homePlayerBreathingGlow 6.5s ease-in-out infinite;
+  will-change:filter;
+}
+
+.home-v7 .mission-reward{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate;
+}
+
+.home-v7 .mission-reward::after{
+  content:"";
+  position:absolute;
+  inset:-35% auto -35% -70%;
+  width:46%;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.08) 42%,rgba(255,255,255,.28) 50%,rgba(255,255,255,.08) 58%,transparent 100%);
+  transform:translate3d(-120%,0,0) skewX(-18deg);
+  animation:homeRewardShimmer 8s ease-in-out infinite;
+  will-change:transform,opacity;
+}
+
+@keyframes homeStadiumLightPulse{
+  0%,100%{opacity:.72;filter:brightness(1)}
+  50%{opacity:.82;filter:brightness(1.08)}
+}
+
+@keyframes homeAtmosphereMist{
+  0%{transform:translate3d(-7%,0,0);opacity:.38}
+  50%{opacity:.56}
+  100%{transform:translate3d(7%,0,0);opacity:.44}
+}
+
+@keyframes homeRadarScan{
+  0%{opacity:0;transform:translate3d(-50%,0,0) scale(.22)}
+  8%{opacity:.22}
+  42%{opacity:.10}
+  68%,100%{opacity:0;transform:translate3d(-50%,0,0) scale(6.8)}
+}
+
+@keyframes homePlayerBreathingGlow{
+  0%,100%{filter:drop-shadow(0 18px 22px rgba(0,0,0,.48)) drop-shadow(0 0 14px rgba(215,255,46,.16))}
+  50%{filter:drop-shadow(0 18px 22px rgba(0,0,0,.48)) drop-shadow(0 0 26px rgba(215,255,46,.28))}
+}
+
+@keyframes homeRewardShimmer{
+  0%,68%{opacity:0;transform:translate3d(-120%,0,0) skewX(-18deg)}
+  74%{opacity:.9}
+  88%{opacity:.35}
+  100%{opacity:0;transform:translate3d(360%,0,0) skewX(-18deg)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .home-hero-bg,
+  .home-v7 .home-player-avatar,
+  .home-hero-locked .home-player-avatar,
+  .home-v7 .mission-reward::after{
+    animation:none!important;
+  }
+
+  .home-hero-locked::before,
+  .home-hero-locked::after,
+  .home-v7 .mission-reward::after{
+    display:none!important;
+    content:none!important;
+  }
+}
