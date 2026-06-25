@@ -66,3 +66,4 @@ export function renderSettings(){return `<section class="screen app active" id="
 export function renderNav(){return `<button data-route="home"><span>Home</span></button><button data-route="training"><span>Train</span></button><button data-route="results"><span>Results</span></button><button data-route="player"><span>Player</span></button>`}
 
 
+
