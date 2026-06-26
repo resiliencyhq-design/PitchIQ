@@ -860,3 +860,28 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   top:18% !important;
 }
 
+
+/* Lock onboarding step 1 to device width */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:430px !important;
+  margin:0 auto !important;
+  overflow-x:hidden !important;
+  display:grid !important;
+  grid-template-rows:auto auto 1fr auto !important;
+  justify-items:center !important;
+  align-items:start !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:430px !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  max-width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+
