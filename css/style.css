@@ -711,3 +711,39 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     display:block !important;
 }
 
+
+/* Home hero visible glow patch */
+.home-hero-card.home-hero-locked{
+  position:relative !important;
+  overflow:visible !important;
+  isolation:isolate !important;
+}
+
+.home-hero-card.home-hero-locked::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:8px;
+  width:260px;
+  height:90px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(181,255,0,.55) 0%,
+    rgba(181,255,0,.28) 36%,
+    rgba(181,255,0,.10) 65%,
+    transparent 78%
+  );
+  filter:blur(14px);
+  opacity:1;
+  z-index:1;
+  pointer-events:none;
+}
+
+.home-hero-card .home-hero-bg,
+.home-hero-card .home-hero-grid{
+  position:relative !important;
+  z-index:2 !important;
+}
+
