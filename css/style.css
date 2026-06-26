@@ -969,3 +969,13 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   top:39% !important;
 }
 
+
+/* Lift Home streak/greeting/name block */
+.home-v7 .home-hero-left{
+  margin-top:-28px !important;
+}
+
+.home-v7 .home-bell{
+  transform:translateY(-18px) !important;
+}
+
