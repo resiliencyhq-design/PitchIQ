@@ -806,3 +806,30 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin-top:-18px !important;
 }
 
+
+/* Enlarge onboarding player v2 */
+.onboard-jersey-preview{
+  width:100% !important;
+  height:clamp(360px, 62vh, 560px) !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+  position:relative !important;
+}
+
+.onboard-jersey-preview img{
+  width:auto !important;
+  height:100% !important;
+  max-width:100% !important;
+  object-fit:contain !important;
+  display:block !important;
+}
+
+.onboard-jersey-name{
+  position:absolute !important;
+  top:18% !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  z-index:2 !important;
+}
+
