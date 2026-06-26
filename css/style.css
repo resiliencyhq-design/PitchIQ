@@ -919,3 +919,23 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   top:18% !important;
 }
 
+
+/* FINAL FIX: force player image to fill preview height */
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:430px !important;
+  height:clamp(430px, 70dvh, 640px) !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  height:100% !important;
+  width:auto !important;
+  max-height:100% !important;
+  max-width:100% !important;
+  object-fit:contain !important;
+  position:relative !important;
+}
+
