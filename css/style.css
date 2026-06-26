@@ -939,3 +939,33 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   position:relative !important;
 }
 
+
+/* FINAL: Step 1 player fills height but never exceeds screen width */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:100% !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:100% !important;
+  height:clamp(420px, 66dvh, 600px) !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+  margin:-6px auto 0 !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  height:100% !important;
+  width:auto !important;
+  max-width:92vw !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+}
+
+#onboard.onboard-v1 #jerseyNamePreview{
+  top:39% !important;
+}
+
