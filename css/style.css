@@ -761,3 +761,42 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   pointer-events:none !important;
 }
 
+
+/* FIX: restore hero wallpaper and keep glow behind content */
+.home-hero-card.home-hero-locked{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+
+.home-hero-card .home-hero-bg{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+}
+
+.home-hero-card.home-hero-locked::after{
+  content:"" !important;
+  position:absolute !important;
+  left:50% !important;
+  bottom:10px !important;
+  width:260px !important;
+  height:100px !important;
+  transform:translateX(-50%) !important;
+  border-radius:50% !important;
+  background:radial-gradient(ellipse at center,
+    rgba(181,255,0,.35) 0%,
+    rgba(181,255,0,.16) 42%,
+    transparent 72%
+  ) !important;
+  filter:blur(18px) !important;
+  opacity:.75 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+}
+
+.home-hero-card .home-hero-grid{
+  position:relative !important;
+  z-index:2 !important;
+}
+
