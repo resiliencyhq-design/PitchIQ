@@ -800,3 +800,9 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   z-index:2 !important;
 }
 
+
+/* Raise Home hero left content */
+.home-hero-left{
+  margin-top:-18px !important;
+}
+
