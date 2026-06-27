@@ -936,7 +936,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   align-items:center !important;
   justify-content:flex-start !important;
   gap:8px !important;
-  padding:calc(18px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)) !important;
+  padding:calc(18px + env(safe-area-inset-top)) 8px calc(16px + env(safe-area-inset-bottom)) !important;
   margin:0 auto !important;
   overflow:hidden !important;
 }
@@ -966,6 +966,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   transform:translateY(-16px) scale(1.36) !important;
   transform-origin:center center !important;
 }
+
 
 
 
