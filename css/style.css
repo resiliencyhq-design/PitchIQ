@@ -386,15 +386,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 /* Step 1 content */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] {
-  display: grid !important;
-  grid-template-rows: auto auto auto auto !important;
-  justify-items: center !important;
-  align-items: start !important;
-  gap: 10px !important;
-  padding-top: 0 !important;
-}
-
 /* Keep heading as MAKE IT YOURS */
 #onboard.onboard-v1 .position-title,
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title {
@@ -412,46 +403,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 /* CLEAN STEP 1 ONBOARDING PLAYER LAYOUT */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-  width:100% !important;
-  max-width:100% !important;
-  min-height:0 !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:flex-start !important;
-  gap:8px !important;
-  overflow:visible !important;
-  padding-top:0 !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:100% !important;
-  height:clamp(420px, 58dvh, 620px) !important;
-  min-height:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  position:relative !important;
-  overflow:visible !important;
-  margin:0 auto !important;
-  flex:0 0 auto !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  display:block !important;
-  width:auto !important;
-  height:100% !important;
-  max-width:92vw !important;
-  max-height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  position:relative !important;
-  transform:none !important;
-  margin:0 auto !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
   width:min(86%,344px) !important;
   margin:8px auto 0 !important;
@@ -728,23 +679,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* Enlarge onboarding player v2 */
-.onboard-jersey-preview{
-  width:100% !important;
-  height:clamp(360px, 62vh, 560px) !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:visible !important;
-  position:relative !important;
-}
-
-.onboard-jersey-preview img{
-  width:auto !important;
-  height:100% !important;
-  max-width:100% !important;
-  object-fit:contain !important;
-  display:block !important;
-}
-
 .onboard-jersey-name{
   position:absolute !important;
   top:18% !important;
@@ -768,77 +702,9 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 /* Constrain Step 1 onboarding layout to phone width */
 #onboard.onboard-v1 .onboard-content.onboarding-wizard,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-  width:100% !important;
-  max-width:402px !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
-  overflow-x:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:402px !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  max-width:92% !important;
-}
-
-
 /* CLEAN CENTER-TO-CENTER: Onboarding player preview */
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:366px !important;
-  aspect-ratio:366 / 420 !important;
-  margin:0 auto !important;
-  position:relative !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-}
-
 /* TRUE CENTER: neutralise old absolute mobile image positioning */
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:366px !important;
-  aspect-ratio:366 / 420 !important;
-  margin:0 auto !important;
-  position:relative !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  position:static !important;
-  left:auto !important;
-  top:auto !important;
-  transform:none !important;
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  margin:0 auto !important;
-}
-
-
 /* Sprint: Scale onboarding player from centre */
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-    transform: scale(1.30) !important;
-    transform-origin: center center !important;
-}
-
-
 /* Move player name onto the shoulders (above the number) */
 /* LOCKED STEP 1 — final onboarding layout */
 #onboard.onboard-v1 .onboard-content.onboarding-wizard{
@@ -853,16 +719,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   padding:10px 16px 18px !important;
   margin:0 auto !important;
   overflow:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-  width:100% !important;
-  max-width:100% !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  gap:8px !important;
-  overflow:visible !important;
 }
 
 #onboard.onboard-v1 .position-title{
@@ -925,28 +781,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   text-align:center !important;
 }
 
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:366px !important;
-  aspect-ratio:366 / 420 !important;
-  margin:0 auto !important;
-  position:relative !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  position:static !important;
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  transform:scale(1.30) !important;
-  transform-origin:center center !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
   width:100% !important;
   max-width:100% !important;
@@ -979,29 +813,9 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:0 0 10px !important;
 }
 
-#onboard.onboard-v1 .onboard-jersey-preview{
-  margin:-10px auto 0 !important;
-}
-
 /* STEP 1 — Lift player preview closer to heading */
-#onboard.onboard-v1 .onboard-jersey-preview{
-    margin:-16px auto 0 !important;
-}
-
-
 /* DEBUG: obvious Step 1 player lift */
-#onboard.onboard-v1 .onboard-jersey-preview{
-  margin:-40px auto 0 !important;
-}
-
-
 /* STEP 1 — Move player upward inside preview */
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-    transform:translateY(-16px) scale(1.30) !important;
-    transform-origin:center center !important;
-}
-
-
 /* STEP 1 — Tighten heading group */
 #onboard.onboard-v1 .onboard-subtitle{
   margin:0 0 2px !important;
@@ -1097,10 +911,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 @media (max-width:430px){
 
   /* Move the whole Step 1 content upward */
-  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-    transform:translateY(-36px) !important;
-  }
-
   /* Keep the new background aligned with the composition */
   #onboard.onboard-v1:has(.onboard-step[data-onboard-step="1"]:not([hidden]))::before{
     background-position:center -60px !important;
@@ -1134,10 +944,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 /* STEP 1 — Lower full composition slightly */
 @media (max-width:430px){
-  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-    transform:translateY(-20px) !important;
   }
-}
 
 
 /* LOCKED STEP 1 — Name input */
@@ -1176,5 +983,40 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 #onboard.onboard-v1 #nameInput.onboard-name-input::placeholder{
   color:rgba(247,255,248,.76) !important;
+}
+
+
+/* LOCKED STEP 1 — Container and player preview */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:8px !important;
+  overflow:visible !important;
+  transform:translateY(-20px) !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:366px !important;
+  aspect-ratio:366 / 420 !important;
+  margin:-10px auto 0 !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  position:static !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:translateY(-16px) scale(1.30) !important;
+  transform-origin:center center !important;
 }
 
