@@ -888,3 +888,18 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 
+
+/* STEP 1 — Remove PitchIQ logo and reclaim its space */
+#onboard.onboard-v1 .onboard-logo-v1{
+    display:none !important;
+}
+
+#onboard.onboard-v1 .onboard-content.onboarding-wizard{
+    padding-top:12px !important;
+    row-gap:8px !important;
+}
+
+#onboard.onboard-v1 .onboard-progress{
+    margin-top:0 !important;
+}
+
