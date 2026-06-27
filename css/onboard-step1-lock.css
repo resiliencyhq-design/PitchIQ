@@ -14,7 +14,7 @@
   height:100dvh !important;
   min-height:100dvh !important;
   max-height:100dvh !important;
-  padding:calc(10px + env(safe-area-inset-top)) 6px calc(10px + env(safe-area-inset-bottom)) !important;
+  padding:calc(20px + env(safe-area-inset-top)) 6px calc(10px + env(safe-area-inset-bottom)) !important;
   margin:0 auto !important;
   display:flex !important;
   flex-direction:column !important;
@@ -137,4 +137,5 @@
     margin-top:-44px !important;
   }
 }
+
 
