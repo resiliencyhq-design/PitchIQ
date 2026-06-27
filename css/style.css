@@ -1049,36 +1049,4 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 
-/* STEP 1 — Place step title above progress */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
-    display:flex !important;
-    flex-direction:column !important;
-}
-
-#onboard.onboard-v1 .position-title{
-    order:1 !important;
-    margin:0 0 6px !important;
-    text-align:center !important;
-}
-
-#onboard.onboard-v1 .onboard-progress{
-    order:2 !important;
-    margin:0 auto 12px !important;
-}
-
-#onboard.onboard-v1 .onboard-subtitle{
-    order:3 !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview{
-    order:4 !important;
-}
-
-#onboard.onboard-v1 .onboard-name-input-wrap{
-    order:5 !important;
-}
-
-#onboard.onboard-v1 .onboard-step-footer{
-    order:6 !important;
-}
 
