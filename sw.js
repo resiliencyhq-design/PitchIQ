@@ -1,4 +1,4 @@
-const CACHE="pitchiq-home-hero-glow-20260626-v3";
+const CACHE="pitchiq-step1-player-lift-20260627";
 const ASSETS=[
   "./",
   "./index.html",
