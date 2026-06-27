@@ -804,3 +804,32 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   max-width:92% !important;
 }
 
+
+/* CLEAN CENTER-TO-CENTER: Onboarding player preview */
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:366px !important;
+  aspect-ratio:366 / 420 !important;
+  margin:0 auto !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
+#onboard.onboard-v1 #jerseyNamePreview{
+  position:absolute !important;
+  left:50% !important;
+  top:39% !important;
+  transform:translateX(-50%) !important;
+  z-index:5 !important;
+}
+
