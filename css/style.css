@@ -784,3 +784,23 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 
+
+/* Constrain Step 1 onboarding layout to phone width */
+#onboard.onboard-v1 .onboard-content.onboarding-wizard,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:430px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  overflow-x:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:430px !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  max-width:92% !important;
+}
+
