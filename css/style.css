@@ -1143,7 +1143,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 /* LOCKED STEP 1 — Jersey name overlay */
 #onboard.onboard-v1 #jerseyNamePreview{
   position:absolute !important;
-  top:18.5% !important;
+  top:17.5% !important;
   left:50% !important;
   transform:translateX(-50%) !important;
   width:34% !important;
@@ -1157,4 +1157,5 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   z-index:5 !important;
   pointer-events:none !important;
 }
+
 
