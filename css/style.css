@@ -833,3 +833,29 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   z-index:5 !important;
 }
 
+
+/* TRUE CENTER: neutralise old absolute mobile image positioning */
+#onboard.onboard-v1 .onboard-jersey-preview{
+  width:100% !important;
+  max-width:366px !important;
+  aspect-ratio:366 / 420 !important;
+  margin:0 auto !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  position:static !important;
+  left:auto !important;
+  top:auto !important;
+  transform:none !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  margin:0 auto !important;
+}
+
