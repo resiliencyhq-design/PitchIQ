@@ -1,4 +1,4 @@
-const CACHE="pitchiq-player-v2-crop-20260627";
+const CACHE="pitchiq-player-v2-crop-refresh-20260627";
 const ASSETS=[
   "./",
   "./index.html",
@@ -22,7 +22,7 @@ const ASSETS=[
   "./assets/onboarding/position-pitch.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-inactive.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-active.png?v=hero-bg-top-20260623",
-  "./assets/onboarding/name-person-icon.png-v2.png?v=player-v2-crop-20260627",
+  "./assets/onboarding/name-person-icon.png-v2.png?v=player-v2-crop-refresh-20260627",
   "./assets/backgrounds/onboarding-background-V1.png?v=20260627-v2",
   "./assets/Home/hero-home-bg.png?v=hero-bg-top-20260623",
   "./assets/Home/player-profile-card-skin.png?v=hero-bg-top-20260623",
