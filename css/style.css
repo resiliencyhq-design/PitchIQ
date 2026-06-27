@@ -1050,3 +1050,36 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 
+
+/* LOCKED STEP 1 — Academy progress dots */
+#onboard.onboard-v1 .academy-progress{
+  width:190px !important;
+  display:grid !important;
+  grid-template-columns:18px 1fr 18px 1fr 18px !important;
+  align-items:center !important;
+  gap:6px !important;
+  margin:2px auto 10px !important;
+}
+
+#onboard.onboard-v1 .academy-progress span{
+  width:18px !important;
+  height:18px !important;
+  border-radius:50% !important;
+  border:2px solid rgba(247,255,248,.62) !important;
+  background:rgba(247,255,248,.08) !important;
+  box-shadow:0 0 14px rgba(247,255,248,.08) !important;
+}
+
+#onboard.onboard-v1 .academy-progress span.active{
+  border-color:#d7ff2e !important;
+  background:#d7ff2e !important;
+  box-shadow:0 0 18px rgba(215,255,46,.55) !important;
+}
+
+#onboard.onboard-v1 .academy-progress i{
+  display:block !important;
+  height:2px !important;
+  border-radius:999px !important;
+  background:rgba(247,255,248,.34) !important;
+}
+
