@@ -1196,3 +1196,9 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 }
 
+
+/* STEP 1 — Raise jersey name slightly */
+#onboard.onboard-v1 #jerseyNamePreview{
+    transform:translateY(-10px) !important;
+}
+
