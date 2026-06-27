@@ -1035,3 +1035,26 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   display:block !important;
 }
 
+
+/* SPRINT: Step 1 final visual polish */
+#onboard.onboard-v1 .academy-progress{
+  margin:0 auto 20px !important;
+}
+
+#onboard.onboard-v1 .onboard-subtitle{
+  margin:0 0 4px !important;
+}
+
+#onboard.onboard-v1 .onboard-heading{
+  color:rgba(247,255,248,.74) !important;
+  margin:0 0 10px !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  margin:-10px auto 0 !important;
+}
+
+#onboard.onboard-v1 .onboard-name-input-wrap{
+  margin:-6px auto 0 !important;
+}
+
