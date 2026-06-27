@@ -387,21 +387,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 /* Step 1 content */
 /* Keep heading as MAKE IT YOURS */
-#onboard.onboard-v1 .position-title,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title {
-  display: block !important;
-  font-size: clamp(12px, 3vw, 15px) !important;
-  line-height: 1 !important;
-  margin: 0 0 2px !important;
-}
-
-#onboard.onboard-v1 .onboard-subtitle {
-  font-size: clamp(30px, 7.5vw, 42px) !important;
-  line-height: .95 !important;
-  margin: 0 0 6px !important;
-  text-align: center !important;
-}
-
 /* CLEAN STEP 1 ONBOARDING PLAYER LAYOUT */
 #onboard.onboard-v1 .onboard-step-footer{
   width:min(86%,344px) !important;
@@ -721,35 +706,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   overflow:hidden !important;
 }
 
-#onboard.onboard-v1 .position-title{
-  margin:0 0 4px !important;
-  text-align:center !important;
-  font-size:13px !important;
-  font-weight:800 !important;
-  color:#d7ff2e !important;
-  letter-spacing:.08em !important;
-  text-transform:uppercase !important;
-}
-
-#onboard.onboard-v1 .onboard-subtitle{
-  font-size:15px !important;
-  font-weight:600 !important;
-  color:rgba(247,255,248,.62) !important;
-  margin:0 0 4px !important;
-  text-align:center !important;
-  letter-spacing:.05em !important;
-  text-transform:uppercase !important;
-}
-
-#onboard.onboard-v1 .onboard-heading{
-  font-size:16px !important;
-  font-weight:500 !important;
-  color:rgba(247,255,248,.62) !important;
-  line-height:1.3 !important;
-  margin:0 0 14px !important;
-  text-align:center !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
   width:100% !important;
   max-width:100% !important;
@@ -769,29 +725,10 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* SPRINT: Step 1 final visual polish */
-#onboard.onboard-v1 .onboard-subtitle{
-  margin:0 0 4px !important;
-}
-
-#onboard.onboard-v1 .onboard-heading{
-  color:rgba(247,255,248,.74) !important;
-  margin:0 0 10px !important;
-}
-
 /* STEP 1 — Lift player preview closer to heading */
 /* DEBUG: obvious Step 1 player lift */
 /* STEP 1 — Move player upward inside preview */
 /* STEP 1 — Tighten heading group */
-#onboard.onboard-v1 .onboard-subtitle{
-  margin:0 0 2px !important;
-}
-
-#onboard.onboard-v1 .onboard-heading{
-  margin:0 0 10px !important;
-  transform:translateY(-6px) !important;
-}
-
-
 /* STEP 1 — Lift input and CTA closer to player */
 #onboard.onboard-v1 .onboard-step-footer{
     margin:10px auto 0 !important;
@@ -1026,5 +963,38 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
   overflow:visible !important;
+}
+
+
+/* LOCKED STEP 1 — Top group */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title{
+  margin:0 0 6px !important;
+  text-align:center !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  letter-spacing:.08em !important;
+  line-height:1 !important;
+  text-transform:uppercase !important;
+  color:#d7ff2e !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-subtitle{
+  margin:0 0 8px !important;
+  text-align:center !important;
+  font-size:18px !important;
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+  line-height:1.05 !important;
+  text-transform:uppercase !important;
+  color:rgba(247,255,248,.68) !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-heading{
+  margin:0 0 6px !important;
+  text-align:center !important;
+  font-size:18px !important;
+  font-weight:600 !important;
+  line-height:1.2 !important;
+  color:rgba(247,255,248,.78) !important;
 }
 
