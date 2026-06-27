@@ -1180,3 +1180,19 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 
+
+/* STEP 1 — Lift entire composition (fine tune) */
+@media (max-width:430px){
+
+  /* Move the whole Step 1 content upward */
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+    transform:translateY(-36px) !important;
+  }
+
+  /* Keep the new background aligned with the composition */
+  #onboard.onboard-v1:has(.onboard-step[data-onboard-step="1"]:not([hidden]))::before{
+    background-position:center -60px !important;
+  }
+
+}
+
