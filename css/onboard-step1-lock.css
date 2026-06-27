@@ -1,0 +1,139 @@
+/* =========================================================
+   LOCKED ONBOARDING STEP 1 — FINAL CANONICAL LAYOUT
+   Step 1 only. Does not style Step 2 or Step 3.
+   ========================================================= */
+
+#onboard.onboard-v1:has(.onboard-step[data-onboard-step="1"]:not([hidden])){
+  padding:0 !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1:has(.onboard-step[data-onboard-step="1"]:not([hidden])) .onboard-content.onboarding-wizard{
+  width:100% !important;
+  max-width:430px !important;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  max-height:100dvh !important;
+  padding:calc(10px + env(safe-area-inset-top)) 6px calc(10px + env(safe-area-inset-bottom)) !important;
+  margin:0 auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:6px !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:430px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:6px !important;
+  margin:0 auto !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title{
+  margin:0 0 4px !important;
+  font-size:13px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+  color:#d7ff2e !important;
+  text-align:center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .academy-progress{
+  margin:0 auto 10px !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-subtitle{
+  margin:0 0 4px !important;
+  font-size:17px !important;
+  line-height:1.05 !important;
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+  color:rgba(247,255,248,.68) !important;
+  text-align:center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-heading{
+  margin:0 0 2px !important;
+  font-size:17px !important;
+  line-height:1.15 !important;
+  font-weight:600 !important;
+  color:rgba(247,255,248,.80) !important;
+  text-align:center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+  width:min(112vw,430px) !important;
+  max-width:none !important;
+  height:clamp(360px,45dvh,430px) !important;
+  aspect-ratio:auto !important;
+  margin:-8px auto 0 !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+  pointer-events:none !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
+  position:static !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:translateY(-10px) scale(1.08) !important;
+  transform-origin:center center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
+  position:absolute !important;
+  top:17.5% !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:34% !important;
+  text-align:center !important;
+  color:#d7ff2e !important;
+  z-index:5 !important;
+  pointer-events:none !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+  width:min(86vw,344px) !important;
+  height:58px !important;
+  margin:-46px auto 0 !important;
+  position:relative !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-step-footer{
+  width:min(86vw,344px) !important;
+  margin:6px auto 0 !important;
+  padding:0 !important;
+  display:flex !important;
+  justify-content:center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-cta-v1{
+  width:100% !important;
+  margin:0 auto !important;
+}
+
+@media(max-width:390px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+    height:clamp(340px,44dvh,400px) !important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+    margin-top:-44px !important;
+  }
+}
