@@ -1,8 +1,8 @@
-const CACHE="pitchiq-step1-player-overflow-20260627";
+const CACHE="pitchiq-step1-clean-sync-20260627";
 const ASSETS=[
   "./",
   "./index.html",
-  "./css/style.css?v=step1-player-overflow-20260627",
+  "./css/style.css?v=step1-clean-sync-20260627",
   "./css/splash-fit.css?v=hero-bg-top-20260623",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
