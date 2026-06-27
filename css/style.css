@@ -682,7 +682,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* Constrain Step 1 onboarding layout to phone width */
-#onboard.onboard-v1 .onboard-content.onboarding-wizard,
 /* CLEAN CENTER-TO-CENTER: Onboarding player preview */
 /* TRUE CENTER: neutralise old absolute mobile image positioning */
 /* Sprint: Scale onboarding player from centre */
@@ -973,5 +972,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:0 auto !important;
   overflow:hidden !important;
 }
+
 
 
