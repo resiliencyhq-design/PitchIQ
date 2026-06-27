@@ -2,7 +2,7 @@ const CACHE="pitchiq-onboard-bg-v1-force-20260627";
 const ASSETS=[
   "./",
   "./index.html",
-  "./css/style.css?v=hero-bg-top-20260623",
+  "./css/style.css?v=onboard-bg-v1-force-20260627",
   "./css/splash-fit.css?v=hero-bg-top-20260623",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
@@ -22,7 +22,7 @@ const ASSETS=[
   "./assets/onboarding/position-pitch-inactive.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-active.png?v=hero-bg-top-20260623",
   "./assets/onboarding/name-person-icon.png?v=hero-bg-top-20260623",
-  "./assets/backgrounds/onboarding-background.png?v=hero-bg-top-20260623",
+  "./assets/backgrounds/onboarding-background-V1.png?v=20260627-v2",
   "./assets/Home/hero-home-bg.png?v=hero-bg-top-20260623",
   "./assets/Home/player-profile-card-skin.png?v=hero-bg-top-20260623",
   "./assets/controls/swipe-bar.png",
@@ -46,4 +46,5 @@ self.addEventListener("fetch",e=>{
   }
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
 });
+
 
