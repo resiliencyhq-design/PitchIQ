@@ -1144,3 +1144,28 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     transform:translateY(-18px) !important;
 }
 
+
+/* STEP 1 — Anchor onboarding content to bottom of viewport */
+#onboard.onboard-v1{
+    height:100dvh !important;
+    min-height:100dvh !important;
+    max-height:100dvh !important;
+    overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-content.onboarding-wizard{
+    height:100dvh !important;
+    min-height:100dvh !important;
+    max-height:100dvh !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-end !important;
+    align-items:center !important;
+
+    padding-top:16px !important;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom)) !important;
+
+    overflow:hidden !important;
+}
+
