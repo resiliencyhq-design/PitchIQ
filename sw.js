@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step1-player-lift-20260627";
+const CACHE="pitchiq-step1-bottom-anchor-20260627b";
 const ASSETS=[
   "./",
   "./index.html",
