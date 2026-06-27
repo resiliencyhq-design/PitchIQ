@@ -452,19 +452,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:0 auto !important;
 }
 
-#onboard.onboard-v1 #jerseyNamePreview{
-  position:absolute !important;
-  top:39% !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  z-index:5 !important;
-  font-size:clamp(20px,6vw,32px) !important;
-  line-height:1 !important;
-  letter-spacing:.08em !important;
-  text-transform:uppercase !important;
-  text-align:center !important;
-}
-
 #onboard.onboard-v1 .onboard-name-input-wrap{
   width:min(86%,344px) !important;
   margin:0 auto !important;
@@ -825,15 +812,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   object-position:center center !important;
 }
 
-#onboard.onboard-v1 #jerseyNamePreview{
-  position:absolute !important;
-  left:50% !important;
-  top:39% !important;
-  transform:translateX(-50%) !important;
-  z-index:5 !important;
-}
-
-
 /* TRUE CENTER: neutralise old absolute mobile image positioning */
 #onboard.onboard-v1 .onboard-jersey-preview{
   width:100% !important;
@@ -868,28 +846,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* Move player name onto the shoulders (above the number) */
-#onboard.onboard-v1 #jerseyNamePreview{
-    position:absolute !important;
-    top:18.5% !important;
-    left:50% !important;
-    transform:translateX(-50%) !important;
-    width:34% !important;
-
-    font-size:clamp(18px,5vw,30px) !important;
-    font-weight:700 !important;
-    letter-spacing:.08em !important;
-    line-height:1 !important;
-    text-transform:uppercase !important;
-    text-align:center !important;
-
-    z-index:5 !important;
-    pointer-events:none !important;
-}
-
-
-
-
-
 /* LOCKED STEP 1 — final onboarding layout */
 #onboard.onboard-v1 .onboard-content.onboarding-wizard{
   width:100% !important;
@@ -995,22 +951,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   object-position:center center !important;
   transform:scale(1.30) !important;
   transform-origin:center center !important;
-}
-
-#onboard.onboard-v1 #jerseyNamePreview{
-  position:absolute !important;
-  top:18.5% !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:34% !important;
-  font-size:clamp(18px,5vw,30px) !important;
-  font-weight:700 !important;
-  letter-spacing:.08em !important;
-  line-height:1 !important;
-  text-transform:uppercase !important;
-  text-align:center !important;
-  z-index:5 !important;
-  pointer-events:none !important;
 }
 
 #onboard.onboard-v1 .onboard-name-input-wrap{
@@ -1198,14 +1138,23 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* STEP 1 — Raise jersey name slightly */
-#onboard.onboard-v1 #jerseyNamePreview{
-    transform:translateY(-10px) !important;
-}
-
-
 /* STEP 1 — Restore jersey name centering */
+
+/* LOCKED STEP 1 — Jersey name overlay */
 #onboard.onboard-v1 #jerseyNamePreview{
+  position:absolute !important;
+  top:18.5% !important;
   left:50% !important;
-  transform:translate(-50%, 0) !important;
+  transform:translateX(-50%) !important;
+  width:34% !important;
+  font-size:clamp(18px,5vw,30px) !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  line-height:1 !important;
+  text-transform:uppercase !important;
+  text-align:center !important;
+  color:#d7ff2e !important;
+  z-index:5 !important;
+  pointer-events:none !important;
 }
 
