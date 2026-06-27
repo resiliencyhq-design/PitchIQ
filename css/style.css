@@ -1058,3 +1058,9 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:-6px auto 0 !important;
 }
 
+
+/* STEP 1 — Lift player preview closer to heading */
+#onboard.onboard-v1 .onboard-jersey-preview{
+    margin:-16px auto 0 !important;
+}
+
