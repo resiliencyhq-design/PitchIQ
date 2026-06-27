@@ -1018,3 +1018,13 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
    Do not use Step 1 rules to style Step 2 or Step 3.
    ========================================================= */
 
+
+/* STEP 1 — Allow player to overflow jersey preview */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
+  overflow:visible !important;
+}
+
