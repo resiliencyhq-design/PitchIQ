@@ -1169,3 +1169,12 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     overflow:hidden !important;
 }
 
+
+/* STEP 1 — Background V1 */
+#onboard.onboard-v1{
+    background-image:url("../assets/background/onboarding-background-V1.png?v=20260627-v1") !important;
+    background-repeat:no-repeat !important;
+    background-position:center bottom !important;
+    background-size:cover !important;
+}
+
