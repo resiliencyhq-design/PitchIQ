@@ -1159,3 +1159,11 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 
+
+/* STEP 1 — Lower full composition slightly */
+@media (max-width:430px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+    transform:translateY(-20px) !important;
+  }
+}
+
