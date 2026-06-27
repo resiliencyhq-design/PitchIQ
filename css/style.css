@@ -903,3 +903,91 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     margin-top:0 !important;
 }
 
+
+/* SPRINT: Clean Step 1 onboarding hierarchy */
+#onboard.onboard-v1 .onboard-content.onboarding-wizard{
+  width:100% !important;
+  max-width:402px !important;
+  min-height:100dvh !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+  padding:10px 16px 18px !important;
+  margin:0 auto !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-logo-v1{
+  display:none !important;
+}
+
+#onboard.onboard-v1 .onboard-progress{
+  order:1 !important;
+  width:285px !important;
+  max-width:76% !important;
+  margin:0 auto 2px !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  order:2 !important;
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:8px !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .position-title{
+  order:1 !important;
+  margin:0 !important;
+}
+
+#onboard.onboard-v1 .onboard-subtitle{
+  order:2 !important;
+  margin:0 0 4px !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview{
+  order:3 !important;
+  width:100% !important;
+  max-width:366px !important;
+  aspect-ratio:366 / 420 !important;
+  margin:0 auto !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+  position:static !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:scale(1.30) !important;
+  transform-origin:center center !important;
+}
+
+#onboard.onboard-v1 #jerseyNamePreview{
+  top:18.5% !important;
+}
+
+#onboard.onboard-v1 .onboard-name-input-wrap{
+  order:4 !important;
+  width:min(86%,344px) !important;
+  margin:4px auto 0 !important;
+}
+
+#onboard.onboard-v1 .onboard-step-footer{
+  order:5 !important;
+  width:min(86%,344px) !important;
+  margin:6px auto 0 !important;
+  padding:0 !important;
+}
+
