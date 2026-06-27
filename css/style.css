@@ -843,29 +843,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   transform:none !important;
 }
 
-#onboard.onboard-v1 .onboard-jersey-preview{
-  width:100% !important;
-  max-width:366px !important;
-  aspect-ratio:366 / 420 !important;
-  margin:-10px auto 0 !important;
-  position:relative !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:hidden !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img{
-  position:static !important;
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  transform:translateY(-16px) scale(1.30) !important;
-  transform-origin:center center !important;
-}
-
-
 /* STEP 1 LAYOUT — reduce unused top space */
 /* LOCKED STEP 1 — Academy progress */
 #onboard.onboard-v1 .academy-progress{
@@ -914,15 +891,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* STEP 1 — Allow player to overflow jersey preview */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
-  overflow:visible !important;
-}
-
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
-  overflow:visible !important;
-}
-
-
 /* LOCKED STEP 1 — Top group */
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title{
   margin:0 0 6px !important;
@@ -974,4 +942,28 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 }
 
 
+
+
+/* LOCKED STEP 1 — Canonical player preview */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+  width:100% !important;
+  max-width:366px !important;
+  aspect-ratio:366 / 420 !important;
+  margin:-10px auto 0 !important;
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
+  position:static !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:translateY(-16px) scale(1.30) !important;
+  transform-origin:center center !important;
+}
 
