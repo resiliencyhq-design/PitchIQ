@@ -1098,3 +1098,25 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     margin:10px auto 0 !important;
 }
 
+
+/* STEP 1 — Compact academy progress height */
+#onboard.onboard-v1 .academy-progress{
+  width:180px !important;
+  height:18px !important;
+  min-height:18px !important;
+  max-height:18px !important;
+  margin:0 auto 10px !important;
+  align-items:center !important;
+  line-height:0 !important;
+  overflow:visible !important;
+}
+
+#onboard.onboard-v1 .academy-progress span{
+  width:18px !important;
+  height:18px !important;
+}
+
+#onboard.onboard-v1 .academy-progress i{
+  height:2px !important;
+}
+
