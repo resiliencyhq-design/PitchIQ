@@ -1020,3 +1020,10 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   transform-origin:center center !important;
 }
 
+
+/* STEP 1 LAYOUT — reduce unused top space */
+#onboard.onboard-v1 .onboard-content.onboarding-wizard{
+  justify-content:flex-start !important;
+  padding-top:calc(42px + env(safe-area-inset-top)) !important;
+}
+
