@@ -1,8 +1,9 @@
-const CACHE="pitchiq-step1-clean-sync-20260627";
+const CACHE="pitchiq-step1-lock-final-20260627";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=step1-clean-sync-20260627",
+  "./css/onboard-step1-lock.css?v=step1-lock-final-20260627",
   "./css/splash-fit.css?v=hero-bg-top-20260623",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
@@ -46,6 +47,7 @@ self.addEventListener("fetch",e=>{
   }
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
 });
+
 
 
 
