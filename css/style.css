@@ -411,133 +411,72 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   text-align: center !important;
 }
 
-/* Large centered jersey/player */
-#onboard.onboard-v1 .onboard-jersey-preview {
-  width: 100% !important;
-  height: 420px !important;
-  max-height: 48vh !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  position: relative !important;
-  overflow: visible !important;
-  margin: -4px auto 0 !important;
+/* CLEAN STEP 1 ONBOARDING PLAYER LAYOUT */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:100% !important;
+  min-height:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+  overflow:visible !important;
+  padding-top:0 !important;
 }
-
-#onboard.onboard-v1 .onboard-jersey-preview > img {
-  width: auto !important;
-  height: 420px !important;
-  max-height: 48vh !important;
-  max-width: none !important;
-  object-fit: contain !important;
-  object-position: center top !important;
-  transform: translateY(-2px) !important;
-  transform-origin: center top !important;
-  margin: 0 auto !important;
-}
-
-/* Name above #10 */
-#onboard.onboard-v1 .onboard-jersey-preview .name-preview,
-#onboard.onboard-v1 #jerseyNamePreview {
-  position: absolute !important;
-  top: 118px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  font-size: clamp(24px, 7vw, 34px) !important;
-  line-height: 1 !important;
-  letter-spacing: .08em !important;
-  text-align: center !important;
-  z-index: 3 !important;
-}
-
-/* Input */
-#onboard.onboard-v1 .onboard-name-input-wrap {
-  width: min(86%, 344px) !important;
-  margin: -4px auto 0 !important;
-}
-
-#onboard.onboard-v1 .onboard-name-input-wrap input {
-  height: 58px !important;
-}
-
-/* Continue button */
-#onboard.onboard-v1 .onboard-step-footer {
-  width: min(86%, 344px) !important;
-  margin: 12px auto 0 !important;
-  padding-top: 0 !important;
-}
-
-#onboard.onboard-v1 .onboard-cta-v1 {
-  width: 100% !important;
-  height: 58px !important;
-}
-
-
-/* FIX V2 ONBOARDING PLAYER IMAGE ANCHOR */
-
-#onboard.onboard-v1 .onboard-jersey-preview {
-  position: relative !important;
-  width: 100% !important;
-  height: 420px !important;
-  overflow: visible !important;
-  display: block !important;
-  margin: 0 auto !important;
-}
-
-#onboard.onboard-v1 .onboard-jersey-preview > img {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: auto !important;
-  max-width: none !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  transform: none !important;
-  margin: 0 !important;
-}
-
-#onboard.onboard-v1 #jerseyNamePreview {
-  position: absolute !important;
-  top: 128px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 3 !important;
-}
-
-/* STEP 1 JERSEY PREVIEW WIDTH FIX */
 
 #onboard.onboard-v1 .onboard-jersey-preview{
-    width:100% !important;
-    max-width:366px !important;
-    margin:0 auto !important;
-    position:relative !important;
-    overflow:visible !important;
+  width:100% !important;
+  max-width:100% !important;
+  height:clamp(420px, 58dvh, 620px) !important;
+  min-height:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  position:relative !important;
+  overflow:visible !important;
+  margin:0 auto !important;
+  flex:0 0 auto !important;
 }
 
 #onboard.onboard-v1 .onboard-jersey-preview > img{
-    width:100% !important;
-    max-width:366px !important;
-    height:auto !important;
-    display:block !important;
-    margin:0 auto !important;
-    object-fit:contain !important;
+  display:block !important;
+  width:auto !important;
+  height:100% !important;
+  max-width:92vw !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  position:relative !important;
+  transform:none !important;
+  margin:0 auto !important;
 }
 
-/* Name sits above the 10 */
 #onboard.onboard-v1 #jerseyNamePreview{
-    position:absolute !important;
-    top:34% !important;
-    left:50% !important;
-    transform:translateX(-50%) !important;
-    z-index:5 !important;
-    font-size:clamp(20px,6vw,32px) !important;
-    letter-spacing:.08em !important;
-    text-transform:uppercase !important;
+  position:absolute !important;
+  top:39% !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  z-index:5 !important;
+  font-size:clamp(20px,6vw,32px) !important;
+  line-height:1 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+  text-align:center !important;
 }
 
+#onboard.onboard-v1 .onboard-name-input-wrap{
+  width:min(86%,344px) !important;
+  margin:0 auto !important;
+  flex:0 0 auto !important;
+}
 
-
+#onboard.onboard-v1 .onboard-step-footer{
+  width:min(86%,344px) !important;
+  margin:8px auto 0 !important;
+  padding-top:0 !important;
+  flex:0 0 auto !important;
+}
 .home-streak{
     width:max-content !important;
     max-width:none !important;
@@ -978,4 +917,5 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 .home-v7 .home-bell{
   transform:translateY(-18px) !important;
 }
+
 
