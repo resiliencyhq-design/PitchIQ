@@ -1070,3 +1070,10 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:-40px auto 0 !important;
 }
 
+
+/* STEP 1 — Move player upward inside preview */
+#onboard.onboard-v1 .onboard-jersey-preview > img{
+    transform:translateY(-16px) scale(1.30) !important;
+    transform-origin:center center !important;
+}
+
