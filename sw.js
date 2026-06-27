@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step1-bottom-anchor-20260627b";
+const CACHE="pitchiq-onboard-bg-v1-force-20260627";
 const ASSETS=[
   "./",
   "./index.html",
