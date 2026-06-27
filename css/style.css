@@ -452,12 +452,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:0 auto !important;
 }
 
-#onboard.onboard-v1 .onboard-name-input-wrap{
-  width:min(86%,344px) !important;
-  margin:0 auto !important;
-  flex:0 0 auto !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
   width:min(86%,344px) !important;
   margin:8px auto 0 !important;
@@ -953,11 +947,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   transform-origin:center center !important;
 }
 
-#onboard.onboard-v1 .onboard-name-input-wrap{
-  width:min(86%,344px) !important;
-  margin:4px auto 0 !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
   width:100% !important;
   max-width:100% !important;
@@ -994,11 +983,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   margin:-10px auto 0 !important;
 }
 
-#onboard.onboard-v1 .onboard-name-input-wrap{
-  margin:-6px auto 0 !important;
-}
-
-
 /* STEP 1 — Lift player preview closer to heading */
 #onboard.onboard-v1 .onboard-jersey-preview{
     margin:-16px auto 0 !important;
@@ -1030,10 +1014,6 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* STEP 1 — Lift input and CTA closer to player */
-#onboard.onboard-v1 .onboard-name-input-wrap{
-    margin:-42px auto 0 !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
     margin:10px auto 0 !important;
 }
@@ -1062,20 +1042,12 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
 
 
 /* STEP 1 — Lift bottom action group */
-#onboard.onboard-v1 .onboard-name-input-wrap{
-    margin:-82px auto 0 !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
     margin:8px auto 0 !important;
 }
 
 
 /* STEP 1 — Final bottom group refinement */
-#onboard.onboard-v1 .onboard-name-input-wrap{
-    margin:-96px auto 0 !important;
-}
-
 #onboard.onboard-v1 .onboard-step-footer{
     margin:4px auto 0 !important;
 }
@@ -1165,5 +1137,44 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   #onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
     transform:translateY(-20px) !important;
   }
+}
+
+
+/* LOCKED STEP 1 — Name input */
+#onboard.onboard-v1 .onboard-name-input-wrap{
+  width:min(86%,344px) !important;
+  margin:-96px auto 0 !important;
+  position:relative !important;
+}
+
+#onboard.onboard-v1 .onboard-name-control{
+  position:absolute !important;
+  left:22px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:28px !important;
+  height:28px !important;
+  z-index:2 !important;
+  pointer-events:none !important;
+}
+
+#onboard.onboard-v1 #nameInput.onboard-name-input{
+  width:100% !important;
+  height:58px !important;
+  padding:0 24px 0 72px !important;
+  border:3px solid #d7ff2e !important;
+  border-radius:16px !important;
+  background:#050706 !important;
+  color:#f7fff8 !important;
+  font-size:clamp(22px,5.5vw,30px) !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  text-align:left !important;
+  outline:none !important;
+  box-shadow:0 0 18px rgba(215,255,46,.18) !important;
+}
+
+#onboard.onboard-v1 #nameInput.onboard-name-input::placeholder{
+  color:rgba(247,255,248,.76) !important;
 }
 
