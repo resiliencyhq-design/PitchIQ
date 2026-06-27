@@ -1202,3 +1202,10 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     transform:translateY(-10px) !important;
 }
 
+
+/* STEP 1 — Restore jersey name centering */
+#onboard.onboard-v1 #jerseyNamePreview{
+  left:50% !important;
+  transform:translate(-50%, 0) !important;
+}
+
