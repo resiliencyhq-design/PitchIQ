@@ -866,3 +866,23 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     transform-origin: center center !important;
 }
 
+
+/* Move player name onto the shoulders (above the number) */
+#onboard.onboard-v1 #jerseyNamePreview{
+    position:absolute !important;
+    top:24% !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    width:34% !important;
+
+    font-size:clamp(18px,5vw,30px) !important;
+    font-weight:700 !important;
+    letter-spacing:.08em !important;
+    line-height:1 !important;
+    text-transform:uppercase !important;
+    text-align:center !important;
+
+    z-index:5 !important;
+    pointer-events:none !important;
+}
+
