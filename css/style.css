@@ -995,7 +995,7 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   align-items:center !important;
   gap:8px !important;
   overflow:visible !important;
-  transform:translateY(-20px) !important;
+  transform:none !important;
 }
 
 #onboard.onboard-v1 .onboard-jersey-preview{
@@ -1026,4 +1026,5 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
   justify-content:flex-start !important;
   padding-top:calc(42px + env(safe-area-inset-top)) !important;
 }
+
 
