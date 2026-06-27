@@ -73,7 +73,7 @@
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
   width:min(112vw,430px) !important;
-  max-width:none !important;
+  max-width:390px !important;
   height:clamp(390px,50dvh,470px) !important;
   aspect-ratio:auto !important;
   margin:-8px auto 0 !important;
@@ -89,9 +89,9 @@
   display:block !important;
   width:100% !important;
   height:100% !important;
-  max-width:none !important;
+  max-width:390px !important;
   object-fit:contain !important;
-  object-position:center center !important;
+  object-position:50% 50% !important;
   transform:translateY(-12px) scale(1.23) !important;
   transform-origin:center center !important;
 }
@@ -137,6 +137,7 @@
     margin-top:-44px !important;
   }
 }
+
 
 
 
