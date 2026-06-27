@@ -1010,3 +1010,41 @@ button{border:1px solid rgba(215,255,46,.25);background:rgba(0,0,0,.35);color:#f
     display:block !important;
 }
 
+
+/* STEP 1 — Final hierarchy and centred footer */
+#onboard.onboard-v1 .onboard-content.onboarding-wizard{
+  width:100% !important;
+  max-width:402px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin:0 auto !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"]{
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+
+#onboard.onboard-v1 .onboard-step-footer{
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  margin:8px auto 0 !important;
+  padding:0 !important;
+}
+
+#onboard.onboard-v1 .onboard-step-footer .onboard-cta-v1,
+#onboard.onboard-v1 .onboard-step-footer button{
+  width:min(86%,344px) !important;
+  margin:0 auto !important;
+  display:block !important;
+}
+
