@@ -137,7 +137,7 @@
 /* STEP 1 — Locked jersey name placement */
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
   position:absolute !important;
-  top:30% !important;
+  top:24% !important;
   left:50% !important;
   transform:translateX(-50%) !important;
   width:34% !important;
@@ -146,4 +146,5 @@
   z-index:5 !important;
   pointer-events:none !important;
 }
+
 
