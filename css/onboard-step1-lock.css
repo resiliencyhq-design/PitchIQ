@@ -215,3 +215,11 @@
 }
 
 
+
+/* ONBOARDING — hard hide inactive steps */
+#onboard.onboard-v1 .onboard-step[hidden]{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
