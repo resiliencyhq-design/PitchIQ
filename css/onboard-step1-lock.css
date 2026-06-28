@@ -72,7 +72,7 @@
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
-  width:min(112vw,430px) !important;
+  width:min(100%,390px) !important;
   max-width:390px !important;
   height:clamp(390px,50dvh,470px) !important;
   aspect-ratio:auto !important;
@@ -137,6 +137,7 @@
     margin-top:-44px !important;
   }
 }
+
 
 
 
