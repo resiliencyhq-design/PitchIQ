@@ -44,7 +44,7 @@
   letter-spacing:.08em !important;
   text-transform:uppercase !important;
   color:#d7ff2e !important;
-  text-align:left !important;
+  text-align:center !important;
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .academy-progress{
@@ -59,7 +59,7 @@
   letter-spacing:.08em !important;
   text-transform:uppercase !important;
   color:rgba(247,255,248,.68) !important;
-  text-align:left !important;
+  text-align:center !important;
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-heading{
@@ -68,7 +68,7 @@
   line-height:1.15 !important;
   font-weight:600 !important;
   color:rgba(247,255,248,.80) !important;
-  text-align:left !important;
+  text-align:center !important;
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
@@ -131,7 +131,7 @@
   left:50% !important;
   transform:translateX(-50%) !important;
   width:34% !important;
-  text-align:left !important;
+  text-align:center !important;
   color:#d7ff2e !important;
   z-index:5 !important;
   pointer-events:none !important;
@@ -187,4 +187,25 @@
 }
 
 
+
+
+/* STEP 1 — Re-lock centered composition */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"],
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .academy-progress,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-subtitle,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-heading,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
+  text-align:center !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
+  left:50% !important;
+  transform:translateX(-50%) !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{
+  text-align:left !important;
+  padding:0 24px 0 86px !important;
+}
 
