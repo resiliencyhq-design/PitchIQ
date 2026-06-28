@@ -179,3 +179,38 @@
     margin-top:-44px !important;
   }
 }
+
+/* STEP 1 — Final subtle motion polish */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
+  animation:step1PlayerGlow 5.5s ease-in-out infinite !important;
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+  animation:step1InputPulse 3.8s ease-in-out infinite !important;
+}
+
+@keyframes step1PlayerGlow{
+  0%,100%{
+    filter:drop-shadow(0 0 12px rgba(215,255,46,.10));
+  }
+  50%{
+    filter:drop-shadow(0 0 24px rgba(215,255,46,.24));
+  }
+}
+
+@keyframes step1InputPulse{
+  0%,100%{
+    filter:drop-shadow(0 0 8px rgba(215,255,46,.10));
+  }
+  50%{
+    filter:drop-shadow(0 0 16px rgba(215,255,46,.26));
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img,
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+    animation:none !important;
+  }
+}
+
