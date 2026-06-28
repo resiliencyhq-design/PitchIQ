@@ -96,18 +96,6 @@
   transform-origin:center center !important;
 }
 
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
-  position:absolute !important;
-  top:17.5% !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  width:34% !important;
-  text-align:center !important;
-  color:#d7ff2e !important;
-  z-index:5 !important;
-  pointer-events:none !important;
-}
-
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
   width:min(86vw,344px) !important;
   height:58px !important;
@@ -145,10 +133,17 @@
 
 
 /* STEP 1 — Jersey name shoulder position */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
-  top:22% !important;
-  transform:translateX(-50%) !important;
-}
 
+/* STEP 1 — Locked jersey name placement */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
+  position:absolute !important;
+  top:30% !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:34% !important;
+  text-align:center !important;
+  color:#d7ff2e !important;
+  z-index:5 !important;
+  pointer-events:none !important;
+}
 
