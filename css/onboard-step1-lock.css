@@ -182,11 +182,11 @@
 
 /* STEP 1 — Final subtle motion polish */
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview > img{
-  animation:step1PlayerGlow 5.5s ease-in-out infinite !important;
+  animation:step1PlayerGlow 3.2s ease-in-out infinite !important;
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
-  animation:step1InputPulse 3.8s ease-in-out infinite !important;
+  animation:step1InputPulse 2.6s ease-in-out infinite !important;
 }
 
 @keyframes step1PlayerGlow{
@@ -194,7 +194,7 @@
     filter:drop-shadow(0 0 12px rgba(215,255,46,.10));
   }
   50%{
-    filter:drop-shadow(0 0 24px rgba(215,255,46,.24));
+    filter:drop-shadow(0 0 34px rgba(215,255,46,.42));
   }
 }
 
@@ -203,7 +203,7 @@
     filter:drop-shadow(0 0 8px rgba(215,255,46,.10));
   }
   50%{
-    filter:drop-shadow(0 0 16px rgba(215,255,46,.26));
+    filter:drop-shadow(0 0 24px rgba(215,255,46,.48));
   }
 }
 
@@ -213,4 +213,5 @@
     animation:none !important;
   }
 }
+
 
