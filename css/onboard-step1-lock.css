@@ -34,6 +34,7 @@
   gap:6px !important;
   margin:0 auto !important;
   overflow:visible !important;
+  text-align:center !important;
 }
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title{
@@ -96,35 +97,6 @@
   transform-origin:center center !important;
 }
 
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-step-footer{
-  width:min(86vw,344px) !important;
-  margin:6px auto 0 !important;
-  padding:0 !important;
-  display:flex !important;
-  justify-content:center !important;
-}
-
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-cta-v1{
-  width:100% !important;
-  margin:0 auto !important;
-}
-
-@media(max-width:390px){
-  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
-    height:clamp(340px,44dvh,400px) !important;
-  }
-
-  }
-
-
-
-
-
-
-
-/* STEP 1 — Jersey name shoulder position */
-
-/* STEP 1 — Locked jersey name placement */
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
   position:absolute !important;
   top:24% !important;
@@ -137,9 +109,6 @@
   pointer-events:none !important;
 }
 
-
-
-/* STEP 1 — Locked name input */
 #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
   width:min(86vw,344px) !important;
   height:58px !important;
@@ -181,31 +150,32 @@
   line-height:58px !important;
   text-align:left !important;
   z-index:2 !important;
-}#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #nameInput.onboard-name-input::placeholder{
+}
+
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #nameInput.onboard-name-input::placeholder{
   color:rgba(247,255,248,.78) !important;
   opacity:1 !important;
 }
 
-
-
-
-/* STEP 1 — Re-lock centered composition */
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"],
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .position-title,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .academy-progress,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-subtitle,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-heading,
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
-  text-align:center !important;
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-step-footer{
+  width:min(86vw,344px) !important;
+  margin:6px auto 0 !important;
+  padding:0 !important;
+  display:flex !important;
+  justify-content:center !important;
 }
 
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview{
-  left:50% !important;
-  transform:translateX(-50%) !important;
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-cta-v1{
+  width:100% !important;
+  margin:0 auto !important;
 }
 
-#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{
-  text-align:left !important;
-  padding:0 24px 0 86px !important;
-}
+@media(max-width:390px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
+    height:clamp(340px,44dvh,400px) !important;
+  }
 
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+    margin-top:-44px !important;
+  }
+}
