@@ -1,9 +1,9 @@
-const CACHE="pitchiq-player-v2-transparent-20260627";
+const CACHE="pitchiq-step1-name-shoulders-v2-20260628";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=step1-clean-sync-20260627",
-  "./css/onboard-step1-lock.css?v=step1-lock-final-20260627",
+  "./css/onboard-step1-lock.css?v=step1-name-shoulders-v2-20260628",
   "./css/splash-fit.css?v=hero-bg-top-20260623",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",

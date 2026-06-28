@@ -143,3 +143,11 @@
 
 
 
+
+/* STEP 1 — Jersey name shoulder position */
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] #jerseyNamePreview,
+#onboard.onboard-v1 .onboard-step[data-onboard-step="1"] .onboard-jersey-name{
+  top:22% !important;
+  transform:translateX(-50%) !important;
+}
+
