@@ -4,3 +4,275 @@
    ========================================================= */
 
 /* Step 2 rules will be migrated here after audit. */
+
+/* =====================================================
+   STEP 2 — LAYER 1 BASE
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"]{gap:8px!important;min-height:0!important;align-content:start!important}
+
+.onboard-step[data-onboard-step="2"] .position-title{font-size:12px!important;line-height:1!important}
+
+.onboard-step[data-onboard-step="2"] h1{font-size:clamp(28px,7.2vw,34px)!important;line-height:.94!important}
+
+.onboard-step[data-onboard-step="2"] .academy-pitch{aspect-ratio:auto!important;height:clamp(326px,43dvh,360px)!important;min-height:0!important;max-height:360px!important;width:min(100%,370px)!important;gap:4px!important;padding:12px 10px 10px!important}
+
+.onboard-step[data-onboard-step="2"] .pitch-node{min-height:32px!important;font-size:12px!important}
+
+.onboard-step[data-onboard-step="2"] .pitch-ball{width:38px!important;height:38px!important;min-height:38px!important;font-size:20px!important}
+
+.onboard-step[data-onboard-step="2"] .pitch-ball[data-pos]{width:26px!important;height:26px!important;min-height:26px!important;font-size:14px!important}
+
+.onboard-step[data-onboard-step="2"] .position-confirm{width:min(100%,330px)!important;min-height:34px!important;display:grid!important;align-items:center!important;justify-items:center!important;gap:1px!important;padding:5px 10px!important;border-radius:14px!important;background:rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.12)!important;color:rgba(246,255,247,.72)!important;font-weight:900!important;text-align:center!important}
+
+.onboard-step[data-onboard-step="2"] .position-confirm span{font-size:0!important}
+
+.onboard-step[data-onboard-step="2"] .position-confirm span::after{content:"Selected position";font-size:10px!important;letter-spacing:0!important;text-transform:uppercase}
+
+.onboard-step[data-onboard-step="2"] .position-confirm b{color:#d7ff2e!important;font-size:16px!important;line-height:1!important}
+
+.onboard-step[data-onboard-step="2"] .onboard-step-footer{padding-top:2px!important;margin-top:0!important}
+
+
+/* =====================================================
+   STEP 2 - LAYER 2 MVP STABILISATION
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(10px + env(safe-area-inset-bottom))!important}
+
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:8px!important;padding-top:8px!important}
+
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important;margin-bottom:2px!important}
+
+@media(max-width:390px){.onboard-step[data-onboard-step="2"] .academy-pitch{height:clamp(306px,41dvh,342px)!important;max-height:342px!important;width:min(100%,354px)!important}.onboard-step[data-onboard-step="2"] h1{font-size:clamp(27px,7vw,32px)!important}}
+
+@media(max-width:360px),(max-height:700px){.onboard-step[data-onboard-step="2"] .academy-pitch{height:292px!important;max-height:292px!important}}
+
+/* =====================================================
+   STEP 2 - LAYER 3 POSITION SELECTOR REWRITE
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-selector{position:relative!important;width:min(96vw,376px)!important;aspect-ratio:1023/1537!important;height:auto!important;max-height:none!important;min-height:0!important;display:block!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;contain:none!important}
+
+.onboard-step[data-onboard-step="2"] .position-selector::before,.onboard-step[data-onboard-step="2"] .position-selector::after{display:none!important;content:none!important}
+
+.position-pitch-base,.position-pitch-layer{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;object-fit:fill;user-select:none;pointer-events:none}
+
+.position-pitch-base{z-index:1;filter:drop-shadow(0 16px 28px rgba(0,0,0,.36))}
+
+.position-pitch-inactive{z-index:2}
+
+.position-pitch-active{display:none!important}
+
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-base,
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-active{display:none!important}
+
+.onboard-step[data-onboard-step="2"] .position-game-layer .position-pitch-inactive{z-index:1!important;filter:drop-shadow(0 16px 28px rgba(0,0,0,.36))}
+
+.position-marker-box{position:absolute;inset:0;z-index:4;display:block;pointer-events:none}
+
+.position-marker{position:absolute!important;z-index:4;width:clamp(42px,12vw,58px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;transform:translate(-50%,-50%)!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;line-height:1!important;touch-action:manipulation;display:block!important}
+
+.position-marker-box .position-marker{pointer-events:auto}
+
+.position-marker span{display:none!important}
+
+.position-marker b{display:none!important}
+
+.position-marker.active{background-image:none!important}
+
+.position-marker:focus-visible{outline:2px solid rgba(215,255,46,.9)!important;outline-offset:3px}
+
+/* =====================================================
+   STEP 2 - LAYER 4 BETA READINESS
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(7px + env(safe-area-inset-top))!important;padding-bottom:calc(7px + env(safe-area-inset-bottom))!important;overflow:hidden!important}
+
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:5px!important;padding-top:2px!important;min-height:calc(100svh - 14px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important}
+
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(154px,42vw,196px)!important;margin-bottom:0!important}
+
+.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:min(78vw,292px)!important;margin-bottom:0!important}
+
+.onboard-step[data-onboard-step="2"]{gap:5px!important;min-height:0!important}
+
+.onboard-step[data-onboard-step="2"] .position-title{font-size:11px!important;line-height:1!important;margin:0!important}
+
+.onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:clamp(34px,8vw,48px)!important;line-height:.95!important;margin:0 0 4px!important;letter-spacing:-.04em!important;white-space:nowrap}
+
+.onboard-step[data-onboard-step="2"] .position-confirm{margin-top:0!important;min-height:40px!important;padding:3px 10px!important;background:rgba(0,0,0,.16)!important}
+
+.onboard-step[data-onboard-step="2"] .position-confirm span::after{content:"Selected Position";font-size:10px!important}
+
+.onboard-step[data-onboard-step="2"] .position-confirm b{font-size:clamp(15px,4vw,19px)!important}
+
+.onboard-step[data-onboard-step="2"] .onboard-step-footer{padding-top:0!important}
+
+/* =====================================================
+   STEP 2 - LAYER 5 MOBILE LAYOUT OVERRIDES
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+@media(max-width:430px){
+  .onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(12px + env(safe-area-inset-bottom))!important;overflow-y:auto!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:6px!important;min-height:0!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:196px!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:292px!important}
+  .onboard-step[data-onboard-step="2"]{gap:6px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:44px!important;line-height:46px!important;margin:0!important}
+  .onboard-step[data-onboard-step="2"] .position-selector{width:376px!important;max-width:100%!important;aspect-ratio:1023/1537!important;height:auto!important;max-height:none!important;padding:0!important;overflow:visible!important}
+  .onboard-step[data-onboard-step="2"] .position-pitch-base,.onboard-step[data-onboard-step="2"] .position-pitch-layer{inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important}
+  .onboard-step[data-onboard-step="2"] .position-marker{width:54px!important;height:54px!important}
+  .onboard-step[data-onboard-step="2"] .position-confirm{min-height:36px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{width:326px!important;height:82px!important;margin:0 auto!important;padding-top:6px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-cta-v1{width:326px!important;height:76px!important;min-height:76px!important}
+}
+
+@media(max-width:390px){
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:180px!important}
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:270px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:40px!important;line-height:42px!important}
+  .onboard-step[data-onboard-step="2"] .position-selector{width:354px!important}
+  .onboard-step[data-onboard-step="2"] .position-marker{width:50px!important;height:50px!important}
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{height:78px!important;padding-top:2px!important}
+}
+
+/* =====================================================
+   STEP 2 - ALIGNMENT PATCH 1
+   Center pitch and tighten vertical flow
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-selector{
+  margin-left:auto!important;
+  margin-right:auto!important;
+  justify-self:center!important;
+}
+
+.onboard-step[data-onboard-step="2"] .onboard-position-heading{
+  margin:0 0 -6px!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-confirm{
+  margin-top:-18px!important;
+}
+
+.onboard-step[data-onboard-step="2"] .onboard-step-footer{
+  margin-top:-12px!important;
+  padding-top:0!important;
+}
+
+@media(max-width:430px){
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-confirm{
+    margin-top:-22px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-18px!important;
+  }
+}
+
+/* =====================================================
+   STEP 2 - MOBILE CENTERING PATCH
+   iPhone-only pitch centering and vertical tightening
+   ===================================================== */
+
+@media(max-width:430px){
+  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){
+    width:100%!important;
+    max-width:100%!important;
+    justify-items:center!important;
+    align-items:center!important;
+    overflow-x:hidden!important;
+  }
+
+  .onboard-step[data-onboard-step="2"]{
+    width:100%!important;
+    max-width:100%!important;
+    justify-items:center!important;
+    align-items:center!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    width:min(354px,92vw)!important;
+    max-width:354px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    justify-self:center!important;
+    left:auto!important;
+    right:auto!important;
+    transform:none!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-position-heading{
+    margin-bottom:-10px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-confirm{
+    margin-top:-28px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-22px!important;
+    padding-top:0!important;
+  }
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    width:min(340px,92vw)!important;
+    max-width:340px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-confirm{
+    margin-top:-24px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-18px!important;
+  }
+}
+
+/* =====================================================
+   STEP 2 - LAYER 6 RUBBER-BAND COMPOSITION
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+@media(max-width:430px){
+  .onboard-v1{--step2-art-w:min(376px,100%)}
+
+  .onboard-step[data-onboard-step="2"] .position-selector{
+    width:var(--step2-art-w)!important;
+    aspect-ratio:1023/1537!important;
+    position:relative!important;
+    contain:layout paint!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-pitch-base,
+  .onboard-step[data-onboard-step="2"] .position-pitch-layer{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:fill!important;
+    object-position:center center!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-marker{
+    position:absolute!important;
+    transform:translate(-50%,-50%)!important;
+  }
+}
+
+@media(max-width:390px){
+  .onboard-v1{--step2-art-w:min(354px,100%)}
+}
