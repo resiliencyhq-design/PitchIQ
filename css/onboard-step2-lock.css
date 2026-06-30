@@ -276,3 +276,84 @@
 @media(max-width:390px){
   .onboard-v1{--step2-art-w:min(354px,100%)}
 }
+
+/* =====================================================
+   STEP 2 - LAYER 7 PITCH IMMERSION
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-selector,
+.onboard-step[data-onboard-step="2"] .academy-pitch,
+.onboard-step[data-onboard-step="2"] .pitch-selector{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-selector{
+  border-radius:0!important;
+  padding:0!important;
+}
+
+/* =====================================================
+   STEP 2 - LAYER 8 WALLPAPER
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"]{
+  background:transparent!important;
+}
+
+.onboard-step[data-onboard-step="2"]::before,
+.onboard-step[data-onboard-step="2"]::after{
+  display:none!important;
+  content:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-game-layer{
+  position:relative!important;
+  isolation:isolate!important;
+}
+
+/* =====================================================
+   STEP 2 - LAYER 9 TYPOGRAPHY
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .onboard-position-heading{
+  color:#f7fff8!important;
+  font-weight:1000!important;
+  text-transform:uppercase!important;
+  text-align:center!important;
+  text-shadow:0 0 18px rgba(215,255,46,.22),0 4px 18px rgba(0,0,0,.7)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .onboard-position-heading .green,
+.onboard-step[data-onboard-step="2"] .onboard-position-heading em{
+  color:#d7ff2e!important;
+  font-style:normal!important;
+}
+
+/* =====================================================
+   STEP 2 - LAYER 10 MARKER ARTWORK
+   Migrated from onboarding-fix.css
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-marker.active,
+.onboard-step[data-onboard-step="2"] .position-marker.selected{
+  background-image:url("../assets/onboarding/position-marker-active.png")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active span,
+.onboard-step[data-onboard-step="2"] .position-marker.selected span,
+.onboard-step[data-onboard-step="2"] .position-marker.active b,
+.onboard-step[data-onboard-step="2"] .position-marker.selected b{
+  display:none!important;
+}
