@@ -235,10 +235,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{width:var(--step1-art-w)!important;height:var(--step1-art-h)!important;aspect-ratio:390/360!important;contain:layout paint!important}
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview img{left:50%!important;top:-10%!important;width:138%!important;height:auto!important;transform:translateX(-50%)!important;object-fit:contain!important;object-position:center top!important}
 
-  .onboard-step[data-onboard-step="2"] .position-selector{width:var(--step2-art-w)!important;aspect-ratio:1023/1537!important;position:relative!important;contain:layout paint!important}
-  .onboard-step[data-onboard-step="2"] .position-pitch-base,.onboard-step[data-onboard-step="2"] .position-pitch-layer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;object-position:center center!important}
-  .onboard-step[data-onboard-step="2"] .position-marker{position:absolute!important;transform:translate(-50%,-50%)!important}
-
   .onboard-v1:has(.onboard-step[data-onboard-step="3"]:not([hidden])){background-size:var(--step3-bg-size)!important;background-position:center center!important}
 }
 
