@@ -226,12 +226,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:10px!important}
   .onboard-step[data-onboard-step="1"] .onboard-step-footer{height:82px!important;padding-top:6px!important}
 
-  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:180px!important}
-  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:270px!important}
-  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:40px!important;line-height:42px!important}
-  .onboard-step[data-onboard-step="2"] .position-selector{width:354px!important}
-  .onboard-step[data-onboard-step="2"] .position-marker{width:50px!important;height:50px!important}
-  .onboard-step[data-onboard-step="2"] .onboard-step-footer{height:78px!important;padding-top:2px!important}
 }
 
 /* MVP Rubber-Band Composition Sprint - artwork layer only */
