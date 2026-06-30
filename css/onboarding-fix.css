@@ -47,16 +47,6 @@
 @media(max-width:360px),(max-height:700px){.onboard-v1{padding-top:calc(18px + env(safe-area-inset-top))!important}.onboard-content{gap:9px;padding-top:12px}.onboard-content h1{font-size:clamp(27px,8vw,35px)!important}#nameInput{min-height:48px}.academy-pitch{min-height:248px}.pitch-node{min-height:33px}.onboard-step-footer{padding-top:16px}}
 
 
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:5px!important;padding-top:2px!important;min-height:calc(100svh - 14px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important}
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(154px,42vw,196px)!important;margin-bottom:0!important}
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:min(78vw,292px)!important;margin-bottom:0!important}
-.onboard-step[data-onboard-step="2"]{gap:5px!important;min-height:0!important}
-.onboard-step[data-onboard-step="2"] .position-title{font-size:11px!important;line-height:1!important;margin:0!important}
-.onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:clamp(34px,8vw,48px)!important;line-height:.95!important;margin:0 0 4px!important;letter-spacing:-.04em!important;white-space:nowrap}
-.onboard-step[data-onboard-step="2"] .position-confirm{margin-top:0!important;min-height:40px!important;padding:3px 10px!important;background:rgba(0,0,0,.16)!important}
-.onboard-step[data-onboard-step="2"] .position-confirm span::after{content:"Selected Position";font-size:10px!important}
-.onboard-step[data-onboard-step="2"] .position-confirm b{font-size:clamp(15px,4vw,19px)!important}
-.onboard-step[data-onboard-step="2"] .onboard-step-footer{padding-top:0!important}
 .onboard-step[data-onboard-step="1"] .onboard-title-main{display:grid!important;gap:0!important;margin:0!important;font-style:normal!important;font-weight:1000!important;text-transform:uppercase!important;letter-spacing:-.04em!important;line-height:.92!important;text-align:center!important;font-size:clamp(42px,11vw,64px)!important;color:#fff!important}
 .onboard-step[data-onboard-step="1"] .onboard-title-main span{display:block;white-space:nowrap}
 .onboard-step[data-onboard-step="1"] .onboard-title-main .white{color:#fff!important}
