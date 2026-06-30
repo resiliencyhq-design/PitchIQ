@@ -234,19 +234,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input{text-align:left!important}
   .onboard-step[data-onboard-step="1"] .onboard-name-input-wrap #nameInput.onboard-name-input::placeholder{text-align:left!important}
 
-  .onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(12px + env(safe-area-inset-bottom))!important;overflow-y:auto!important}
-  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:6px!important;min-height:0!important}
-  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:196px!important}
-  .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:292px!important}
-  .onboard-step[data-onboard-step="2"]{gap:6px!important}
-  .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:44px!important;line-height:46px!important;margin:0!important}
-  .onboard-step[data-onboard-step="2"] .position-selector{width:376px!important;max-width:100%!important;aspect-ratio:1023/1537!important;height:auto!important;max-height:none!important;padding:0!important;overflow:visible!important}
-  .onboard-step[data-onboard-step="2"] .position-pitch-base,.onboard-step[data-onboard-step="2"] .position-pitch-layer{inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important}
-  .onboard-step[data-onboard-step="2"] .position-marker{width:54px!important;height:54px!important}
-  .onboard-step[data-onboard-step="2"] .position-confirm{min-height:36px!important}
-  .onboard-step[data-onboard-step="2"] .onboard-step-footer{width:326px!important;height:82px!important;margin:0 auto!important;padding-top:6px!important}
-  .onboard-step[data-onboard-step="2"] .onboard-cta-v1{width:326px!important;height:76px!important;min-height:76px!important}
-
   .onboard-step[data-onboard-step="3"]{gap:10px!important;grid-template-rows:14px auto 184px 92px!important}
   .onboard-step[data-onboard-step="3"] h1{font-size:42px!important;line-height:40px!important;margin:0!important}
   .onboard-step[data-onboard-step="3"] .onboard-confirm-card{width:326px!important;min-height:168px!important;margin:0 auto!important}
