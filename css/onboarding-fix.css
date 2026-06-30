@@ -46,25 +46,7 @@
 @media(max-width:390px){.onboard-v1{padding-top:calc(24px + env(safe-area-inset-top))!important}.academy-pitch{min-height:270px;gap:5px!important;padding:13px 11px 11px!important}.onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important}.onboard-content h1{font-size:clamp(29px,8.4vw,38px)!important}}
 @media(max-width:360px),(max-height:700px){.onboard-v1{padding-top:calc(18px + env(safe-area-inset-top))!important}.onboard-content{gap:9px;padding-top:12px}.onboard-content h1{font-size:clamp(27px,8vw,35px)!important}#nameInput{min-height:48px}.academy-pitch{min-height:248px}.pitch-node{min-height:33px}.onboard-step-footer{padding-top:16px}}
 
-/* MVP Stabilisation — Onboarding step 2 viewport fit */
-.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(12px + env(safe-area-inset-top))!important;padding-bottom:calc(10px + env(safe-area-inset-bottom))!important}
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:8px!important;padding-top:8px!important}
-.onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(180px,48vw,240px)!important;height:auto!important;max-height:none!important;margin-bottom:2px!important}
-.onboard-step[data-onboard-step="2"]{gap:8px!important;min-height:0!important;align-content:start!important}
-.onboard-step[data-onboard-step="2"] .position-title{font-size:12px!important;line-height:1!important}
-.onboard-step[data-onboard-step="2"] h1{font-size:clamp(28px,7.2vw,34px)!important;line-height:.94!important}
-.onboard-step[data-onboard-step="2"] .academy-pitch{aspect-ratio:auto!important;height:clamp(326px,43dvh,360px)!important;min-height:0!important;max-height:360px!important;width:min(100%,370px)!important;gap:4px!important;padding:12px 10px 10px!important}
-.onboard-step[data-onboard-step="2"] .pitch-node{min-height:32px!important;font-size:12px!important}
-.onboard-step[data-onboard-step="2"] .pitch-ball{width:38px!important;height:38px!important;min-height:38px!important;font-size:20px!important}
-.onboard-step[data-onboard-step="2"] .pitch-ball[data-pos]{width:26px!important;height:26px!important;min-height:26px!important;font-size:14px!important}
-.onboard-step[data-onboard-step="2"] .position-confirm{width:min(100%,330px)!important;min-height:34px!important;display:grid!important;align-items:center!important;justify-items:center!important;gap:1px!important;padding:5px 10px!important;border-radius:14px!important;background:rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.12)!important;color:rgba(246,255,247,.72)!important;font-weight:900!important;text-align:center!important}
-.onboard-step[data-onboard-step="2"] .position-confirm span{font-size:0!important}
-.onboard-step[data-onboard-step="2"] .position-confirm span::after{content:"Selected position";font-size:10px!important;letter-spacing:0!important;text-transform:uppercase}
-.onboard-step[data-onboard-step="2"] .position-confirm b{color:#d7ff2e!important;font-size:16px!important;line-height:1!important}
-.onboard-step[data-onboard-step="2"] .onboard-step-footer{padding-top:2px!important;margin-top:0!important}
-@media(max-width:390px){.onboard-step[data-onboard-step="2"] .academy-pitch{height:clamp(306px,41dvh,342px)!important;max-height:342px!important;width:min(100%,354px)!important}.onboard-step[data-onboard-step="2"] h1{font-size:clamp(27px,7vw,32px)!important}}
-@media(max-width:360px),(max-height:700px){.onboard-step[data-onboard-step="2"] .academy-pitch{height:292px!important;max-height:292px!important}}
-.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){padding-top:calc(7px + env(safe-area-inset-top))!important;padding-bottom:calc(7px + env(safe-area-inset-bottom))!important;overflow:hidden!important}
+
 .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])){gap:5px!important;padding-top:2px!important;min-height:calc(100svh - 14px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important}
 .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-logo-v1{width:clamp(154px,42vw,196px)!important;margin-bottom:0!important}
 .onboard-content:has(.onboard-step[data-onboard-step="2"]:not([hidden])) .onboard-progress-img{width:min(78vw,292px)!important;margin-bottom:0!important}
