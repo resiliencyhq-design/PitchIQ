@@ -340,19 +340,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   }
 }
 
-/* Step 2 mobile spacing - lift the pitch art closer to the heading */
-@media(max-width:430px){
-  .onboard-step[data-onboard-step="2"] .position-selector{
-    margin-top:-92px!important;
-  }
-}
-
-@media(max-width:390px){
-  .onboard-step[data-onboard-step="2"] .position-selector{
-    margin-top:-84px!important;
-  }
-}
-
 /* Step 2 stable wallpaper layer - content moves above a fixed backdrop */
 @media(max-width:430px){
   .onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){
