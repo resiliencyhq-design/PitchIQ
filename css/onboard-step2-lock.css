@@ -357,3 +357,30 @@
 .onboard-step[data-onboard-step="2"] .position-marker.selected b{
   display:none!important;
 }
+
+/* =====================================================
+   STEP 2 - LAYER 7B PITCH IMMERSION PARITY
+   Matches remaining onboarding-fix visual suppression
+   ===================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-selector,
+.onboard-step[data-onboard-step="2"] .academy-pitch,
+.onboard-step[data-onboard-step="2"] .pitch-selector{
+  background-color:transparent!important;
+  border-radius:0!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-selector::before,
+.onboard-step[data-onboard-step="2"] .position-selector::after,
+.onboard-step[data-onboard-step="2"] .academy-pitch::before,
+.onboard-step[data-onboard-step="2"] .academy-pitch::after,
+.onboard-step[data-onboard-step="2"] .pitch-selector::before,
+.onboard-step[data-onboard-step="2"] .pitch-selector::after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
