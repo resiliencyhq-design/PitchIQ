@@ -340,35 +340,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   }
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker,
-.onboard-step[data-onboard-step="2"] .position-marker.active,
-.onboard-step[data-onboard-step="2"] .position-marker.selected{
-  background-color:transparent!important;
-  background-position:center!important;
-  background-repeat:no-repeat!important;
-  background-size:contain!important;
-  transform:translate(-50%,-50%)!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.active,
-.onboard-step[data-onboard-step="2"] .position-marker.selected{
-  background-image:url("../assets/onboarding/position-marker-active.png")!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.active b,
-.onboard-step[data-onboard-step="2"] .position-marker.selected b{
-  position:absolute!important;
-  left:50%!important;
-  bottom:18%!important;
-  display:block!important;
-  transform:translateX(-50%)!important;
-  color:#f8fff7!important;
-  font-size:clamp(10px,2.8vw,13px)!important;
-  font-weight:1000!important;
-  line-height:1!important;
-  text-shadow:0 1px 4px rgba(0,0,0,.9)!important;
-}
-
 /* Step 1 player scale refinement for the transparent v1 artwork */
 @media(max-width:430px){
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview{
