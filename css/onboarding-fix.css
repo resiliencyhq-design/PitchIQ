@@ -340,32 +340,6 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
   }
 }
 
-/* Step 2 pitch immersion - remove legacy card surface behind the image layer */
-.onboard-step[data-onboard-step="2"] .position-selector,
-.onboard-step[data-onboard-step="2"] .academy-pitch,
-.onboard-step[data-onboard-step="2"] .pitch-selector{
-  background:transparent!important;
-  background-color:transparent!important;
-  border:0!important;
-  border-radius:0!important;
-  box-shadow:none!important;
-  -webkit-backdrop-filter:none!important;
-  backdrop-filter:none!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-selector::before,
-.onboard-step[data-onboard-step="2"] .position-selector::after,
-.onboard-step[data-onboard-step="2"] .academy-pitch::before,
-.onboard-step[data-onboard-step="2"] .academy-pitch::after,
-.onboard-step[data-onboard-step="2"] .pitch-selector::before,
-.onboard-step[data-onboard-step="2"] .pitch-selector::after{
-  display:none!important;
-  content:none!important;
-  background:none!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-
 /* Step 2 mobile spacing - lift the pitch art closer to the heading */
 @media(max-width:430px){
   .onboard-step[data-onboard-step="2"] .position-selector{
