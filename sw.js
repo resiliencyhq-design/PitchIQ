@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-haptics-20260702";
+const CACHE="pitchiq-step2-tactical-web-20260702";
 const ASSETS=[
   "./",
   "./index.html",
@@ -6,12 +6,14 @@ const ASSETS=[
   "./css/onboard-step1-lock.css?v=step1-mvp-locked-20260628",
   "./css/onboard-step2-lock.css?v=step2-lock-init-20260628",
   "./css/onboard-step2-spawn.css?v=step2-spawn-20260702",
+  "./css/onboard-step2-tactical-web.css?v=step2-tactical-web-20260702",
   "./css/splash-fit.css?v=logo-down-20260628",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./js/app/main.js?v=step1-player-overflow-20260627",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
+  "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
   "./js/app/routes.js?v=hero-bg-top-20260623",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
@@ -50,11 +52,3 @@ self.addEventListener("fetch",e=>{
   }
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
 });
-
-
-
-
-
-
-
-
