@@ -1,0 +1,64 @@
+/* STEP 2 - Tactical Web Chemistry Lines */
+
+.onboard-step[data-onboard-step="2"] .position-game-layer{
+  position:relative!important;
+}
+
+.onboard-step[data-onboard-step="2"] .tactical-web-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:3;
+  overflow:visible;
+}
+
+.onboard-step[data-onboard-step="2"] .tactical-web-line{
+  stroke:#d7ff35;
+  stroke-width:3;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 6px #d7ff35) drop-shadow(0 0 12px rgba(215,255,53,.55));
+  opacity:0;
+  stroke-dasharray:220;
+  stroke-dashoffset:220;
+  animation:tacticalLineDraw 420ms ease-out forwards;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker{
+  z-index:4;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.is-linked::after,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected::after{
+  content:"";
+  position:absolute;
+  inset:-7px;
+  z-index:-1;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%);
+  filter:drop-shadow(0 0 10px rgba(215,255,53,.78));
+  opacity:.86;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected::after{
+  inset:-10px;
+  opacity:1;
+  filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62));
+}
+
+@keyframes tacticalLineDraw{
+  to{
+    opacity:1;
+    stroke-dashoffset:0;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .onboard-step[data-onboard-step="2"] .tactical-web-line{
+    animation:none;
+    opacity:1;
+    stroke-dashoffset:0;
+  }
+}
