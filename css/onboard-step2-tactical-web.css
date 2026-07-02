@@ -12,6 +12,11 @@
   pointer-events:none;
   z-index:3;
   overflow:visible;
+  transition:opacity 150ms ease-out;
+}
+
+.onboard-step[data-onboard-step="2"] .tactical-web-svg.is-fading{
+  opacity:0;
 }
 
 .onboard-step[data-onboard-step="2"] .tactical-web-line{
@@ -34,7 +39,6 @@
   content:"";
   position:absolute;
   inset:-7px;
-  z-index:-1;
   border-radius:50%;
   pointer-events:none;
   background:radial-gradient(circle,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%);
@@ -46,6 +50,29 @@
   inset:-10px;
   opacity:1;
   filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62));
+  animation:tacticalSelectedPulse 2s ease-in-out infinite;
+}
+
+.onboard-step[data-onboard-step="2"] .position-confirm.tactical-web-caption{
+  background:rgba(0,0,0,.34)!important;
+  border-color:rgba(215,255,53,.24)!important;
+  color:#f7fff8!important;
+  line-height:1.2!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-confirm.tactical-web-caption span::after{
+  content:"Selected position"!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-confirm.tactical-web-caption small{
+  display:block;
+  color:rgba(247,255,248,.82);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.25;
+  margin-top:2px;
+  text-transform:none;
+  letter-spacing:0;
 }
 
 @keyframes tacticalLineDraw{
@@ -55,10 +82,19 @@
   }
 }
 
+@keyframes tacticalSelectedPulse{
+  0%,100%{scale:1;opacity:.92}
+  50%{scale:1.06;opacity:1}
+}
+
 @media (prefers-reduced-motion:reduce){
   .onboard-step[data-onboard-step="2"] .tactical-web-line{
     animation:none;
     opacity:1;
     stroke-dashoffset:0;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-marker.is-selected::after{
+    animation:none;
   }
 }
