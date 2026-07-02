@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/style.css?v=onboarding-architecture-lock-20260628"/>
     <link rel="stylesheet" href="css/onboard-step1-lock.css?v=step1-mvp-locked-20260628"/>
     <link rel="stylesheet" href="css/onboard-step2-lock.css?v=step2-lock-init-20260628"/>
+    <link rel="stylesheet" href="css/onboard-step2-spawn.css?v=step2-spawn-20260702"/>
   <link rel="stylesheet" href="css/splash-fit.css?v=logo-down-20260628"/>
   <link rel="stylesheet" href="css/onboarding-fix.css?v=hero-bg-top-20260623"/>
   <link rel="stylesheet" href="css/academy-hero-asset.css?v=hero-bg-top-20260623"/>
@@ -38,26 +39,3 @@
       console.error("[PitchIQ unhandled promise]", event.reason);
       var box = document.getElementById("pitchiq-boot-watchdog");
       if (box) {
-        box.style.display = "block";
-        box.querySelector("p").textContent = "Unhandled promise: " + (event.reason && event.reason.message ? event.reason.message : event.reason || "unknown error");
-      }
-    });
-    setTimeout(function(){
-      var app = document.getElementById("app");
-      var box = document.getElementById("pitchiq-boot-watchdog");
-      if (app && box && app.children.length === 0) box.style.display = "block";
-    }, 2500);
-  </script>
-  <script type="module" src="js/app/main.js?v=step1-player-overflow-20260627"></script>
-  <script type="module" src="js/dev/visual-layout-studio.js?v=hero-bg-top-20260623"></script>
-  <script type="module" src="js/dev/dev-floating-panels.js?v=hero-bg-top-20260623"></script>
-</body>
-</html>
-
-
-
-
-
-
-
-
