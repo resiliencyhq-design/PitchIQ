@@ -1,0 +1,56 @@
+/* ==========================================================
+   STEP 2 — Jersey Spawn Animation
+   Scoped to onboarding Step 2 only. Uses CSS translate/scale
+   longhands so the locked pitch coordinate transform remains intact.
+   ========================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-marker{
+  opacity:0;
+  translate:0 -40px;
+  scale:.85;
+  animation:jerseySpawn .55s cubic-bezier(.22,1.3,.36,1) forwards;
+  will-change:translate,scale,opacity;
+}
+
+/* stagger */
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(1){animation-delay:.15s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(2){animation-delay:.25s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(3){animation-delay:.35s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(4){animation-delay:.45s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(5){animation-delay:.55s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(6){animation-delay:.65s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(7){animation-delay:.75s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(8){animation-delay:.85s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(9){animation-delay:.95s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(10){animation-delay:1.05s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker:nth-child(11){animation-delay:1.15s;}
+
+@keyframes jerseySpawn{
+  0%{
+    opacity:0;
+    translate:0 -40px;
+    scale:.85;
+  }
+
+  70%{
+    opacity:1;
+    translate:0 5px;
+    scale:1.08;
+  }
+
+  100%{
+    opacity:1;
+    translate:0 0;
+    scale:1;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .onboard-step[data-onboard-step="2"] .position-marker{
+    opacity:1;
+    translate:0 0;
+    scale:1;
+    animation:none;
+  }
+}
