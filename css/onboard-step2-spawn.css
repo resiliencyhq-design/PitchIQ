@@ -1,53 +1,52 @@
 /* ==========================================================
    STEP 2 — Jersey Spawn Animation
    Scoped to onboarding Step 2 only. Triggered when Step 2 becomes visible.
-   Uses CSS translate/scale longhands so locked pitch coordinates remain intact.
+   Uses margin-top + opacity for reliable iPhone Safari animation.
    ========================================================== */
 
 .onboard-step[data-onboard-step="2"] .position-marker{
   opacity:1;
-  translate:0 0;
-  scale:1;
-  will-change:translate,scale,opacity;
+  margin-top:0;
+  will-change:margin-top,opacity,filter;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
   opacity:0;
-  translate:0 -40px;
-  scale:.85;
-  animation:jerseySpawn .55s cubic-bezier(.22,1.3,.36,1) forwards;
+  margin-top:-44px;
+  filter:brightness(1.15) drop-shadow(0 0 0 rgba(215,255,53,0));
+  animation:jerseySpawn .62s cubic-bezier(.22,1.3,.36,1) forwards!important;
 }
 
 /* stagger */
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1){animation-delay:.15s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2){animation-delay:.25s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3){animation-delay:.35s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4){animation-delay:.45s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5){animation-delay:.55s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6){animation-delay:.65s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7){animation-delay:.75s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8){animation-delay:.85s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9){animation-delay:.95s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10){animation-delay:1.05s;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11){animation-delay:1.15s;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1){animation-delay:.08s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2){animation-delay:.16s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3){animation-delay:.24s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4){animation-delay:.32s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5){animation-delay:.40s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6){animation-delay:.48s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7){animation-delay:.56s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8){animation-delay:.64s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9){animation-delay:.72s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10){animation-delay:.80s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11){animation-delay:.88s!important;}
 
 @keyframes jerseySpawn{
   0%{
     opacity:0;
-    translate:0 -40px;
-    scale:.85;
+    margin-top:-44px;
+    filter:brightness(1.08) drop-shadow(0 0 0 rgba(215,255,53,0));
   }
 
-  70%{
+  68%{
     opacity:1;
-    translate:0 5px;
-    scale:1.08;
+    margin-top:7px;
+    filter:brightness(1.28) drop-shadow(0 0 11px rgba(215,255,53,.62));
   }
 
   100%{
     opacity:1;
-    translate:0 0;
-    scale:1;
+    margin-top:0;
+    filter:none;
   }
 }
 
@@ -56,8 +55,8 @@
   .onboard-step[data-onboard-step="2"] .position-marker,
   .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
     opacity:1;
-    translate:0 0;
-    scale:1;
-    animation:none;
+    margin-top:0;
+    animation:none!important;
+    filter:none;
   }
 }
