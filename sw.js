@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-spawn-20260702";
+const CACHE="pitchiq-step2-haptics-20260702";
 const ASSETS=[
   "./",
   "./index.html",
@@ -11,6 +11,7 @@ const ASSETS=[
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./js/app/main.js?v=step1-player-overflow-20260627",
+  "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/routes.js?v=hero-bg-top-20260623",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
@@ -49,9 +50,6 @@ self.addEventListener("fetch",e=>{
   }
   e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
 });
-
-
-
 
 
 
