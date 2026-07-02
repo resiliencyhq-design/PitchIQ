@@ -396,3 +396,41 @@ html,body,#app{background:#000!important;overflow-x:hidden!important}
     margin-top:-24px!important;
   }
 }
+
+/* =====================================================
+   ACADEMY PROGRESS COMPONENT LOCK
+   Shared onboarding progress indicator
+   ===================================================== */
+
+.academy-progress{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  width:auto!important;
+  margin:0 auto 10px!important;
+}
+
+.academy-progress span{
+  display:block!important;
+  width:14px!important;
+  height:14px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.28)!important;
+  border:1px solid rgba(255,255,255,.32)!important;
+  box-shadow:none!important;
+}
+
+.academy-progress span.active{
+  background:#d7ff2e!important;
+  border-color:#d7ff2e!important;
+  box-shadow:0 0 14px rgba(215,255,46,.45)!important;
+}
+
+.academy-progress i{
+  display:block!important;
+  width:28px!important;
+  height:2px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.26)!important;
+}
