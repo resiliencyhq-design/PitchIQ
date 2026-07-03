@@ -1,62 +1,79 @@
-/* ==========================================================
-   STEP 2 — Jersey Spawn Animation
-   Scoped to onboarding Step 2 only. Triggered when Step 2 becomes visible.
-   Uses margin-top + opacity for reliable iPhone Safari animation.
-   ========================================================== */
+/* STEP 2 — Jersey-only Spawn Fix */
 
 .onboard-step[data-onboard-step="2"] .position-marker{
   opacity:1;
-  margin-top:0;
-  will-change:margin-top,opacity,filter;
+  margin-top:0!important;
+  animation:none!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
+  opacity:1!important;
+  margin-top:0!important;
+  animation:none!important;
+  filter:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active,
+.onboard-step[data-onboard-step="2"] .position-marker.selected{
+  background-image:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active::before,
+.onboard-step[data-onboard-step="2"] .position-marker.selected::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background-image:url("../assets/onboarding/position-marker-active.png");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  pointer-events:none;
+  opacity:1;
+  transform:none;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning > *,
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning::before{
   opacity:0;
-  margin-top:-44px;
-  filter:brightness(1.15) drop-shadow(0 0 0 rgba(215,255,53,0));
-  animation:jerseySpawn .62s cubic-bezier(.22,1.3,.36,1) forwards!important;
+  transform:translateY(-34px) scale(.88);
+  animation:jerseyOnlySpawn 520ms cubic-bezier(.22,1.25,.36,1) forwards!important;
 }
 
-/* stagger */
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1){animation-delay:.08s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2){animation-delay:.16s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3){animation-delay:.24s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4){animation-delay:.32s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5){animation-delay:.40s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6){animation-delay:.48s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7){animation-delay:.56s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8){animation-delay:.64s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9){animation-delay:.72s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10){animation-delay:.80s!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11){animation-delay:.88s!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1)::before{animation-delay:120ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2)::before{animation-delay:220ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3)::before{animation-delay:320ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4)::before{animation-delay:420ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5)::before{animation-delay:520ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6)::before{animation-delay:620ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7)::before{animation-delay:720ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8)::before{animation-delay:820ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9)::before{animation-delay:920ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10)::before{animation-delay:1020ms!important;}
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11) > *,
+.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11)::before{animation-delay:1120ms!important;}
 
-@keyframes jerseySpawn{
-  0%{
-    opacity:0;
-    margin-top:-44px;
-    filter:brightness(1.08) drop-shadow(0 0 0 rgba(215,255,53,0));
-  }
-
-  68%{
-    opacity:1;
-    margin-top:7px;
-    filter:brightness(1.28) drop-shadow(0 0 11px rgba(215,255,53,.62));
-  }
-
-  100%{
-    opacity:1;
-    margin-top:0;
-    filter:none;
-  }
+@keyframes jerseyOnlySpawn{
+  0%{opacity:0;transform:translateY(-34px) scale(.88);}
+  70%{opacity:1;transform:translateY(5px) scale(1.06);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker,
-  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
-    opacity:1;
-    margin-top:0;
+@media (prefers-reduced-motion:reduce){
+  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning > *,
+  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning::before{
+    opacity:1!important;
+    transform:none!important;
     animation:none!important;
-    filter:none;
   }
 }
