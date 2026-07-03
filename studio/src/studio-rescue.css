@@ -1,0 +1,155 @@
+/* ==========================================================
+   PitchIQ Studio Rescue Styles
+   Purpose: make the desktop Studio readable and usable again
+   Scope: Studio only. No MVP app styles touched.
+   ========================================================== */
+
+#studio-root,
+#studio-root * {
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+body:has(#studio-root) {
+  background: #0f1316 !important;
+  color: #f6fff7 !important;
+}
+
+#studio-root .studio-shell {
+  color: #f6fff7 !important;
+  background: #0f1316 !important;
+}
+
+#studio-root .studio-topbar,
+#studio-root .studio-template-bar {
+  background: rgba(13, 17, 20, .98) !important;
+}
+
+#studio-root .studio-topbar strong,
+#studio-root .studio-topbar span,
+#studio-root .panel-head h2,
+#studio-root .studio-palette h2,
+#studio-root .inspector h2,
+#studio-root .json-panel h2,
+#studio-root .templates-manager h2,
+#studio-root .template-card b,
+#studio-root .template-card small,
+#studio-root .template-empty,
+#studio-root label,
+#studio-root p,
+#studio-root h1,
+#studio-root h2,
+#studio-root h3,
+#studio-root small,
+#studio-root code,
+#studio-root pre,
+#studio-root span {
+  color: #f6fff7 !important;
+  -webkit-text-fill-color: #f6fff7 !important;
+  opacity: 1 !important;
+}
+
+#studio-root .studio-topbar strong,
+#studio-root .panel-head h2,
+#studio-root .studio-palette h2,
+#studio-root .inspector h2,
+#studio-root .templates-manager h2,
+#studio-root .json-panel h2 {
+  color: #d7ff2e !important;
+  -webkit-text-fill-color: #d7ff2e !important;
+}
+
+#studio-root button,
+#studio-root a,
+#studio-root .panel-tab,
+#studio-root .template-card button,
+#studio-root .studio-topbar button,
+#studio-root .studio-topbar a,
+#studio-root .studio-template-bar button,
+#studio-root .studio-palette button,
+#studio-root .inspector button,
+#studio-root .templates-manager button,
+#studio-root .zoom-toolbar button,
+#studio-root .floating-toolbar button,
+#studio-root .review-panel button {
+  color: #d7ff2e !important;
+  -webkit-text-fill-color: #d7ff2e !important;
+  background: rgba(215, 255, 46, .12) !important;
+  border: 1px solid rgba(215, 255, 46, .42) !important;
+  line-height: 1.1 !important;
+  min-height: 34px;
+  text-indent: 0 !important;
+  letter-spacing: 0 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+#studio-root button.active,
+#studio-root .active,
+#studio-root .template-tabs button.active,
+#studio-root .zoom-toolbar button.active {
+  color: #31f79a !important;
+  -webkit-text-fill-color: #31f79a !important;
+  background: rgba(49, 247, 154, .18) !important;
+  border-color: rgba(49, 247, 154, .55) !important;
+}
+
+#studio-root input,
+#studio-root select,
+#studio-root textarea,
+#studio-root .template-search {
+  color: #f6fff7 !important;
+  -webkit-text-fill-color: #f6fff7 !important;
+  background: rgba(0, 0, 0, .45) !important;
+  border: 1px solid rgba(255, 255, 255, .24) !important;
+}
+
+#studio-root input::placeholder,
+#studio-root textarea::placeholder {
+  color: rgba(246, 255, 247, .58) !important;
+  -webkit-text-fill-color: rgba(246, 255, 247, .58) !important;
+}
+
+#studio-root .canvas-layer,
+#studio-root .canvas-layer * {
+  color: #f6fff7 !important;
+  -webkit-text-fill-color: #f6fff7 !important;
+}
+
+#studio-root .studio-button.primary,
+#studio-root .studio-button.primary * {
+  color: #03100b !important;
+  -webkit-text-fill-color: #03100b !important;
+}
+
+#studio-root .input-mock,
+#studio-root .input-mock * {
+  color: #07120d !important;
+  -webkit-text-fill-color: #07120d !important;
+}
+
+#studio-root .studio-image,
+#studio-root .studio-progress b,
+#studio-root .soccer-pitch i,
+#studio-root .soccer-pitch b {
+  color: #d7ff2e !important;
+  -webkit-text-fill-color: #d7ff2e !important;
+}
+
+#studio-root .studio-palette,
+#studio-root .inspector,
+#studio-root .templates-manager,
+#studio-root .json-panel {
+  background: rgba(255, 255, 255, .07) !important;
+  border-color: rgba(255, 255, 255, .18) !important;
+}
+
+#studio-root .studio-mode-nav a,
+#studio-root .studio-mode-nav button {
+  color: #d7ff2e !important;
+  -webkit-text-fill-color: #d7ff2e !important;
+}
