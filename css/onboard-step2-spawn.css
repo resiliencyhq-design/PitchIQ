@@ -1,55 +1,7 @@
-/* STEP 2 — Jersey-only Spawn Polish
-   Parent marker remains locked to pitch coordinates.
-   Marker artwork drops once, then returns to inactive unless selected.
+/* STEP 2 — Spawn animation only
+   No marker size, position, skin, or selected-state ownership here.
 */
 
-.onboard-step[data-onboard-step="2"] .position-marker{
-  opacity:1!important;
-  margin-top:0!important;
-  animation:none!important;
-  overflow:visible!important;
-  background-image:none!important;
-  background-color:transparent!important;
-  box-shadow:none!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
-  opacity:1!important;
-  margin-top:0!important;
-  animation:none!important;
-  filter:none!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker::before{
-  content:""!important;
-  position:absolute!important;
-  inset:0!important;
-  width:100%!important;
-  height:100%!important;
-  border-radius:50%!important;
-  background-image:url("../assets/onboarding/position-marker-grey.png")!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:contain!important;
-  pointer-events:none!important;
-  opacity:1;
-  transform:none;
-  z-index:1;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.active::before,
-.onboard-step[data-onboard-step="2"] .position-marker.selected::before,
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected::before{
-  background-image:url("../assets/onboarding/position-marker-active.png")!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker span,
-.onboard-step[data-onboard-step="2"] .position-marker b{
-  position:relative!important;
-  z-index:2!important;
-}
-
-/* Animate marker artwork only. The button itself never moves. */
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning::before{
   opacity:0;
   transform:translateY(-112px) scale(.82);
