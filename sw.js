@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-favorite-position-spacing-20260703";
+const CACHE="pitchiq-splash-swipe-fallback-20260703";
 const ASSETS=[
   "./",
   "./index.html",
@@ -16,6 +16,7 @@ const ASSETS=[
   "./js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
+  "./js/app/splash-advance-fallback.js?v=splash-swipe-fallback-20260703",
   "./js/app/routes.js?v=hero-bg-top-20260623",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
