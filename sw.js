@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-preferred-position-prompt-20260703";
+const CACHE="pitchiq-step2-favorite-position-spacing-20260703";
 const ASSETS=[
   "./",
   "./index.html",
@@ -11,8 +11,9 @@ const ASSETS=[
   "./css/academy-hero-asset.css?v=hero-bg-top-20260623",
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703",
+  "./css/onboard-step2-final-polish.css?v=step2-favorite-position-spacing-20260703",
   "./js/app/main.js?v=step1-player-overflow-20260627",
-  "./js/app/onboard-step2-spawn.js?v=step2-preferred-position-prompt-20260703",
+  "./js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
   "./js/app/routes.js?v=hero-bg-top-20260623",
