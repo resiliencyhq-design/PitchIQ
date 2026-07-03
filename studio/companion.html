@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>PitchIQ Studio Companion</title>
+  <link rel="stylesheet" href="../css/welltrack-design-system.css" />
+  <link rel="stylesheet" href="./src/companion.css?v=companion-20260703" />
+</head>
+<body>
+  <main class="companion-shell">
+    <header class="companion-head">
+      <div>
+        <strong>Device Companion</strong>
+        <span id="companion-status">Preview ready</span>
+      </div>
+      <a href="./">Desktop Studio</a>
+    </header>
+
+    <section class="device-stage">
+      <div class="phone-preview" id="phone-preview" aria-label="iPhone preview canvas">
+        <div class="safe-area is-visible" id="safe-area">SAFE AREA</div>
+        <div id="preview-layer"></div>
+      </div>
+    </section>
+
+    <section class="companion-controls" aria-label="Companion controls">
+      <div class="control-row">
+        <button type="button" id="toggle-guides">Guides On</button>
+        <button type="button" id="load-saved">Reload Saved</button>
+        <button type="button" id="approve-device">Approve on Device</button>
+      </div>
+
+      <label class="control-field">
+        Selected component
+        <select id="component-select"></select>
+      </label>
+
+      <div class="nudge-pad" aria-label="Nudge selected component">
+        <button type="button" data-nudge="up">↑</button>
+        <button type="button" data-nudge="left">←</button>
+        <button type="button" data-nudge="down">↓</button>
+        <button type="button" data-nudge="right">→</button>
+      </div>
+
+      <div class="control-row">
+        <button type="button" data-step="1">1px</button>
+        <button type="button" data-step="5" class="active">5px</button>
+        <button type="button" data-step="10">10px</button>
+      </div>
+
+      <label class="control-field">
+        Import layout JSON
+        <textarea id="layout-import" rows="4" placeholder="Paste exported Studio JSON here"></textarea>
+      </label>
+
+      <div class="control-row">
+        <button type="button" id="import-json">Import</button>
+        <button type="button" id="export-json">Copy JSON</button>
+        <button type="button" id="reset-template">Reset Template</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="./src/companion.js?v=companion-20260703"></script>
+</body>
+</html>
