@@ -32,14 +32,20 @@ function ensureOnboardProgressBars(){
 
 function ensureStep2Prompt(){
   const step = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  if(!step || step.querySelector('.onboard-position-subtitle')) return;
+  if(!step) return;
+
+  const existing = step.querySelector('.onboard-position-subtitle');
+  if(existing){
+    existing.textContent = 'Favorite Position';
+    return;
+  }
 
   const heading = step.querySelector('.onboard-position-heading');
   if(!heading) return;
 
   const prompt = document.createElement('p');
   prompt.className = 'onboard-subtitle onboard-position-subtitle';
-  prompt.textContent = 'Choose your preferred position';
+  prompt.textContent = 'Favorite Position';
 
   heading.insertAdjacentElement('afterend', prompt);
 }
