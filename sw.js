@@ -1,4 +1,4 @@
-const CACHE="pitchiq-splash-swipe-fallback-20260703";
+const CACHE="pitchiq-inline-splash-recovery-20260703";
 const ASSETS=[
   "./",
   "./index.html",
