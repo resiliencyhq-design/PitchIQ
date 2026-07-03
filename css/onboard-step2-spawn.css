@@ -1,37 +1,4 @@
-/* STEP 2 — Spawn animation only
-   No marker size, position, skin, or selected-state ownership here.
+/* STEP 2 — Legacy spawn compatibility file
+   Animation ownership moved to css/onboard-step2-animation.css.
+   This file intentionally contains no animation rules.
 */
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning::before{
-  opacity:0;
-  transform:translateY(-112px) scale(.82);
-  animation:jerseyOnlySpawn 700ms cubic-bezier(.19,1.24,.34,1) forwards!important;
-  will-change:transform,opacity;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1)::before{animation-delay:150ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2)::before{animation-delay:300ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3)::before{animation-delay:450ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4)::before{animation-delay:600ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5)::before{animation-delay:750ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6)::before{animation-delay:900ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7)::before{animation-delay:1050ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8)::before{animation-delay:1200ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9)::before{animation-delay:1350ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10)::before{animation-delay:1500ms!important;}
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11)::before{animation-delay:1650ms!important;}
-
-@keyframes jerseyOnlySpawn{
-  0%{opacity:0;transform:translateY(-112px) scale(.82);}
-  58%{opacity:1;transform:translateY(12px) scale(1.12);}
-  78%{opacity:1;transform:translateY(-5px) scale(.98);}
-  100%{opacity:1;transform:translateY(0) scale(1);}
-}
-
-@media (prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning::before{
-    opacity:1!important;
-    transform:none!important;
-    animation:none!important;
-  }
-}
