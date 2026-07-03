@@ -38,6 +38,10 @@ The long-term plan is to move canonical platform material into a dedicated `Well
 - `PLATFORM_STANDARD_SEED.md` — initial standards hierarchy and governance model.
 - `PLATFORM_WORK_ASSIGNMENT_MAP.md` — maps the platform work completed so far to the correct long-term and temporary homes.
 
+## Sprint plans
+
+- `sprints/SPRINT_PF_01_REPOSITORY_AUDIT.md` — first execution sprint for Platform Audit 1.0.
+
 ## What belongs here
 
 This folder should contain the operational platform material PitchIQ needs while it acts as the reference implementation.
