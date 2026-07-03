@@ -9,9 +9,9 @@
   <title>PitchIQ Integrated v1</title>
   <link rel="manifest" href="manifest.json?v=hero-bg-top-20260623"/>
   <link rel="stylesheet" href="css/style.css?v=onboarding-architecture-lock-20260628"/>
-    <link rel="stylesheet" href="css/onboard-step1-lock.css?v=step1-mvp-locked-20260628"/>
-    <link rel="stylesheet" href="css/onboard-step2-lock.css?v=step2-preferred-position-prompt-20260703"/>
-    <link rel="stylesheet" href="css/onboard-step2-tactical-web.css?v=step2-selected-only-web-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step1-lock.css?v=step1-mvp-locked-20260628"/>
+  <link rel="stylesheet" href="css/onboard-step2-lock.css?v=step2-preferred-position-prompt-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-tactical-web.css?v=step2-selected-only-web-20260703"/>
   <link rel="stylesheet" href="css/splash-fit.css?v=logo-down-20260628"/>
   <link rel="stylesheet" href="css/onboarding-fix.css?v=hero-bg-top-20260623"/>
   <link rel="stylesheet" href="css/academy-hero-asset.css?v=hero-bg-top-20260623"/>
@@ -25,10 +25,10 @@
     <main id="app" class="app-scroll"></main>
     <nav id="nav" class="nav bottom-nav" aria-label="Main navigation"></nav>
   </div>
-  <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ didn’t finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Hard refresh, then check the browser console for the first red error.</p></div>
+  <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "hero-bg-top-20260623";
+    window.__PITCHIQ_BUILD__ = "onboarding-stability-audit-20260703";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -50,49 +50,11 @@
       var box = document.getElementById("pitchiq-boot-watchdog");
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
-
-    (function(){
-      var armed = false;
-      function goOnboard(){
-        if (!document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]")) return;
-        try { localStorage.setItem("pitchiqDevBorderEnabled", "false"); } catch(e) {}
-        window.location.replace(window.location.origin + window.location.pathname + "?dev=1&autoOnboard=1&v=inline-splash-recovery-20260703#onboard");
-      }
-      function arm(){
-        var swipe = document.querySelector("[data-splash-swipe]");
-        if (!swipe || armed) return;
-        armed = true;
-        var check = function(){
-          if (swipe.classList.contains("complete")) setTimeout(goOnboard, 850);
-        };
-        new MutationObserver(check).observe(swipe,{attributes:true,attributeFilter:["class","style"]});
-        swipe.addEventListener("pointerup", function(){ setTimeout(check, 80); }, {passive:true});
-        swipe.addEventListener("click", function(){ setTimeout(check, 80); }, {passive:true});
-        setInterval(check, 350);
-      }
-      function hideRecoveryChrome(){
-        if (!new URLSearchParams(location.search).has("autoOnboard")) return;
-        try { localStorage.setItem("pitchiqDevBorderEnabled", "false"); } catch(e) {}
-        var style = document.createElement("style");
-        style.textContent = "#pitchiq-dev-toggle,#pitchiq-dev-panel{display:none!important}.DeveloperIPhoneFrame{border:0!important}";
-        document.head.appendChild(style);
-        setTimeout(function(){
-          document.body.classList.remove("pitchiq-dev-border");
-          document.querySelector(".app-shell")?.classList.remove("DeveloperIPhoneFrame");
-        }, 600);
-      }
-      hideRecoveryChrome();
-      document.addEventListener("DOMContentLoaded", arm);
-      window.addEventListener("load", arm);
-      setTimeout(arm, 300);
-      setTimeout(arm, 900);
-    })();
   </script>
-  <script type="module" src="js/app/main.js?v=step1-player-overflow-20260627"></script>
+  <script type="module" src="js/app/main.js?v=onboarding-stability-audit-20260703"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703"></script>
   <script type="module" src="js/app/onboard-haptics.js?v=step2-haptics-20260702"></script>
   <script type="module" src="js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702"></script>
-  <script type="module" src="js/app/splash-advance-fallback.js?v=splash-swipe-fallback-20260703"></script>
   <script type="module" src="js/dev/visual-layout-studio.js?v=hero-bg-top-20260623"></script>
   <script type="module" src="js/dev/dev-floating-panels.js?v=hero-bg-top-20260623"></script>
 </body>
