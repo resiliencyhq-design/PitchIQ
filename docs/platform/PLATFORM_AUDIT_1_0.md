@@ -1,6 +1,6 @@
 # Platform Audit 1.0 Blueprint
 
-Status: Draft  
+Status: In progress  
 Scope: PitchIQ repository as first WellTrack reference implementation
 
 ## Purpose
@@ -17,16 +17,21 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 
 ## Audit workstreams
 
-| Workstream | Scope | Deliverable | Priority |
-|---|---|---|---|
-| Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 |
-| Components | Reusable UI and football components | Component Catalogue | P1 |
-| Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 |
-| Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 |
-| Architecture | Major design and engineering decisions | ADR Catalogue | P2 |
-| Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 |
-| Documentation | Canonical and product documents | Knowledge Catalogue | P2 |
-| Quality | Accessibility, testing, performance | Platform Health Report | P3 |
+| Workstream | Scope | Deliverable | Priority | Status |
+|---|---|---|---|---|
+| PF-01 Repository | Repository map, docs, CSS/JS architecture | Repository Audit Results | P1 | Complete enough to proceed |
+| Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 | Next |
+| Components | Reusable UI and football components | Component Catalogue | P1 | Not started |
+| Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Not started |
+| Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Not started |
+| Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Not started |
+| Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Not started |
+| Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Started through PF-01 |
+| Quality | Accessibility, testing, performance | Platform Health Report | P3 | Not started |
+
+## Audit outputs
+
+- `audits/PF_01_REPOSITORY_AUDIT_RESULTS.md` — first repository audit baseline and PF-02 inputs.
 
 ## Platform catalogues
 
