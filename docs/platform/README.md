@@ -36,6 +36,13 @@ The long-term plan is to move canonical platform material into a dedicated `Well
 - `PLATFORM_REPOSITORY_ARCHITECTURE.md` — where platform, product, and HQ knowledge should live.
 - `PLATFORM_AUDIT_1_0.md` — first operational audit plan for tokens, components, patterns, assets, decisions, capabilities, documentation, and quality.
 - `PLATFORM_STANDARD_SEED.md` — initial standards hierarchy and governance model.
+- `PLATFORM_WORK_ASSIGNMENT_MAP.md` — maps the platform work completed so far to the correct long-term and temporary homes.
+
+## What belongs here
+
+This folder should contain the operational platform material PitchIQ needs while it acts as the reference implementation.
+
+It should not permanently become the canonical home for the full WellTrack Platform Canon, WPS, Knowledge Graph, or long-form publication drafts. Those belong in the future `WellTrack-Platform-Framework` repository.
 
 ## Platform rule
 
