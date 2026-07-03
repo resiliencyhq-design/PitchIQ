@@ -514,3 +514,12 @@
     min-height:66px!important;
   }
 }
+
+/* ==========================================================
+   STEP 2 — Move pitch higher on screen
+   Keeps pitch + markers locked together
+   ========================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-game-layer {
+  transform: translateY(-28px) !important;
+}
