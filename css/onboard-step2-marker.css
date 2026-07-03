@@ -5,6 +5,7 @@
 
    Canonical marker markup:
    button.position-marker
+     span.marker-halo
      img.marker-base
      span.marker-shirt
      b.marker-label
@@ -49,10 +50,29 @@
   touch-action:manipulation!important;
 }
 
-/* Disable legacy pseudo-artwork. Real marker layers own visuals now. */
-.onboard-step[data-onboard-step="2"] .position-marker::before{
+/* Disable legacy pseudo-artwork/effects. Real marker layers own visuals now. */
+.onboard-step[data-onboard-step="2"] .position-marker::before,
+.onboard-step[data-onboard-step="2"] .position-marker::after{
   content:none!important;
   display:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .marker-halo{
+  position:absolute!important;
+  inset:-10px!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+  background:radial-gradient(circle,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%)!important;
+  opacity:0!important;
+  filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62))!important;
+  z-index:0!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-halo,
+.onboard-step[data-onboard-step="2"] .position-marker.active .marker-halo{
+  opacity:1!important;
+  animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
 }
 
 .onboard-step[data-onboard-step="2"] .marker-base{
@@ -124,24 +144,6 @@
   color:#ffffff!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-linked::after{
-  content:none!important;
-  display:none!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected::after{
-  content:""!important;
-  position:absolute!important;
-  inset:-10px!important;
-  border-radius:50%!important;
-  pointer-events:none!important;
-  background:radial-gradient(circle,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%)!important;
-  opacity:1!important;
-  filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62))!important;
-  animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
-  z-index:0!important;
-}
-
 .onboard-step[data-onboard-step="2"] .position-marker:focus-visible{
   outline:2px solid rgba(215,255,46,.9)!important;
   outline-offset:3px!important;
@@ -165,7 +167,9 @@
 }
 
 @media (prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker.is-selected::after{
+  .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo,
+  .onboard-step[data-onboard-step="2"] .position-marker.selected .marker-halo,
+  .onboard-step[data-onboard-step="2"] .position-marker.active .marker-halo{
     animation:none!important;
   }
 }
