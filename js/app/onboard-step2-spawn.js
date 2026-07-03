@@ -2,7 +2,7 @@
    STEP 2 — One-time Jersey Spawn Trigger
    Runs once when Step 2 becomes visible. Selection/chemistry
    interactions do not replay the entrance animation.
-   Also restores missing onboarding progress bars for Steps 2/3.
+   Also restores missing onboarding progress bars and Step 2 prompt.
    ========================================================== */
 
 let appObserver = null;
@@ -28,6 +28,20 @@ function ensureOnboardProgressBars(){
 
     title.insertAdjacentElement('afterend', progress);
   });
+}
+
+function ensureStep2Prompt(){
+  const step = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  if(!step || step.querySelector('.onboard-position-subtitle')) return;
+
+  const heading = step.querySelector('.onboard-position-heading');
+  if(!heading) return;
+
+  const prompt = document.createElement('p');
+  prompt.className = 'onboard-subtitle onboard-position-subtitle';
+  prompt.textContent = 'Choose your preferred position';
+
+  heading.insertAdjacentElement('afterend', prompt);
 }
 
 function getVisibleStep2(){
@@ -77,6 +91,7 @@ function triggerStep2Spawn(){
 
 function syncStep2SpawnState(){
   ensureOnboardProgressBars();
+  ensureStep2Prompt();
 
   const step = getVisibleStep2();
   const isVisible = !!step;
@@ -114,6 +129,7 @@ function watchStep2Spawn(){
   const app = document.getElementById('app') || document.body;
 
   ensureOnboardProgressBars();
+  ensureStep2Prompt();
   attachStepObserver();
   syncStep2SpawnState();
 
@@ -121,6 +137,7 @@ function watchStep2Spawn(){
 
   appObserver = new MutationObserver(() => {
     ensureOnboardProgressBars();
+    ensureStep2Prompt();
     attachStepObserver();
     syncStep2SpawnState();
   });
