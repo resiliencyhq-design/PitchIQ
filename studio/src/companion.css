@@ -1,0 +1,261 @@
+/* ==========================================================
+   PitchIQ Studio — iPhone Companion Mode
+   Purpose: touch-first preview, nudge, guides, import/export.
+   Scope: /studio/companion.html only.
+   ========================================================== */
+
+:root {
+  color: #f6fff7;
+  background: #070b0d;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #f6fff7;
+  background:
+    radial-gradient(circle at 50% 0, rgba(49, 247, 154, .14), transparent 30%),
+    linear-gradient(180deg, #101519, #050708 72%);
+}
+
+button,
+a,
+select,
+textarea {
+  font: inherit;
+}
+
+.companion-shell {
+  min-height: 100vh;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  display: grid;
+  gap: 12px;
+}
+
+.companion-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(215, 255, 46, .22);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, .34);
+  backdrop-filter: blur(16px);
+}
+
+.companion-head strong {
+  display: block;
+  color: #d7ff2e;
+  font-size: 16px;
+  font-weight: 1000;
+}
+
+.companion-head span {
+  display: block;
+  max-width: 210px;
+  color: rgba(246, 255, 247, .68);
+  font-size: 11px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.companion-head a,
+button {
+  border: 1px solid rgba(215, 255, 46, .34);
+  border-radius: 999px;
+  background: rgba(215, 255, 46, .1);
+  color: #d7ff2e;
+  text-decoration: none;
+  font-weight: 1000;
+  padding: 10px 12px;
+  min-height: 40px;
+}
+
+button.active {
+  color: #31f79a;
+  border-color: rgba(49, 247, 154, .5);
+  background: rgba(49, 247, 154, .15);
+}
+
+.device-stage {
+  display: grid;
+  place-items: center;
+  min-height: 52vh;
+  padding: 8px 0;
+}
+
+.phone-preview {
+  position: relative;
+  width: min(390px, calc(100vw - 24px));
+  aspect-ratio: 390 / 844;
+  overflow: hidden;
+  border: 2px solid rgba(215, 255, 46, .45);
+  border-radius: 42px;
+  background: radial-gradient(circle at 50% 0, rgba(215, 255, 46, .14), transparent 26%), #07120d;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, .45);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+#preview-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: top left;
+}
+
+.safe-area {
+  position: absolute;
+  z-index: 5;
+  left: 16px;
+  right: 16px;
+  top: 42px;
+  bottom: 28px;
+  border: 1px dashed rgba(49, 247, 154, .45);
+  border-radius: 24px;
+  color: rgba(49, 247, 154, .7);
+  font-size: 10px;
+  font-weight: 1000;
+  text-align: right;
+  padding: 8px;
+  pointer-events: none;
+  display: none;
+}
+
+.safe-area.is-visible { display: block; }
+
+.preview-component {
+  position: absolute;
+  border: 1px solid rgba(215, 255, 46, .26);
+  background: rgba(255, 255, 255, .04);
+  display: grid;
+  place-items: stretch;
+  color: #f6fff7;
+  overflow: visible;
+  touch-action: manipulation;
+}
+
+.preview-component.is-selected {
+  outline: 2px solid #31f79a;
+  box-shadow: 0 0 0 3px rgba(49, 247, 154, .16), 0 0 24px rgba(49, 247, 154, .28);
+  z-index: 20;
+}
+
+.preview-inner {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: inherit;
+  text-align: center;
+  white-space: pre-line;
+  font-weight: 900;
+}
+
+.preview-heading { line-height: .95; }
+.preview-text { line-height: 1.2; }
+.preview-button { background: linear-gradient(100deg, #d7ff2e, #31f79a); color: #03100b; }
+.preview-input { background: rgba(255, 255, 255, .92); color: #07120d; justify-content: start; padding-inline: 14px; }
+.preview-image { background: radial-gradient(circle at 50% 40%, rgba(215,255,46,.20), transparent 40%), linear-gradient(180deg, rgba(4,20,12,.9), rgba(2,8,7,.9)); color: #d7ff2e; }
+.preview-spacer { background: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 8px, transparent 8px 16px); color: rgba(246,255,247,.45); }
+
+.preview-pitch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  align-content: center;
+  padding: 14px;
+  background: linear-gradient(180deg, rgba(3, 18, 10, .82), rgba(2, 8, 7, .82));
+  border: 1px solid rgba(215, 255, 46, .24);
+}
+
+.preview-pitch span {
+  border: 1px solid rgba(215,255,46,.28);
+  border-radius: 999px;
+  padding: 7px 0;
+  background: rgba(0, 0, 0, .25);
+  color: #f6fff7;
+  font-size: 11px;
+}
+
+.preview-progress {
+  align-content: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+.preview-progress b { color: #d7ff2e; }
+.preview-progress .bar { height: 10px; border-radius: 999px; background: rgba(255,255,255,.12); overflow: hidden; }
+.preview-progress .fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #d7ff2e, #31f79a); }
+
+.companion-controls {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .07);
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.control-field {
+  display: grid;
+  gap: 6px;
+  color: rgba(246, 255, 247, .74);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+select,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, .42);
+  color: #f6fff7;
+  padding: 10px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 76px;
+}
+
+.nudge-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 280px;
+  justify-self: center;
+}
+
+.nudge-pad button {
+  min-height: 54px;
+  font-size: 22px;
+}
+
+.nudge-pad button[data-nudge="up"] { grid-column: 2; }
+.nudge-pad button[data-nudge="left"] { grid-column: 1; }
+.nudge-pad button[data-nudge="down"] { grid-column: 2; }
+.nudge-pad button[data-nudge="right"] { grid-column: 3; grid-row: 2; }
+
+@media (min-width: 840px) {
+  .companion-shell {
+    grid-template-columns: minmax(390px, 1fr) 380px;
+    align-items: start;
+  }
+  .companion-head { grid-column: 1 / -1; }
+  .device-stage { min-height: calc(100vh - 96px); }
+  .companion-controls { position: sticky; top: 12px; }
+}
