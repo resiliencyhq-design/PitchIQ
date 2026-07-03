@@ -8,6 +8,7 @@
      span.marker-halo
      img.marker-base
      span.marker-shirt
+       img.marker-shirt-img
      b.marker-label
    ========================================================== */
 
@@ -50,9 +51,10 @@
   touch-action:manipulation!important;
 }
 
-/* Disable legacy pseudo-artwork/effects. Real marker layers own visuals now. */
 .onboard-step[data-onboard-step="2"] .position-marker::before,
-.onboard-step[data-onboard-step="2"] .position-marker::after{
+.onboard-step[data-onboard-step="2"] .position-marker::after,
+.onboard-step[data-onboard-step="2"] .marker-shirt::before,
+.onboard-step[data-onboard-step="2"] .marker-shirt::after{
   content:none!important;
   display:none!important;
 }
@@ -98,15 +100,12 @@
   z-index:2!important;
 }
 
-.onboard-step[data-onboard-step="2"] .marker-shirt::before{
-  content:"👕";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  font-size:clamp(15px,4vw,20px);
-  line-height:1;
-  filter:grayscale(1) brightness(1.7);
+.onboard-step[data-onboard-step="2"] .marker-shirt-img{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:contain!important;
+  filter:grayscale(1) brightness(1.7)!important;
 }
 
 .onboard-step[data-onboard-step="2"] .marker-label{
@@ -126,16 +125,10 @@
   z-index:3!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.active .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-base{
-  content:url("../assets/onboarding/position-marker-active.png")!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.active .marker-shirt::before,
-.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-shirt::before,
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-shirt::before{
-  filter:none;
+.onboard-step[data-onboard-step="2"] .position-marker.active .marker-shirt-img,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-shirt-img,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-shirt-img{
+  filter:none!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.active .marker-label,
