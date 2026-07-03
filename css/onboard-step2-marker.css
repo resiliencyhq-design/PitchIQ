@@ -2,6 +2,12 @@
    STEP 2 — Marker System
    Owns marker coordinate behavior, size, inactive/active skins,
    selected halo, z-index, and touch target.
+
+   Canonical marker markup:
+   button.position-marker
+     img.marker-base
+     span.marker-shirt
+     b.marker-label
    ========================================================== */
 
 .onboard-step[data-onboard-step="2"] .position-marker-box{
@@ -33,8 +39,9 @@
   background-color:transparent!important;
   background-image:none!important;
   box-shadow:none!important;
-  color:transparent!important;
-  display:block!important;
+  color:#f7fff8!important;
+  display:grid!important;
+  place-items:center!important;
   font-size:0!important;
   line-height:1!important;
   opacity:1!important;
@@ -42,32 +49,79 @@
   touch-action:manipulation!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker span,
-.onboard-step[data-onboard-step="2"] .position-marker b{
+/* Disable legacy pseudo-artwork. Real marker layers own visuals now. */
+.onboard-step[data-onboard-step="2"] .position-marker::before{
+  content:none!important;
   display:none!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker::before{
-  content:""!important;
+.onboard-step[data-onboard-step="2"] .marker-base{
   position:absolute!important;
   inset:0!important;
   width:100%!important;
   height:100%!important;
-  border-radius:50%!important;
-  background-image:url("../assets/onboarding/position-marker-grey.png")!important;
-  background-repeat:no-repeat!important;
-  background-position:center!important;
-  background-size:contain!important;
+  display:block!important;
+  object-fit:contain!important;
   pointer-events:none!important;
-  opacity:1!important;
-  transform:none;
   z-index:1!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.active::before,
-.onboard-step[data-onboard-step="2"] .position-marker.selected::before,
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected::before{
-  background-image:url("../assets/onboarding/position-marker-active.png")!important;
+.onboard-step[data-onboard-step="2"] .marker-shirt{
+  position:absolute!important;
+  top:20%!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:42%!important;
+  height:32%!important;
+  display:block!important;
+  pointer-events:none!important;
+  z-index:2!important;
+}
+
+.onboard-step[data-onboard-step="2"] .marker-shirt::before{
+  content:"👕";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:clamp(15px,4vw,20px);
+  line-height:1;
+  filter:grayscale(1) brightness(1.7);
+}
+
+.onboard-step[data-onboard-step="2"] .marker-label{
+  position:absolute!important;
+  left:50%!important;
+  bottom:18%!important;
+  transform:translateX(-50%)!important;
+  display:block!important;
+  color:#f7fff8!important;
+  font-size:clamp(9px,2.6vw,12px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  letter-spacing:-.02em!important;
+  text-align:center!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 5px rgba(0,0,0,.9)!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active .marker-base,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-base,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-base{
+  content:url("../assets/onboarding/position-marker-active.png")!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active .marker-shirt::before,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-shirt::before,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-shirt::before{
+  filter:none;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active .marker-label,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-label,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-label{
+  color:#ffffff!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-linked::after{
@@ -85,6 +139,7 @@
   opacity:1!important;
   filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62))!important;
   animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
+  z-index:0!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker:focus-visible{
