@@ -1,6 +1,6 @@
 /* STEP 2 — Jersey-only Spawn Polish
    Parent marker remains locked to pitch coordinates.
-   Inner artwork/pseudo layer performs one entrance drop and pop.
+   Marker artwork drops once, then returns to inactive unless selected.
 */
 
 .onboard-step[data-onboard-step="2"] .position-marker{
@@ -8,6 +8,9 @@
   margin-top:0!important;
   animation:none!important;
   overflow:visible!important;
+  background-image:none!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
@@ -17,14 +20,6 @@
   filter:none!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.active,
-.onboard-step[data-onboard-step="2"] .position-marker.selected,
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
-  background-image:none!important;
-  background-color:transparent!important;
-  box-shadow:none!important;
-}
-
 .onboard-step[data-onboard-step="2"] .position-marker::before{
   content:""!important;
   position:absolute!important;
@@ -32,7 +27,7 @@
   width:100%!important;
   height:100%!important;
   border-radius:50%!important;
-  background-image:url("../assets/onboarding/position-marker-active.png")!important;
+  background-image:url("../assets/onboarding/position-marker-grey.png")!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
   background-size:contain!important;
@@ -40,6 +35,12 @@
   opacity:1;
   transform:none;
   z-index:1;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.active::before,
+.onboard-step[data-onboard-step="2"] .position-marker.selected::before,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected::before{
+  background-image:url("../assets/onboarding/position-marker-active.png")!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker span,
