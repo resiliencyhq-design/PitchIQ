@@ -16,15 +16,12 @@
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base{
-  transform:translateY(-112px) scale(.82);
+  --spawn-x:0;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt{
-  transform:translate(-50%,-112px) scale(.82)!important;
-}
-
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt,
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
-  transform:translate(-50%,-112px) scale(.82)!important;
+  --spawn-x:-50%;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1) .marker-base,
@@ -72,10 +69,10 @@
 .onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11) .marker-label{animation-delay:1650ms!important;}
 
 @keyframes jerseyOnlySpawn{
-  0%{opacity:0;transform:translateY(-112px) scale(.82);}
-  58%{opacity:1;transform:translateY(12px) scale(1.12);}
-  78%{opacity:1;transform:translateY(-5px) scale(.98);}
-  100%{opacity:1;transform:translateY(0) scale(1);}
+  0%{opacity:0;transform:translate(var(--spawn-x,0),-112px) scale(.82);}
+  58%{opacity:1;transform:translate(var(--spawn-x,0),12px) scale(1.12);}
+  78%{opacity:1;transform:translate(var(--spawn-x,0),-5px) scale(.98);}
+  100%{opacity:1;transform:translate(var(--spawn-x,0),0) scale(1);}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -83,7 +80,6 @@
   .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt,
   .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
     opacity:1!important;
-    transform:none!important;
     animation:none!important;
   }
 }
