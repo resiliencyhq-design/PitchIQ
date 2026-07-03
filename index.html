@@ -50,6 +50,43 @@
       var box = document.getElementById("pitchiq-boot-watchdog");
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
+
+    (function(){
+      var armed = false;
+      function goOnboard(){
+        if (!document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]")) return;
+        try { localStorage.setItem("pitchiqDevBorderEnabled", "false"); } catch(e) {}
+        window.location.replace(window.location.origin + window.location.pathname + "?dev=1&autoOnboard=1&v=inline-splash-recovery-20260703#onboard");
+      }
+      function arm(){
+        var swipe = document.querySelector("[data-splash-swipe]");
+        if (!swipe || armed) return;
+        armed = true;
+        var check = function(){
+          if (swipe.classList.contains("complete")) setTimeout(goOnboard, 850);
+        };
+        new MutationObserver(check).observe(swipe,{attributes:true,attributeFilter:["class","style"]});
+        swipe.addEventListener("pointerup", function(){ setTimeout(check, 80); }, {passive:true});
+        swipe.addEventListener("click", function(){ setTimeout(check, 80); }, {passive:true});
+        setInterval(check, 350);
+      }
+      function hideRecoveryChrome(){
+        if (!new URLSearchParams(location.search).has("autoOnboard")) return;
+        try { localStorage.setItem("pitchiqDevBorderEnabled", "false"); } catch(e) {}
+        var style = document.createElement("style");
+        style.textContent = "#pitchiq-dev-toggle,#pitchiq-dev-panel{display:none!important}.DeveloperIPhoneFrame{border:0!important}";
+        document.head.appendChild(style);
+        setTimeout(function(){
+          document.body.classList.remove("pitchiq-dev-border");
+          document.querySelector(".app-shell")?.classList.remove("DeveloperIPhoneFrame");
+        }, 600);
+      }
+      hideRecoveryChrome();
+      document.addEventListener("DOMContentLoaded", arm);
+      window.addEventListener("load", arm);
+      setTimeout(arm, 300);
+      setTimeout(arm, 900);
+    })();
   </script>
   <script type="module" src="js/app/main.js?v=step1-player-overflow-20260627"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703"></script>
