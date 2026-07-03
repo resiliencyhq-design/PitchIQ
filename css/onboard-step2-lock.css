@@ -1,12 +1,12 @@
 /* =========================================================
-   LOCKED ONBOARDING STEP 2 — POSITION SELECTION
+   LOCKED ONBOARDING STEP 2 â€” POSITION SELECTION
    Step 2 only. Does not style Step 1 or Step 3.
    ========================================================= */
 
 /* Step 2 rules will be migrated here after audit. */
 
 /* =====================================================
-   STEP 2 — LAYER 1 BASE
+   STEP 2 â€” LAYER 1 BASE
    Migrated from onboarding-fix.css
    ===================================================== */
 
@@ -104,6 +104,8 @@
 .onboard-step[data-onboard-step="2"] .position-title{font-size:11px!important;line-height:1!important;margin:0!important}
 
 .onboard-step[data-onboard-step="2"] .onboard-position-heading{font-size:clamp(34px,8vw,48px)!important;line-height:.95!important;margin:0 0 4px!important;letter-spacing:-.04em!important;white-space:nowrap}
+
+.onboard-step[data-onboard-step="2"] .onboard-position-subtitle{font-size:clamp(13px,3.8vw,16px)!important;line-height:1.12!important;margin:-2px 0 2px!important;color:rgba(247,255,248,.84)!important;font-weight:900!important;letter-spacing:.02em!important;text-align:center!important;text-transform:none!important;text-shadow:0 3px 12px rgba(0,0,0,.58)!important;max-width:320px!important}
 
 .onboard-step[data-onboard-step="2"] .position-confirm{margin-top:0!important;min-height:40px!important;padding:3px 10px!important;background:rgba(0,0,0,.16)!important}
 
@@ -427,8 +429,15 @@
   .onboard-step[data-onboard-step="2"] .onboard-position-heading{
     font-size:29px!important;
     line-height:31px!important;
-    margin:0 0 -6px!important;
+    margin:0 0 -5px!important;
     text-align:center!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-position-subtitle{
+    font-size:14px!important;
+    line-height:15px!important;
+    margin:0 0 -3px!important;
+    padding:0 14px!important;
   }
 
   .onboard-step[data-onboard-step="2"] .position-selector{
@@ -475,7 +484,13 @@
   .onboard-step[data-onboard-step="2"] .onboard-position-heading{
     font-size:27px!important;
     line-height:29px!important;
-    margin-bottom:-5px!important;
+    margin-bottom:-4px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .onboard-position-subtitle{
+    font-size:13px!important;
+    line-height:14px!important;
+    margin-bottom:-3px!important;
   }
 
   .onboard-step[data-onboard-step="2"] .position-selector{
