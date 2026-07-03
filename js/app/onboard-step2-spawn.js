@@ -1,13 +1,14 @@
 /* ==========================================================
-   STEP 2 — Robust Jersey Spawn Trigger
-   Watches the app shell so the animation fires when Step 2 is
-   rendered or shown after the initial page load.
+   STEP 2 — One-time Jersey Spawn Trigger
+   Runs once when Step 2 becomes visible. Selection/chemistry
+   interactions do not replay the entrance animation.
    ========================================================== */
 
-let lastSpawnAt = 0;
 let appObserver = null;
 let stepObserver = null;
-let retryTimer = null;
+let cleanupTimer = null;
+let hasSpawnedThisVisit = false;
+let wasStep2Visible = false;
 
 function getVisibleStep2(){
   const step = document.querySelector('.onboard-step[data-onboard-step="2"]');
@@ -19,16 +20,21 @@ function getVisibleStep2(){
   return step;
 }
 
-function triggerStep2Spawn(force = false){
+function clearSpawnClasses(step){
+  const markers = [...step.querySelectorAll('.position-marker')];
+  markers.forEach(marker => marker.classList.remove('is-spawning'));
+}
+
+function triggerStep2Spawn(){
   const step = getVisibleStep2();
   if(!step) return false;
+  if(hasSpawnedThisVisit) return true;
 
   const markers = [...step.querySelectorAll('.position-marker')];
   if(!markers.length) return false;
 
-  const now = Date.now();
-  if(!force && now - lastSpawnAt < 900) return true;
-  lastSpawnAt = now;
+  hasSpawnedThisVisit = true;
+  step.classList.add('step2-spawn-complete-pending');
 
   markers.forEach(marker => {
     marker.classList.remove('is-spawning');
@@ -39,12 +45,31 @@ function triggerStep2Spawn(force = false){
     markers.forEach(marker => marker.classList.add('is-spawning'));
   });
 
-  window.clearTimeout(retryTimer);
-  retryTimer = window.setTimeout(() => {
+  window.clearTimeout(cleanupTimer);
+  cleanupTimer = window.setTimeout(() => {
     markers.forEach(marker => marker.classList.remove('is-spawning'));
-  }, 2200);
+    step.classList.remove('step2-spawn-complete-pending');
+    step.classList.add('step2-spawn-complete');
+  }, 2700);
 
   return true;
+}
+
+function syncStep2SpawnState(){
+  const step = getVisibleStep2();
+  const isVisible = !!step;
+
+  if(!isVisible){
+    wasStep2Visible = false;
+    hasSpawnedThisVisit = false;
+    window.clearTimeout(cleanupTimer);
+    return;
+  }
+
+  if(isVisible && !wasStep2Visible){
+    wasStep2Visible = true;
+    triggerStep2Spawn();
+  }
 }
 
 function attachStepObserver(){
@@ -54,12 +79,12 @@ function attachStepObserver(){
   if(stepObserver) stepObserver.disconnect();
 
   stepObserver = new MutationObserver(() => {
-    triggerStep2Spawn(true);
+    syncStep2SpawnState();
   });
 
   stepObserver.observe(step, {
     attributes:true,
-    attributeFilter:['hidden','class','style']
+    attributeFilter:['hidden','style']
   });
 }
 
@@ -67,28 +92,25 @@ function watchStep2Spawn(){
   const app = document.getElementById('app') || document.body;
 
   attachStepObserver();
-  triggerStep2Spawn(true);
+  syncStep2SpawnState();
 
   if(appObserver) appObserver.disconnect();
 
   appObserver = new MutationObserver(() => {
     attachStepObserver();
-    triggerStep2Spawn(false);
+    syncStep2SpawnState();
   });
 
   appObserver.observe(app, {
     childList:true,
     subtree:true,
     attributes:true,
-    attributeFilter:['hidden','class','style']
+    attributeFilter:['hidden','style']
   });
 }
 
 window.addEventListener('DOMContentLoaded', watchStep2Spawn);
 window.addEventListener('load', watchStep2Spawn);
-window.addEventListener('hashchange', () => triggerStep2Spawn(true));
-window.addEventListener('pageshow', () => setTimeout(() => triggerStep2Spawn(true), 120));
+window.addEventListener('pageshow', () => setTimeout(syncStep2SpawnState, 120));
 
 setTimeout(watchStep2Spawn, 250);
-setTimeout(() => triggerStep2Spawn(true), 700);
-setTimeout(() => triggerStep2Spawn(true), 1400);
