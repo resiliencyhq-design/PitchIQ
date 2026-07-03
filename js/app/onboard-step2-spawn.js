@@ -37,6 +37,7 @@ function upgradeMarkerLayers(){
     const label = marker.dataset.pos || marker.querySelector('b')?.textContent?.trim() || '';
     marker.dataset.layered = 'true';
     marker.innerHTML = `
+      <span class="marker-halo" aria-hidden="true"></span>
       <img class="marker-base" src="assets/onboarding/position-marker-grey.png" alt="" aria-hidden="true">
       <span class="marker-shirt" aria-hidden="true"></span>
       <b class="marker-label" aria-hidden="true">${label}</b>
