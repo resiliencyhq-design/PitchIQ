@@ -18,6 +18,10 @@
   <link rel="stylesheet" href="css/visual-layout-studio.css?v=hero-bg-top-20260623"/>
   <link rel="stylesheet" href="css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703"/>
   <link rel="stylesheet" href="css/onboard-step2-final-polish.css?v=step2-favorite-position-spacing-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-layout.css?v=step2-refactor-layout-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-marker.css?v=step2-refactor-marker-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-web.css?v=step2-refactor-web-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-animation.css?v=step2-refactor-animation-20260703"/>
 </head>
 <body>
   <div class="world"></div>
@@ -28,7 +32,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "onboarding-stability-audit-20260703";
+    window.__PITCHIQ_BUILD__ = "step2-refactor-phase1-20260703";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -51,8 +55,8 @@
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
   </script>
-  <script type="module" src="js/app/main.js?v=onboarding-stability-audit-20260703"></script>
-  <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703"></script>
+  <script type="module" src="js/app/main.js?v=step2-refactor-phase1-20260703"></script>
+  <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-label-repair-static-20260703"></script>
   <script type="module" src="js/app/onboard-haptics.js?v=step2-haptics-20260702"></script>
   <script type="module" src="js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702"></script>
   <script type="module" src="js/dev/visual-layout-studio.js?v=hero-bg-top-20260623"></script>
