@@ -1,10 +1,10 @@
-const CACHE="pitchiq-step2-progress-repair-20260703";
+const CACHE="pitchiq-step2-preferred-position-prompt-20260703";
 const ASSETS=[
   "./",
   "./index.html",
   "./css/style.css?v=onboarding-architecture-lock-20260628",
   "./css/onboard-step1-lock.css?v=step1-mvp-locked-20260628",
-  "./css/onboard-step2-lock.css?v=step2-lock-init-20260628",
+  "./css/onboard-step2-lock.css?v=step2-preferred-position-prompt-20260703",
   "./css/onboard-step2-tactical-web.css?v=step2-selected-only-web-20260703",
   "./css/splash-fit.css?v=logo-down-20260628",
   "./css/onboarding-fix.css?v=hero-bg-top-20260623",
@@ -12,7 +12,7 @@ const ASSETS=[
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703",
   "./js/app/main.js?v=step1-player-overflow-20260627",
-  "./js/app/onboard-step2-spawn.js?v=step2-progress-repair-20260703",
+  "./js/app/onboard-step2-spawn.js?v=step2-preferred-position-prompt-20260703",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
   "./js/app/routes.js?v=hero-bg-top-20260623",
