@@ -31,16 +31,29 @@ Running application
 
 The long-term plan is to move canonical platform material into a dedicated `WellTrack-Platform-Framework` repository. Until then, this folder acts as the working platform foundation inside PitchIQ.
 
-## Documents
+## Platform Audit 1.0
+
+Platform Audit 1.0 discovery is complete across PF-01 to PF-18.
+
+- `PLATFORM_AUDIT_1_0.md` — audit index and completion summary.
+- `audits/` — audit result documents.
+- `catalogues/` — platform catalogues created from the audit.
+- `sprints/` — platform audit sprint plans.
+
+## Edition 1.0
+
+Edition 1.0 converts the audit discovery baseline into operational governance.
+
+- `edition-1/README.md` — Edition 1.0 workspace.
+- `edition-1/PLATFORM_AUDIT_REPORT_V1.md` — consolidated audit report draft.
+- `edition-1/ADR_BACKLOG_P1.md` — first Architecture Decision Record backlog.
+- `edition-1/STANDARDS_BACKLOG.md` — first WellTrack Platform Standards backlog.
+
+## Foundation documents
 
 - `PLATFORM_REPOSITORY_ARCHITECTURE.md` — where platform, product, and HQ knowledge should live.
-- `PLATFORM_AUDIT_1_0.md` — first operational audit plan for tokens, components, patterns, assets, decisions, capabilities, documentation, and quality.
 - `PLATFORM_STANDARD_SEED.md` — initial standards hierarchy and governance model.
-- `PLATFORM_WORK_ASSIGNMENT_MAP.md` — maps the platform work completed so far to the correct long-term and temporary homes.
-
-## Sprint plans
-
-- `sprints/SPRINT_PF_01_REPOSITORY_AUDIT.md` — first execution sprint for Platform Audit 1.0.
+- `PLATFORM_WORK_ASSIGNMENT_MAP.md` — maps platform work to correct long-term and temporary homes.
 
 ## What belongs here
 
