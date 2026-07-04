@@ -20,8 +20,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 | Workstream | Scope | Deliverable | Priority | Status |
 |---|---|---|---|---|
 | PF-01 Repository | Repository map, docs, CSS/JS architecture | Repository Audit Results | P1 | Complete enough to proceed |
-| Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 | Next |
-| Components | Reusable UI and football components | Component Catalogue | P1 | Not started |
+| PF-02 Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 | Complete enough to proceed |
+| Components | Reusable UI and football components | Component Catalogue | P1 | Next |
 | Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Not started |
 | Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Not started |
 | Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Not started |
@@ -32,6 +32,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 ## Audit outputs
 
 - `audits/PF_01_REPOSITORY_AUDIT_RESULTS.md` — first repository audit baseline and PF-02 inputs.
+- `audits/PF_02_TOKEN_AUDIT_RESULTS.md` — token audit findings, coverage baseline, and remediation sequence.
+- `catalogues/TOKEN_CATALOGUE.md` — first governed Token Catalogue for PitchIQ.
 
 ## Platform catalogues
 
