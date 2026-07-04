@@ -25,8 +25,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 | PF-04 Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Complete enough to proceed |
 | PF-05 Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Complete enough to proceed |
 | PF-06 Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Complete enough to proceed |
-| Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Next |
-| Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Started through PF-01 |
+| PF-07 Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Complete enough to proceed |
+| Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Next |
 | Quality | Accessibility, testing, performance | Platform Health Report | P3 | Not started |
 
 ## Audit outputs
@@ -37,11 +37,13 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 - `audits/PF_04_PATTERN_AUDIT_RESULTS.md` — pattern audit findings, ownership map, and PF-05 inputs.
 - `audits/PF_05_ASSET_AUDIT_RESULTS.md` — asset audit findings, lifecycle baseline, and PF-06 inputs.
 - `audits/PF_06_ARCHITECTURE_DECISION_AUDIT_RESULTS.md` — decision audit findings, ADR backlog, and PF-07 inputs.
+- `audits/PF_07_CAPABILITY_AUDIT_RESULTS.md` — capability audit findings, ownership map, and PF-08 inputs.
 - `catalogues/TOKEN_CATALOGUE.md` — first governed Token Catalogue for PitchIQ.
 - `catalogues/COMPONENT_CATALOGUE.md` — first governed Component Catalogue for PitchIQ.
 - `catalogues/PATTERN_CATALOGUE.md` — first governed Pattern Catalogue for PitchIQ.
 - `catalogues/ASSET_CATALOGUE.md` — first governed Asset Catalogue for PitchIQ.
 - `catalogues/ARCHITECTURE_DECISION_CATALOGUE.md` — first Architecture Decision Catalogue for PitchIQ.
+- `catalogues/CAPABILITY_CATALOGUE.md` — first Capability Catalogue for PitchIQ.
 
 ## Platform catalogues
 
