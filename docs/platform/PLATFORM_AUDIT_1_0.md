@@ -22,8 +22,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 | PF-01 Repository | Repository map, docs, CSS/JS architecture | Repository Audit Results | P1 | Complete enough to proceed |
 | PF-02 Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 | Complete enough to proceed |
 | PF-03 Components | Reusable UI and football components | Component Catalogue | P1 | Complete enough to proceed |
-| Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Next |
-| Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Not started |
+| PF-04 Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Complete enough to proceed |
+| Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Next |
 | Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Not started |
 | Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Not started |
 | Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Started through PF-01 |
@@ -34,8 +34,10 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 - `audits/PF_01_REPOSITORY_AUDIT_RESULTS.md` — first repository audit baseline and PF-02 inputs.
 - `audits/PF_02_TOKEN_AUDIT_RESULTS.md` — token audit findings, coverage baseline, and remediation sequence.
 - `audits/PF_03_COMPONENT_AUDIT_RESULTS.md` — component audit findings, ownership map, and PF-04 inputs.
+- `audits/PF_04_PATTERN_AUDIT_RESULTS.md` — pattern audit findings, ownership map, and PF-05 inputs.
 - `catalogues/TOKEN_CATALOGUE.md` — first governed Token Catalogue for PitchIQ.
 - `catalogues/COMPONENT_CATALOGUE.md` — first governed Component Catalogue for PitchIQ.
+- `catalogues/PATTERN_CATALOGUE.md` — first governed Pattern Catalogue for PitchIQ.
 
 ## Platform catalogues
 
