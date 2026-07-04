@@ -26,8 +26,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 | PF-05 Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Complete enough to proceed |
 | PF-06 Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Complete enough to proceed |
 | PF-07 Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Complete enough to proceed |
-| Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Next |
-| Quality | Accessibility, testing, performance | Platform Health Report | P3 | Not started |
+| PF-08 Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Complete enough to proceed |
+| Quality | Accessibility, testing, performance | Platform Health Report | P3 | Next |
 
 ## Audit outputs
 
@@ -38,12 +38,14 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 - `audits/PF_05_ASSET_AUDIT_RESULTS.md` — asset audit findings, lifecycle baseline, and PF-06 inputs.
 - `audits/PF_06_ARCHITECTURE_DECISION_AUDIT_RESULTS.md` — decision audit findings, ADR backlog, and PF-07 inputs.
 - `audits/PF_07_CAPABILITY_AUDIT_RESULTS.md` — capability audit findings, ownership map, and PF-08 inputs.
+- `audits/PF_08_DOCUMENTATION_KNOWLEDGE_AUDIT_RESULTS.md` — documentation and knowledge audit findings, ownership map, and PF-09 inputs.
 - `catalogues/TOKEN_CATALOGUE.md` — first governed Token Catalogue for PitchIQ.
 - `catalogues/COMPONENT_CATALOGUE.md` — first governed Component Catalogue for PitchIQ.
 - `catalogues/PATTERN_CATALOGUE.md` — first governed Pattern Catalogue for PitchIQ.
 - `catalogues/ASSET_CATALOGUE.md` — first governed Asset Catalogue for PitchIQ.
 - `catalogues/ARCHITECTURE_DECISION_CATALOGUE.md` — first Architecture Decision Catalogue for PitchIQ.
 - `catalogues/CAPABILITY_CATALOGUE.md` — first Capability Catalogue for PitchIQ.
+- `catalogues/KNOWLEDGE_CATALOGUE.md` — first Documentation / Knowledge Catalogue for PitchIQ.
 
 ## Platform catalogues
 
@@ -55,6 +57,7 @@ Edition 0.3 defines six living catalogues:
 4. **Asset Catalogue** — logos, icons, imagery, audio, animations, ownership, and lifecycle status.
 5. **Architecture Decision Catalogue** — all ADRs with rationale, consequences, affected areas, and review triggers.
 6. **Capability Catalogue** — reusable capabilities such as XP, rewards, analytics, profiles, Studio, and notifications.
+7. **Knowledge Catalogue** — product, platform, sprint, audit and governance documentation ownership.
 
 ## Platform health scorecard
 
