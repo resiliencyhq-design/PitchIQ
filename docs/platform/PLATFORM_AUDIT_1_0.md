@@ -23,8 +23,8 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 | PF-02 Tokens | Colours, spacing, typography, motion, radius | Token Catalogue | P1 | Complete enough to proceed |
 | PF-03 Components | Reusable UI and football components | Component Catalogue | P1 | Complete enough to proceed |
 | PF-04 Patterns | Landing, onboarding, home, training, results | Pattern Catalogue | P1 | Complete enough to proceed |
-| Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Next |
-| Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Not started |
+| PF-05 Assets | Images, icons, logos, audio, animation | Asset Catalogue | P1 | Complete enough to proceed |
+| Architecture | Major design and engineering decisions | ADR Catalogue | P2 | Next |
 | Capabilities | XP, profile, rewards, Studio, analytics | Capability Catalogue | P2 | Not started |
 | Documentation | Canonical and product documents | Knowledge Catalogue | P2 | Started through PF-01 |
 | Quality | Accessibility, testing, performance | Platform Health Report | P3 | Not started |
@@ -35,9 +35,11 @@ Platform Audit 1.0 is the first operational audit of the WellTrack Platform. Its
 - `audits/PF_02_TOKEN_AUDIT_RESULTS.md` — token audit findings, coverage baseline, and remediation sequence.
 - `audits/PF_03_COMPONENT_AUDIT_RESULTS.md` — component audit findings, ownership map, and PF-04 inputs.
 - `audits/PF_04_PATTERN_AUDIT_RESULTS.md` — pattern audit findings, ownership map, and PF-05 inputs.
+- `audits/PF_05_ASSET_AUDIT_RESULTS.md` — asset audit findings, lifecycle baseline, and PF-06 inputs.
 - `catalogues/TOKEN_CATALOGUE.md` — first governed Token Catalogue for PitchIQ.
 - `catalogues/COMPONENT_CATALOGUE.md` — first governed Component Catalogue for PitchIQ.
 - `catalogues/PATTERN_CATALOGUE.md` — first governed Pattern Catalogue for PitchIQ.
+- `catalogues/ASSET_CATALOGUE.md` — first governed Asset Catalogue for PitchIQ.
 
 ## Platform catalogues
 
