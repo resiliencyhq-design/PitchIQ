@@ -1,4 +1,4 @@
-const JERSEY_ASSET_VERSION = "sprint-8-0b-20260710";
+const JERSEY_ASSET_VERSION = "sprint-8-0c-refactor-20260710";
 
 function normaliseJerseyName(value = "") {
   return value.trim().toUpperCase().slice(0, 18) || "NAME";
@@ -16,26 +16,28 @@ function mountJerseyComponent() {
   preview.setAttribute("aria-label", "Academy jersey preview");
 
   preview.innerHTML = `
-    <img
-      class="onboard-jersey-glow"
-      src="assets/onboarding/jersey-glow.png?v=${JERSEY_ASSET_VERSION}"
-      alt=""
-      aria-hidden="true"
-    >
-    <img
-      class="onboard-jersey-shadow"
-      src="assets/onboarding/jersey-shadow.png?v=${JERSEY_ASSET_VERSION}"
-      alt=""
-      aria-hidden="true"
-    >
-    <img
-      class="onboard-jersey-image"
-      src="assets/onboarding/jersey-back.png?v=${JERSEY_ASSET_VERSION}"
-      alt="Blank black and yellow academy jersey"
-    >
-    <div class="onboard-jersey-identity" aria-hidden="true">
-      <span id="jerseyNamePreview" class="onboard-jersey-name">NAME</span>
-      <span class="onboard-jersey-number">10</span>
+    <div class="onboard-jersey-visual">
+      <img
+        class="onboard-jersey-glow"
+        src="assets/onboarding/jersey-glow.png?v=${JERSEY_ASSET_VERSION}"
+        alt=""
+        aria-hidden="true"
+      >
+      <img
+        class="onboard-jersey-shadow"
+        src="assets/onboarding/jersey-shadow.png?v=${JERSEY_ASSET_VERSION}"
+        alt=""
+        aria-hidden="true"
+      >
+      <img
+        class="onboard-jersey-image"
+        src="assets/onboarding/jersey-back.png?v=${JERSEY_ASSET_VERSION}"
+        alt="Blank black and yellow academy jersey"
+      >
+      <div class="onboard-jersey-identity" aria-hidden="true">
+        <span id="jerseyNamePreview" class="onboard-jersey-name">NAME</span>
+        <span class="onboard-jersey-number">10</span>
+      </div>
     </div>
   `;
 
