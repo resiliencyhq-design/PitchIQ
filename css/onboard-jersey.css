@@ -1,0 +1,132 @@
+/* Sprint 8.0B — static layered academy jersey component */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage{
+  position:relative!important;
+  width:min(92vw,360px)!important;
+  height:clamp(278px,37svh,340px)!important;
+  max-width:360px!important;
+  margin:clamp(-22px,-2.4svh,-12px) auto clamp(-48px,-5.2svh,-30px)!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  pointer-events:none!important;
+  user-select:none!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage > img{
+  position:absolute!important;
+  max-width:none!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  mix-blend-mode:normal!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-glow{
+  z-index:0!important;
+  left:50%!important;
+  top:47%!important;
+  width:96%!important;
+  height:auto!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+  opacity:.7!important;
+  filter:none!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-shadow{
+  z-index:1!important;
+  left:50%!important;
+  bottom:1%!important;
+  width:58%!important;
+  height:auto!important;
+  transform:translateX(-50%)!important;
+  object-fit:contain!important;
+  opacity:.72!important;
+  filter:none!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-image{
+  z-index:2!important;
+  left:50%!important;
+  top:50%!important;
+  width:91%!important;
+  height:91%!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  filter:drop-shadow(0 14px 24px rgba(0,0,0,.42))!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-identity{
+  position:absolute!important;
+  z-index:3!important;
+  left:50%!important;
+  top:31%!important;
+  width:42%!important;
+  transform:translateX(-50%)!important;
+  display:grid!important;
+  justify-items:center!important;
+  align-content:start!important;
+  text-align:center!important;
+  pointer-events:none!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-name{
+  position:static!important;
+  display:block!important;
+  width:100%!important;
+  transform:none!important;
+  color:#d7ff2e!important;
+  font-size:clamp(14px,4.1vw,20px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  letter-spacing:.015em!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 0 8px rgba(215,255,46,.36),0 2px 6px rgba(0,0,0,.9)!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-number{
+  display:block!important;
+  margin-top:clamp(4px,.7svh,7px)!important;
+  color:#ffd900!important;
+  font-size:clamp(66px,18vw,88px)!important;
+  font-weight:1000!important;
+  line-height:.86!important;
+  letter-spacing:-.07em!important;
+  text-align:center!important;
+  text-shadow:0 0 10px rgba(255,217,0,.2),0 3px 8px rgba(0,0,0,.88)!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
+  margin-top:0!important;
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage{
+    width:min(94vw,350px)!important;
+    height:clamp(270px,36svh,326px)!important;
+    margin-bottom:clamp(-44px,-4.8svh,-28px)!important;
+  }
+}
+
+@media(max-width:360px),(max-height:700px){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage{
+    width:min(92vw,326px)!important;
+    height:244px!important;
+    margin-top:-16px!important;
+    margin-bottom:-30px!important;
+  }
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-number{
+    font-size:62px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage,
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage *{
+    animation:none!important;
+    transition:none!important;
+  }
+}
