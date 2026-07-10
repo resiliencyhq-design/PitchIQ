@@ -4,6 +4,7 @@ const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 const JERSEY_NUMBER_CONFIRMED_KEY = "pitchiqJerseyNumberConfirmed";
 const DEFAULT_NUMBER = 1;
 const FALLBACK_ITEM_HEIGHT = 52;
+const DRAG_STEP_THRESHOLD = 0.6;
 
 function clampNumber(value) {
   return Math.min(99, Math.max(1, Number.parseInt(value, 10) || DEFAULT_NUMBER));
@@ -117,6 +118,8 @@ function bindPicker(panel) {
   let startY = 0;
   let startNumber = selected;
   let dragging = false;
+  let activePointerId = null;
+  let movedDuringDrag = false;
 
   const setSelected = (number, withHaptic = true, animate = false) => {
     const next = clampNumber(number);
@@ -127,49 +130,74 @@ function bindPicker(panel) {
     renderPickerPosition(panel, animate);
   };
 
-  const beginDrag = clientY => {
+  const beginDrag = (clientY, pointerId = null) => {
+    if (dragging) return;
     dragging = true;
+    activePointerId = pointerId;
     startY = clientY;
     startNumber = selected;
+    movedDuringDrag = false;
     picker.classList.add('is-dragging');
   };
 
-  const moveDrag = clientY => {
+  const moveDrag = (clientY, pointerId = null) => {
     if (!dragging) return;
+    if (activePointerId !== null && pointerId !== activePointerId) return;
+
     const height = itemHeight(picker);
-    const offset = Math.round((startY - clientY) / height);
+    const distance = startY - clientY;
+    const magnitude = Math.floor(Math.abs(distance) / (height * DRAG_STEP_THRESHOLD));
+    const direction = distance === 0 ? 0 : Math.sign(distance);
+    const offset = direction * magnitude;
+
+    if (Math.abs(distance) > 6) movedDuringDrag = true;
     setSelected(startNumber + offset, true, false);
   };
 
-  const endDrag = () => {
+  const endDrag = (pointerId = null) => {
     if (!dragging) return;
+    if (activePointerId !== null && pointerId !== null && pointerId !== activePointerId) return;
     dragging = false;
+    activePointerId = null;
     picker.classList.remove('is-dragging');
     renderPickerPosition(panel, true);
   };
 
-  picker.addEventListener('pointerdown', event => {
-    beginDrag(event.clientY);
-    picker.setPointerCapture?.(event.pointerId);
-  });
-  picker.addEventListener('pointermove', event => moveDrag(event.clientY));
-  picker.addEventListener('pointerup', endDrag);
-  picker.addEventListener('pointercancel', endDrag);
-
-  picker.addEventListener('touchstart', event => {
-    if (!event.touches.length) return;
-    beginDrag(event.touches[0].clientY);
-  }, { passive: true });
-  picker.addEventListener('touchmove', event => {
-    if (!event.touches.length) return;
-    event.preventDefault();
-    moveDrag(event.touches[0].clientY);
-  }, { passive: false });
-  picker.addEventListener('touchend', endDrag, { passive: true });
-  picker.addEventListener('touchcancel', endDrag, { passive: true });
+  if (window.PointerEvent) {
+    picker.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      event.preventDefault();
+      beginDrag(event.clientY, event.pointerId);
+      picker.setPointerCapture?.(event.pointerId);
+    });
+    picker.addEventListener('pointermove', event => {
+      if (!dragging || event.pointerId !== activePointerId) return;
+      event.preventDefault();
+      moveDrag(event.clientY, event.pointerId);
+    });
+    picker.addEventListener('pointerup', event => endDrag(event.pointerId));
+    picker.addEventListener('pointercancel', event => endDrag(event.pointerId));
+    picker.addEventListener('lostpointercapture', event => endDrag(event.pointerId));
+  } else {
+    picker.addEventListener('touchstart', event => {
+      if (!event.touches.length) return;
+      beginDrag(event.touches[0].clientY);
+    }, { passive: true });
+    picker.addEventListener('touchmove', event => {
+      if (!event.touches.length || !dragging) return;
+      event.preventDefault();
+      moveDrag(event.touches[0].clientY);
+    }, { passive: false });
+    picker.addEventListener('touchend', () => endDrag(), { passive: true });
+    picker.addEventListener('touchcancel', () => endDrag(), { passive: true });
+  }
 
   picker.addEventListener('click', event => {
-    if (dragging) return;
+    if (movedDuringDrag) {
+      movedDuringDrag = false;
+      event.preventDefault();
+      return;
+    }
     const option = event.target.closest?.('[data-jersey-number]');
     if (!option) return;
     setSelected(option.dataset.jerseyNumber, true, true);
