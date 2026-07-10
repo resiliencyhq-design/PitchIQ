@@ -1,4 +1,4 @@
-const JERSEY_ASSET_VERSION = "sprint-8-3-number-picker-20260710";
+const JERSEY_ASSET_VERSION = "sprint-8-4-number-flow-fix-20260710";
 const REDUCED_MOTION = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 const PLAYER_NAME_KEY = "pitchiqPlayerName";
 const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
@@ -7,8 +7,8 @@ function normaliseJerseyName(value = "") {
   return value.trim().toUpperCase().slice(0, 18) || "NAME";
 }
 
-function normaliseJerseyNumber(value = 10) {
-  return String(Math.min(99, Math.max(1, Number.parseInt(value, 10) || 10)));
+function normaliseJerseyNumber(value = 1) {
+  return String(Math.min(99, Math.max(1, Number.parseInt(value, 10) || 1)));
 }
 
 function restartClass(element, className) {
@@ -21,9 +21,12 @@ function restartClass(element, className) {
 function mountJerseyComponent(preview) {
   if (!preview || preview.dataset.jerseyComponentMounted === "true") return;
 
+  const panel = preview.closest('.onboard-step');
+  const isNumberPhase = panel?.dataset.onboardPhase === "number";
+
   preview.dataset.jerseyComponentMounted = "true";
   preview.classList.add("onboard-jersey-stage", "is-entering");
-  preview.setAttribute("aria-label", "Academy jersey preview");
+  preview.setAttribute("aria-label", isNumberPhase ? "Academy jersey name and number preview" : "Academy jersey name preview");
 
   preview.innerHTML = `
     <div class="onboard-jersey-visual">
@@ -46,13 +49,12 @@ function mountJerseyComponent(preview) {
       >
       <div class="onboard-jersey-identity" aria-hidden="true">
         <span class="onboard-jersey-name">NAME</span>
-        <span class="onboard-jersey-number">10</span>
+        ${isNumberPhase ? '<span class="onboard-jersey-number">1</span>' : ''}
         <span class="onboard-jersey-shine"></span>
       </div>
     </div>
   `;
 
-  const panel = preview.closest('.onboard-step');
   const input = panel?.querySelector("#nameInput") || document.getElementById("nameInput");
   const namePreview = preview.querySelector(".onboard-jersey-name");
   const numberPreview = preview.querySelector(".onboard-jersey-number");
@@ -68,7 +70,7 @@ function mountJerseyComponent(preview) {
   if (REDUCED_MOTION) beginIdle();
   else window.setTimeout(beginIdle, 1050);
 
-  const syncIdentity = () => {
+  const syncIdentity = event => {
     const rawValue = input?.value || localStorage.getItem(PLAYER_NAME_KEY) || "";
     const hasName = Boolean(rawValue.trim());
 
@@ -78,10 +80,11 @@ function mountJerseyComponent(preview) {
     }
 
     if (numberPreview) {
-      numberPreview.textContent = normaliseJerseyNumber(localStorage.getItem(JERSEY_NUMBER_KEY) || 10);
+      const eventNumber = event?.detail?.number;
+      numberPreview.textContent = normaliseJerseyNumber(eventNumber || localStorage.getItem(JERSEY_NUMBER_KEY) || 1);
     }
 
-    if (hasName && !numberGlowPlayed) {
+    if (numberPreview && hasName && !numberGlowPlayed) {
       numberGlowPlayed = true;
       restartClass(numberPreview, "is-confirmed");
     }

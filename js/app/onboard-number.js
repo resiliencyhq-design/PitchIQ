@@ -2,7 +2,7 @@ const PLAYER_NAME_KEY = "pitchiqPlayerName";
 const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
 const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 const JERSEY_NUMBER_CONFIRMED_KEY = "pitchiqJerseyNumberConfirmed";
-const DEFAULT_NUMBER = 10;
+const DEFAULT_NUMBER = 1;
 const ITEM_HEIGHT = 52;
 
 function clampNumber(value) {
@@ -72,6 +72,7 @@ function updateNumber(panel, number, withHaptic = false) {
     option.setAttribute('aria-selected', selected ? 'true' : 'false');
   });
 
+  window.dispatchEvent(new CustomEvent('pitchiq:jersey-number-change', { detail: { number: nextNumber } }));
   if (withHaptic && previous && previous !== nextNumber) hapticTick();
 }
 
@@ -133,6 +134,12 @@ function mountNumberPhase() {
   const storedName = localStorage.getItem(PLAYER_NAME_KEY);
   const storedPosition = localStorage.getItem(SELECTED_POSITION_KEY);
   const numberConfirmed = localStorage.getItem(JERSEY_NUMBER_CONFIRMED_KEY) === 'true';
+
+  if (!storedName && !storedPosition) {
+    localStorage.setItem(JERSEY_NUMBER_KEY, String(DEFAULT_NUMBER));
+    localStorage.removeItem(JERSEY_NUMBER_CONFIRMED_KEY);
+    numberPanel.dataset.selectedNumber = String(DEFAULT_NUMBER);
+  }
 
   if (storedName && !storedPosition && !numberConfirmed) setVisiblePhase('number');
   bindPicker(numberPanel);
