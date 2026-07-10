@@ -1,4 +1,4 @@
-const CACHE="pitchiq-inline-splash-recovery-20260703";
+const CACHE="pitchiq-sprint-8-0c1-20260710";
 const ASSETS=[
   "./",
   "./index.html",
@@ -12,14 +12,21 @@ const ASSETS=[
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703",
   "./css/onboard-step2-final-polish.css?v=step2-favorite-position-spacing-20260703",
-  "./js/app/main.js?v=step1-player-overflow-20260627",
-  "./js/app/onboard-step2-spawn.js?v=step2-favorite-position-prompt-20260703",
+  "./css/onboard-step2-layout.css?v=step2-refactor-layout-20260703",
+  "./css/onboard-step2-marker.css?v=step2-refactor-marker-20260703",
+  "./css/onboard-step2-web.css?v=step2-refactor-web-20260703",
+  "./css/onboard-step2-animation.css?v=step2-refactor-animation-20260703",
+  "./css/onboard-jersey.css?v=sprint-8-0c1-dev-cache-bypass-20260710",
+  "./js/app/main.js?v=step2-refactor-phase1-20260703",
+  "./js/app/onboard-jersey.js?v=sprint-8-0c1-dev-cache-bypass-20260710",
+  "./js/app/onboard-step2-spawn.js?v=step2-label-repair-static-20260703",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
-  "./js/app/splash-advance-fallback.js?v=splash-swipe-fallback-20260703",
-  "./js/app/routes.js?v=hero-bg-top-20260623",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
+  "./assets/onboarding/jersey-back.png?v=sprint-8-0b-20260710",
+  "./assets/onboarding/jersey-glow.png?v=sprint-8-0b-20260710",
+  "./assets/onboarding/jersey-shadow.png?v=sprint-8-0b-20260710",
   "./assets/controls/your-name.png?v=hero-bg-top-20260623",
   "./assets/controls/continue-button.png?v=hero-bg-top-20260623",
   "./assets/controls/enter-academy.png?v=hero-bg-top-20260623",
@@ -30,7 +37,6 @@ const ASSETS=[
   "./assets/onboarding/position-pitch.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-inactive.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-active.png?v=hero-bg-top-20260623",
-  "./assets/onboarding/name-person-icon.png-v2.png?v=player-v2-transparent-20260627",
   "./assets/backgrounds/onboarding-background-V1.png?v=20260627-v2",
   "./assets/Home/hero-home-bg.png?v=hero-bg-top-20260623",
   "./assets/Home/player-profile-card-skin.png?v=hero-bg-top-20260623",
@@ -39,19 +45,39 @@ const ASSETS=[
   "./assets/backgrounds/splash-poster.png"
 ];
 
-self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
-self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener("fetch",e=>{
-  if(e.request.method!=="GET") return;
-  const url=new URL(e.request.url);
+self.addEventListener("install",event=>event.waitUntil(
+  caches.open(CACHE)
+    .then(cache=>cache.addAll(ASSETS))
+    .then(()=>self.skipWaiting())
+));
+
+self.addEventListener("activate",event=>event.waitUntil(
+  caches.keys()
+    .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
+    .then(()=>self.clients.claim())
+));
+
+self.addEventListener("fetch",event=>{
+  if(event.request.method!=="GET") return;
+
+  const url=new URL(event.request.url);
   const live=/\.(?:html|css|js|png|svg|jpg|jpeg|webp)$/i.test(url.pathname)||url.pathname.endsWith("/");
+
   if(live){
-    e.respondWith(fetch(e.request,{cache:"no-store"}).then(r=>{
-      const copy=r.clone();
-      caches.open(CACHE).then(c=>c.put(e.request,copy));
-      return r;
-    }).catch(()=>caches.match(e.request).then(r=>r||caches.match("./index.html"))));
+    event.respondWith(
+      fetch(event.request,{cache:"no-store"})
+        .then(response=>{
+          const copy=response.clone();
+          caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+          return response;
+        })
+        .catch(()=>caches.match(event.request).then(response=>response||caches.match("./index.html")))
+    );
     return;
   }
-  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match("./index.html"))));
+
+  event.respondWith(
+    caches.match(event.request)
+      .then(response=>response||fetch(event.request).catch(()=>caches.match("./index.html")))
+  );
 });
