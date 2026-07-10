@@ -3,7 +3,7 @@ const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
 const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 const JERSEY_NUMBER_CONFIRMED_KEY = "pitchiqJerseyNumberConfirmed";
 const DEFAULT_NUMBER = 1;
-const ITEM_HEIGHT = 52;
+const FALLBACK_ITEM_HEIGHT = 52;
 
 function clampNumber(value) {
   return Math.min(99, Math.max(1, Number.parseInt(value, 10) || DEFAULT_NUMBER));
@@ -50,6 +50,8 @@ function setVisiblePhase(phase) {
   if (numberPanel) numberPanel.hidden = phase !== "number";
   if (positionPanel) positionPanel.hidden = phase !== "position";
   if (confirmPanel) confirmPanel.hidden = phase !== "confirm";
+
+  if (phase === "number" && numberPanel) refreshPicker(numberPanel);
 }
 
 function updateNumber(panel, number, withHaptic = false) {
@@ -76,8 +78,30 @@ function updateNumber(panel, number, withHaptic = false) {
   if (withHaptic && previous && previous !== nextNumber) hapticTick();
 }
 
+function itemHeight(picker) {
+  const option = picker?.querySelector('.jersey-number-option');
+  const measured = option?.getBoundingClientRect().height;
+  return measured && measured > 0 ? measured : FALLBACK_ITEM_HEIGHT;
+}
+
+function refreshPicker(panel) {
+  const picker = panel?.querySelector('.jersey-number-picker');
+  if (!picker) return;
+  const selected = clampNumber(panel.dataset.selectedNumber || localStorage.getItem(JERSEY_NUMBER_KEY));
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const height = itemHeight(picker);
+      picker.scrollTop = (selected - 1) * height;
+      picker.style.visibility = 'visible';
+      picker.style.opacity = '1';
+      updateNumber(panel, selected, false);
+    });
+  });
+}
+
 function bindPicker(panel) {
-  if (panel.dataset.numberPickerBound === "true") return;
+  if (!panel || panel.dataset.numberPickerBound === "true") return;
   panel.dataset.numberPickerBound = "true";
 
   const picker = panel.querySelector('.jersey-number-picker');
@@ -88,14 +112,14 @@ function bindPicker(panel) {
 
   const scrollToNumber = (number, behavior = "auto") => {
     const next = clampNumber(number);
-    picker.scrollTo({ top: (next - 1) * ITEM_HEIGHT, behavior });
+    picker.scrollTo({ top: (next - 1) * itemHeight(picker), behavior });
     updateNumber(panel, next, false);
   };
 
   picker.addEventListener('scroll', () => {
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(() => {
-      const next = clampNumber(Math.round(picker.scrollTop / ITEM_HEIGHT) + 1);
+      const next = clampNumber(Math.round(picker.scrollTop / itemHeight(picker)) + 1);
       if (next !== selected) {
         selected = next;
         updateNumber(panel, selected, true);
@@ -117,7 +141,7 @@ function bindPicker(panel) {
     scrollToNumber(selected, 'smooth');
   });
 
-  requestAnimationFrame(() => scrollToNumber(selected));
+  refreshPicker(panel);
 }
 
 function mountNumberPhase() {
@@ -141,8 +165,8 @@ function mountNumberPhase() {
     numberPanel.dataset.selectedNumber = String(DEFAULT_NUMBER);
   }
 
-  if (storedName && !storedPosition && !numberConfirmed) setVisiblePhase('number');
   bindPicker(numberPanel);
+  if (storedName && !storedPosition && !numberConfirmed) setVisiblePhase('number');
 }
 
 function bindNumberFlow() {
@@ -156,8 +180,6 @@ function bindNumberFlow() {
       localStorage.setItem(PLAYER_NAME_KEY, name);
       localStorage.removeItem(JERSEY_NUMBER_CONFIRMED_KEY);
       setVisiblePhase('number');
-      const panel = document.querySelector('.onboard-number-step');
-      bindPicker(panel);
       return;
     }
 

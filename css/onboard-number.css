@@ -1,4 +1,4 @@
-/* Sprint 8.3 — separate jersey number phase */
+/* Sprint 8.3.1 — iPhone-safe separate jersey number phase */
 
 .onboard-number-step .onboard-heading{
   max-width:330px;
@@ -12,30 +12,44 @@
 
 .jersey-number-picker-shell{
   position:relative;
+  display:block;
   width:min(82vw,320px);
   height:156px;
+  min-height:156px;
   margin:-8px auto 0;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.12);
   border-radius:28px;
-  background:rgba(5,8,8,.78);
+  background:rgba(5,8,8,.88);
   box-shadow:0 18px 42px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
   isolation:isolate;
+  contain:layout paint;
 }
 
 .jersey-number-picker{
   position:absolute;
   inset:0;
   z-index:2;
+  display:block;
+  width:100%;
   height:100%;
-  overflow-y:auto;
+  min-height:100%;
+  overflow-x:hidden;
+  overflow-y:scroll;
   overscroll-behavior:contain;
   scroll-snap-type:y mandatory;
   scrollbar-width:none;
   padding:52px 0;
   -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  visibility:visible;
+  opacity:1;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
   mask-image:linear-gradient(to bottom,transparent 0,#000 28%,#000 72%,transparent 100%);
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 28%,#000 72%,transparent 100%);
 }
@@ -51,18 +65,25 @@
   padding:0;
   border:0;
   border-radius:0;
+  appearance:none;
+  -webkit-appearance:none;
   background:transparent;
   color:rgba(255,255,255,.48);
   font:900 28px/52px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   text-align:center;
   scroll-snap-align:center;
   cursor:pointer;
+  opacity:1;
+  visibility:visible;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
   transition:color 120ms ease,transform 120ms ease,opacity 120ms ease;
 }
 
 .jersey-number-option.selected{
   color:#d7ff2e;
-  transform:scale(1.12);
+  transform:translateZ(0) scale(1.12);
+  -webkit-transform:translateZ(0) scale(1.12);
   opacity:1;
 }
 
@@ -99,14 +120,53 @@
   100%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
 }
 
+/* Safari can fail to composite masked descendants inside momentum scrollers.
+   Keep the wheel fully visible and use the shell itself as the clipping layer. */
+@supports (-webkit-touch-callout:none){
+  .jersey-number-picker-shell{
+    background:rgba(5,8,8,.94);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    contain:layout;
+  }
+
+  .jersey-number-picker{
+    mask-image:none;
+    -webkit-mask-image:none;
+    overflow-y:scroll;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .jersey-number-picker-shell::before,
+  .jersey-number-picker-shell::after{
+    content:"";
+    position:absolute;
+    z-index:3;
+    left:0;
+    right:0;
+    height:44px;
+    pointer-events:none;
+  }
+
+  .jersey-number-picker-shell::before{
+    top:0;
+    background:linear-gradient(to bottom,rgba(5,8,8,.98),rgba(5,8,8,0));
+  }
+
+  .jersey-number-picker-shell::after{
+    bottom:0;
+    background:linear-gradient(to top,rgba(5,8,8,.98),rgba(5,8,8,0));
+  }
+}
+
 @media(max-height:760px){
   .onboard-number-step .onboard-jersey-preview.onboard-jersey-stage{
     height:238px!important;
     margin-top:-18px!important;
     margin-bottom:-8px!important;
   }
-  .jersey-number-picker-shell{height:132px;}
-  .jersey-number-picker{padding:40px 0;}
+  .jersey-number-picker-shell{height:132px;min-height:132px;}
+  .jersey-number-picker{padding:44px 0;}
   .jersey-number-option{height:44px;min-height:44px;line-height:44px;font-size:25px;}
   .jersey-number-selection{top:44px;height:44px;}
 }
