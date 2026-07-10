@@ -1,4 +1,4 @@
-const CACHE="pitchiq-sprint-8-0c1-20260710";
+const CACHE="pitchiq-sprint-8-1-final-screen-20260710";
 const ASSETS=[
   "./",
   "./index.html",
@@ -16,17 +16,17 @@ const ASSETS=[
   "./css/onboard-step2-marker.css?v=step2-refactor-marker-20260703",
   "./css/onboard-step2-web.css?v=step2-refactor-web-20260703",
   "./css/onboard-step2-animation.css?v=step2-refactor-animation-20260703",
-  "./css/onboard-jersey.css?v=sprint-8-0c1-dev-cache-bypass-20260710",
+  "./css/onboard-jersey.css?v=sprint-8-1-final-screen-20260710",
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
-  "./js/app/onboard-jersey.js?v=sprint-8-0c1-dev-cache-bypass-20260710",
+  "./js/app/onboard-jersey.js?v=sprint-8-1-final-screen-20260710",
   "./js/app/onboard-step2-spawn.js?v=step2-label-repair-static-20260703",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=step2-tactical-web-20260702",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
-  "./assets/onboarding/jersey-back.png?v=sprint-8-0b-20260710",
-  "./assets/onboarding/jersey-glow.png?v=sprint-8-0b-20260710",
-  "./assets/onboarding/jersey-shadow.png?v=sprint-8-0b-20260710",
+  "./assets/onboarding/jersey-back.png?v=sprint-8-1-final-screen-20260710",
+  "./assets/onboarding/jersey-glow.png?v=sprint-8-1-final-screen-20260710",
+  "./assets/onboarding/jersey-shadow.png?v=sprint-8-1-final-screen-20260710",
   "./assets/controls/your-name.png?v=hero-bg-top-20260623",
   "./assets/controls/continue-button.png?v=hero-bg-top-20260623",
   "./assets/controls/enter-academy.png?v=hero-bg-top-20260623",
