@@ -1,18 +1,26 @@
-/* Sprint 8.0C — academy jersey composition lock */
+/* Sprint 8.0C — self-contained academy jersey composition */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
   position:relative!important;
   width:min(100%,390px)!important;
   max-width:390px!important;
-  height:clamp(348px,43svh,392px)!important;
-  margin:clamp(-18px,-2svh,-10px) auto clamp(-58px,-6svh,-40px)!important;
+  height:clamp(318px,40svh,360px)!important;
+  margin:clamp(-18px,-2svh,-10px) auto clamp(-34px,-3.8svh,-22px)!important;
   overflow:hidden!important;
   isolation:isolate!important;
   pointer-events:none!important;
   user-select:none!important;
 }
 
-/* Strong selectors deliberately override the retired player-preview rules. */
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual > img{
   position:absolute!important;
   max-width:none!important;
   pointer-events:none!important;
@@ -20,50 +28,48 @@
   mix-blend-mode:normal!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img.onboard-jersey-glow{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-glow{
   z-index:0!important;
   left:50%!important;
-  top:48%!important;
-  width:105%!important;
+  top:46%!important;
+  width:88%!important;
   height:auto!important;
   transform:translate(-50%,-50%)!important;
   object-fit:contain!important;
-  opacity:.5!important;
-  filter:blur(2px)!important;
+  opacity:.42!important;
+  filter:blur(4px)!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img.onboard-jersey-shadow{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-shadow{
   z-index:1!important;
   left:50%!important;
-  top:auto!important;
-  bottom:4%!important;
-  width:56%!important;
+  bottom:3%!important;
+  width:48%!important;
   height:auto!important;
   transform:translateX(-50%)!important;
   object-fit:contain!important;
-  opacity:.68!important;
+  opacity:.62!important;
   filter:none!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img.onboard-jersey-image{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
   z-index:2!important;
   left:50%!important;
-  top:-13%!important;
-  bottom:auto!important;
-  width:126%!important;
-  height:auto!important;
+  top:2%!important;
+  width:94%!important;
+  height:94%!important;
   transform:translateX(-50%)!important;
   object-fit:contain!important;
   object-position:center top!important;
   filter:drop-shadow(0 14px 24px rgba(0,0,0,.42))!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage .onboard-jersey-identity{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-identity{
   position:absolute!important;
   z-index:3!important;
   left:50%!important;
-  top:31%!important;
-  width:46%!important;
+  top:28%!important;
+  width:42%!important;
   transform:translateX(-50%)!important;
   display:grid!important;
   justify-items:center!important;
@@ -72,13 +78,13 @@
   pointer-events:none!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage .onboard-jersey-name{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
   position:static!important;
   display:block!important;
   width:100%!important;
   transform:none!important;
   color:#f7fff8!important;
-  font-size:clamp(18px,5.1vw,27px)!important;
+  font-size:clamp(17px,4.8vw,25px)!important;
   font-weight:1000!important;
   line-height:1!important;
   letter-spacing:.01em!important;
@@ -90,11 +96,11 @@
   text-shadow:0 2px 7px rgba(0,0,0,.9)!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage .onboard-jersey-number{
+.onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
   display:block!important;
-  margin-top:clamp(5px,.8svh,8px)!important;
+  margin-top:clamp(4px,.7svh,7px)!important;
   color:#ffd400!important;
-  font-size:clamp(82px,23vw,112px)!important;
+  font-size:clamp(76px,21vw,104px)!important;
   font-weight:1000!important;
   line-height:.84!important;
   letter-spacing:-.075em!important;
@@ -109,28 +115,28 @@
 @media(max-width:390px){
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
     width:min(100%,369px)!important;
-    height:clamp(338px,42svh,374px)!important;
-    margin-bottom:clamp(-54px,-5.6svh,-38px)!important;
+    height:clamp(304px,38svh,340px)!important;
+    margin-bottom:clamp(-30px,-3.4svh,-20px)!important;
   }
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img.onboard-jersey-image{
-    top:-12%!important;
-    width:128%!important;
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
+    width:92%!important;
+    height:92%!important;
   }
 }
 
 @media(max-width:360px),(max-height:700px){
   .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
     width:min(100%,340px)!important;
-    height:286px!important;
-    margin-top:-12px!important;
-    margin-bottom:-38px!important;
+    height:270px!important;
+    margin-top:-10px!important;
+    margin-bottom:-20px!important;
   }
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage > img.onboard-jersey-image{
-    top:-11%!important;
-    width:126%!important;
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
+    width:90%!important;
+    height:90%!important;
   }
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage .onboard-jersey-number{
-    font-size:76px!important;
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
+    font-size:72px!important;
   }
 }
 
