@@ -1,4 +1,4 @@
-const JERSEY_ASSET_VERSION = "sprint-8-0c-refactor-20260710";
+const JERSEY_ASSET_VERSION = "sprint-8-1-final-screen-20260710";
 
 function normaliseJerseyName(value = "") {
   return value.trim().toUpperCase().slice(0, 18) || "NAME";
