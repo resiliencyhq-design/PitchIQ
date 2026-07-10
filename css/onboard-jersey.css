@@ -1,4 +1,4 @@
-/* Sprint 8.1 — final academy jersey screen */
+/* Sprint 8.1A — jersey glow and shadow polish */
 
 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
   position:relative!important;
@@ -29,30 +29,30 @@
   mix-blend-mode:normal!important;
 }
 
-/* Broad atmospheric light behind the shirt. */
+/* Tighter glow so it reads around the jersey instead of blending into the stadium. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-glow{
   z-index:0!important;
   left:50%!important;
-  top:44%!important;
-  width:112%!important;
+  top:42%!important;
+  width:94%!important;
   height:auto!important;
   transform:translate(-50%,-50%)!important;
   object-fit:contain!important;
-  opacity:.22!important;
-  filter:blur(14px)!important;
+  opacity:.32!important;
+  filter:blur(9px)!important;
 }
 
-/* Grounding shadow stays visually attached to the hem. */
+/* Stronger grounding shadow, kept directly beneath the jersey hem. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-shadow{
   z-index:1!important;
   left:50%!important;
-  bottom:7%!important;
-  width:42%!important;
+  bottom:5.5%!important;
+  width:48%!important;
   height:auto!important;
   transform:translateX(-50%)!important;
   object-fit:contain!important;
-  opacity:.54!important;
-  filter:none!important;
+  opacity:.68!important;
+  filter:blur(1px)!important;
 }
 
 /* Final approved scale: slightly smaller and higher than Sprint 8.0C. */
@@ -65,7 +65,7 @@
   transform:translateX(-50%)!important;
   object-fit:contain!important;
   object-position:center top!important;
-  filter:drop-shadow(0 13px 22px rgba(0,0,0,.42))!important;
+  filter:drop-shadow(0 14px 24px rgba(0,0,0,.5))!important;
 }
 
 /* Identity uses one fixed coordinate surface; name and number cannot collide. */
