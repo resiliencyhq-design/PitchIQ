@@ -1,4 +1,4 @@
-const CACHE="pitchiq-sprint-8-3-3-iphone-cta-layout-20260711";
+const CACHE="pitchiq-sprint-8-3-4-hero-jersey-20260711";
 const ASSETS=[
   "./",
   "./index.html",
@@ -17,7 +17,7 @@ const ASSETS=[
   "./css/onboard-step2-web.css?v=step2-refactor-web-20260703",
   "./css/onboard-step2-animation.css?v=step2-refactor-animation-20260703",
   "./css/onboard-jersey.css?v=sprint-8-4-number-flow-fix-20260710",
-  "./css/onboard-number.css?v=sprint-8-3-3-iphone-cta-layout-20260711",
+  "./css/onboard-number.css?v=sprint-8-3-4-hero-jersey-20260711",
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
   "./js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710",
   "./js/app/onboard-number.js?v=sprint-8-3-2-iphone-wheel-20260710",
