@@ -30,11 +30,13 @@ function numberPanelMarkup() {
       <h1 class="onboard-heading">Choose your squad number</h1>
       <div class="onboard-jersey-preview" aria-label="Academy jersey number preview"></div>
       <div class="jersey-number-picker-shell">
-        <div class="jersey-number-picker" role="listbox" aria-label="Jersey number" tabindex="0">${items}</div>
+        <div class="jersey-number-picker" role="listbox" aria-label="Jersey number" tabindex="0">
+          <div class="jersey-number-track">${items}</div>
+        </div>
         <div class="jersey-number-selection" aria-hidden="true"></div>
       </div>
       <p class="jersey-number-help">Swipe up or down</p>
-      <div class="onboard-step-footer">
+      <div class="onboard-step-footer onboard-number-footer">
         <button class="primary mega splash-cta-v1 onboard-cta-v1 sticky-cta" data-action="onboard-next-number">CONTINUE →</button>
       </div>
     </section>`;
@@ -84,18 +86,22 @@ function itemHeight(picker) {
   return measured && measured > 0 ? measured : FALLBACK_ITEM_HEIGHT;
 }
 
-function refreshPicker(panel) {
+function renderPickerPosition(panel, animate = false) {
   const picker = panel?.querySelector('.jersey-number-picker');
-  if (!picker) return;
+  const track = picker?.querySelector('.jersey-number-track');
+  if (!picker || !track) return;
   const selected = clampNumber(panel.dataset.selectedNumber || localStorage.getItem(JERSEY_NUMBER_KEY));
+  const height = itemHeight(picker);
+  track.style.transition = animate ? 'transform 180ms cubic-bezier(.2,.8,.2,1)' : 'none';
+  track.style.transform = `translate3d(0, ${-(selected - 1) * height}px, 0)`;
+}
 
+function refreshPicker(panel) {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      const height = itemHeight(picker);
-      picker.scrollTop = (selected - 1) * height;
-      picker.style.visibility = 'visible';
-      picker.style.opacity = '1';
+      const selected = clampNumber(panel.dataset.selectedNumber || localStorage.getItem(JERSEY_NUMBER_KEY));
       updateNumber(panel, selected, false);
+      renderPickerPosition(panel, false);
     });
   });
 }
@@ -108,38 +114,77 @@ function bindPicker(panel) {
   if (!picker) return;
 
   let selected = clampNumber(localStorage.getItem(JERSEY_NUMBER_KEY));
-  let frame = 0;
+  let startY = 0;
+  let startNumber = selected;
+  let dragging = false;
 
-  const scrollToNumber = (number, behavior = "auto") => {
+  const setSelected = (number, withHaptic = true, animate = false) => {
     const next = clampNumber(number);
-    picker.scrollTo({ top: (next - 1) * itemHeight(picker), behavior });
-    updateNumber(panel, next, false);
+    if (next !== selected) {
+      selected = next;
+      updateNumber(panel, selected, withHaptic);
+    }
+    renderPickerPosition(panel, animate);
   };
 
-  picker.addEventListener('scroll', () => {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      const next = clampNumber(Math.round(picker.scrollTop / itemHeight(picker)) + 1);
-      if (next !== selected) {
-        selected = next;
-        updateNumber(panel, selected, true);
-      }
-    });
+  const beginDrag = clientY => {
+    dragging = true;
+    startY = clientY;
+    startNumber = selected;
+    picker.classList.add('is-dragging');
+  };
+
+  const moveDrag = clientY => {
+    if (!dragging) return;
+    const height = itemHeight(picker);
+    const offset = Math.round((startY - clientY) / height);
+    setSelected(startNumber + offset, true, false);
+  };
+
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    picker.classList.remove('is-dragging');
+    renderPickerPosition(panel, true);
+  };
+
+  picker.addEventListener('pointerdown', event => {
+    beginDrag(event.clientY);
+    picker.setPointerCapture?.(event.pointerId);
+  });
+  picker.addEventListener('pointermove', event => moveDrag(event.clientY));
+  picker.addEventListener('pointerup', endDrag);
+  picker.addEventListener('pointercancel', endDrag);
+
+  picker.addEventListener('touchstart', event => {
+    if (!event.touches.length) return;
+    beginDrag(event.touches[0].clientY);
   }, { passive: true });
+  picker.addEventListener('touchmove', event => {
+    if (!event.touches.length) return;
+    event.preventDefault();
+    moveDrag(event.touches[0].clientY);
+  }, { passive: false });
+  picker.addEventListener('touchend', endDrag, { passive: true });
+  picker.addEventListener('touchcancel', endDrag, { passive: true });
 
   picker.addEventListener('click', event => {
+    if (dragging) return;
     const option = event.target.closest?.('[data-jersey-number]');
     if (!option) return;
-    selected = clampNumber(option.dataset.jerseyNumber);
-    scrollToNumber(selected, 'smooth');
+    setSelected(option.dataset.jerseyNumber, true, true);
   });
 
   picker.addEventListener('keydown', event => {
     if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
     event.preventDefault();
-    selected = clampNumber(selected + (event.key === 'ArrowDown' ? 1 : -1));
-    scrollToNumber(selected, 'smooth');
+    setSelected(selected + (event.key === 'ArrowDown' ? 1 : -1), true, true);
   });
+
+  picker.addEventListener('wheel', event => {
+    event.preventDefault();
+    setSelected(selected + (event.deltaY > 0 ? 1 : -1), true, true);
+  }, { passive: false });
 
   refreshPicker(panel);
 }
