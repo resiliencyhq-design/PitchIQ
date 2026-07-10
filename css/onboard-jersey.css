@@ -1,4 +1,4 @@
-/* Sprint 8.1A — jersey glow and shadow polish */
+/* Sprint 8.2 — jersey reveal and transition animation */
 
 .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
   position:relative!important;
@@ -19,6 +19,8 @@
   margin:0!important;
   overflow:hidden!important;
   isolation:isolate!important;
+  transform-origin:50% 48%!important;
+  will-change:transform,opacity!important;
 }
 
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > img{
@@ -29,7 +31,6 @@
   mix-blend-mode:normal!important;
 }
 
-/* Tighter glow so it reads around the jersey instead of blending into the stadium. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-glow{
   z-index:0!important;
   left:50%!important;
@@ -40,9 +41,9 @@
   object-fit:contain!important;
   opacity:.32!important;
   filter:blur(9px)!important;
+  will-change:opacity,transform!important;
 }
 
-/* Stronger grounding shadow, kept directly beneath the jersey hem. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-shadow{
   z-index:1!important;
   left:50%!important;
@@ -53,9 +54,9 @@
   object-fit:contain!important;
   opacity:.68!important;
   filter:blur(1px)!important;
+  will-change:transform,opacity!important;
 }
 
-/* Final approved scale: slightly smaller and higher than Sprint 8.0C. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
   z-index:2!important;
   left:50%!important;
@@ -68,7 +69,6 @@
   filter:drop-shadow(0 14px 24px rgba(0,0,0,.5))!important;
 }
 
-/* Identity uses one fixed coordinate surface; name and number cannot collide. */
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-identity{
   position:absolute!important;
   inset:0!important;
@@ -79,6 +79,7 @@
   display:block!important;
   text-align:center!important;
   pointer-events:none!important;
+  overflow:hidden!important;
 }
 
 .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
@@ -118,8 +119,116 @@
   text-shadow:0 0 9px rgba(255,212,0,.16),0 3px 8px rgba(0,0,0,.9)!important;
 }
 
-.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{
-  margin-top:0!important;
+.onboard-step[data-onboard-step="1"] .onboard-jersey-shine{
+  position:absolute!important;
+  z-index:4!important;
+  top:17%!important;
+  left:-34%!important;
+  width:22%!important;
+  height:42%!important;
+  opacity:0!important;
+  transform:skewX(-18deg)!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent)!important;
+  filter:blur(1px)!important;
+  mix-blend-mode:screen!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-name-input-wrap{margin-top:0!important;}
+
+/* Load choreography: spotlight, drop and soft fabric settle. */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-entering .onboard-jersey-glow{
+  animation:jerseySpotlightIn 450ms ease-out both!important;
+}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-entering .onboard-jersey-shadow{
+  animation:jerseyShadowIn 700ms 120ms ease-out both!important;
+}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-entering .onboard-jersey-visual{
+  animation:jerseyDropIn 980ms cubic-bezier(.18,.82,.22,1) both!important;
+}
+
+/* Idle motion stays subtle and keeps the shirt grounded. */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-idle .onboard-jersey-visual{
+  animation:jerseyFloat 3.2s ease-in-out infinite!important;
+}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-idle .onboard-jersey-shadow{
+  animation:jerseyShadowFloat 3.2s ease-in-out infinite!important;
+}
+
+.onboard-step[data-onboard-step="1"] .onboard-jersey-name.is-updating{
+  animation:jerseyNameUpdate 140ms ease-out both!important;
+}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-number.is-confirmed{
+  animation:jerseyNumberConfirm 520ms ease-out both!important;
+}
+.onboard-step[data-onboard-step="1"] .onboard-jersey-identity.is-shining .onboard-jersey-shine{
+  animation:jerseyLetterShine 720ms ease-in-out both!important;
+}
+
+/* Continue handoff: fly toward camera, then reveal Step 2 at the same centre. */
+.onboard-step[data-onboard-step="1"] .onboard-jersey-stage.is-exiting .onboard-jersey-visual{
+  animation:jerseyFlyForward 560ms cubic-bezier(.2,.72,.22,1) both!important;
+}
+body.jersey-marker-handoff::after{
+  content:"";
+  position:fixed;
+  z-index:9998;
+  left:50%;
+  top:47%;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  pointer-events:none;
+  background:rgba(215,255,46,.95);
+  box-shadow:0 0 22px 10px rgba(215,255,46,.55);
+  transform:translate(-50%,-50%) scale(.25);
+  animation:jerseyHandoffFlash 760ms ease-out both;
+}
+
+@keyframes jerseySpotlightIn{
+  from{opacity:0;transform:translate(-50%,-50%) scale(.78)}
+  to{opacity:.32;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes jerseyShadowIn{
+  from{opacity:0;transform:translateX(-50%) scaleX(.55)}
+  to{opacity:.68;transform:translateX(-50%) scaleX(1)}
+}
+@keyframes jerseyDropIn{
+  0%{opacity:0;transform:translateY(-64px) scale(.96)}
+  64%{opacity:1;transform:translateY(0) scale(1.025,.985)}
+  82%{transform:translateY(2px) scale(.992,1.012)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes jerseyFloat{
+  0%,100%{transform:translateY(0) rotate(-.15deg)}
+  50%{transform:translateY(-4px) rotate(.15deg)}
+}
+@keyframes jerseyShadowFloat{
+  0%,100%{transform:translateX(-50%) scaleX(1);opacity:.68}
+  50%{transform:translateX(-50%) scaleX(.94);opacity:.58}
+}
+@keyframes jerseyNameUpdate{
+  from{opacity:.58;filter:blur(1.2px)}
+  to{opacity:1;filter:blur(0)}
+}
+@keyframes jerseyNumberConfirm{
+  0%,100%{filter:none;text-shadow:0 0 9px rgba(255,212,0,.16),0 3px 8px rgba(0,0,0,.9)}
+  48%{filter:brightness(1.28);text-shadow:0 0 24px rgba(255,212,0,.78),0 3px 8px rgba(0,0,0,.9)}
+}
+@keyframes jerseyLetterShine{
+  0%{left:-34%;opacity:0}
+  18%{opacity:.8}
+  78%{opacity:.62}
+  100%{left:112%;opacity:0}
+}
+@keyframes jerseyFlyForward{
+  0%{transform:translateY(0) scale(1);opacity:1}
+  72%{transform:translateY(-20px) scale(1.55);opacity:1}
+  100%{transform:translateY(-38px) scale(1.82);opacity:0}
+}
+@keyframes jerseyHandoffFlash{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  52%{opacity:1;transform:translate(-50%,-50%) scale(2.2)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(4.5)}
 }
 
 @media(max-width:390px){
@@ -129,54 +238,22 @@
     margin-top:clamp(-28px,-3svh,-18px)!important;
     margin-bottom:clamp(-12px,-1.4svh,-6px)!important;
   }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
-    top:-3%!important;
-    width:81%!important;
-    height:81%!important;
-  }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
-    top:22%!important;
-    width:54%!important;
-    font-size:clamp(13px,3.85vw,18px)!important;
-  }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
-    top:31%!important;
-    font-size:clamp(64px,18vw,82px)!important;
-  }
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{top:-3%!important;width:81%!important;height:81%!important;}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{top:22%!important;width:54%!important;font-size:clamp(13px,3.85vw,18px)!important;}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{top:31%!important;font-size:clamp(64px,18vw,82px)!important;}
 }
 
 @media(max-width:360px),(max-height:700px){
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
-    width:min(100%,340px)!important;
-    height:246px!important;
-    margin-top:-18px!important;
-    margin-bottom:-4px!important;
-  }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
-    top:-2%!important;
-    width:79%!important;
-    height:79%!important;
-  }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
-    top:22.5%!important;
-    width:55%!important;
-    font-size:12px!important;
-  }
-
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
-    top:31.5%!important;
-    font-size:60px!important;
-  }
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{width:min(100%,340px)!important;height:246px!important;margin-top:-18px!important;margin-bottom:-4px!important;}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{top:-2%!important;width:79%!important;height:79%!important;}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{top:22.5%!important;width:55%!important;font-size:12px!important;}
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{top:31.5%!important;font-size:60px!important;}
 }
 
 @media(prefers-reduced-motion:reduce){
   .onboard-step[data-onboard-step="1"] .onboard-jersey-stage,
-  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage *{
+  .onboard-step[data-onboard-step="1"] .onboard-jersey-stage *,
+  body.jersey-marker-handoff::after{
     animation:none!important;
     transition:none!important;
   }
