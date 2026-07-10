@@ -1,8 +1,14 @@
-const JERSEY_ASSET_VERSION = "sprint-8-2-animation-20260710";
+const JERSEY_ASSET_VERSION = "sprint-8-3-number-picker-20260710";
 const REDUCED_MOTION = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+const PLAYER_NAME_KEY = "pitchiqPlayerName";
+const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 
 function normaliseJerseyName(value = "") {
   return value.trim().toUpperCase().slice(0, 18) || "NAME";
+}
+
+function normaliseJerseyNumber(value = 10) {
+  return String(Math.min(99, Math.max(1, Number.parseInt(value, 10) || 10)));
 }
 
 function restartClass(element, className) {
@@ -12,11 +18,7 @@ function restartClass(element, className) {
   element.classList.add(className);
 }
 
-function mountJerseyComponent() {
-  const preview = document.querySelector(
-    '.onboard-step[data-onboard-step="1"] .onboard-jersey-preview'
-  );
-
+function mountJerseyComponent(preview) {
   if (!preview || preview.dataset.jerseyComponentMounted === "true") return;
 
   preview.dataset.jerseyComponentMounted = "true";
@@ -43,15 +45,16 @@ function mountJerseyComponent() {
         alt="Blank black and yellow academy jersey"
       >
       <div class="onboard-jersey-identity" aria-hidden="true">
-        <span id="jerseyNamePreview" class="onboard-jersey-name">NAME</span>
+        <span class="onboard-jersey-name">NAME</span>
         <span class="onboard-jersey-number">10</span>
         <span class="onboard-jersey-shine"></span>
       </div>
     </div>
   `;
 
-  const input = document.getElementById("nameInput");
-  const namePreview = preview.querySelector("#jerseyNamePreview");
+  const panel = preview.closest('.onboard-step');
+  const input = panel?.querySelector("#nameInput") || document.getElementById("nameInput");
+  const namePreview = preview.querySelector(".onboard-jersey-name");
   const numberPreview = preview.querySelector(".onboard-jersey-number");
   const identity = preview.querySelector(".onboard-jersey-identity");
   let numberGlowPlayed = false;
@@ -65,13 +68,17 @@ function mountJerseyComponent() {
   if (REDUCED_MOTION) beginIdle();
   else window.setTimeout(beginIdle, 1050);
 
-  const syncName = () => {
-    const rawValue = input?.value || "";
+  const syncIdentity = () => {
+    const rawValue = input?.value || localStorage.getItem(PLAYER_NAME_KEY) || "";
     const hasName = Boolean(rawValue.trim());
 
     if (namePreview) {
       namePreview.textContent = normaliseJerseyName(rawValue);
       restartClass(namePreview, "is-updating");
+    }
+
+    if (numberPreview) {
+      numberPreview.textContent = normaliseJerseyNumber(localStorage.getItem(JERSEY_NUMBER_KEY) || 10);
     }
 
     if (hasName && !numberGlowPlayed) {
@@ -85,14 +92,19 @@ function mountJerseyComponent() {
     }
   };
 
-  if (input) {
-    input.addEventListener("input", syncName);
-    syncName();
-  }
+  if (input) input.addEventListener("input", syncIdentity);
+  window.addEventListener("pitchiq:jersey-number-change", syncIdentity);
+  syncIdentity();
+}
+
+function mountAllJerseyComponents() {
+  document.querySelectorAll(
+    '.onboard-step[data-onboard-step="1"] .onboard-jersey-preview'
+  ).forEach(mountJerseyComponent);
 }
 
 async function playJerseyExit(button) {
-  const preview = document.querySelector(
+  const preview = button?.closest('.onboard-step')?.querySelector('.onboard-jersey-stage') || document.querySelector(
     '.onboard-step[data-onboard-step="1"] .onboard-jersey-stage'
   );
 
@@ -134,13 +146,13 @@ function bindJerseyContinueTransition() {
 }
 
 function initialiseJerseyComponent() {
-  mountJerseyComponent();
+  mountAllJerseyComponents();
   bindJerseyContinueTransition();
 
   const app = document.getElementById("app");
   if (!app) return;
 
-  const observer = new MutationObserver(() => mountJerseyComponent());
+  const observer = new MutationObserver(mountAllJerseyComponents);
   observer.observe(app, { childList: true, subtree: true });
 }
 
