@@ -6,7 +6,6 @@
 
 const MARKER_GREY_SRC = 'assets/onboarding/position-marker-grey.png';
 const MARKER_ACTIVE_SRC = 'assets/onboarding/position-marker-active.png';
-const MARKER_SHIRT_SRC = 'assets/onboarding/position-marker-active.png';
 
 let lastSpawnKey = "";
 let spawnCleanupTimer = null;
@@ -55,9 +54,10 @@ function upgradeMarkerLayers(){
       marker.innerHTML = `
         <span class="marker-halo" aria-hidden="true"></span>
         <img class="marker-base" src="${MARKER_GREY_SRC}" alt="" aria-hidden="true">
-        <span class="marker-shirt" aria-hidden="true"><img class="marker-shirt-img" src="${MARKER_SHIRT_SRC}" alt="" aria-hidden="true"></span>
         <b class="marker-label" aria-hidden="true">${label}</b>
       `;
+    } else {
+      marker.querySelector('.marker-shirt')?.remove();
     }
 
     syncMarkerImageState(marker);
