@@ -63,7 +63,7 @@ function tacticalTargets(markers, selected, code){
   const matches = markers.filter(marker => marker !== selected && tacticalCode(marker) === code);
 
   if(code === "CB"){
-    if(selectedCode === "CB") return matches;
+    if(selectedCode === "CB" || selectedCode === "GK") return matches;
     const preferred = (selectedSlot === "rb" || selectedCode === "RB" || selectedCode === "CDM") ? "cb2" : "cb1";
     const first = matches.filter(marker => marker.dataset.slot === preferred).slice(0, 1);
     if(first.length) return first;
@@ -73,7 +73,8 @@ function tacticalTargets(markers, selected, code){
   return matches.slice(0, 1);
 }
 
-function tacticalLinkedText(codes){
+function tacticalLinkedText(codes, selectedCode){
+  if(selectedCode === "GK") return "both Centre Backs";
   const labels = codes.map(tacticalLabel);
   if(labels.length <= 1) return labels[0] || "key teammates";
   return labels.slice(0, -1).join(", ") + " and " + labels[labels.length - 1];
@@ -83,7 +84,7 @@ function tacticalUpdateCaption(code, links){
   const confirm = document.querySelector("#positionConfirm");
   if(!confirm) return;
   confirm.classList.add("tactical-web-caption");
-  confirm.innerHTML = `<span>Selected position</span><b>${tacticalLabel(code)}</b><small>Links to ${tacticalLinkedText(links)}</small>`;
+  confirm.innerHTML = `<span>Selected position</span><b>${tacticalLabel(code)}</b><small>Links to ${tacticalLinkedText(links, code)}</small>`;
 }
 
 function drawTacticalWeb(selected, options = {}){
