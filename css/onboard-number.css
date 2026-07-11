@@ -156,9 +156,9 @@
   height:100%!important;
   min-height:0!important;
   max-height:100%!important;
-  gap:3px!important;
+  gap:0!important;
   overflow:hidden!important;
-  padding-bottom:0!important;
+  padding-bottom:max(6px,env(safe-area-inset-bottom))!important;
 }
 
 /* Sprint 8.4.1 — keep the jersey pixel-identical to the insert-name screen.
@@ -186,31 +186,39 @@
   display:none!important;
 }
 
+/* Sprint 8.4.2 — use the transparent space below the jersey instead of
+   pushing the picker and CTA below the viewport. Jersey scale is unchanged. */
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-picker-shell{
   flex:0 0 120px!important;
   height:120px!important;
   min-height:120px!important;
   max-height:120px!important;
-  margin:0 auto!important;
+  margin:-74px auto 0!important;
 }
 
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-track{top:40px;}
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-option{height:40px;min-height:40px;font-size:25px;line-height:40px;}
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-selection{top:40px;height:40px;}
-#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-help{flex:0 0 auto!important;margin:5px 0 0!important;}
-#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-number-footer{flex:0 0 auto!important;margin:6px auto 0!important;}
+#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-help{display:none!important;}
+#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-number-footer{
+  flex:0 0 auto!important;
+  margin:8px auto 0!important;
+  padding-bottom:max(8px,env(safe-area-inset-bottom))!important;
+}
 
 @media(max-height:760px){
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-picker-shell{
-    flex-basis:112px!important;
-    height:112px!important;
-    min-height:112px!important;
-    max-height:112px!important;
+    flex-basis:108px!important;
+    height:108px!important;
+    min-height:108px!important;
+    max-height:108px!important;
+    margin-top:-82px!important;
   }
 
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-track{top:37px;}
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-option{height:37px;min-height:37px;line-height:37px;font-size:23px;}
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-selection{top:37px;height:37px;}
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-track{top:36px;}
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-option{height:36px;min-height:36px;line-height:36px;font-size:23px;}
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-selection{top:36px;height:36px;}
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-number-footer{margin-top:6px!important;}
 }
 
 @media(max-width:390px){
@@ -224,6 +232,10 @@
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
     top:31.5%!important;
     font-size:60px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-picker-shell{
+    margin-top:-88px!important;
   }
 }
 
