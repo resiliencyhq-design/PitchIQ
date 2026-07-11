@@ -161,50 +161,25 @@
   padding-bottom:0!important;
 }
 
-/* Target composition: hero-scale jersey without sacrificing the CTA. */
+/* Sprint 8.4.1 — keep the jersey pixel-identical to the insert-name screen.
+   The shared onboard-jersey.css owns the stage, image, glow and name geometry.
+   Step 2 adds only the number and picker controls. */
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
-  flex:0 0 clamp(286px,34dvh,320px)!important;
-  width:min(100%,390px)!important;
-  height:clamp(286px,34dvh,320px)!important;
-  min-height:286px!important;
-  max-height:320px!important;
-  margin:-12px auto -10px!important;
-  overflow:hidden!important;
-}
-
-#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
-  top:-2%!important;
-  width:94%!important;
-  height:94%!important;
-  filter:drop-shadow(0 16px 28px rgba(0,0,0,.52))!important;
-}
-
-#onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-glow{
-  top:44%!important;
-  width:104%!important;
-  opacity:.38!important;
-  filter:blur(8px)!important;
+  flex:0 0 auto!important;
 }
 
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
-  top:22.5%!important;
-  width:58%!important;
-  color:#fff!important;
-  font-size:clamp(16px,4.35vw,21px)!important;
-  letter-spacing:.02em!important;
-  text-shadow:0 2px 5px rgba(0,0,0,.92)!important;
   filter:none!important;
   opacity:1!important;
   animation:none!important;
-  transform:translate3d(-50%,0,0)!important;
   -webkit-font-smoothing:antialiased!important;
   backface-visibility:hidden!important;
 }
 
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
-  top:31%!important;
-  width:48%!important;
-  font-size:clamp(82px,22vw,108px)!important;
+  top:30.5%!important;
+  width:44%!important;
+  font-size:clamp(66px,18.5vw,88px)!important;
 }
 
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-shine{
@@ -226,28 +201,6 @@
 #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-number-footer{flex:0 0 auto!important;margin:6px auto 0!important;}
 
 @media(max-height:760px){
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-preview.onboard-jersey-stage{
-    flex-basis:clamp(248px,32dvh,278px)!important;
-    height:clamp(248px,32dvh,278px)!important;
-    min-height:248px!important;
-    max-height:278px!important;
-    margin-top:-14px!important;
-    margin-bottom:-8px!important;
-  }
-
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual > .onboard-jersey-image{
-    width:92%!important;
-    height:92%!important;
-  }
-
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-name{
-    font-size:clamp(14px,4vw,18px)!important;
-  }
-
-  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
-    font-size:clamp(72px,20vw,94px)!important;
-  }
-
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-picker-shell{
     flex-basis:112px!important;
     height:112px!important;
@@ -258,6 +211,20 @@
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-track{top:37px;}
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-option{height:37px;min-height:37px;line-height:37px;font-size:23px;}
   #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .jersey-number-selection{top:37px;height:37px;}
+}
+
+@media(max-width:390px){
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
+    top:31%!important;
+    font-size:clamp(64px,18vw,82px)!important;
+  }
+}
+
+@media(max-width:360px),(max-height:700px){
+  #onboard.onboard-v1 .onboard-step.onboard-number-step[data-onboard-step="1"] .onboard-jersey-visual .onboard-jersey-number{
+    top:31.5%!important;
+    font-size:60px!important;
+  }
 }
 
 @media(prefers-reduced-motion:reduce){
