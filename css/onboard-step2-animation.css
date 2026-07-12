@@ -1,83 +1,37 @@
 /* ==========================================================
-   STEP 2 — Animation
-   Owns entrance/drop animation only.
-   Does not style marker state, marker size, layout, or web lines.
-
-   Button hitbox never moves. Only real marker layers animate:
-   .marker-base, .marker-shirt, .marker-label
+   STEP 2 — Marker entrance animation
+   The button hitbox stays fixed. Only the canonical visual layers animate.
+   Delay is supplied per marker through --spawn-delay.
    ========================================================== */
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base{
   opacity:0;
-  animation:jerseyOnlySpawn 700ms cubic-bezier(.19,1.24,.34,1) forwards!important;
+  animation:markerBaseSpawn 620ms cubic-bezier(.19,1.18,.34,1) var(--spawn-delay,0ms) forwards!important;
   will-change:transform,opacity;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base{
-  --spawn-x:0;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt,
 .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
-  --spawn-x:-50%;
+  opacity:0;
+  animation:markerLabelSpawn 620ms cubic-bezier(.19,1.18,.34,1) var(--spawn-delay,0ms) forwards!important;
+  will-change:transform,opacity;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(1) .marker-label{animation-delay:150ms!important;}
+@keyframes markerBaseSpawn{
+  0%{opacity:0;transform:translateY(-92px) scale(.82,.672)}
+  58%{opacity:1;transform:translateY(10px) scale(1.1,.902)}
+  78%{opacity:1;transform:translateY(-4px) scale(.98,.804)}
+  100%{opacity:1;transform:scaleY(.82) translateY(2%)}
+}
 
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(2) .marker-label{animation-delay:300ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(3) .marker-label{animation-delay:450ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(4) .marker-label{animation-delay:600ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(5) .marker-label{animation-delay:750ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(6) .marker-label{animation-delay:900ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(7) .marker-label{animation-delay:1050ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(8) .marker-label{animation-delay:1200ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(9) .marker-label{animation-delay:1350ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(10) .marker-label{animation-delay:1500ms!important;}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11) .marker-base,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11) .marker-shirt,
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker.is-spawning:nth-child(11) .marker-label{animation-delay:1650ms!important;}
-
-@keyframes jerseyOnlySpawn{
-  0%{opacity:0;transform:translate(var(--spawn-x,0),-112px) scale(.82);}
-  58%{opacity:1;transform:translate(var(--spawn-x,0),12px) scale(1.12);}
-  78%{opacity:1;transform:translate(var(--spawn-x,0),-5px) scale(.98);}
-  100%{opacity:1;transform:translate(var(--spawn-x,0),0) scale(1);}
+@keyframes markerLabelSpawn{
+  0%{opacity:0;transform:translate(-50%,-92px) scale(.82)}
+  58%{opacity:1;transform:translate(-50%,10px) scale(1.1)}
+  78%{opacity:1;transform:translate(-50%,-4px) scale(.98)}
+  100%{opacity:1;transform:translateX(-50%) scale(1)}
 }
 
 @media (prefers-reduced-motion:reduce){
   .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base,
-  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-shirt,
   .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
     opacity:1!important;
     animation:none!important;

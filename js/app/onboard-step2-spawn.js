@@ -1,13 +1,14 @@
-/* STEP 2/3 onboarding repair + safe spawn trigger
-   Stability-safe: no MutationObserver, no repeating timers.
-   Restores labels, upgrades marker internals to real image layers,
-   and runs marker spawn once when Step 2 becomes visible.
+/* STEP 2/3 onboarding repair + canonical marker setup.
+   No MutationObserver or repeating timer. The marker system is initialised
+   once, starts with no default selection, and spawns once when Step 2 appears.
 */
 
 const MARKER_GREY_SRC = 'assets/onboarding/position-marker-grey.png';
 const MARKER_ACTIVE_SRC = 'assets/onboarding/position-marker-active.png';
+const MARKER_SPAWN_STAGGER_MS = 75;
+const MARKER_SPAWN_DURATION_MS = 620;
 
-let lastSpawnKey = "";
+let lastSpawnKey = '';
 let spawnCleanupTimer = null;
 
 function academyProgress(stepNumber){
@@ -34,20 +35,23 @@ function repairOnboardingLabels(){
 function syncMarkerImageState(marker){
   const base = marker.querySelector('.marker-base');
   if(!base) return;
+  const nextSrc = marker.classList.contains('is-selected') ? MARKER_ACTIVE_SRC : MARKER_GREY_SRC;
+  if(!base.src.endsWith(nextSrc)) base.src = nextSrc;
+}
 
-  const isActive = marker.classList.contains('is-selected') || marker.classList.contains('selected') || marker.classList.contains('active');
-  const nextSrc = isActive ? MARKER_ACTIVE_SRC : MARKER_GREY_SRC;
-
-  if(!base.src.endsWith(nextSrc)){
-    base.src = nextSrc;
-  }
+function syncAllMarkerImages(){
+  document.querySelectorAll('.onboard-step[data-onboard-step="2"] .position-marker').forEach(syncMarkerImageState);
 }
 
 function upgradeMarkerLayers(){
-  const markers = [...document.querySelectorAll('.onboard-step[data-onboard-step="2"] .position-marker')];
+  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  if(!step2) return [];
 
-  markers.forEach(marker => {
-    const label = marker.dataset.pos || marker.querySelector('.marker-label')?.textContent?.trim() || marker.querySelector('b')?.textContent?.trim() || '';
+  const markers = [...step2.querySelectorAll('.position-marker')];
+  const firstInitialisation = step2.dataset.markerSystemInitialised !== 'true';
+
+  markers.forEach((marker, index) => {
+    const label = marker.dataset.pos || marker.dataset.position || marker.querySelector('.marker-label')?.textContent?.trim() || marker.querySelector('b')?.textContent?.trim() || '';
 
     if(marker.dataset.layered !== 'true'){
       marker.dataset.layered = 'true';
@@ -56,12 +60,21 @@ function upgradeMarkerLayers(){
         <img class="marker-base" src="${MARKER_GREY_SRC}" alt="" aria-hidden="true">
         <b class="marker-label" aria-hidden="true">${label}</b>
       `;
+    }
+
+    marker.style.setProperty('--spawn-delay', `${index * MARKER_SPAWN_STAGGER_MS}ms`);
+
+    if(firstInitialisation){
+      marker.classList.remove('active', 'selected', 'is-selected', 'is-linked');
     } else {
-      marker.querySelector('.marker-shirt')?.remove();
+      marker.classList.remove('active', 'selected');
     }
 
     syncMarkerImageState(marker);
   });
+
+  if(firstInitialisation) step2.dataset.markerSystemInitialised = 'true';
+  return markers;
 }
 
 function isVisibleStep2(step){
@@ -72,13 +85,9 @@ function isVisibleStep2(step){
 
 function maybeRunStep2Spawn(){
   repairOnboardingLabels();
-  upgradeMarkerLayers();
-
+  const markers = upgradeMarkerLayers();
   const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  if(!isVisibleStep2(step2)) return;
-
-  const markers = [...step2.querySelectorAll('.position-marker')];
-  if(!markers.length) return;
+  if(!isVisibleStep2(step2) || !markers.length) return;
 
   const key = `${performance.timeOrigin}-${markers.length}-${step2.dataset.spawnRun || '0'}`;
   if(lastSpawnKey === key) return;
@@ -95,13 +104,14 @@ function maybeRunStep2Spawn(){
   });
 
   window.clearTimeout(spawnCleanupTimer);
+  const finalDelay = Math.max(0, markers.length - 1) * MARKER_SPAWN_STAGGER_MS;
   spawnCleanupTimer = window.setTimeout(() => {
     markers.forEach(marker => {
       marker.classList.remove('is-spawning');
       syncMarkerImageState(marker);
     });
     step2.dataset.spawnRun = String(Number(step2.dataset.spawnRun || 0) + 1);
-  }, 2850);
+  }, finalDelay + MARKER_SPAWN_DURATION_MS + 100);
 }
 
 function scheduleOnboardingRepair(){
@@ -109,6 +119,7 @@ function scheduleOnboardingRepair(){
   setTimeout(maybeRunStep2Spawn, 120);
 }
 
+window.addEventListener('pitchiq:marker-state-change', syncAllMarkerImages);
 window.addEventListener('DOMContentLoaded', scheduleOnboardingRepair);
 window.addEventListener('load', scheduleOnboardingRepair);
 document.addEventListener('click', scheduleOnboardingRepair, true);

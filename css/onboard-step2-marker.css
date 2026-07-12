@@ -1,7 +1,7 @@
 /* ==========================================================
    STEP 2 — Unified 3D Marker System
-   Owns marker coordinate behavior, size, inactive/active skins,
-   selected halo, pitch-perspective treatment, z-index, and touch target.
+   Single source of truth for marker size, skin, selected halo,
+   pitch perspective, contact shadow, z-index and touch feedback.
 
    Canonical marker markup:
    button.position-marker
@@ -37,8 +37,6 @@
   border:0!important;
   border-radius:50%!important;
   background:none!important;
-  background-color:transparent!important;
-  background-image:none!important;
   box-shadow:none!important;
   color:#f7fff8!important;
   display:grid!important;
@@ -51,14 +49,12 @@
   isolation:isolate!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker::before,
-.onboard-step[data-onboard-step="2"] .marker-shirt::before,
-.onboard-step[data-onboard-step="2"] .marker-shirt::after{
+.onboard-step[data-onboard-step="2"] .position-marker::before{
   content:none!important;
   display:none!important;
 }
 
-/* Contact shadow anchors every tactical piece to the angled pitch. */
+/* Contact shadow anchors each tactical piece to the angled pitch. */
 .onboard-step[data-onboard-step="2"] .position-marker::after{
   content:""!important;
   position:absolute!important;
@@ -88,15 +84,12 @@
   z-index:0!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo,
-.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-halo,
-.onboard-step[data-onboard-step="2"] .position-marker.active .marker-halo{
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo{
   opacity:1!important;
   animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
 }
 
-/* The base is compressed vertically to read as a raised tactical puck
-   sitting in the same perspective plane as the pitch. */
+/* Vertically compressed base reads as a raised puck in pitch perspective. */
 .onboard-step[data-onboard-step="2"] .marker-base{
   position:absolute!important;
   inset:0!important;
@@ -109,26 +102,6 @@
   transform-origin:50% 72%!important;
   filter:drop-shadow(0 2px 0 rgba(255,255,255,.18)) drop-shadow(0 5px 2px rgba(0,0,0,.75))!important;
   z-index:1!important;
-}
-
-.onboard-step[data-onboard-step="2"] .marker-shirt{
-  position:absolute!important;
-  top:20%!important;
-  left:50%!important;
-  transform:translateX(-50%)!important;
-  width:42%!important;
-  height:32%!important;
-  display:block!important;
-  pointer-events:none!important;
-  z-index:2!important;
-}
-
-.onboard-step[data-onboard-step="2"] .marker-shirt-img{
-  width:100%!important;
-  height:100%!important;
-  display:block!important;
-  object-fit:contain!important;
-  filter:grayscale(1) brightness(1.7) drop-shadow(0 2px 1px rgba(0,0,0,.9))!important;
 }
 
 .onboard-step[data-onboard-step="2"] .marker-label{
@@ -148,16 +121,8 @@
   z-index:3!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.active .marker-shirt-img,
-.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-shirt-img,
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-shirt-img{
-  filter:drop-shadow(0 2px 1px rgba(0,0,0,.8))!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.active .marker-label,
-.onboard-step[data-onboard-step="2"] .position-marker.selected .marker-label,
 .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-label{
-  color:#ffffff!important;
+  color:#fff!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.is-linked .marker-base{
@@ -179,21 +144,15 @@
 }
 
 @media(max-width:430px){
-  .onboard-step[data-onboard-step="2"] .position-marker{
-    width:54px!important;
-  }
+  .onboard-step[data-onboard-step="2"] .position-marker{width:54px!important;}
 }
 
 @media(max-width:390px){
-  .onboard-step[data-onboard-step="2"] .position-marker{
-    width:50px!important;
-  }
+  .onboard-step[data-onboard-step="2"] .position-marker{width:50px!important;}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo,
-  .onboard-step[data-onboard-step="2"] .position-marker.selected .marker-halo,
-  .onboard-step[data-onboard-step="2"] .position-marker.active .marker-halo{
+  .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo{
     animation:none!important;
   }
 }
