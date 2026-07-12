@@ -1,39 +1,46 @@
 /* ==========================================================
-   STEP 2 — Marker entrance animation
-   The button hitbox stays fixed. Only the canonical visual layers animate.
+   STEP 2 — Unified marker entrance animation
+   Each complete tactical marker animates as one physical object.
+   Internal artwork, label, halo and contact shadow remain locked together.
    Delay is supplied per marker through --spawn-delay.
    ========================================================== */
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base{
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
   opacity:0;
-  animation:markerBaseSpawn 620ms cubic-bezier(.19,1.18,.34,1) var(--spawn-delay,0ms) forwards!important;
+  animation:markerUnitSpawn 620ms cubic-bezier(.19,1.18,.34,1) var(--spawn-delay,0ms) forwards!important;
   will-change:transform,opacity;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
-  opacity:0;
-  animation:markerLabelSpawn 620ms cubic-bezier(.19,1.18,.34,1) var(--spawn-delay,0ms) forwards!important;
-  will-change:transform,opacity;
+/* Internal layers retain their canonical transforms throughout spawn. */
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base,
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label,
+.onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-halo{
+  animation:none!important;
 }
 
-@keyframes markerBaseSpawn{
-  0%{opacity:0;transform:translateY(-92px) scale(.82,.672)}
-  58%{opacity:1;transform:translateY(10px) scale(1.1,.902)}
-  78%{opacity:1;transform:translateY(-4px) scale(.98,.804)}
-  100%{opacity:1;transform:scaleY(.82) translateY(2%)}
-}
-
-@keyframes markerLabelSpawn{
-  0%{opacity:0;transform:translate(-50%,-92px) scale(.82)}
-  58%{opacity:1;transform:translate(-50%,10px) scale(1.1)}
-  78%{opacity:1;transform:translate(-50%,-4px) scale(.98)}
-  100%{opacity:1;transform:translateX(-50%) scale(1)}
+@keyframes markerUnitSpawn{
+  0%{
+    opacity:0;
+    transform:translate(-50%,calc(-50% - 92px)) scale(.82);
+  }
+  58%{
+    opacity:1;
+    transform:translate(-50%,calc(-50% + 10px)) scale(1.1);
+  }
+  78%{
+    opacity:1;
+    transform:translate(-50%,calc(-50% - 4px)) scale(.98);
+  }
+  100%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-base,
-  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning .marker-label{
+  .onboard-step[data-onboard-step="2"] .position-marker.is-spawning{
     opacity:1!important;
     animation:none!important;
+    transform:translate(-50%,-50%)!important;
   }
 }
