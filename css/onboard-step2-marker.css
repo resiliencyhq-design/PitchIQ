@@ -1,14 +1,12 @@
 /* ==========================================================
-   STEP 2 — Marker System
+   STEP 2 — Unified 3D Marker System
    Owns marker coordinate behavior, size, inactive/active skins,
-   selected halo, z-index, and touch target.
+   selected halo, pitch-perspective treatment, z-index, and touch target.
 
    Canonical marker markup:
    button.position-marker
      span.marker-halo
      img.marker-base
-     span.marker-shirt
-       img.marker-shirt-img
      b.marker-label
    ========================================================== */
 
@@ -27,12 +25,13 @@
 .onboard-step[data-onboard-step="2"] .position-marker{
   position:absolute!important;
   z-index:4!important;
-  width:clamp(42px,12vw,58px)!important;
+  width:clamp(46px,12vw,58px)!important;
   min-width:0!important;
   min-height:0!important;
   height:auto!important;
   aspect-ratio:1!important;
   transform:translate(-50%,-50%)!important;
+  transform-style:preserve-3d!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
@@ -49,14 +48,32 @@
   opacity:1!important;
   overflow:visible!important;
   touch-action:manipulation!important;
+  isolation:isolate!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker::before,
-.onboard-step[data-onboard-step="2"] .position-marker::after,
 .onboard-step[data-onboard-step="2"] .marker-shirt::before,
 .onboard-step[data-onboard-step="2"] .marker-shirt::after{
   content:none!important;
   display:none!important;
+}
+
+/* Contact shadow anchors every tactical piece to the angled pitch. */
+.onboard-step[data-onboard-step="2"] .position-marker::after{
+  content:""!important;
+  position:absolute!important;
+  left:10%!important;
+  right:10%!important;
+  bottom:-4%!important;
+  height:24%!important;
+  display:block!important;
+  border-radius:50%!important;
+  background:rgba(0,0,0,.58)!important;
+  filter:blur(4px)!important;
+  transform:translateZ(-1px) scaleX(.94)!important;
+  opacity:.78!important;
+  pointer-events:none!important;
+  z-index:0!important;
 }
 
 .onboard-step[data-onboard-step="2"] .marker-halo{
@@ -64,9 +81,10 @@
   inset:-10px!important;
   border-radius:50%!important;
   pointer-events:none!important;
-  background:radial-gradient(circle,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%)!important;
+  background:radial-gradient(ellipse at center,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%)!important;
   opacity:0!important;
   filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62))!important;
+  transform:scaleY(.82)!important;
   z-index:0!important;
 }
 
@@ -77,6 +95,8 @@
   animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
 }
 
+/* The base is compressed vertically to read as a raised tactical puck
+   sitting in the same perspective plane as the pitch. */
 .onboard-step[data-onboard-step="2"] .marker-base{
   position:absolute!important;
   inset:0!important;
@@ -85,6 +105,9 @@
   display:block!important;
   object-fit:contain!important;
   pointer-events:none!important;
+  transform:scaleY(.82) translateY(2%)!important;
+  transform-origin:50% 72%!important;
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.18)) drop-shadow(0 5px 2px rgba(0,0,0,.75))!important;
   z-index:1!important;
 }
 
@@ -105,13 +128,13 @@
   height:100%!important;
   display:block!important;
   object-fit:contain!important;
-  filter:grayscale(1) brightness(1.7)!important;
+  filter:grayscale(1) brightness(1.7) drop-shadow(0 2px 1px rgba(0,0,0,.9))!important;
 }
 
 .onboard-step[data-onboard-step="2"] .marker-label{
   position:absolute!important;
   left:50%!important;
-  bottom:18%!important;
+  bottom:20%!important;
   transform:translateX(-50%)!important;
   display:block!important;
   color:#f7fff8!important;
@@ -120,7 +143,7 @@
   line-height:1!important;
   letter-spacing:-.02em!important;
   text-align:center!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 5px rgba(0,0,0,.9)!important;
+  text-shadow:0 2px 1px rgba(0,0,0,1),0 0 5px rgba(0,0,0,.95)!important;
   pointer-events:none!important;
   z-index:3!important;
 }
@@ -128,13 +151,21 @@
 .onboard-step[data-onboard-step="2"] .position-marker.active .marker-shirt-img,
 .onboard-step[data-onboard-step="2"] .position-marker.selected .marker-shirt-img,
 .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-shirt-img{
-  filter:none!important;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.8))!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker.active .marker-label,
 .onboard-step[data-onboard-step="2"] .position-marker.selected .marker-label,
 .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-label{
   color:#ffffff!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.is-linked .marker-base{
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.22)) drop-shadow(0 5px 2px rgba(0,0,0,.75)) brightness(1.08)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker:active{
+  transform:translate(-50%,-48%) scale(.98)!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker:focus-visible{
