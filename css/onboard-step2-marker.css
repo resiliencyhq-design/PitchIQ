@@ -2,9 +2,8 @@
    STEP 2 — Master Artwork Position Selector
 
    position-pitch-inactive.png supplies the complete inactive pitch and pucks.
-   position-pitch-active.png is aligned above it and clipped to reveal only the
-   selected active puck. Position markers are transparent accessible hit areas.
-   No puck rims, shirts, labels, shadows or glow are drawn with CSS.
+   Each transparent marker button owns one active puck image that is revealed
+   only for the selected position. No full-pitch clipping is used.
    ========================================================== */
 
 .onboard-step[data-onboard-step="2"] .position-pitch-inactive{
@@ -13,18 +12,7 @@
 }
 
 .onboard-step[data-onboard-step="2"] .position-pitch-active{
-  display:block!important;
-  z-index:2!important;
-  opacity:0!important;
-  clip-path:circle(0 at var(--selected-x,50%) var(--selected-y,50%))!important;
-  transition:clip-path 180ms cubic-bezier(.2,.8,.2,1),opacity 100ms ease-out!important;
-  pointer-events:none!important;
-  will-change:clip-path,opacity!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-pitch-active.has-selection{
-  opacity:1!important;
-  clip-path:circle(clamp(30px,9vw,42px) at var(--selected-x) var(--selected-y))!important;
+  display:none!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker-box{
@@ -68,6 +56,59 @@
   content:none!important;
 }
 
+.onboard-step[data-onboard-step="2"] .selected-puck-image{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  z-index:2!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  transform:translate(-50%,-50%) scale(.88)!important;
+  transform-origin:center!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  filter:drop-shadow(0 5px 3px rgba(0,0,0,.72))!important;
+  transition:opacity 120ms ease-out,transform 180ms cubic-bezier(.2,.8,.2,1)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .selected-puck-label{
+  position:absolute!important;
+  left:50%!important;
+  bottom:18%!important;
+  z-index:3!important;
+  display:block!important;
+  transform:translateX(-50%) scale(.88)!important;
+  transform-origin:center!important;
+  color:#101700!important;
+  font-family:inherit!important;
+  font-size:clamp(10px,2.8vw,13px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  text-align:center!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.18)!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  transition:opacity 120ms ease-out,transform 180ms cubic-bezier(.2,.8,.2,1)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.has-active-puck .selected-puck-image,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .selected-puck-image,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .selected-puck-image,
+.onboard-step[data-onboard-step="2"] .position-marker.active .selected-puck-image{
+  opacity:1!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-marker.has-active-puck .selected-puck-label,
+.onboard-step[data-onboard-step="2"] .position-marker.is-selected .selected-puck-label,
+.onboard-step[data-onboard-step="2"] .position-marker.selected .selected-puck-label,
+.onboard-step[data-onboard-step="2"] .position-marker.active .selected-puck-label{
+  opacity:1!important;
+  transform:translateX(-50%) scale(1)!important;
+}
+
 .onboard-step[data-onboard-step="2"] .marker-accessible-label{
   position:absolute!important;
   width:1px!important;
@@ -94,14 +135,11 @@
     width:58px!important;
     height:58px!important;
   }
-
-  .onboard-step[data-onboard-step="2"] .position-pitch-active.has-selection{
-    clip-path:circle(34px at var(--selected-x) var(--selected-y))!important;
-  }
 }
 
 @media(prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-pitch-active{
+  .onboard-step[data-onboard-step="2"] .selected-puck-image,
+  .onboard-step[data-onboard-step="2"] .selected-puck-label{
     transition:none!important;
   }
 }
