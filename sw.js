@@ -1,4 +1,4 @@
-const CACHE="pitchiq-onboarding-type-step3-20260713";
+const CACHE="pitchiq-onboarding-heading-hard-lock-20260713";
 const ASSETS=[
   "./",
   "./index.html",
@@ -18,7 +18,7 @@ const ASSETS=[
   "./css/onboard-step2-animation.css?v=sprint-8-4-1-marker-consolidation-20260712",
   "./css/onboard-jersey.css?v=sprint-8-4-number-flow-fix-20260710",
   "./css/onboard-number.css?v=sprint-8-3-4-hero-jersey-20260711",
-  "./css/onboard-typography-lock.css?v=onboarding-type-lock-step2-match-20260713",
+  "./css/onboard-typography-lock.css?v=onboarding-heading-hard-lock-20260713",
   "./css/onboard-step3-layout.css?v=step3-centred-layout-20260713",
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
   "./js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710",
