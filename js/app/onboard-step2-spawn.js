@@ -15,6 +15,28 @@ function academyProgress(stepNumber){
   return `<div class="academy-progress" aria-label="Step ${stepNumber} of 3"><span class="active"></span><i></i><span class="${stepNumber >= 2 ? 'active' : ''}"></span><i></i><span class="${stepNumber >= 3 ? 'active' : ''}"></span></div>`;
 }
 
+function standardiseStepHeader(step, headingText){
+  if(!step) return;
+
+  let subtitle = step.querySelector('.onboard-subtitle');
+  let heading = step.querySelector('.onboard-heading, .onboard-position-heading, h1');
+
+  if(!subtitle && heading){
+    heading.insertAdjacentHTML('beforebegin', '<p class="onboard-subtitle">MAKE IT YOURS</p>');
+    subtitle = step.querySelector('.onboard-subtitle');
+  }
+
+  if(subtitle){
+    subtitle.className = 'onboard-subtitle';
+    subtitle.textContent = 'MAKE IT YOURS';
+  }
+
+  if(heading){
+    heading.className = 'onboard-heading';
+    heading.textContent = headingText;
+  }
+}
+
 function repairOnboardingLabels(){
   const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
   const step3 = document.querySelector('.onboard-step[data-onboard-step="3"]');
@@ -22,22 +44,12 @@ function repairOnboardingLabels(){
   if(step2 && !step2.querySelector('.academy-progress')){
     step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
   }
-
-  if(step2){
-    const heading = step2.querySelector('.onboard-position-heading');
-    if(heading) heading.textContent = 'Make it Yours';
-
-    let subtitle = step2.querySelector('.onboard-position-subtitle');
-    if(!subtitle && heading){
-      heading.insertAdjacentHTML('afterend', '<p class="onboard-subtitle onboard-position-subtitle">Choose your favourite position</p>');
-      subtitle = step2.querySelector('.onboard-position-subtitle');
-    }
-    if(subtitle) subtitle.textContent = 'Choose your favourite position';
-  }
+  standardiseStepHeader(step2, 'Choose your favourite position');
 
   if(step3 && !step3.querySelector('.academy-progress')){
     step3.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
   }
+  standardiseStepHeader(step3, 'Enter the Academy');
 }
 
 function syncMarkerImageState(marker){
