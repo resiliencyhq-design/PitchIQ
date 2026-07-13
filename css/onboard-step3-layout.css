@@ -1,0 +1,88 @@
+/* ==========================================================
+   STEP 3 — Enter Academy layout lock
+   Centres the final onboarding composition as one column.
+   Does not change copy, colours, typography, or interactions.
+   ========================================================== */
+
+.onboard-v1:has(.onboard-step[data-onboard-step="3"]:not([hidden])){
+  padding-left:clamp(16px,4vw,22px)!important;
+  padding-right:clamp(16px,4vw,22px)!important;
+  overflow-x:hidden!important;
+}
+
+.onboard-content:has(.onboard-step[data-onboard-step="3"]:not([hidden])){
+  width:100%!important;
+  max-width:430px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  justify-items:center!important;
+  overflow:visible!important;
+}
+
+.onboard-step[data-onboard-step="3"]{
+  width:100%!important;
+  max-width:390px!important;
+  min-width:0!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  justify-items:center!important;
+  align-items:start!important;
+  align-content:start!important;
+  text-align:center!important;
+  overflow:visible!important;
+}
+
+.onboard-step[data-onboard-step="3"] > *{
+  min-width:0!important;
+  max-width:100%!important;
+  justify-self:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  transform:none!important;
+}
+
+.onboard-step[data-onboard-step="3"] .position-title,
+.onboard-step[data-onboard-step="3"] .academy-progress,
+.onboard-step[data-onboard-step="3"] .onboard-subtitle,
+.onboard-step[data-onboard-step="3"] .onboard-heading{
+  width:100%!important;
+  text-align:center!important;
+}
+
+.onboard-step[data-onboard-step="3"] .onboard-heading{
+  max-width:12ch!important;
+}
+
+.onboard-step[data-onboard-step="3"] .onboard-confirm-card{
+  width:min(100%,330px)!important;
+  margin-inline:auto!important;
+  justify-self:center!important;
+  text-align:center!important;
+}
+
+.onboard-step[data-onboard-step="3"] .onboard-step-footer{
+  width:min(100%,330px)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  justify-self:center!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+.onboard-step[data-onboard-step="3"] .onboard-step-footer > button{
+  width:100%!important;
+  margin-inline:auto!important;
+}
+
+@media(max-width:390px){
+  .onboard-step[data-onboard-step="3"]{
+    max-width:100%!important;
+  }
+
+  .onboard-step[data-onboard-step="3"] .onboard-confirm-card,
+  .onboard-step[data-onboard-step="3"] .onboard-step-footer{
+    width:min(100%,320px)!important;
+  }
+}
