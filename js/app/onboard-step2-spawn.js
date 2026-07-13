@@ -1,12 +1,12 @@
-/* STEP 2/3 onboarding repair + canonical marker setup.
-   No MutationObserver or repeating timer. The marker system is initialised
-   once, starts with no default selection, and spawns once when Step 2 appears.
+/* STEP 2/3 onboarding repair + master-art position selector.
+   The inactive pitch is the visible design master. The active master sits above
+   it and is clipped to reveal only the selected puck. Marker buttons remain
+   transparent hit targets so interaction and accessibility are preserved.
 */
 
-const MARKER_GREY_SRC = 'assets/onboarding/position-marker-grey.png';
-const MARKER_ACTIVE_SRC = 'assets/onboarding/position-marker-active.png';
 const MARKER_SPAWN_STAGGER_MS = 75;
 const MARKER_SPAWN_DURATION_MS = 620;
+const ACTIVE_PITCH_SRC = 'assets/onboarding/position-pitch-active.png?v=master-pucks-20260713';
 
 let lastSpawnKey = '';
 let spawnCleanupTimer = null;
@@ -37,6 +37,24 @@ function standardiseStepHeader(step, headingText){
   }
 }
 
+function ensureActivePitchLayer(step2){
+  const selector = step2?.querySelector('.position-selector');
+  const inactive = selector?.querySelector('.position-pitch-inactive');
+  if(!selector || !inactive) return null;
+
+  let active = selector.querySelector('.position-pitch-active');
+  if(!active){
+    active = document.createElement('img');
+    active.className = 'position-pitch-layer position-pitch-active';
+    active.src = ACTIVE_PITCH_SRC;
+    active.alt = '';
+    active.setAttribute('aria-hidden', 'true');
+    inactive.insertAdjacentElement('afterend', active);
+  }
+
+  return active;
+}
+
 function repairOnboardingLabels(){
   const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
   const step3 = document.querySelector('.onboard-step[data-onboard-step="3"]');
@@ -45,6 +63,7 @@ function repairOnboardingLabels(){
     step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
   }
   standardiseStepHeader(step2, 'Choose your favourite position');
+  ensureActivePitchLayer(step2);
 
   if(step3 && !step3.querySelector('.academy-progress')){
     step3.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
@@ -52,15 +71,24 @@ function repairOnboardingLabels(){
   standardiseStepHeader(step3, 'Enter the Academy');
 }
 
-function syncMarkerImageState(marker){
-  const base = marker.querySelector('.marker-base');
-  if(!base) return;
-  const nextSrc = marker.classList.contains('is-selected') ? MARKER_ACTIVE_SRC : MARKER_GREY_SRC;
-  if(!base.src.endsWith(nextSrc)) base.src = nextSrc;
-}
+function syncActivePitch(marker = null){
+  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  const active = ensureActivePitchLayer(step2);
+  if(!active) return;
 
-function syncAllMarkerImages(){
-  document.querySelectorAll('.onboard-step[data-onboard-step="2"] .position-marker').forEach(syncMarkerImageState);
+  const selected = marker || step2?.querySelector('.position-marker.is-selected, .position-marker.selected, .position-marker.active');
+  if(!selected){
+    active.classList.remove('has-selection');
+    active.style.removeProperty('--selected-x');
+    active.style.removeProperty('--selected-y');
+    return;
+  }
+
+  const x = selected.style.left || `${selected.offsetLeft}px`;
+  const y = selected.style.top || `${selected.offsetTop}px`;
+  active.style.setProperty('--selected-x', x);
+  active.style.setProperty('--selected-y', y);
+  active.classList.add('has-selection');
 }
 
 function upgradeMarkerLayers(){
@@ -71,17 +99,10 @@ function upgradeMarkerLayers(){
   const firstInitialisation = step2.dataset.markerSystemInitialised !== 'true';
 
   markers.forEach((marker, index) => {
-    const label = marker.dataset.pos || marker.dataset.position || marker.querySelector('.marker-label')?.textContent?.trim() || marker.querySelector('b')?.textContent?.trim() || '';
-
-    if(marker.dataset.layered !== 'true'){
-      marker.dataset.layered = 'true';
-      marker.innerHTML = `
-        <span class="marker-halo" aria-hidden="true"></span>
-        <img class="marker-base" src="${MARKER_GREY_SRC}" alt="" aria-hidden="true">
-        <b class="marker-label" aria-hidden="true">${label}</b>
-      `;
-    }
-
+    const label = marker.dataset.pos || marker.dataset.position || marker.textContent?.trim() || '';
+    marker.dataset.layered = 'master-art';
+    marker.setAttribute('aria-label', marker.getAttribute('aria-label') || `Select ${label}`);
+    marker.innerHTML = `<span class="marker-accessible-label">${label}</span>`;
     marker.style.setProperty('--spawn-delay', `${index * MARKER_SPAWN_STAGGER_MS}ms`);
 
     if(firstInitialisation){
@@ -89,11 +110,10 @@ function upgradeMarkerLayers(){
     } else {
       marker.classList.remove('active', 'selected');
     }
-
-    syncMarkerImageState(marker);
   });
 
   if(firstInitialisation) step2.dataset.markerSystemInitialised = 'true';
+  syncActivePitch();
   return markers;
 }
 
@@ -117,7 +137,6 @@ function maybeRunStep2Spawn(){
 
   requestAnimationFrame(() => {
     markers.forEach(marker => {
-      syncMarkerImageState(marker);
       void marker.offsetWidth;
       marker.classList.add('is-spawning');
     });
@@ -126,10 +145,7 @@ function maybeRunStep2Spawn(){
   window.clearTimeout(spawnCleanupTimer);
   const finalDelay = Math.max(0, markers.length - 1) * MARKER_SPAWN_STAGGER_MS;
   spawnCleanupTimer = window.setTimeout(() => {
-    markers.forEach(marker => {
-      marker.classList.remove('is-spawning');
-      syncMarkerImageState(marker);
-    });
+    markers.forEach(marker => marker.classList.remove('is-spawning'));
     step2.dataset.spawnRun = String(Number(step2.dataset.spawnRun || 0) + 1);
   }, finalDelay + MARKER_SPAWN_DURATION_MS + 100);
 }
@@ -139,7 +155,16 @@ function scheduleOnboardingRepair(){
   setTimeout(maybeRunStep2Spawn, 120);
 }
 
-window.addEventListener('pitchiq:marker-state-change', syncAllMarkerImages);
+document.addEventListener('click', event => {
+  const marker = event.target.closest?.('.onboard-step[data-onboard-step="2"] .position-marker');
+  if(!marker) return;
+  requestAnimationFrame(() => syncActivePitch(marker));
+}, true);
+
+window.addEventListener('pitchiq:marker-state-change', event => {
+  const marker = event.detail?.marker || document.querySelector('.onboard-step[data-onboard-step="2"] .position-marker.is-selected');
+  syncActivePitch(marker);
+});
 window.addEventListener('DOMContentLoaded', scheduleOnboardingRepair);
 window.addEventListener('load', scheduleOnboardingRepair);
 document.addEventListener('click', scheduleOnboardingRepair, true);
