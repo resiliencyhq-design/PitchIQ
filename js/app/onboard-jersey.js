@@ -106,51 +106,8 @@ function mountAllJerseyComponents() {
   ).forEach(mountJerseyComponent);
 }
 
-async function playJerseyExit(button) {
-  const preview = button?.closest('.onboard-step')?.querySelector('.onboard-jersey-stage') || document.querySelector(
-    '.onboard-step[data-onboard-step="1"] .onboard-jersey-stage'
-  );
-
-  if (!preview || REDUCED_MOTION) return;
-
-  button?.setAttribute("disabled", "true");
-  preview.classList.remove("is-idle", "is-entering");
-  preview.classList.add("is-exiting");
-  document.body.classList.add("jersey-marker-handoff");
-
-  await new Promise(resolve => window.setTimeout(resolve, 560));
-}
-
-function bindJerseyContinueTransition() {
-  document.addEventListener(
-    "click",
-    async event => {
-      const button = event.target.closest?.('[data-action="onboard-next-name"]');
-      if (!button || button.dataset.jerseyTransitionBypass === "true") return;
-
-      const input = document.getElementById("nameInput");
-      if (!input?.value?.trim()) return;
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      button.dataset.jerseyTransitionBypass = "true";
-      await playJerseyExit(button);
-      button.removeAttribute("disabled");
-      button.click();
-
-      window.setTimeout(() => {
-        delete button.dataset.jerseyTransitionBypass;
-        document.body.classList.remove("jersey-marker-handoff");
-      }, 420);
-    },
-    true
-  );
-}
-
 function initialiseJerseyComponent() {
   mountAllJerseyComponents();
-  bindJerseyContinueTransition();
 
   const app = document.getElementById("app");
   if (!app) return;
