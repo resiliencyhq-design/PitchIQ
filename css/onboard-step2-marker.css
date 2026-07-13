@@ -1,158 +1,107 @@
 /* ==========================================================
-   STEP 2 — Unified 3D Marker System
-   Single source of truth for marker size, skin, selected halo,
-   pitch perspective, contact shadow, z-index and touch feedback.
+   STEP 2 — Master Artwork Position Selector
 
-   Canonical marker markup:
-   button.position-marker
-     span.marker-halo
-     img.marker-base
-     b.marker-label
+   position-pitch-inactive.png supplies the complete inactive pitch and pucks.
+   position-pitch-active.png is aligned above it and clipped to reveal only the
+   selected active puck. Position markers are transparent accessible hit areas.
+   No puck rims, shirts, labels, shadows or glow are drawn with CSS.
    ========================================================== */
+
+.onboard-step[data-onboard-step="2"] .position-pitch-inactive{
+  display:block!important;
+  z-index:1!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-pitch-active{
+  display:block!important;
+  z-index:2!important;
+  opacity:0!important;
+  clip-path:circle(0 at var(--selected-x,50%) var(--selected-y,50%))!important;
+  transition:clip-path 180ms cubic-bezier(.2,.8,.2,1),opacity 100ms ease-out!important;
+  pointer-events:none!important;
+  will-change:clip-path,opacity!important;
+}
+
+.onboard-step[data-onboard-step="2"] .position-pitch-active.has-selection{
+  opacity:1!important;
+  clip-path:circle(clamp(30px,9vw,42px) at var(--selected-x) var(--selected-y))!important;
+}
 
 .onboard-step[data-onboard-step="2"] .position-marker-box{
   position:absolute!important;
   inset:0!important;
-  z-index:4!important;
+  z-index:5!important;
   display:block!important;
   pointer-events:none!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker-box .position-marker{
-  pointer-events:auto!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker{
   position:absolute!important;
-  z-index:4!important;
-  width:clamp(46px,12vw,58px)!important;
-  min-width:0!important;
-  min-height:0!important;
-  height:auto!important;
+  z-index:5!important;
+  width:clamp(54px,15vw,70px)!important;
+  height:clamp(54px,15vw,70px)!important;
+  min-width:44px!important;
+  min-height:44px!important;
   aspect-ratio:1!important;
   transform:translate(-50%,-50%)!important;
-  transform-style:preserve-3d!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   border-radius:50%!important;
-  background:none!important;
+  background:transparent!important;
   box-shadow:none!important;
-  color:#f7fff8!important;
-  display:grid!important;
-  place-items:center!important;
-  font-size:0!important;
-  line-height:1!important;
+  color:transparent!important;
   opacity:1!important;
   overflow:visible!important;
+  pointer-events:auto!important;
   touch-action:manipulation!important;
-  isolation:isolate!important;
+  -webkit-tap-highlight-color:transparent!important;
 }
 
-.onboard-step[data-onboard-step="2"] .position-marker::before{
-  content:none!important;
-  display:none!important;
-}
-
-/* Contact shadow anchors each tactical piece to the angled pitch. */
-.onboard-step[data-onboard-step="2"] .position-marker::after{
-  content:""!important;
-  position:absolute!important;
-  left:10%!important;
-  right:10%!important;
-  bottom:-4%!important;
-  height:24%!important;
-  display:block!important;
-  border-radius:50%!important;
-  background:rgba(0,0,0,.58)!important;
-  filter:blur(4px)!important;
-  transform:translateZ(-1px) scaleX(.94)!important;
-  opacity:.78!important;
-  pointer-events:none!important;
-  z-index:0!important;
-}
-
-.onboard-step[data-onboard-step="2"] .marker-halo{
-  position:absolute!important;
-  inset:-10px!important;
-  border-radius:50%!important;
-  pointer-events:none!important;
-  background:radial-gradient(ellipse at center,rgba(215,255,53,.72) 0%,rgba(215,255,53,.32) 44%,rgba(215,255,53,0) 72%)!important;
-  opacity:0!important;
-  filter:drop-shadow(0 0 14px rgba(215,255,53,1)) drop-shadow(0 0 28px rgba(215,255,53,.62))!important;
-  transform:scaleY(.82)!important;
-  z-index:0!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo{
-  opacity:1!important;
-  animation:tacticalSelectedPulse 2s ease-in-out infinite!important;
-}
-
-/* Vertically compressed base reads as a raised puck in pitch perspective. */
-.onboard-step[data-onboard-step="2"] .marker-base{
-  position:absolute!important;
-  inset:0!important;
-  width:100%!important;
-  height:100%!important;
-  display:block!important;
-  object-fit:contain!important;
-  pointer-events:none!important;
-  transform:scaleY(.82) translateY(2%)!important;
-  transform-origin:50% 72%!important;
-  filter:drop-shadow(0 2px 0 rgba(255,255,255,.18)) drop-shadow(0 5px 2px rgba(0,0,0,.75))!important;
-  z-index:1!important;
-}
-
+.onboard-step[data-onboard-step="2"] .position-marker::before,
+.onboard-step[data-onboard-step="2"] .position-marker::after,
+.onboard-step[data-onboard-step="2"] .marker-halo,
+.onboard-step[data-onboard-step="2"] .marker-base,
+.onboard-step[data-onboard-step="2"] .marker-shirt,
 .onboard-step[data-onboard-step="2"] .marker-label{
+  display:none!important;
+  content:none!important;
+}
+
+.onboard-step[data-onboard-step="2"] .marker-accessible-label{
   position:absolute!important;
-  left:50%!important;
-  bottom:20%!important;
-  transform:translateX(-50%)!important;
-  display:block!important;
-  color:#f7fff8!important;
-  font-size:clamp(9px,2.6vw,12px)!important;
-  font-weight:1000!important;
-  line-height:1!important;
-  letter-spacing:-.02em!important;
-  text-align:center!important;
-  text-shadow:0 2px 1px rgba(0,0,0,1),0 0 5px rgba(0,0,0,.95)!important;
-  pointer-events:none!important;
-  z-index:3!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-label{
-  color:#fff!important;
-}
-
-.onboard-step[data-onboard-step="2"] .position-marker.is-linked .marker-base{
-  filter:drop-shadow(0 2px 0 rgba(255,255,255,.22)) drop-shadow(0 5px 2px rgba(0,0,0,.75)) brightness(1.08)!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker:active{
-  transform:translate(-50%,-48%) scale(.98)!important;
+  transform:translate(-50%,-50%) scale(.96)!important;
 }
 
 .onboard-step[data-onboard-step="2"] .position-marker:focus-visible{
-  outline:2px solid rgba(215,255,46,.9)!important;
-  outline-offset:3px!important;
-}
-
-@keyframes tacticalSelectedPulse{
-  0%,100%{scale:1;opacity:.92}
-  50%{scale:1.06;opacity:1}
-}
-
-@media(max-width:430px){
-  .onboard-step[data-onboard-step="2"] .position-marker{width:54px!important;}
+  outline:3px solid #d7ff2e!important;
+  outline-offset:2px!important;
 }
 
 @media(max-width:390px){
-  .onboard-step[data-onboard-step="2"] .position-marker{width:50px!important;}
+  .onboard-step[data-onboard-step="2"] .position-marker{
+    width:58px!important;
+    height:58px!important;
+  }
+
+  .onboard-step[data-onboard-step="2"] .position-pitch-active.has-selection{
+    clip-path:circle(34px at var(--selected-x) var(--selected-y))!important;
+  }
 }
 
-@media (prefers-reduced-motion:reduce){
-  .onboard-step[data-onboard-step="2"] .position-marker.is-selected .marker-halo{
-    animation:none!important;
+@media(prefers-reduced-motion:reduce){
+  .onboard-step[data-onboard-step="2"] .position-pitch-active{
+    transition:none!important;
   }
 }
