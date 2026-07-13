@@ -1,4 +1,4 @@
-const CACHE="pitchiq-onboarding-heading-hard-lock-20260713";
+const CACHE="pitchiq-step2-direct-selected-puck-20260714";
 const ASSETS=[
   "./",
   "./index.html",
@@ -13,7 +13,7 @@ const ASSETS=[
   "./css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703",
   "./css/onboard-step2-final-polish.css?v=step2-favorite-position-spacing-20260703",
   "./css/onboard-step2-layout.css?v=step2-refactor-layout-20260703",
-  "./css/onboard-step2-marker.css?v=sprint-8-4-1-marker-consolidation-20260712",
+  "./css/onboard-step2-marker.css?v=step2-direct-selected-puck-20260714",
   "./css/onboard-step2-web.css?v=step2-refactor-web-20260703",
   "./css/onboard-step2-animation.css?v=sprint-8-4-1-marker-consolidation-20260712",
   "./css/onboard-jersey.css?v=sprint-8-4-number-flow-fix-20260710",
@@ -23,7 +23,7 @@ const ASSETS=[
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
   "./js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710",
   "./js/app/onboard-number.js?v=sprint-8-3-2-iphone-wheel-20260710",
-  "./js/app/onboard-step2-spawn.js?v=sprint-8-4-1-marker-consolidation-20260712",
+  "./js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714",
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=sprint-8-4-1-marker-consolidation-20260712",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
@@ -37,7 +37,7 @@ const ASSETS=[
   "./assets/brand/logo.svg",
   "./assets/brand/welltrack-performance-logo.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-marker-grey.png",
-  "./assets/onboarding/position-marker-active.png",
+  "./assets/onboarding/position-marker-active.png?v=direct-selected-puck-20260714",
   "./assets/onboarding/position-pitch.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-inactive.png?v=hero-bg-top-20260623",
   "./assets/onboarding/position-pitch-active.png?v=hero-bg-top-20260623",
