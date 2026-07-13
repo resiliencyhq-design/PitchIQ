@@ -207,3 +207,70 @@
     min-height:56px!important;
   }
 }
+
+/* ==========================================================
+   ONBOARDING — Shared header typography and rhythm
+   Keeps the step label, progress, subtitle and heading aligned
+   across name, number, position and confirmation phases.
+   ========================================================== */
+
+.onboard-step .position-title{
+  margin:0!important;
+  font-size:clamp(11px,2.9vw,13px)!important;
+  font-weight:900!important;
+  line-height:1.1!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+}
+
+.onboard-step .academy-progress{
+  margin:6px auto 8px!important;
+}
+
+.onboard-step > .onboard-subtitle{
+  margin:0!important;
+  color:rgba(215,255,46,.88)!important;
+  font-size:clamp(14px,3.7vw,17px)!important;
+  font-weight:1000!important;
+  line-height:1.05!important;
+  letter-spacing:.04em!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+}
+
+.onboard-step > .onboard-heading{
+  width:min(100%,340px)!important;
+  margin:7px auto 0!important;
+  color:#f7fff8!important;
+  font-size:clamp(24px,6.5vw,31px)!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  letter-spacing:-.025em!important;
+  text-align:center!important;
+  text-shadow:0 3px 14px rgba(0,0,0,.45)!important;
+  text-transform:none!important;
+  white-space:normal!important;
+}
+
+.onboard-step[data-onboard-step="2"]{
+  row-gap:0!important;
+}
+
+.onboard-step[data-onboard-step="2"] > .onboard-heading{
+  margin-bottom:4px!important;
+}
+
+.onboard-step[data-onboard-step="3"]{
+  row-gap:0!important;
+}
+
+.onboard-step[data-onboard-step="3"] > .onboard-heading{
+  margin-bottom:clamp(18px,3vh,28px)!important;
+}
+
+@media(max-width:390px){
+  .onboard-step > .onboard-heading{
+    width:min(100%,320px)!important;
+    font-size:clamp(23px,6.2vw,29px)!important;
+  }
+}
