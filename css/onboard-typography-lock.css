@@ -35,6 +35,7 @@
   text-transform:uppercase!important;
 }
 
+/* One canonical heading scale for every onboarding phase. */
 #onboard .onboard-step > .onboard-heading,
 #onboard .onboard-step > .onboard-position-heading,
 #onboard .onboard-step[data-onboard-step="3"] > h1{
@@ -53,12 +54,6 @@
   text-transform:none!important;
   white-space:normal!important;
   text-wrap:balance!important;
-}
-
-/* The longer position prompt follows the same scale and uses a deliberate two-line width. */
-#onboard .onboard-step[data-onboard-step="2"] > .onboard-heading,
-#onboard .onboard-step[data-onboard-step="2"] > .onboard-position-heading{
-  max-width:330px!important;
 }
 
 /* Number is a second phase of Step 1 and must use the same header rhythm. */
@@ -83,6 +78,7 @@
   #onboard .onboard-step > .onboard-position-heading,
   #onboard .onboard-step[data-onboard-step="3"] > h1{
     width:min(92vw,330px)!important;
+    max-width:330px!important;
     margin-bottom:22px!important;
     font-size:28px!important;
     line-height:1.08!important;
