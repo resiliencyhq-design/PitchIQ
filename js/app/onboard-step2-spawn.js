@@ -23,8 +23,16 @@ function repairOnboardingLabels(){
     step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
   }
 
-  if(step2 && !step2.querySelector('.onboard-position-subtitle')){
-    step2.querySelector('.onboard-position-heading')?.insertAdjacentHTML('afterend', '<p class="onboard-subtitle onboard-position-subtitle">Favorite Position</p>');
+  if(step2){
+    const heading = step2.querySelector('.onboard-position-heading');
+    if(heading) heading.textContent = 'Make it Yours';
+
+    let subtitle = step2.querySelector('.onboard-position-subtitle');
+    if(!subtitle && heading){
+      heading.insertAdjacentHTML('afterend', '<p class="onboard-subtitle onboard-position-subtitle">Choose your favourite position</p>');
+      subtitle = step2.querySelector('.onboard-position-subtitle');
+    }
+    if(subtitle) subtitle.textContent = 'Choose your favourite position';
   }
 
   if(step3 && !step3.querySelector('.academy-progress')){
