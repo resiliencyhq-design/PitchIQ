@@ -3,6 +3,13 @@
    Final override for name, number, position and confirmation phases.
    ========================================================== */
 
+#onboard{
+  --onboard-heading-size:clamp(25px,6.8vw,32px);
+  --onboard-heading-width:340px;
+  --onboard-heading-line-height:1.08;
+  --onboard-heading-letter-spacing:-.035em;
+}
+
 #onboard .onboard-step > .position-title{
   margin:0!important;
   color:#d7ff2e!important;
@@ -35,28 +42,42 @@
   text-transform:uppercase!important;
 }
 
-/* One canonical heading scale for every onboarding phase. */
-#onboard .onboard-step > .onboard-heading,
-#onboard .onboard-step > .onboard-position-heading,
+/*
+   Canonical heading lock.
+   These selectors cover:
+   - Who's training?
+   - Choose your squad number
+   - Choose your favourite position
+   - Enter the Academy
+   No phase-specific heading scale is allowed below this point.
+*/
+#onboard .onboard-step > h1.onboard-heading,
+#onboard .onboard-number-step > h1.onboard-heading,
+#onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
+#onboard .onboard-step > h1.onboard-position-heading,
 #onboard .onboard-step[data-onboard-step="3"] > h1{
-  width:min(100%,340px)!important;
-  max-width:340px!important;
+  box-sizing:border-box!important;
+  width:min(100%,var(--onboard-heading-width))!important;
+  max-width:var(--onboard-heading-width)!important;
   margin:0 auto 24px!important;
   padding:0!important;
   color:#f7fff8!important;
   font-family:inherit!important;
-  font-size:clamp(25px,6.8vw,32px)!important;
+  font-size:var(--onboard-heading-size)!important;
+  font-style:normal!important;
+  font-stretch:normal!important;
   font-weight:1000!important;
-  line-height:1.08!important;
-  letter-spacing:-.035em!important;
+  line-height:var(--onboard-heading-line-height)!important;
+  letter-spacing:var(--onboard-heading-letter-spacing)!important;
   text-align:center!important;
   text-shadow:0 3px 14px rgba(0,0,0,.55)!important;
   text-transform:none!important;
   white-space:normal!important;
   text-wrap:balance!important;
+  transform:none!important;
+  scale:1!important;
 }
 
-/* Number is a second phase of Step 1 and must use the same header rhythm. */
 #onboard .onboard-number-step > .position-title,
 #onboard .onboard-number-step > .academy-progress,
 #onboard .onboard-number-step > .onboard-subtitle,
@@ -65,6 +86,11 @@
 }
 
 @media(max-width:390px){
+  #onboard{
+    --onboard-heading-size:28px;
+    --onboard-heading-width:330px;
+  }
+
   #onboard .onboard-step > .academy-progress{
     margin:10px auto 16px!important;
   }
@@ -74,18 +100,21 @@
     font-size:20px!important;
   }
 
-  #onboard .onboard-step > .onboard-heading,
-  #onboard .onboard-step > .onboard-position-heading,
+  #onboard .onboard-step > h1.onboard-heading,
+  #onboard .onboard-number-step > h1.onboard-heading,
+  #onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
+  #onboard .onboard-step > h1.onboard-position-heading,
   #onboard .onboard-step[data-onboard-step="3"] > h1{
-    width:min(92vw,330px)!important;
-    max-width:330px!important;
+    width:min(92vw,var(--onboard-heading-width))!important;
     margin-bottom:22px!important;
-    font-size:28px!important;
-    line-height:1.08!important;
   }
 }
 
 @media(max-width:360px),(max-height:700px){
+  #onboard{
+    --onboard-heading-size:25px;
+  }
+
   #onboard .onboard-step > .academy-progress{
     margin:8px auto 12px!important;
   }
@@ -95,10 +124,11 @@
     font-size:18px!important;
   }
 
-  #onboard .onboard-step > .onboard-heading,
-  #onboard .onboard-step > .onboard-position-heading,
+  #onboard .onboard-step > h1.onboard-heading,
+  #onboard .onboard-number-step > h1.onboard-heading,
+  #onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
+  #onboard .onboard-step > h1.onboard-position-heading,
   #onboard .onboard-step[data-onboard-step="3"] > h1{
     margin-bottom:16px!important;
-    font-size:25px!important;
   }
 }
