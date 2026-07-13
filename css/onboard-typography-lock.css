@@ -1,0 +1,108 @@
+/* ==========================================================
+   ONBOARDING — Shared typography and header rhythm
+   Final override for name, number, position and confirmation phases.
+   ========================================================== */
+
+#onboard .onboard-step > .position-title{
+  margin:0!important;
+  color:#d7ff2e!important;
+  font-family:inherit!important;
+  font-size:clamp(12px,3.2vw,14px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  letter-spacing:.12em!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+}
+
+#onboard .onboard-step > .academy-progress{
+  margin:12px auto 18px!important;
+}
+
+#onboard .onboard-step > .onboard-subtitle{
+  width:min(100%,340px)!important;
+  max-width:340px!important;
+  margin:0 auto 10px!important;
+  padding:0!important;
+  color:rgba(247,255,248,.72)!important;
+  font-family:inherit!important;
+  font-size:clamp(18px,4.8vw,22px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  letter-spacing:.06em!important;
+  text-align:center!important;
+  text-shadow:none!important;
+  text-transform:uppercase!important;
+}
+
+#onboard .onboard-step > .onboard-heading,
+#onboard .onboard-step > .onboard-position-heading,
+#onboard .onboard-step[data-onboard-step="3"] > h1{
+  width:min(100%,340px)!important;
+  max-width:340px!important;
+  margin:0 auto 24px!important;
+  padding:0!important;
+  color:#f7fff8!important;
+  font-family:inherit!important;
+  font-size:clamp(25px,6.8vw,32px)!important;
+  font-weight:1000!important;
+  line-height:1.08!important;
+  letter-spacing:-.035em!important;
+  text-align:center!important;
+  text-shadow:0 3px 14px rgba(0,0,0,.55)!important;
+  text-transform:none!important;
+  white-space:normal!important;
+  text-wrap:balance!important;
+}
+
+/* The longer position prompt follows the same scale and uses a deliberate two-line width. */
+#onboard .onboard-step[data-onboard-step="2"] > .onboard-heading,
+#onboard .onboard-step[data-onboard-step="2"] > .onboard-position-heading{
+  max-width:330px!important;
+}
+
+/* Number is a second phase of Step 1 and must use the same header rhythm. */
+#onboard .onboard-number-step > .position-title,
+#onboard .onboard-number-step > .academy-progress,
+#onboard .onboard-number-step > .onboard-subtitle,
+#onboard .onboard-number-step > .onboard-heading{
+  justify-self:center!important;
+}
+
+@media(max-width:390px){
+  #onboard .onboard-step > .academy-progress{
+    margin:10px auto 16px!important;
+  }
+
+  #onboard .onboard-step > .onboard-subtitle{
+    margin-bottom:9px!important;
+    font-size:20px!important;
+  }
+
+  #onboard .onboard-step > .onboard-heading,
+  #onboard .onboard-step > .onboard-position-heading,
+  #onboard .onboard-step[data-onboard-step="3"] > h1{
+    width:min(92vw,330px)!important;
+    margin-bottom:22px!important;
+    font-size:28px!important;
+    line-height:1.08!important;
+  }
+}
+
+@media(max-width:360px),(max-height:700px){
+  #onboard .onboard-step > .academy-progress{
+    margin:8px auto 12px!important;
+  }
+
+  #onboard .onboard-step > .onboard-subtitle{
+    margin-bottom:7px!important;
+    font-size:18px!important;
+  }
+
+  #onboard .onboard-step > .onboard-heading,
+  #onboard .onboard-step > .onboard-position-heading,
+  #onboard .onboard-step[data-onboard-step="3"] > h1{
+    margin-bottom:16px!important;
+    font-size:25px!important;
+  }
+}
