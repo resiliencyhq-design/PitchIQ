@@ -88,3 +88,7 @@ function initialise() {
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialise, { once: true });
 else initialise();
+
+import("./landing-swipe-iphone-hotfix.js?v=landing-swipe-hotfix-20260714").catch(error => {
+  console.warn("[PitchIQ] Landing swipe fallback failed to load", error);
+});
