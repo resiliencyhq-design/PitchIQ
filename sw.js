@@ -1,4 +1,4 @@
-const CACHE="pitchiq-sprint-9-0-academy-trial-mvp-20260714";
+const CACHE="pitchiq-sprint-9-1-landing-hotfix-20260714";
 const ASSETS=[
   "./",
   "./index.html",
@@ -21,7 +21,8 @@ const ASSETS=[
   "./css/onboard-typography-lock.css?v=step2-heading-exact-match-20260714",
   "./css/onboard-step2-iphone-fit.css?v=step2-balanced-stack-target-20260714",
   "./css/onboard-step3-layout.css?v=step3-centred-layout-20260713",
-  "./css/academy-trial.css?v=sprint-9-0-academy-trial-mvp-20260714",
+  "./css/academy-trial.css?v=sprint-9-1-academy-journey-20260714",
+  "./css/academy-journey.css?v=sprint-9-1-academy-journey-20260714",
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
   "./js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710",
   "./js/app/onboard-number.js?v=sprint-8-3-2-iphone-wheel-20260710",
@@ -29,7 +30,9 @@ const ASSETS=[
   "./js/app/onboard-haptics.js?v=step2-haptics-20260702",
   "./js/app/onboard-tactical-web.js?v=sprint-8-4-1-marker-consolidation-20260712",
   "./js/app/academy-trial-home-return.js?v=sprint-9-0-academy-trial-mvp-20260714",
-  "./js/app/academy-trial.js?v=sprint-9-0-academy-trial-mvp-20260714",
+  "./js/app/academy-trial.js?v=sprint-9-1-academy-journey-20260714",
+  "./js/app/academy-journey.js?v=sprint-9-1-academy-journey-20260714",
+  "./js/app/landing-swipe-iphone-hotfix.js?v=landing-swipe-hotfix-20260714",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
   "./assets/onboarding/jersey-back.png?v=sprint-8-4-number-flow-fix-20260710",
