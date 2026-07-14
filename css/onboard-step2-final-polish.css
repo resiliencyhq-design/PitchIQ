@@ -1,7 +1,7 @@
 /* ==========================================================
    STEP 2 — Final Prompt + Bottom Spacing Polish
-   Keeps pitch/markers untouched. Tightens vertical stack so CTA
-   remains visible on iPhone Safari.
+   Keeps pitch/markers and canonical heading typography untouched.
+   Tightens vertical stack so CTA remains visible on iPhone Safari.
    ========================================================== */
 
 .onboard-step[data-onboard-step="2"] .onboard-position-subtitle{
@@ -69,12 +69,6 @@
     gap:2px!important;
   }
 
-  .onboard-step[data-onboard-step="2"] .onboard-position-heading{
-    font-size:42px!important;
-    line-height:42px!important;
-    margin-bottom:-2px!important;
-  }
-
   .onboard-step[data-onboard-step="2"] .onboard-position-subtitle{
     font-size:14px!important;
     line-height:14px!important;
@@ -97,11 +91,6 @@
 }
 
 @media(max-width:390px){
-  .onboard-step[data-onboard-step="2"] .onboard-position-heading{
-    font-size:39px!important;
-    line-height:39px!important;
-  }
-
   .onboard-step[data-onboard-step="2"] .onboard-position-subtitle{
     font-size:13px!important;
     line-height:13px!important;
