@@ -1,52 +1,59 @@
 {
   "schemaVersion": 1,
   "product": "PitchIQ",
-  "build": "Sprint 9.0 — Live Product Dashboard",
-  "lastUpdated": "2026-07-14T11:30:00Z",
+  "build": "Sprint 9.1 — Academy Journey Realignment",
+  "lastUpdated": "2026-07-14T12:10:00Z",
   "sourceOfTruth": "data/product-state.json",
   "summary": {
-    "academyJourneyProgress": 55,
-    "userTestingReadiness": 65,
-    "technicalStability": 82,
-    "commercialReadiness": 42,
-    "releaseReadiness": 62,
-    "currentSprint": "Sprint 9.0 — Live Product Dashboard",
-    "nextObjective": "Connect Academy Trial to the Home Roadmap",
+    "academyJourneyProgress": 82,
+    "userTestingReadiness": 72,
+    "technicalStability": 78,
+    "commercialReadiness": 45,
+    "releaseReadiness": 68,
+    "currentSprint": "Sprint 9.1 — Academy Journey Realignment",
+    "nextObjective": "Validate the complete first-run Academy Journey on iPhone",
     "risk": "MEDIUM",
-    "deploymentStatus": "Branch build"
+    "deploymentStatus": "Merged implementation; dashboard branch"
   },
   "nextBuild": {
-    "title": "Home Roadmap Integration",
-    "objective": "Make the Home Roadmap the primary post-onboarding journey and place Academy Trial within it.",
-    "whyNow": "The revised onboarding is approved; the dashboard and Home journey must now reflect the same product decisions.",
+    "title": "First-Run Journey Validation",
+    "objective": "Validate and stabilise the complete mandatory Academy assessment journey before Home.",
+    "whyNow": "The screens and routing are implemented in main, but real-iPhone validation and the reported landing progression defect remain open.",
     "definitionOfDone": [
-      "Onboarding exits through the approved welcome and Begin Trial splash",
-      "Home Roadmap is the primary journey",
-      "Academy Trial is represented within the Roadmap",
-      "Lab remains at the bottom of Home",
-      "Flow is validated on a real iPhone"
+      "Landing progresses reliably into onboarding",
+      "Name → Number → Position fits without clipping",
+      "Welcome splash shows saved identity and opens the assessment",
+      "Assessment, report, acceptance and avatar stages complete in order",
+      "Home remains unavailable until Academy acceptance and avatar selection",
+      "Returning accepted users load Home normally",
+      "Experimental Lab remains the final Home card"
     ]
   },
   "decisions": [
     {
       "type": "Decision",
-      "title": "Roadmap remains primary",
-      "detail": "Keep the original Roadmap concept as the main Academy journey on Home."
+      "title": "Assessment occurs before Home",
+      "detail": "The first Academy assessment is mandatory in the first-run journey and completes before Home is shown."
     },
     {
       "type": "Decision",
-      "title": "Academy Trial placement",
-      "detail": "Move the Academy Trial experience into the Roadmap rather than adding more onboarding slides."
+      "title": "Home Roadmap remains primary after entry",
+      "detail": "Once accepted into the Academy, the original Roadmap remains the primary ongoing journey on Home."
     },
     {
       "type": "Decision",
-      "title": "Lab placement",
-      "detail": "Keep the Lab at the bottom of the Home screen."
+      "title": "Experimental Lab remains optional",
+      "detail": "Keep Experimental Lab visually secondary and as the final card on Home."
+    },
+    {
+      "type": "Watch",
+      "title": "Landing progression defect",
+      "detail": "The app has recently failed to progress past Landing. Root-cause validation is required before the first-run journey can be marked ready."
     },
     {
       "type": "Watch",
       "title": "Semantic status updates",
-      "detail": "The dashboard can automatically reload shared state and deployment metadata, but feature meaning still requires this product-state file to be updated with each approved product change."
+      "detail": "The dashboard reloads shared state automatically, but each approved sprint must update this file because CSS and JavaScript changes cannot be interpreted safely without product context."
     }
   ],
   "doNotBuildYet": [
@@ -54,23 +61,29 @@
     "Parent Portal",
     "Team Social Features",
     "Wearable Integrations",
-    "Computer Vision",
+    "Automatic Computer Vision Counting",
     "Advanced AI Personalisation"
   ],
   "academyJourney": [
     {
       "id": "landing",
       "name": "Landing Screen",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Locked",
+      "status": "IMPLEMENTED — DEFECT REVIEW",
+      "tag": "warn",
+      "completion": 85,
+      "risk": "HIGH",
+      "priority": "Stabilise",
       "route": "splash",
-      "subtitle": "Enter the Academy experience.",
-      "done": ["Academy entry exists", "CTA route works", "Brand experience established"],
-      "todo": ["Preserve during future changes"],
-      "review": "Locked."
+      "subtitle": "Academy entry and first-run routing.",
+      "done": [
+        "Landing UI and Academy entry exist",
+        "Brand experience established"
+      ],
+      "todo": [
+        "Resolve intermittent failure to progress",
+        "Validate clean-state routing on iPhone"
+      ],
+      "review": "Implemented, but not locked while the progression defect remains open."
     },
     {
       "id": "player-name",
@@ -82,9 +95,15 @@
       "priority": "Locked",
       "route": "onboard",
       "subtitle": "Player name entered on the jersey.",
-      "done": ["Name entry", "Live jersey preview", "Continue visible on iPhone"],
-      "todo": ["Preserve approved layout"],
-      "review": "Approved onboarding Step 1."
+      "done": [
+        "Name entry",
+        "Live jersey preview",
+        "Approved iPhone composition"
+      ],
+      "todo": [
+        "Regression-only"
+      ],
+      "review": "Approved Step 1."
     },
     {
       "id": "player-number",
@@ -96,9 +115,15 @@
       "priority": "Locked",
       "route": "onboard",
       "subtitle": "Jersey number selection with name retained.",
-      "done": ["Number picker works", "Reset defaults to 1", "iPhone fit validated"],
-      "todo": ["Preserve approved composition"],
-      "review": "Approved onboarding Step 2."
+      "done": [
+        "Number picker works",
+        "Reset defaults to 1",
+        "Production baseline locked"
+      ],
+      "todo": [
+        "Regression-only"
+      ],
+      "review": "Approved and formally locked."
     },
     {
       "id": "choose-position",
@@ -110,73 +135,392 @@
       "priority": "Locked",
       "route": "onboard",
       "subtitle": "Interactive pitch position selector.",
-      "done": ["Pitch selector works", "Position connections reviewed", "No default selection"],
-      "todo": ["Preserve pitch and marker lock"],
-      "review": "Approved onboarding Step 3."
+      "done": [
+        "Pitch selector works",
+        "No default selection",
+        "Controls fit approved iPhone target"
+      ],
+      "todo": [
+        "Regression-only"
+      ],
+      "review": "Approved Step 3."
     },
     {
       "id": "welcome-trial",
-      "name": "Welcome + Begin Trial",
-      "status": "IN REVIEW",
+      "name": "Welcome + Begin First Assessment",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
       "tag": "review",
-      "completion": 70,
+      "completion": 90,
       "risk": "MEDIUM",
-      "priority": "Build Next",
+      "priority": "Validate",
       "route": "onboard",
-      "subtitle": "Consolidated splash after identity and position setup.",
-      "done": ["Journey decision approved", "Welcome and Begin Trial combined"],
-      "todo": ["Implement final splash", "Validate transition on iPhone"],
-      "review": "This replaces additional Academy Trial onboarding slides."
+      "subtitle": "Identity-consolidation splash before the mandatory assessment.",
+      "done": [
+        "Saved name, number and position displayed",
+        "BEGIN FIRST ASSESSMENT CTA implemented",
+        "Routes to Academy Trial"
+      ],
+      "todo": [
+        "Validate transition and layout on real iPhone"
+      ],
+      "review": "Implementation is present in main."
+    },
+    {
+      "id": "assessment-select",
+      "name": "Choose First Assessment",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "MEDIUM",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Select the first available Academy assessment.",
+      "done": [
+        "Assessment selection screen implemented",
+        "Juggling assessment available"
+      ],
+      "todo": [
+        "Validate card hierarchy and routing"
+      ],
+      "review": "Part of the mandatory first-run journey."
+    },
+    {
+      "id": "assessment-brief",
+      "name": "Assessment Brief",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "MEDIUM",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Explains the assessment before camera activity.",
+      "done": [
+        "Brief screen implemented",
+        "Player identity retained"
+      ],
+      "todo": [
+        "Validate copy and continue behaviour"
+      ],
+      "review": "Implemented in Sprint 9.1."
+    },
+    {
+      "id": "position-guide",
+      "name": "Position Guide",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "MEDIUM",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Camera and player-position preparation.",
+      "done": [
+        "Position guide implemented",
+        "Camera preparation flow exists"
+      ],
+      "todo": [
+        "Validate deployed HTTPS camera permissions"
+      ],
+      "review": "Requires device validation."
+    },
+    {
+      "id": "countdown",
+      "name": "3–2–1–GO Countdown",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "Validate",
+      "route": "lab-juggling",
+      "subtitle": "Countdown into the juggling assessment.",
+      "done": [
+        "Countdown state implemented"
+      ],
+      "todo": [
+        "Validate timing and reduced-motion behaviour"
+      ],
+      "review": "Implemented."
+    },
+    {
+      "id": "juggling-assessment",
+      "name": "Juggling Assessment",
+      "status": "MVP IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 75,
+      "risk": "MEDIUM",
+      "priority": "Validate",
+      "route": "lab-juggling",
+      "subtitle": "Experimental manual-reference juggling assessment.",
+      "done": [
+        "Camera preview flow",
+        "Manual reference count",
+        "Provisional result flow"
+      ],
+      "todo": [
+        "Validate rear-camera permission",
+        "Confirm safe recovery and return routing",
+        "Automatic counting remains out of scope"
+      ],
+      "review": "MVP exists; computer vision is not active."
+    },
+    {
+      "id": "assessment-report",
+      "name": "Academy Assessment Report",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "MEDIUM",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Initial assessment result and Academy feedback.",
+      "done": [
+        "Report state implemented",
+        "Result feeds acceptance flow"
+      ],
+      "todo": [
+        "Validate scoring presentation and persistence"
+      ],
+      "review": "Implemented but not yet device-validated."
+    },
+    {
+      "id": "academy-accepted",
+      "name": "Academy Accepted",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Acceptance celebration after assessment.",
+      "done": [
+        "Acceptance state implemented",
+        "Acceptance stored separately"
+      ],
+      "todo": [
+        "Validate persistence and returning-user route"
+      ],
+      "review": "Implemented."
+    },
+    {
+      "id": "avatar-selection",
+      "name": "Avatar Selection",
+      "status": "IMPLEMENTED — VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "LOW",
+      "priority": "Validate",
+      "route": "academy-trial",
+      "subtitle": "Select the Academy player avatar before entering Home.",
+      "done": [
+        "Avatar choices implemented",
+        "Selection stored separately"
+      ],
+      "todo": [
+        "Validate selection state and Home transition"
+      ],
+      "review": "Home should remain blocked until this completes."
     },
     {
       "id": "home-roadmap",
-      "name": "Home Roadmap",
-      "status": "FOUNDATION COMPLETE",
+      "name": "Home + Roadmap",
+      "status": "FOUNDATION COMPLETE — CONNECTION IMPLEMENTED",
       "tag": "warn",
-      "completion": 70,
+      "completion": 78,
       "risk": "MEDIUM",
-      "priority": "Connect",
+      "priority": "Audit",
       "route": "home",
-      "subtitle": "Primary post-onboarding Academy journey.",
-      "done": ["Home foundation exists", "Original Roadmap concept retained", "Lab location retained"],
-      "todo": ["Place Academy Trial in Roadmap", "Connect onboarding exit", "Validate first-user hierarchy"],
-      "review": "The Roadmap, not extra onboarding slides, should carry the Academy journey."
-    },
-    {
-      "id": "academy-trial",
-      "name": "Academy Trial",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "MEDIUM",
-      "priority": "Next",
-      "route": "home",
-      "subtitle": "Baseline Football IQ assessment launched from the Roadmap.",
-      "done": [],
-      "todo": ["Define trial interaction", "Add scenario questions", "Add immediate feedback", "Route result to progress"],
-      "review": "Build within the Roadmap journey."
+      "subtitle": "Primary ongoing Academy journey after first-run acceptance.",
+      "done": [
+        "Home foundation exists",
+        "Accepted users route to Home",
+        "Original Roadmap concept retained"
+      ],
+      "todo": [
+        "Audit Roadmap content and hierarchy",
+        "Validate first-time and returning-user states"
+      ],
+      "review": "Home follows assessment, acceptance and avatar selection."
     },
     {
       "id": "lab",
-      "name": "Lab",
-      "status": "FOUNDATION COMPLETE",
+      "name": "Experimental Lab",
+      "status": "MVP IMPLEMENTED — VALIDATION REQUIRED",
       "tag": "review",
-      "completion": 60,
+      "completion": 70,
       "risk": "LOW",
       "priority": "Preserve",
-      "route": "home",
-      "subtitle": "Experimental training area at the bottom of Home.",
-      "done": ["Lab exists on Home", "Bottom placement approved"],
-      "todo": ["Keep visually secondary to Roadmap"],
-      "review": "Do not move the Lab into onboarding or above the Roadmap."
+      "route": "lab-juggling",
+      "subtitle": "Optional experimental area at the bottom of Home.",
+      "done": [
+        "Home card renamed Experimental Lab",
+        "Final-card placement implemented",
+        "Juggling MVP available"
+      ],
+      "todo": [
+        "Validate final placement across iPhone sizes"
+      ],
+      "review": "Optional and separate from the canonical first-run journey."
     }
   ],
   "screens": [
-    {"id":"landing","name":"Landing","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Preserve","route":"splash"},
-    {"id":"onboarding","name":"Onboarding","status":"IN REVIEW","tag":"review","completion":92,"risk":"LOW","priority":"Finish splash","route":"onboard"},
-    {"id":"home","name":"Home","status":"FOUNDATION","tag":"review","completion":70,"risk":"MEDIUM","priority":"Roadmap integration","route":"home"},
-    {"id":"training","name":"Training","status":"COMPLETE","tag":"ready","completion":90,"risk":"LOW","priority":"Preserve","route":"training"},
-    {"id":"results","name":"Results","status":"COMPLETE","tag":"ready","completion":85,"risk":"LOW","priority":"Preserve","route":"results"},
-    {"id":"player","name":"Player","status":"COMPLETE","tag":"ready","completion":80,"risk":"LOW","priority":"Preserve","route":"player"}
+    {
+      "id": "landing",
+      "name": "Landing",
+      "status": "DEFECT REVIEW",
+      "tag": "warn",
+      "completion": 85,
+      "risk": "HIGH",
+      "priority": "Stabilise routing",
+      "route": "splash"
+    },
+    {
+      "id": "onboarding",
+      "name": "Onboarding: Name / Number / Position",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 100,
+      "risk": "LOW",
+      "priority": "Locked / regression-only",
+      "route": "onboard"
+    },
+    {
+      "id": "academy-welcome",
+      "name": "Academy Welcome",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 90,
+      "risk": "MEDIUM",
+      "priority": "iPhone QA",
+      "route": "onboard"
+    },
+    {
+      "id": "assessment-select",
+      "name": "Assessment Selection",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "MEDIUM",
+      "priority": "iPhone QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "assessment-brief",
+      "name": "Assessment Brief",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "iPhone QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "position-guide",
+      "name": "Position Guide",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "MEDIUM",
+      "priority": "Camera QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "countdown",
+      "name": "Countdown",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "Timing QA",
+      "route": "lab-juggling"
+    },
+    {
+      "id": "juggling-assessment",
+      "name": "Juggling Assessment",
+      "status": "MVP / VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 75,
+      "risk": "MEDIUM",
+      "priority": "Device and camera QA",
+      "route": "lab-juggling"
+    },
+    {
+      "id": "assessment-report",
+      "name": "Academy Assessment Report",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "MEDIUM",
+      "priority": "Scoring and persistence QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "academy-accepted",
+      "name": "Academy Accepted",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "Persistence QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "avatar-selection",
+      "name": "Avatar Selection",
+      "status": "VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 80,
+      "risk": "LOW",
+      "priority": "Home transition QA",
+      "route": "academy-trial"
+    },
+    {
+      "id": "home",
+      "name": "Home + Roadmap",
+      "status": "FOUNDATION / CONNECTED",
+      "tag": "warn",
+      "completion": 78,
+      "risk": "MEDIUM",
+      "priority": "Content audit",
+      "route": "home"
+    },
+    {
+      "id": "experimental-lab",
+      "name": "Experimental Lab",
+      "status": "MVP / VALIDATION REQUIRED",
+      "tag": "review",
+      "completion": 70,
+      "risk": "LOW",
+      "priority": "Preserve final-card placement",
+      "route": "lab-juggling"
+    },
+    {
+      "id": "training",
+      "name": "Training",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 90,
+      "risk": "LOW",
+      "priority": "Preserve",
+      "route": "training"
+    },
+    {
+      "id": "results",
+      "name": "Results",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 85,
+      "risk": "LOW",
+      "priority": "Preserve",
+      "route": "results"
+    },
+    {
+      "id": "player",
+      "name": "Player",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 80,
+      "risk": "LOW",
+      "priority": "Preserve",
+      "route": "player"
+    }
   ]
 }
