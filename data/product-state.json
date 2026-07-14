@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "product": "PitchIQ",
+  "build": "Sprint 9.0 — Live Product Dashboard",
+  "lastUpdated": "2026-07-14T11:30:00Z",
+  "sourceOfTruth": "data/product-state.json",
+  "summary": {
+    "academyJourneyProgress": 55,
+    "userTestingReadiness": 65,
+    "technicalStability": 82,
+    "commercialReadiness": 42,
+    "releaseReadiness": 62,
+    "currentSprint": "Sprint 9.0 — Live Product Dashboard",
+    "nextObjective": "Connect Academy Trial to the Home Roadmap",
+    "risk": "MEDIUM",
+    "deploymentStatus": "Branch build"
+  },
+  "nextBuild": {
+    "title": "Home Roadmap Integration",
+    "objective": "Make the Home Roadmap the primary post-onboarding journey and place Academy Trial within it.",
+    "whyNow": "The revised onboarding is approved; the dashboard and Home journey must now reflect the same product decisions.",
+    "definitionOfDone": [
+      "Onboarding exits through the approved welcome and Begin Trial splash",
+      "Home Roadmap is the primary journey",
+      "Academy Trial is represented within the Roadmap",
+      "Lab remains at the bottom of Home",
+      "Flow is validated on a real iPhone"
+    ]
+  },
+  "decisions": [
+    {
+      "type": "Decision",
+      "title": "Roadmap remains primary",
+      "detail": "Keep the original Roadmap concept as the main Academy journey on Home."
+    },
+    {
+      "type": "Decision",
+      "title": "Academy Trial placement",
+      "detail": "Move the Academy Trial experience into the Roadmap rather than adding more onboarding slides."
+    },
+    {
+      "type": "Decision",
+      "title": "Lab placement",
+      "detail": "Keep the Lab at the bottom of the Home screen."
+    },
+    {
+      "type": "Watch",
+      "title": "Semantic status updates",
+      "detail": "The dashboard can automatically reload shared state and deployment metadata, but feature meaning still requires this product-state file to be updated with each approved product change."
+    }
+  ],
+  "doNotBuildYet": [
+    "Coach Portal",
+    "Parent Portal",
+    "Team Social Features",
+    "Wearable Integrations",
+    "Computer Vision",
+    "Advanced AI Personalisation"
+  ],
+  "academyJourney": [
+    {
+      "id": "landing",
+      "name": "Landing Screen",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 100,
+      "risk": "LOW",
+      "priority": "Locked",
+      "route": "splash",
+      "subtitle": "Enter the Academy experience.",
+      "done": ["Academy entry exists", "CTA route works", "Brand experience established"],
+      "todo": ["Preserve during future changes"],
+      "review": "Locked."
+    },
+    {
+      "id": "player-name",
+      "name": "Step 1 — Name",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 100,
+      "risk": "LOW",
+      "priority": "Locked",
+      "route": "onboard",
+      "subtitle": "Player name entered on the jersey.",
+      "done": ["Name entry", "Live jersey preview", "Continue visible on iPhone"],
+      "todo": ["Preserve approved layout"],
+      "review": "Approved onboarding Step 1."
+    },
+    {
+      "id": "player-number",
+      "name": "Step 2 — Number",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 100,
+      "risk": "LOW",
+      "priority": "Locked",
+      "route": "onboard",
+      "subtitle": "Jersey number selection with name retained.",
+      "done": ["Number picker works", "Reset defaults to 1", "iPhone fit validated"],
+      "todo": ["Preserve approved composition"],
+      "review": "Approved onboarding Step 2."
+    },
+    {
+      "id": "choose-position",
+      "name": "Step 3 — Position",
+      "status": "COMPLETE",
+      "tag": "ready",
+      "completion": 100,
+      "risk": "LOW",
+      "priority": "Locked",
+      "route": "onboard",
+      "subtitle": "Interactive pitch position selector.",
+      "done": ["Pitch selector works", "Position connections reviewed", "No default selection"],
+      "todo": ["Preserve pitch and marker lock"],
+      "review": "Approved onboarding Step 3."
+    },
+    {
+      "id": "welcome-trial",
+      "name": "Welcome + Begin Trial",
+      "status": "IN REVIEW",
+      "tag": "review",
+      "completion": 70,
+      "risk": "MEDIUM",
+      "priority": "Build Next",
+      "route": "onboard",
+      "subtitle": "Consolidated splash after identity and position setup.",
+      "done": ["Journey decision approved", "Welcome and Begin Trial combined"],
+      "todo": ["Implement final splash", "Validate transition on iPhone"],
+      "review": "This replaces additional Academy Trial onboarding slides."
+    },
+    {
+      "id": "home-roadmap",
+      "name": "Home Roadmap",
+      "status": "FOUNDATION COMPLETE",
+      "tag": "warn",
+      "completion": 70,
+      "risk": "MEDIUM",
+      "priority": "Connect",
+      "route": "home",
+      "subtitle": "Primary post-onboarding Academy journey.",
+      "done": ["Home foundation exists", "Original Roadmap concept retained", "Lab location retained"],
+      "todo": ["Place Academy Trial in Roadmap", "Connect onboarding exit", "Validate first-user hierarchy"],
+      "review": "The Roadmap, not extra onboarding slides, should carry the Academy journey."
+    },
+    {
+      "id": "academy-trial",
+      "name": "Academy Trial",
+      "status": "NOT STARTED",
+      "tag": "todo",
+      "completion": 0,
+      "risk": "MEDIUM",
+      "priority": "Next",
+      "route": "home",
+      "subtitle": "Baseline Football IQ assessment launched from the Roadmap.",
+      "done": [],
+      "todo": ["Define trial interaction", "Add scenario questions", "Add immediate feedback", "Route result to progress"],
+      "review": "Build within the Roadmap journey."
+    },
+    {
+      "id": "lab",
+      "name": "Lab",
+      "status": "FOUNDATION COMPLETE",
+      "tag": "review",
+      "completion": 60,
+      "risk": "LOW",
+      "priority": "Preserve",
+      "route": "home",
+      "subtitle": "Experimental training area at the bottom of Home.",
+      "done": ["Lab exists on Home", "Bottom placement approved"],
+      "todo": ["Keep visually secondary to Roadmap"],
+      "review": "Do not move the Lab into onboarding or above the Roadmap."
+    }
+  ],
+  "screens": [
+    {"id":"landing","name":"Landing","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Preserve","route":"splash"},
+    {"id":"onboarding","name":"Onboarding","status":"IN REVIEW","tag":"review","completion":92,"risk":"LOW","priority":"Finish splash","route":"onboard"},
+    {"id":"home","name":"Home","status":"FOUNDATION","tag":"review","completion":70,"risk":"MEDIUM","priority":"Roadmap integration","route":"home"},
+    {"id":"training","name":"Training","status":"COMPLETE","tag":"ready","completion":90,"risk":"LOW","priority":"Preserve","route":"training"},
+    {"id":"results","name":"Results","status":"COMPLETE","tag":"ready","completion":85,"risk":"LOW","priority":"Preserve","route":"results"},
+    {"id":"player","name":"Player","status":"COMPLETE","tag":"ready","completion":80,"risk":"LOW","priority":"Preserve","route":"player"}
+  ]
+}
