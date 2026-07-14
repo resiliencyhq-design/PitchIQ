@@ -1,6 +1,6 @@
 /* STEP 2 — iPhone rendered-match correction
    Matches the real Step 1 "Who’s training?" computed typography and
-   keeps the lower selection/CTA stack visible on standard iPhones. */
+   keeps the complete position selection flow visible on iPhone. */
 
 #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] > .onboard-heading{
   width:min(92vw,340px)!important;
@@ -23,8 +23,10 @@
   scale:1!important;
 }
 
-/* Sprint 8.4.3 target lock — lower controls are positioned for the
-   longest tactical description, not the shorter goalkeeper copy. */
+/* Approved balanced target:
+   lift the pitch itself, then place the Selected Position panel below it.
+   This avoids forcing the lower controls unnaturally high while preserving
+   room for the longest tactical description and the complete CTA. */
 @media(max-width:430px){
   #onboard.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){
     overflow:hidden!important;
@@ -33,6 +35,7 @@
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
     width:min(310px,84vw)!important;
     max-width:310px!important;
+    transform:translateY(-32px)!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
@@ -40,7 +43,7 @@
     width:min(360px,92vw)!important;
     max-width:360px!important;
     min-height:104px!important;
-    margin:-132px auto 0!important;
+    margin:-54px auto 0!important;
     padding:8px 14px 7px!important;
     row-gap:2px!important;
     align-content:center!important;
@@ -65,7 +68,7 @@
     max-width:350px!important;
     height:56px!important;
     min-height:56px!important;
-    margin:-4px auto 0!important;
+    margin:8px auto 0!important;
     padding:0!important;
   }
 
@@ -80,12 +83,13 @@
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
     width:min(296px,82vw)!important;
     max-width:296px!important;
+    transform:translateY(-28px)!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
     width:min(350px,92vw)!important;
     min-height:100px!important;
-    margin-top:-126px!important;
+    margin-top:-50px!important;
     padding:7px 12px 6px!important;
   }
 
@@ -97,14 +101,20 @@
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
     width:min(340px,90vw)!important;
-    margin-top:-4px!important;
+    margin-top:7px!important;
   }
 }
 
+/* Short-screen fallback keeps the target composition compact without
+   changing pitch dimensions, marker coordinates or CTA height. */
 @media(max-height:760px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
+    transform:translateY(-44px)!important;
+  }
+
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
     min-height:94px!important;
-    margin-top:-142px!important;
+    margin-top:-88px!important;
     padding-block:5px!important;
   }
 
@@ -114,6 +124,6 @@
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
-    margin-top:-6px!important;
+    margin-top:4px!important;
   }
 }
