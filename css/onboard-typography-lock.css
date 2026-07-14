@@ -69,6 +69,22 @@
   scale:1!important;
 }
 
+/* Exact Step 2 match.
+   This deliberately outranks all legacy Step 2 h1 and
+   .onboard-position-heading rules still present in the locked stylesheet. */
+#onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
+#onboard .onboard-step[data-onboard-step="2"] > h1.onboard-position-heading{
+  font-size:var(--onboard-heading-size)!important;
+  font-family:inherit!important;
+  font-weight:1000!important;
+  line-height:var(--onboard-heading-line-height)!important;
+  letter-spacing:var(--onboard-heading-letter-spacing)!important;
+  font-stretch:normal!important;
+  white-space:normal!important;
+  transform:none!important;
+  scale:1!important;
+}
+
 #onboard .onboard-number-step > .position-title,
 #onboard .onboard-number-step > .academy-progress,
 #onboard .onboard-number-step > .onboard-subtitle,
