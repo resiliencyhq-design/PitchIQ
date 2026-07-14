@@ -1,260 +1,55 @@
 {
-  "build": "WellTrack HQ Utility Upgrade",
-  "latestCommit": "hq-hybrid-board",
-  "lastUpdated": "2026-07-03T11:45:00Z",
+  "schemaVersion": 1,
+  "product": "PitchIQ",
+  "build": "Sprint 9.0 — Live Product Dashboard",
+  "lastUpdated": "2026-07-14T11:30:00Z",
+  "sourceOfTruth": "data/product-state.json",
   "summary": {
-    "academyJourneyProgress": 30,
-    "userTestingReadiness": 35,
-    "technicalStability": 75,
-    "commercialReadiness": 40,
-    "releaseReadiness": 45,
-    "currentSprint": "HQ Utility Upgrade",
-    "nextObjective": "Build Academy Trial",
+    "academyJourneyProgress": 55,
+    "userTestingReadiness": 65,
+    "technicalStability": 82,
+    "commercialReadiness": 42,
+    "releaseReadiness": 62,
+    "currentSprint": "Sprint 9.0 — Live Product Dashboard",
+    "nextObjective": "Connect Academy Trial to the Home Roadmap",
     "risk": "MEDIUM",
-    "deploymentStatus": "GitHub Pages Ready"
+    "deploymentStatus": "Branch build"
   },
   "nextBuild": {
-    "title": "Academy Trial",
-    "objective": "Create the baseline Football IQ assessment.",
-    "whyNow": "It is the next unfinished stage in the locked MVP Academy Journey.",
+    "title": "Home Roadmap Integration",
+    "objective": "Make the Home Roadmap the primary post-onboarding journey and place Academy Trial within it.",
+    "whyNow": "The revised onboarding is approved; the dashboard and Home journey must now reflect the same product decisions.",
     "definitionOfDone": [
-      "Trial screen exists",
-      "3-5 scenario questions work",
-      "Player receives immediate feedback",
-      "Trial result flows into Scout Report",
-      "Works on iPhone Safari"
+      "Onboarding exits through the approved welcome and Begin Trial splash",
+      "Home Roadmap is the primary journey",
+      "Academy Trial is represented within the Roadmap",
+      "Lab remains at the bottom of Home",
+      "Flow is validated on a real iPhone"
     ]
   },
   "decisions": [
-    {
-      "type": "Decision",
-      "title": "Academy Trial format",
-      "detail": "Recommend a 3-question scout assessment: short enough for MVP, meaningful enough to feel like a real trial."
-    },
-    {
-      "type": "Watch",
-      "title": "Scout Report scoring",
-      "detail": "Scoring rules need to be defined before the Scout Report is built."
-    },
-    {
-      "type": "Watch",
-      "title": "Contract/save path",
-      "detail": "Sign Your Contract needs a simple account/save decision before build."
-    }
+    {"type":"Decision","title":"Roadmap remains primary","detail":"Keep the original Roadmap concept as the main Academy journey on Home."},
+    {"type":"Decision","title":"Academy Trial placement","detail":"Move the Academy Trial experience into the Roadmap rather than adding more onboarding slides."},
+    {"type":"Decision","title":"Lab placement","detail":"Keep the Lab at the bottom of the Home screen."},
+    {"type":"Watch","title":"Semantic status updates","detail":"The dashboard automatically reloads this shared state, while product meaning is updated with each approved change."}
   ],
-  "doNotBuildYet": [
-    "Coach Portal",
-    "Parent Portal",
-    "AI Coach",
-    "Team Features",
-    "Social Features",
-    "Wearables",
-    "Computer Vision",
-    "Cloud Analytics",
-    "Advanced Personalisation"
-  ],
+  "doNotBuildYet": ["Coach Portal","Parent Portal","Team Social Features","Wearable Integrations","Computer Vision","Advanced AI Personalisation"],
   "academyJourney": [
-    {
-      "id": "landing",
-      "name": "Landing Screen",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Locked",
-      "route": "splash",
-      "subtitle": "Enter the Academy landing experience.",
-      "done": ["Academy entry exists", "Swipe/CTA route works", "Brand experience established"],
-      "todo": ["Preserve during future onboarding changes"],
-      "review": "Locked as the first stage of the Academy Journey."
-    },
-    {
-      "id": "player-identity",
-      "name": "Player Identity",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Locked",
-      "route": "onboard",
-      "subtitle": "Name and jersey identity before account creation.",
-      "done": ["Name entry exists", "Jersey preview exists", "Identity-first onboarding established"],
-      "todo": ["Preserve name-on-jersey interaction"],
-      "review": "Supports the principle of identity before registration."
-    },
-    {
-      "id": "choose-position",
-      "name": "Choose Position",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Locked",
-      "route": "onboard",
-      "subtitle": "Interactive pitch position selector.",
-      "done": ["Pitch selector exists", "Markers are usable", "Position choice is part of onboarding"],
-      "todo": ["Preserve pitch and marker lock"],
-      "review": "Locked as the third stage of the Academy Journey."
-    },
-    {
-      "id": "academy-trial",
-      "name": "Academy Trial",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "MEDIUM",
-      "priority": "Build Next",
-      "route": "onboard",
-      "subtitle": "Baseline Football IQ assessment framed as an academy trial.",
-      "done": [],
-      "todo": ["Create trial screen", "Add 3-5 scenario questions", "Add immediate feedback", "Route result to Scout Report"],
-      "review": "This is the next build priority. It should feel like a scout assessment, not a school quiz."
-    },
-    {
-      "id": "scout-report",
-      "name": "Scout Report",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "MEDIUM",
-      "priority": "Next",
-      "route": "results",
-      "subtitle": "Reward screen showing selection and initial Football IQ.",
-      "done": [],
-      "todo": ["Define scoring rules", "Create approval state", "Show initial Football IQ", "Confirm position"],
-      "review": "Should be the emotional payoff after the Academy Trial."
-    },
-    {
-      "id": "sign-contract",
-      "name": "Sign Your Contract",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "MEDIUM",
-      "priority": "Next",
-      "route": "onboard",
-      "subtitle": "Account creation framed as signing an academy contract.",
-      "done": [],
-      "todo": ["Decide save/account path", "Create contract UI", "Keep registration immersive"],
-      "review": "Do not make this feel like a generic form."
-    },
-    {
-      "id": "contract-signed",
-      "name": "Contract Signed",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "LOW",
-      "priority": "Later",
-      "route": "onboard",
-      "subtitle": "Celebration and acceptance moment.",
-      "done": [],
-      "todo": ["Create accepted state", "Add player ID", "Add welcome message"],
-      "review": "Should confirm the player has officially joined the academy."
-    },
-    {
-      "id": "academy-player",
-      "name": "Your Academy Player",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "LOW",
-      "priority": "Later",
-      "route": "player",
-      "subtitle": "Avatar/player reveal after contract signing.",
-      "done": [],
-      "todo": ["Create player reveal", "Connect identity data", "Keep locker-room feeling"],
-      "review": "This turns account creation into a player identity moment."
-    },
-    {
-      "id": "academy-kit",
-      "name": "Academy Kit",
-      "status": "NOT STARTED",
-      "tag": "todo",
-      "completion": 0,
-      "risk": "LOW",
-      "priority": "Later",
-      "route": "player",
-      "subtitle": "Kit, badge and belonging reveal.",
-      "done": [],
-      "todo": ["Create kit reveal", "Show badge", "Connect into Home"],
-      "review": "Should make the player feel part of the academy."
-    },
-    {
-      "id": "home-screen",
-      "name": "Home Screen",
-      "status": "FOUNDATION COMPLETE",
-      "tag": "review",
-      "completion": 70,
-      "risk": "LOW",
-      "priority": "Connect",
-      "route": "home",
-      "subtitle": "Daily training dashboard after Academy Journey completion.",
-      "done": ["Home route exists", "Mission/progress foundation exists", "Training entry exists"],
-      "todo": ["Connect from completed Academy Journey", "Clarify first mission", "Validate first-user experience"],
-      "review": "Home is the destination, not the beginning. It should feel earned."
-    }
+    {"id":"landing","name":"Landing Screen","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Locked","route":"splash","subtitle":"Enter the Academy experience.","done":["Academy entry exists","CTA route works","Brand experience established"],"todo":["Preserve during future changes"],"review":"Locked."},
+    {"id":"player-name","name":"Step 1 — Name","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Locked","route":"onboard","subtitle":"Player name entered on the jersey.","done":["Name entry","Live jersey preview","Continue visible on iPhone"],"todo":["Preserve approved layout"],"review":"Approved onboarding Step 1."},
+    {"id":"player-number","name":"Step 2 — Number","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Locked","route":"onboard","subtitle":"Jersey number selection with name retained.","done":["Number picker works","Reset defaults to 1","iPhone fit validated"],"todo":["Preserve approved composition"],"review":"Approved onboarding Step 2."},
+    {"id":"choose-position","name":"Step 3 — Position","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Locked","route":"onboard","subtitle":"Interactive pitch position selector.","done":["Pitch selector works","Position connections reviewed","No default selection"],"todo":["Preserve pitch and marker lock"],"review":"Approved onboarding Step 3."},
+    {"id":"welcome-trial","name":"Welcome + Begin Trial","status":"IN REVIEW","tag":"review","completion":70,"risk":"MEDIUM","priority":"Build Next","route":"onboard","subtitle":"Consolidated splash after identity and position setup.","done":["Journey decision approved","Welcome and Begin Trial combined"],"todo":["Implement final splash","Validate transition on iPhone"],"review":"This replaces additional Academy Trial onboarding slides."},
+    {"id":"home-roadmap","name":"Home Roadmap","status":"FOUNDATION COMPLETE","tag":"warn","completion":70,"risk":"MEDIUM","priority":"Connect","route":"home","subtitle":"Primary post-onboarding Academy journey.","done":["Home foundation exists","Original Roadmap concept retained","Lab location retained"],"todo":["Place Academy Trial in Roadmap","Connect onboarding exit","Validate first-user hierarchy"],"review":"The Roadmap, not extra onboarding slides, should carry the Academy journey."},
+    {"id":"academy-trial","name":"Academy Trial","status":"NOT STARTED","tag":"todo","completion":0,"risk":"MEDIUM","priority":"Next","route":"home","subtitle":"Baseline Football IQ assessment launched from the Roadmap.","done":[],"todo":["Define trial interaction","Add scenario questions","Add immediate feedback","Route result to progress"],"review":"Build within the Roadmap journey."},
+    {"id":"lab","name":"Lab","status":"FOUNDATION COMPLETE","tag":"review","completion":60,"risk":"LOW","priority":"Preserve","route":"home","subtitle":"Experimental training area at the bottom of Home.","done":["Lab exists on Home","Bottom placement approved"],"todo":["Keep visually secondary to Roadmap"],"review":"Do not move the Lab into onboarding or above the Roadmap."}
   ],
   "screens": [
-    {
-      "id": "landing",
-      "name": "Landing",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Preserve",
-      "route": "splash"
-    },
-    {
-      "id": "onboarding",
-      "name": "Onboarding",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 100,
-      "risk": "LOW",
-      "priority": "Extend carefully",
-      "route": "onboard"
-    },
-    {
-      "id": "home",
-      "name": "Home",
-      "status": "FOUNDATION",
-      "tag": "review",
-      "completion": 70,
-      "risk": "LOW",
-      "priority": "Connect",
-      "route": "home"
-    },
-    {
-      "id": "training",
-      "name": "Training",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 90,
-      "risk": "LOW",
-      "priority": "Preserve",
-      "route": "training"
-    },
-    {
-      "id": "results",
-      "name": "Results",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 85,
-      "risk": "LOW",
-      "priority": "Preserve",
-      "route": "results"
-    },
-    {
-      "id": "player",
-      "name": "Player",
-      "status": "COMPLETE",
-      "tag": "ready",
-      "completion": 80,
-      "risk": "LOW",
-      "priority": "Preserve",
-      "route": "player"
-    }
+    {"id":"landing","name":"Landing","status":"COMPLETE","tag":"ready","completion":100,"risk":"LOW","priority":"Preserve","route":"splash"},
+    {"id":"onboarding","name":"Onboarding","status":"IN REVIEW","tag":"review","completion":92,"risk":"LOW","priority":"Finish splash","route":"onboard"},
+    {"id":"home","name":"Home","status":"FOUNDATION","tag":"review","completion":70,"risk":"MEDIUM","priority":"Roadmap integration","route":"home"},
+    {"id":"training","name":"Training","status":"COMPLETE","tag":"ready","completion":90,"risk":"LOW","priority":"Preserve","route":"training"},
+    {"id":"results","name":"Results","status":"COMPLETE","tag":"ready","completion":85,"risk":"LOW","priority":"Preserve","route":"results"},
+    {"id":"player","name":"Player","status":"COMPLETE","tag":"ready","completion":80,"risk":"LOW","priority":"Preserve","route":"player"}
   ]
 }
