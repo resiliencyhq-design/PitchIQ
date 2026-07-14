@@ -1,4 +1,4 @@
-const CACHE="pitchiq-sprint-9-1-landing-hotfix-20260714";
+const CACHE="pitchiq-sprint-9-1-landing-watchdog-20260714";
 const ASSETS=[
   "./",
   "./index.html",
@@ -32,7 +32,7 @@ const ASSETS=[
   "./js/app/academy-trial-home-return.js?v=sprint-9-0-academy-trial-mvp-20260714",
   "./js/app/academy-trial.js?v=sprint-9-1-academy-journey-20260714",
   "./js/app/academy-journey.js?v=sprint-9-1-academy-journey-20260714",
-  "./js/app/landing-swipe-iphone-hotfix.js?v=landing-swipe-hotfix-20260714",
+  "./js/app/landing-swipe-iphone-hotfix.js?v=landing-completion-watchdog-20260714",
   "./js/dev/visual-layout-studio.js?v=hero-bg-top-20260623",
   "./js/dev/dev-floating-panels.js?v=hero-bg-top-20260623",
   "./assets/onboarding/jersey-back.png?v=sprint-8-4-number-flow-fix-20260710",
@@ -70,10 +70,8 @@ self.addEventListener("activate",event=>event.waitUntil(
 
 self.addEventListener("fetch",event=>{
   if(event.request.method!=="GET") return;
-
   const url=new URL(event.request.url);
   const live=/\.(?:html|css|js|png|svg|jpg|jpeg|webp)$/i.test(url.pathname)||url.pathname.endsWith("/");
-
   if(live){
     event.respondWith(
       fetch(event.request,{cache:"no-store"})
@@ -86,7 +84,6 @@ self.addEventListener("fetch",event=>{
     );
     return;
   }
-
   event.respondWith(
     caches.match(event.request)
       .then(response=>response||fetch(event.request).catch(()=>caches.match("./index.html")))

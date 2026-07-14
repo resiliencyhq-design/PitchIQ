@@ -12,31 +12,16 @@
       var host = location.hostname;
       var isPrivateLan = /^192\.168\./.test(host) || /^10\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host);
       var isLocalDev = host === "localhost" || host === "127.0.0.1" || host === "::1" || isPrivateLan;
-
       window.__PITCHIQ_LOCAL_DEV__ = isLocalDev;
-
       if (!isLocalDev) return;
-
       if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.getRegistrations()
-          .then(function(registrations){
-            return Promise.all(registrations.map(function(registration){
-              return registration.unregister();
-            }));
-          })
-          .catch(function(error){
-            console.warn("[PitchIQ dev] Could not unregister service workers", error);
-          });
+        navigator.serviceWorker.getRegistrations().then(function(registrations){
+          return Promise.all(registrations.map(function(registration){ return registration.unregister(); }));
+        }).catch(function(error){ console.warn("[PitchIQ dev] Could not unregister service workers", error); });
       }
-
       if ("caches" in window) {
-        caches.keys()
-          .then(function(keys){
-            return Promise.all(keys.map(function(key){ return caches.delete(key); }));
-          })
-          .catch(function(error){
-            console.warn("[PitchIQ dev] Could not clear caches", error);
-          });
+        caches.keys().then(function(keys){ return Promise.all(keys.map(function(key){ return caches.delete(key); })); })
+          .catch(function(error){ console.warn("[PitchIQ dev] Could not clear caches", error); });
       }
     })();
   </script>
@@ -72,22 +57,16 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "sprint-9-1-academy-journey-20260714";
+    window.__PITCHIQ_BUILD__ = "landing-completion-watchdog-20260714";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
-      if (box) {
-        box.style.display = "block";
-        box.querySelector("p").textContent = "JavaScript error: " + (event.message || "unknown error");
-      }
+      if (box) { box.style.display = "block"; box.querySelector("p").textContent = "JavaScript error: " + (event.message || "unknown error"); }
     });
     window.addEventListener("unhandledrejection", function(event){
       console.error("[PitchIQ unhandled promise]", event.reason);
       var box = document.getElementById("pitchiq-boot-watchdog");
-      if (box) {
-        box.style.display = "block";
-        box.querySelector("p").textContent = "Unhandled promise: " + (event.reason && event.reason.message ? event.reason.message : event.reason || "unknown error");
-      }
+      if (box) { box.style.display = "block"; box.querySelector("p").textContent = "Unhandled promise: " + (event.reason && event.reason.message ? event.reason.message : event.reason || "unknown error"); }
     });
     setTimeout(function(){
       var app = document.getElementById("app");
@@ -96,6 +75,7 @@
     }, 2500);
   </script>
   <script type="module" src="js/app/main.js?v=step2-refactor-phase1-20260703"></script>
+  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=landing-completion-watchdog-20260714"></script>
   <script type="module" src="js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710"></script>
   <script type="module" src="js/app/onboard-number.js?v=sprint-8-3-2-iphone-wheel-20260710"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
