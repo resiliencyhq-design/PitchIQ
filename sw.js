@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-direct-selected-puck-20260714";
+const CACHE="pitchiq-step2-heading-consolidated-20260714";
 const ASSETS=[
   "./",
   "./index.html",
@@ -12,7 +12,7 @@ const ASSETS=[
   "./css/visual-layout-studio.css?v=hero-bg-top-20260623",
   "./css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703",
   "./css/onboard-step2-final-polish.css?v=step2-favorite-position-spacing-20260703",
-  "./css/onboard-step2-layout.css?v=step2-refactor-layout-20260703",
+  "./css/onboard-step2-layout.css?v=step2-heading-consolidated-20260714",
   "./css/onboard-step2-marker.css?v=step2-direct-selected-puck-20260714",
   "./css/onboard-step2-web.css?v=step2-refactor-web-20260703",
   "./css/onboard-step2-animation.css?v=sprint-8-4-1-marker-consolidation-20260712",
