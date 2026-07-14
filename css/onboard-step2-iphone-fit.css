@@ -23,22 +23,55 @@
   scale:1!important;
 }
 
+/* Sprint 8.4.3 target lock — lower controls are positioned for the
+   longest tactical description, not the shorter goalkeeper copy. */
 @media(max-width:430px){
+  #onboard.onboard-v1:has(.onboard-step[data-onboard-step="2"]:not([hidden])){
+    overflow:hidden!important;
+  }
+
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
     width:min(310px,84vw)!important;
     max-width:310px!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
-    width:min(304px,84vw)!important;
-    margin:-34px auto 0!important;
-    min-height:38px!important;
-    padding:5px 8px!important;
+    box-sizing:border-box!important;
+    width:min(360px,92vw)!important;
+    max-width:360px!important;
+    min-height:104px!important;
+    margin:-132px auto 0!important;
+    padding:8px 14px 7px!important;
+    row-gap:2px!important;
+    align-content:center!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm small{
+    max-width:328px!important;
+    margin:0 auto!important;
+    font-size:12px!important;
+    line-height:1.12!important;
+    text-wrap:balance!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm b{
+    margin:0 auto!important;
+    line-height:1.02!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
-    width:min(304px,84vw)!important;
-    margin:6px auto 0!important;
+    box-sizing:border-box!important;
+    width:min(350px,90vw)!important;
+    max-width:350px!important;
+    height:56px!important;
+    min-height:56px!important;
+    margin:-4px auto 0!important;
+    padding:0!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-position-next,
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-cta-v1{
+    height:56px!important;
     min-height:56px!important;
   }
 }
@@ -50,6 +83,37 @@
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
-    margin:-30px auto 0!important;
+    width:min(350px,92vw)!important;
+    min-height:100px!important;
+    margin-top:-126px!important;
+    padding:7px 12px 6px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm small{
+    max-width:320px!important;
+    font-size:11px!important;
+    line-height:1.1!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    width:min(340px,90vw)!important;
+    margin-top:-4px!important;
+  }
+}
+
+@media(max-height:760px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
+    min-height:94px!important;
+    margin-top:-142px!important;
+    padding-block:5px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm small{
+    font-size:10.5px!important;
+    line-height:1.06!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-6px!important;
   }
 }
