@@ -23,23 +23,28 @@
   scale:1!important;
 }
 
+/* Sprint 8.4.3 — final vertical composition lock.
+   Pitch dimensions, markers, typography and animations remain unchanged. */
 @media(max-width:430px){
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
     width:min(310px,84vw)!important;
     max-width:310px!important;
+    margin-top:-14px!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
     width:min(304px,84vw)!important;
-    margin:-34px auto 0!important;
-    min-height:38px!important;
-    padding:5px 8px!important;
+    margin:-54px auto 0!important;
+    min-height:36px!important;
+    padding:3px 8px!important;
+    row-gap:0!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
     width:min(304px,84vw)!important;
-    margin:6px auto 0!important;
+    margin:0 auto!important;
     min-height:56px!important;
+    padding:0!important;
   }
 }
 
@@ -47,9 +52,30 @@
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
     width:min(296px,82vw)!important;
     max-width:296px!important;
+    margin-top:-14px!important;
   }
 
   #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
-    margin:-30px auto 0!important;
+    margin:-50px auto 0!important;
+    padding-block:3px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-2px!important;
+  }
+}
+
+@media(max-height:760px){
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-selector{
+    margin-top:-16px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .position-confirm{
+    margin-top:-56px!important;
+    padding-block:2px!important;
+  }
+
+  #onboard.onboard-v1 .onboard-step[data-onboard-step="2"] .onboard-step-footer{
+    margin-top:-3px!important;
   }
 }
