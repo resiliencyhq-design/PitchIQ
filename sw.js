@@ -1,4 +1,4 @@
-const CACHE="pitchiq-step2-rendered-match-20260714";
+const CACHE="pitchiq-sprint-8-4-3-vertical-composition-20260714";
 const ASSETS=[
   "./",
   "./index.html",
@@ -19,7 +19,7 @@ const ASSETS=[
   "./css/onboard-jersey.css?v=sprint-8-4-number-flow-fix-20260710",
   "./css/onboard-number.css?v=sprint-8-3-4-hero-jersey-20260711",
   "./css/onboard-typography-lock.css?v=step2-heading-exact-match-20260714",
-  "./css/onboard-step2-iphone-fit.css?v=step2-rendered-match-20260714",
+  "./css/onboard-step2-iphone-fit.css?v=sprint-8-4-3-vertical-composition-20260714",
   "./css/onboard-step3-layout.css?v=step3-centred-layout-20260713",
   "./js/app/main.js?v=step2-refactor-phase1-20260703",
   "./js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710",
