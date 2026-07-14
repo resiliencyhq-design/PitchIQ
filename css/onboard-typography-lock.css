@@ -42,19 +42,10 @@
   text-transform:uppercase!important;
 }
 
-/*
-   Canonical heading lock.
-   These selectors cover:
-   - Who's training?
-   - Choose your squad number
-   - Choose your favourite position
-   - Enter the Academy
-   No phase-specific heading scale is allowed below this point.
-*/
-#onboard .onboard-step > h1.onboard-heading,
-#onboard .onboard-number-step > h1.onboard-heading,
-#onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
-#onboard .onboard-step > h1.onboard-position-heading,
+/* One tag-independent canonical heading rule for every onboarding phase. */
+#onboard .onboard-step > .onboard-heading,
+#onboard .onboard-number-step > .onboard-heading,
+#onboard .onboard-step > .onboard-position-heading,
 #onboard .onboard-step[data-onboard-step="3"] > h1{
   box-sizing:border-box!important;
   width:min(100%,var(--onboard-heading-width))!important;
@@ -100,10 +91,9 @@
     font-size:20px!important;
   }
 
-  #onboard .onboard-step > h1.onboard-heading,
-  #onboard .onboard-number-step > h1.onboard-heading,
-  #onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
-  #onboard .onboard-step > h1.onboard-position-heading,
+  #onboard .onboard-step > .onboard-heading,
+  #onboard .onboard-number-step > .onboard-heading,
+  #onboard .onboard-step > .onboard-position-heading,
   #onboard .onboard-step[data-onboard-step="3"] > h1{
     width:min(92vw,var(--onboard-heading-width))!important;
     margin-bottom:22px!important;
@@ -124,10 +114,9 @@
     font-size:18px!important;
   }
 
-  #onboard .onboard-step > h1.onboard-heading,
-  #onboard .onboard-number-step > h1.onboard-heading,
-  #onboard .onboard-step[data-onboard-step="2"] > h1.onboard-heading,
-  #onboard .onboard-step > h1.onboard-position-heading,
+  #onboard .onboard-step > .onboard-heading,
+  #onboard .onboard-number-step > .onboard-heading,
+  #onboard .onboard-step > .onboard-position-heading,
   #onboard .onboard-step[data-onboard-step="3"] > h1{
     margin-bottom:16px!important;
   }
