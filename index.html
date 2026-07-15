@@ -87,7 +87,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "service-worker-retirement-20260715";
+    window.__PITCHIQ_BUILD__ = "landing-module-cache-recovery-20260715";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -103,9 +103,38 @@
       var box = document.getElementById("pitchiq-boot-watchdog");
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
+
+    (function(){
+      var recoveryTimer = 0;
+      function landingVisible(){ return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]")); }
+      function recover(){
+        if (!landingVisible()) return;
+        var url = new URL(location.href);
+        url.searchParams.set("dev", "1");
+        url.searchParams.set("autoOnboard", "1");
+        url.searchParams.set("v", "landing-inline-recovery-20260715");
+        url.hash = "onboard";
+        location.replace(url.toString());
+      }
+      function arm(){
+        clearTimeout(recoveryTimer);
+        recoveryTimer = setTimeout(function(){
+          var swipe = document.querySelector("[data-splash-swipe]");
+          if (swipe && swipe.classList.contains("complete") && landingVisible()) recover();
+        }, 900);
+      }
+      new MutationObserver(function(mutations){
+        for (var i = 0; i < mutations.length; i++) {
+          var target = mutations[i].target;
+          if (target && target.matches && target.matches("[data-splash-swipe]") && target.classList.contains("complete")) arm();
+        }
+      }).observe(document.documentElement, { subtree:true, attributes:true, attributeFilter:["class"] });
+      document.addEventListener("pointerup", arm, true);
+      document.addEventListener("touchend", arm, true);
+    })();
   </script>
-  <script type="module" src="js/app/main.js?v=step2-refactor-phase1-20260703"></script>
-  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=landing-completion-watchdog-20260714"></script>
+  <script type="module" src="js/app/main.js?v=landing-module-cache-recovery-20260715"></script>
+  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=landing-module-cache-recovery-20260715"></script>
   <script type="module" src="js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710"></script>
   <script type="module" src="js/app/onboard-number.js?v=sprint-8-3-2-iphone-wheel-20260710"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
