@@ -12,17 +12,47 @@
       var host = location.hostname;
       var isPrivateLan = /^192\.168\./.test(host) || /^10\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host);
       var isLocalDev = host === "localhost" || host === "127.0.0.1" || host === "::1" || isPrivateLan;
+      var migrationKey = "pitchiq-sw-retirement-20260715";
+      var baseScope = new URL("./", location.href).href;
       window.__PITCHIQ_LOCAL_DEV__ = isLocalDev;
-      if (!isLocalDev) return;
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations){
-          return Promise.all(registrations.map(function(registration){ return registration.unregister(); }));
-        }).catch(function(error){ console.warn("[PitchIQ dev] Could not unregister service workers", error); });
+
+      function clearPitchIQCaches(){
+        if (!("caches" in window)) return Promise.resolve(false);
+        return caches.keys().then(function(keys){
+          var pitchIQKeys = keys.filter(function(key){ return /^pitchiq-/i.test(key); });
+          return Promise.all(pitchIQKeys.map(function(key){ return caches.delete(key); }))
+            .then(function(results){ return results.some(Boolean); });
+        });
       }
-      if ("caches" in window) {
-        caches.keys().then(function(keys){ return Promise.all(keys.map(function(key){ return caches.delete(key); })); })
-          .catch(function(error){ console.warn("[PitchIQ dev] Could not clear caches", error); });
+
+      function unregisterPitchIQWorkers(){
+        if (!("serviceWorker" in navigator)) return Promise.resolve(false);
+        return navigator.serviceWorker.getRegistrations().then(function(registrations){
+          var pitchIQRegistrations = registrations.filter(function(registration){
+            return registration.scope.indexOf(baseScope) === 0;
+          });
+          return Promise.all(pitchIQRegistrations.map(function(registration){ return registration.unregister(); }))
+            .then(function(results){ return results.some(Boolean); });
+        });
       }
+
+      if (isLocalDev) {
+        Promise.all([unregisterPitchIQWorkers(), clearPitchIQCaches()])
+          .catch(function(error){ console.warn("[PitchIQ dev] Could not clear service-worker state", error); });
+        return;
+      }
+
+      if (sessionStorage.getItem(migrationKey) === "done") return;
+      sessionStorage.setItem(migrationKey, "running");
+      Promise.all([unregisterPitchIQWorkers(), clearPitchIQCaches()])
+        .then(function(results){
+          sessionStorage.setItem(migrationKey, "done");
+          if (results.some(Boolean)) location.replace(location.href);
+        })
+        .catch(function(error){
+          sessionStorage.setItem(migrationKey, "done");
+          console.warn("[PitchIQ] Could not retire legacy service-worker state", error);
+        });
     })();
   </script>
   <link rel="manifest" href="manifest.json?v=hero-bg-top-20260623"/>
@@ -57,7 +87,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "landing-completion-watchdog-20260714";
+    window.__PITCHIQ_BUILD__ = "service-worker-retirement-20260715";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
