@@ -2,6 +2,7 @@ const JERSEY_ASSET_VERSION = "sprint-8-4-number-flow-fix-20260710";
 const REDUCED_MOTION = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 const PLAYER_NAME_KEY = "pitchiqPlayerName";
 const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
+const jerseyIdleTimers = new WeakMap();
 
 function normaliseJerseyName(value = "") {
   return value.trim().toUpperCase().slice(0, 18) || "NAME";
@@ -18,14 +19,39 @@ function restartClass(element, className) {
   element.classList.add(className);
 }
 
+function playJerseyEntrance(preview) {
+  if (!preview) return;
+
+  const existingTimer = jerseyIdleTimers.get(preview);
+  if (existingTimer) window.clearTimeout(existingTimer);
+
+  preview.classList.remove("is-entering", "is-idle");
+
+  if (REDUCED_MOTION) {
+    preview.classList.add("is-idle");
+    return;
+  }
+
+  void preview.offsetWidth;
+  preview.classList.add("is-entering");
+
+  const idleTimer = window.setTimeout(() => {
+    preview.classList.remove("is-entering");
+    preview.classList.add("is-idle");
+    jerseyIdleTimers.delete(preview);
+  }, 1050);
+
+  jerseyIdleTimers.set(preview, idleTimer);
+}
+
 function mountJerseyComponent(preview) {
-  if (!preview || preview.dataset.jerseyComponentMounted === "true") return;
+  if (!preview || preview.dataset.jerseyComponentMounted === "true") return false;
 
   const panel = preview.closest('.onboard-step');
   const isNumberPhase = panel?.dataset.onboardPhase === "number";
 
   preview.dataset.jerseyComponentMounted = "true";
-  preview.classList.add("onboard-jersey-stage", "is-entering");
+  preview.classList.add("onboard-jersey-stage");
   preview.setAttribute("aria-label", isNumberPhase ? "Academy jersey name and number preview" : "Academy jersey name preview");
 
   preview.innerHTML = `
@@ -62,13 +88,7 @@ function mountJerseyComponent(preview) {
   let numberGlowPlayed = false;
   let shineTimer = 0;
 
-  const beginIdle = () => {
-    preview.classList.remove("is-entering");
-    preview.classList.add("is-idle");
-  };
-
-  if (REDUCED_MOTION) beginIdle();
-  else window.setTimeout(beginIdle, 1050);
+  playJerseyEntrance(preview);
 
   const syncIdentity = event => {
     const rawValue = input?.value || localStorage.getItem(PLAYER_NAME_KEY) || "";
@@ -98,12 +118,27 @@ function mountJerseyComponent(preview) {
   if (input) input.addEventListener("input", syncIdentity);
   window.addEventListener("pitchiq:jersey-number-change", syncIdentity);
   syncIdentity();
+  return true;
 }
 
 function mountAllJerseyComponents() {
   document.querySelectorAll(
     '.onboard-step[data-onboard-step="1"] .onboard-jersey-preview'
-  ).forEach(mountJerseyComponent);
+  ).forEach(preview => {
+    const panel = preview.closest('.onboard-step');
+    const isNumberPhase = panel?.dataset.onboardPhase === "number";
+    const isVisible = isNumberPhase && !panel.hidden;
+    const wasVisible = preview.dataset.jerseyPhaseVisible === "true";
+    const newlyMounted = mountJerseyComponent(preview);
+
+    if (isNumberPhase && !newlyMounted && isVisible && !wasVisible) {
+      playJerseyEntrance(preview);
+    }
+
+    if (isNumberPhase) {
+      preview.dataset.jerseyPhaseVisible = String(isVisible);
+    }
+  });
 }
 
 function initialiseJerseyComponent() {
@@ -113,7 +148,12 @@ function initialiseJerseyComponent() {
   if (!app) return;
 
   const observer = new MutationObserver(mountAllJerseyComponents);
-  observer.observe(app, { childList: true, subtree: true });
+  observer.observe(app, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["hidden"]
+  });
 }
 
 if (document.readyState === "loading") {
