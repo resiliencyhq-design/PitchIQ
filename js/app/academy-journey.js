@@ -48,9 +48,7 @@ function alignOnboardingLabels() {
     setTextIfChanged(positionPanel.querySelector(".position-title"), "Step 3 of 3");
     const heading = positionPanel.querySelector(".onboard-position-heading");
     setTextIfChanged(heading, "CHOOSE YOUR POSITION");
-    if (!positionPanel.querySelector(".academy-journey-position-copy")) {
-      heading?.insertAdjacentHTML("afterend", '<p class="academy-journey-position-copy">Select where you play best.</p>');
-    }
+    positionPanel.querySelector(".academy-journey-position-copy")?.remove();
   }
 
   const welcomePanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
