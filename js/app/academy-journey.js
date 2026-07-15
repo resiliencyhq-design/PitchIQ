@@ -22,20 +22,32 @@ function identity() {
   };
 }
 
+function setTextIfChanged(element, text) {
+  if (element && element.textContent !== text) element.textContent = text;
+}
+
 function alignOnboardingLabels() {
   const numberPanel = document.querySelector(".onboard-number-step");
   if (numberPanel) {
-    numberPanel.querySelector(".position-title")?.replaceChildren(document.createTextNode("Step 2 of 3"));
-    numberPanel.querySelector(".academy-progress")?.setAttribute("aria-label", "Step 2 of 3");
+    setTextIfChanged(numberPanel.querySelector(".position-title"), "Step 2 of 3");
+    const progress = numberPanel.querySelector(".academy-progress");
+    if (progress?.getAttribute("aria-label") !== "Step 2 of 3") {
+      progress?.setAttribute("aria-label", "Step 2 of 3");
+    }
     const dots = numberPanel.querySelectorAll(".academy-progress span");
-    dots.forEach((dot, index) => dot.classList.toggle("active", index <= 1));
+    dots.forEach((dot, index) => {
+      const shouldBeActive = index <= 1;
+      if (dot.classList.contains("active") !== shouldBeActive) {
+        dot.classList.toggle("active", shouldBeActive);
+      }
+    });
   }
 
   const positionPanel = document.querySelector('.onboard-step[data-onboard-step="2"]');
   if (positionPanel) {
-    positionPanel.querySelector(".position-title")?.replaceChildren(document.createTextNode("Step 3 of 3"));
+    setTextIfChanged(positionPanel.querySelector(".position-title"), "Step 3 of 3");
     const heading = positionPanel.querySelector(".onboard-position-heading");
-    if (heading) heading.textContent = "CHOOSE YOUR POSITION";
+    setTextIfChanged(heading, "CHOOSE YOUR POSITION");
     if (!positionPanel.querySelector(".academy-journey-position-copy")) {
       heading?.insertAdjacentHTML("afterend", '<p class="academy-journey-position-copy">Select where you play best.</p>');
     }

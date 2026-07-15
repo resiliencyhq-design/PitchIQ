@@ -31,6 +31,12 @@ function stopCamera(){
   stream = null;
 }
 function routeTo(route){ stopCamera(); window.location.hash = route; }
+function returnHome(){
+  stopCamera();
+  const cleanUrl = `${window.location.pathname}${window.location.search}`;
+  window.history.replaceState(null, "", cleanUrl);
+  window.location.reload();
+}
 function shell(content){ return `<section class="screen app active trial-shell">${content}</section>`; }
 function top(title, backRoute="home", allowBack=true){
   return `<header class="trial-top">${allowBack?`<button class="trial-back" type="button" data-trial-route="${backRoute}" aria-label="Back">←</button>`:"<span></span>"}<div class="trial-brand">${title.replace("IQ", "<em>IQ</em>")}</div><button class="trial-info" type="button" aria-label="Information">ⓘ</button></header>`;
@@ -124,7 +130,7 @@ function bindFeature(){
   app.querySelector("[data-complete-academy]")?.addEventListener("click", () => {
     localStorage.setItem(ACADEMY_ACCEPTED_KEY, "true");
     localStorage.setItem(AVATAR_KEY, selectedAvatar);
-    routeTo("home");
+    returnHome();
   });
   app.querySelector("[data-lab-touch]")?.addEventListener("click", () => {
     provisionalCount += 1;
