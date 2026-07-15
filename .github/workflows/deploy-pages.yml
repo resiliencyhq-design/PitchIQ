@@ -33,7 +33,8 @@ jobs:
             --exclude '.github/' \
             --exclude 'node_modules/' \
             --exclude 'dist/' \
-            --exclude '.vercel/'
+            --exclude '.vercel/' \
+            --exclude 'sw.js'
           touch dist/.nojekyll
 
       - name: Verify static entrypoint
@@ -41,6 +42,7 @@ jobs:
           test -f dist/index.html
           test -f dist/js/app/main.js
           test -f dist/css/style.css
+          test ! -f dist/sw.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
