@@ -54,7 +54,8 @@ const trials = [
 ];
 function trialList(){
   const cards = trials.map(([icon,name,copy]) => `<button class="trial-card" type="button" disabled><span class="trial-card-icon">${icon}</span><span><strong>${name}</strong><small>${copy}</small></span><span class="lock">⌑</span></button>`).join("");
-  return shell(`${top("Academy Assessment", "academy-trial")}<div class="trial-list-head"><span class="trial-kicker">First assessment</span><h1>Choose Your First Assessment</h1><p>Complete one assessment to earn your place in the Academy.</p></div><span class="trial-section-label">Available now</span><div class="trial-grid"><button class="trial-card available" type="button" data-start-first-assessment><span class="trial-card-icon">⚽</span><span><strong>Juggling Assessment</strong><small>Set your camera, complete the challenge and record your result.</small></span><span class="trial-new">START</span></button>${cards}</div>`);
+  const skipCard = `<button class="trial-card available" type="button" data-skip-academy-trial><span class="trial-card-icon">→</span><span><strong>Skip Trial for Now</strong><small>Trial activities are still being prepared. Continue into the Academy.</small></span><span class="trial-new">CONTINUE</span></button>`;
+  return shell(`${top("Academy Assessment", "academy-trial")}<div class="trial-list-head"><span class="trial-kicker">First assessment</span><h1>Choose Your First Assessment</h1><p>Complete one assessment to earn your place in the Academy.</p></div><span class="trial-section-label">Available now</span><div class="trial-grid"><button class="trial-card available" type="button" data-start-first-assessment><span class="trial-card-icon">⚽</span><span><strong>Juggling Assessment</strong><small>Set your camera, complete the challenge and record your result.</small></span><span class="trial-new">START</span></button>${cards}${skipCard}</div>`);
 }
 function assessmentBrief(){
   return shell(`${top("Assessment Brief", "academy-trials")}<main class="lab-stage"><div class="lab-orb">⚽</div><span class="trial-kicker">Assessment brief</span><h1>Juggling Assessment</h1><p>Use good lighting and enough space so your full body and the ground stay visible.</p><div class="lab-facts"><div class="lab-fact"><b>◉</b><small>3–5m distance</small></div><div class="lab-fact"><b>♙</b><small>Full body in frame</small></div><div class="lab-fact"><b>☀</b><small>Good light</small></div></div><div class="lab-note"><strong>Today's assessment</strong><p>Complete your juggling attempt and record a manual reference count while camera-counting remains under development.</p></div><button class="trial-primary" type="button" data-lab-stage="guide">Continue</button></main>`);
@@ -116,6 +117,10 @@ function runCountdown(){
 function bindFeature(){
   app.querySelectorAll("[data-trial-route]").forEach(button => button.addEventListener("click", () => routeTo(button.dataset.trialRoute)));
   app.querySelector("[data-start-first-assessment]")?.addEventListener("click", () => { labStage = "welcome"; routeTo("lab-juggling"); });
+  app.querySelector("[data-skip-academy-trial]")?.addEventListener("click", () => {
+    labStage = "accepted";
+    routeTo("lab-juggling");
+  });
   app.querySelectorAll("[data-lab-stage]").forEach(button => button.addEventListener("click", () => {
     if(button.dataset.labStage === "result") stopCamera();
     labStage = button.dataset.labStage;
