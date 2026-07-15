@@ -65,19 +65,30 @@ function alignOnboardingLabels() {
   const player = identity();
   welcomePanel.innerHTML = `
     <div class="academy-welcome-glow" aria-hidden="true"></div>
-    <span class="trial-kicker">Identity complete</span>
-    <h1>WELCOME TO<br><em>PITCHIQ ACADEMY</em></h1>
+    <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
+    <h1><span>WELCOME TO</span><em>PITCHIQ ACADEMY</em></h1>
+    <p class="academy-welcome-intro">Your first challenge starts now.</p>
     <div class="academy-welcome-identity" aria-label="Player identity">
       <div><small>Player</small><strong>${player.name.toUpperCase()}</strong></div>
       <div><small>Number</small><strong>#${player.number}</strong></div>
       <div><small>Position</small><strong>${player.position}</strong></div>
     </div>
-    <p>Every academy player completes one assessment before training begins.</p>
-    <div class="academy-welcome-facts" aria-label="Assessment details">
-      <span>30–90 seconds</span><span>Football IQ</span><span>Decisions</span><span>Vision</span><span>Awareness</span>
-    </div>
-    <div class="onboard-step-footer">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1 sticky-cta" data-action="save-profile">BEGIN FIRST ASSESSMENT →</button>
+    <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
+      <h2 id="academy-first-challenge-title">Your first challenge</h2>
+      <div class="academy-challenge-grid">
+        <div class="academy-challenge-fact">
+          <span class="academy-challenge-icon" aria-hidden="true">◷</span>
+          <div><strong>Short assessment</strong><small>30–90 seconds</small></div>
+        </div>
+        <div class="academy-challenge-fact">
+          <span class="academy-challenge-icon" aria-hidden="true">◉</span>
+          <div><strong>Football IQ</strong><small>Decisions, vision and awareness</small></div>
+        </div>
+      </div>
+      <p>A quick challenge that adapts to you.</p>
+    </section>
+    <div class="onboard-step-footer academy-welcome-footer">
+      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile">START ASSESSMENT →</button>
     </div>`;
 }
 
@@ -93,7 +104,7 @@ function beginFirstAssessment(event) {
   localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
-  window.location.hash = "academy-trial";
+  window.location.hash = "academy-trials";
 }
 
 function initialise() {
