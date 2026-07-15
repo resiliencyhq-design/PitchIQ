@@ -46,6 +46,13 @@ function alignOnboardingLabels() {
   const positionPanel = document.querySelector('.onboard-step[data-onboard-step="2"]');
   if (positionPanel) {
     setTextIfChanged(positionPanel.querySelector(".position-title"), "Step 3 of 3");
+    const progress = positionPanel.querySelector(".academy-progress");
+    if (progress?.getAttribute("aria-label") !== "Step 3 of 3") {
+      progress?.setAttribute("aria-label", "Step 3 of 3");
+    }
+    positionPanel.querySelectorAll(".academy-progress span").forEach(dot => {
+      if (!dot.classList.contains("active")) dot.classList.add("active");
+    });
     const heading = positionPanel.querySelector(".onboard-position-heading");
     setTextIfChanged(heading, "CHOOSE YOUR POSITION");
     positionPanel.querySelector(".academy-journey-position-copy")?.remove();
