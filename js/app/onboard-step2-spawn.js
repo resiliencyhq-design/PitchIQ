@@ -40,17 +40,11 @@ function standardiseStepHeader(step, headingText){
 
 function repairOnboardingLabels(){
   const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  const step3 = document.querySelector('.onboard-step[data-onboard-step="3"]');
 
   if(step2 && !step2.querySelector('.academy-progress')){
     step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
   }
   standardiseStepHeader(step2, 'Choose your favourite position');
-
-  if(step3 && !step3.querySelector('.academy-progress')){
-    step3.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
-  }
-  standardiseStepHeader(step3, 'Enter the Academy');
 }
 
 function markerLabel(marker){
@@ -153,4 +147,3 @@ window.addEventListener('pitchiq:marker-state-change', event => {
 });
 window.addEventListener('DOMContentLoaded', scheduleOnboardingRepair);
 window.addEventListener('load', scheduleOnboardingRepair);
-document.addEventListener('click', scheduleOnboardingRepair, true);
