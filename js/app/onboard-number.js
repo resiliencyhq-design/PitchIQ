@@ -245,7 +245,7 @@ function mountNumberPhase() {
 function bindNumberFlow() {
   document.addEventListener('click', event => {
     const nameContinue = event.target.closest?.('[data-action="onboard-next-name"]');
-    if (nameContinue?.dataset.jerseyTransitionBypass === 'true') {
+    if (nameContinue) {
       const name = document.getElementById('nameInput')?.value?.trim();
       if (!name) return;
       event.preventDefault();
