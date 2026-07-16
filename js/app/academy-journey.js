@@ -15,10 +15,12 @@ function positionLabel(value) {
 }
 
 function identity() {
+  const positionCode = localStorage.getItem(SELECTED_POSITION_KEY) || "—";
   return {
     name: localStorage.getItem(PLAYER_NAME_KEY) || "PLAYER",
     number: localStorage.getItem(JERSEY_NUMBER_KEY) || "1",
-    position: positionLabel(localStorage.getItem(SELECTED_POSITION_KEY))
+    positionCode,
+    position: positionLabel(positionCode)
   };
 }
 
@@ -31,6 +33,8 @@ function syncIdentitySummary(welcomePanel) {
   const player = identity();
   setTextIfChanged(welcomePanel.querySelector("[data-identity-player]"), player.name.toUpperCase());
   setTextIfChanged(welcomePanel.querySelector("[data-identity-number]"), `#${player.number}`);
+  setTextIfChanged(welcomePanel.querySelector("[data-identity-jersey-number]"), player.number);
+  setTextIfChanged(welcomePanel.querySelector("[data-identity-position-code]"), player.positionCode.toUpperCase());
   setTextIfChanged(welcomePanel.querySelector("[data-identity-position]"), player.position.toUpperCase());
 }
 
@@ -84,10 +88,30 @@ function alignOnboardingLabels() {
         <div class="academy-title-divider" aria-hidden="true"><i></i><b>★</b><i></i></div>
         <p>Your Academy journey begins now.</p>
       </div>
-      <div class="academy-welcome-identity" aria-label="Player identity">
-        <div><small>Player</small><strong data-identity-player>${player.name.toUpperCase()}</strong></div>
-        <div><small>Number</small><strong data-identity-number>#${player.number}</strong></div>
-        <div><small>Position</small><strong data-identity-position>${player.position.toUpperCase()}</strong></div>
+      <div class="academy-welcome-identity academy-identity-tile-v2" aria-label="Player identity">
+        <div class="academy-identity-cell academy-identity-player">
+          <svg class="academy-identity-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M13 55c2-13 9-20 19-20s17 7 19 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <small>Player</small>
+          <strong data-identity-player>${player.name.toUpperCase()}</strong>
+        </div>
+        <div class="academy-identity-cell academy-identity-number">
+          <div class="academy-jersey-icon" aria-hidden="true">
+            <svg viewBox="0 0 72 72">
+              <path d="M25 10c3 4 7 6 11 6s8-2 11-6l13 7-7 13-7-4v35H26V26l-7 4-7-13 13-7Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+            <span data-identity-jersey-number>${player.number}</span>
+          </div>
+          <small>Number</small>
+          <strong data-identity-number>#${player.number}</strong>
+        </div>
+        <div class="academy-identity-cell academy-identity-position">
+          <div class="academy-position-badge" data-identity-position-code>${player.positionCode.toUpperCase()}</div>
+          <small>Position</small>
+          <strong data-identity-position>${player.position.toUpperCase()}</strong>
+        </div>
       </div>
       <p class="academy-challenge-intro">Your first challenge starts now.</p>
       <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
