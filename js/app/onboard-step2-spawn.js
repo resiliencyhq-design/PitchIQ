@@ -1,10 +1,15 @@
-/* STEP 2/3 onboarding repair + direct selected-puck rendering.
-   The approved inactive master pitch remains the visible formation. Each marker
-   is a transparent hit target that owns one hidden active-puck image. Selecting
-   a position reveals that image directly at the marker, avoiding full-pitch
-   clipping and coordinate conversion.
+/* Onboarding number/position regression repair + direct selected-puck rendering.
+   This module restores the approved Name → Number → Position sequence, mounts
+   the Position progress/header when the dynamic wizard appears, and keeps the
+   marker layer idempotent without restoring document-wide click repair.
 */
 
+const PLAYER_NAME_KEY = 'pitchiqPlayerName';
+const SELECTED_POSITION_KEY = 'pitchiqSelectedPosition';
+const ONBOARDING_COMPLETE_KEY = 'pitchiqOnboardingComplete';
+const JERSEY_NUMBER_KEY = 'pitchiqJerseyNumber';
+const JERSEY_NUMBER_CONFIRMED_KEY = 'pitchiqJerseyNumberConfirmed';
+const DEFAULT_JERSEY_NUMBER = '1';
 const MARKER_SPAWN_STAGGER_MS = 75;
 const MARKER_SPAWN_DURATION_MS = 620;
 const ACTIVE_MARKER_SRC = 'assets/onboarding/position-marker-active.png?v=selected-puck-20260713';
@@ -39,12 +44,16 @@ function standardiseStepHeader(step, headingText){
 }
 
 function repairOnboardingLabels(){
-  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
 
-  if(step2 && !step2.querySelector('.academy-progress')){
-    step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
+  if(positionStep && !positionStep.querySelector('.academy-progress')){
+    positionStep.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
   }
-  standardiseStepHeader(step2, 'Choose your favourite position');
+  if(positionStep){
+    const title = positionStep.querySelector('.position-title');
+    if(title?.textContent !== 'Step 3 of 3') title.textContent = 'Step 3 of 3';
+    standardiseStepHeader(positionStep, 'Choose your favourite position');
+  }
 }
 
 function markerLabel(marker){
@@ -52,11 +61,11 @@ function markerLabel(marker){
 }
 
 function syncSelectedPuck(preferredMarker = null){
-  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  if(!step2) return;
+  const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  if(!positionStep) return;
 
-  const markers = [...step2.querySelectorAll('.position-marker')];
-  const selected = preferredMarker || step2.querySelector('.position-marker.is-selected, .position-marker.selected, .position-marker.active');
+  const markers = [...positionStep.querySelectorAll('.position-marker')];
+  const selected = preferredMarker || positionStep.querySelector('.position-marker.is-selected, .position-marker.selected, .position-marker.active');
 
   markers.forEach(marker => {
     const isSelected = marker === selected || marker.classList.contains('is-selected') || marker.classList.contains('selected') || marker.classList.contains('active');
@@ -66,49 +75,50 @@ function syncSelectedPuck(preferredMarker = null){
 }
 
 function upgradeMarkerLayers(){
-  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  if(!step2) return [];
+  const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  if(!positionStep) return [];
 
-  const markers = [...step2.querySelectorAll('.position-marker')];
-  const firstInitialisation = step2.dataset.markerSystemInitialised !== 'true';
+  const markers = [...positionStep.querySelectorAll('.position-marker')];
+  const firstInitialisation = positionStep.dataset.markerSystemInitialised !== 'true';
 
   markers.forEach((marker, index) => {
     const label = markerLabel(marker);
     marker.dataset.layered = 'direct-active-puck';
     marker.setAttribute('aria-label', marker.getAttribute('aria-label') || `Select ${label}`);
     marker.setAttribute('aria-pressed', 'false');
-    marker.innerHTML = `
-      <img class="selected-puck-image" src="${ACTIVE_MARKER_SRC}" alt="" aria-hidden="true">
-      <b class="selected-puck-label" aria-hidden="true">${label}</b>
-      <span class="marker-accessible-label">${label}</span>
-    `;
+    if(marker.dataset.markerMarkupReady !== 'true'){
+      marker.dataset.markerMarkupReady = 'true';
+      marker.innerHTML = `
+        <img class="selected-puck-image" src="${ACTIVE_MARKER_SRC}" alt="" aria-hidden="true">
+        <b class="selected-puck-label" aria-hidden="true">${label}</b>
+        <span class="marker-accessible-label">${label}</span>
+      `;
+    }
     marker.style.setProperty('--spawn-delay', `${index * MARKER_SPAWN_STAGGER_MS}ms`);
 
     if(firstInitialisation){
       marker.classList.remove('active', 'selected', 'is-selected', 'is-linked', 'has-active-puck');
-    } else {
-      marker.classList.remove('active', 'selected');
     }
   });
 
-  if(firstInitialisation) step2.dataset.markerSystemInitialised = 'true';
+  if(firstInitialisation) positionStep.dataset.markerSystemInitialised = 'true';
   syncSelectedPuck();
   return markers;
 }
 
-function isVisibleStep2(step){
+function isVisiblePositionStep(step){
   if(!step || step.hidden) return false;
   const styles = window.getComputedStyle(step);
   return styles.display !== 'none' && styles.visibility !== 'hidden';
 }
 
-function maybeRunStep2Spawn(){
+function maybeRunPositionSpawn(){
   repairOnboardingLabels();
   const markers = upgradeMarkerLayers();
-  const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
-  if(!isVisibleStep2(step2) || !markers.length) return;
+  const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  if(!isVisiblePositionStep(positionStep) || !markers.length) return;
 
-  const key = `${performance.timeOrigin}-${markers.length}-${step2.dataset.spawnRun || '0'}`;
+  const key = `${performance.timeOrigin}-${markers.length}-${positionStep.dataset.spawnRun || '0'}`;
   if(lastSpawnKey === key) return;
   lastSpawnKey = key;
 
@@ -125,14 +135,95 @@ function maybeRunStep2Spawn(){
   const finalDelay = Math.max(0, markers.length - 1) * MARKER_SPAWN_STAGGER_MS;
   spawnCleanupTimer = window.setTimeout(() => {
     markers.forEach(marker => marker.classList.remove('is-spawning'));
-    step2.dataset.spawnRun = String(Number(step2.dataset.spawnRun || 0) + 1);
+    positionStep.dataset.spawnRun = String(Number(positionStep.dataset.spawnRun || 0) + 1);
     syncSelectedPuck();
   }, finalDelay + MARKER_SPAWN_DURATION_MS + 100);
 }
 
-function scheduleOnboardingRepair(){
-  setTimeout(maybeRunStep2Spawn, 0);
-  setTimeout(maybeRunStep2Spawn, 120);
+function schedulePositionRepair(){
+  setTimeout(maybeRunPositionSpawn, 0);
+  setTimeout(maybeRunPositionSpawn, 120);
+}
+
+function showNumberPhase(){
+  const namePanel = document.querySelector('.onboard-step[data-onboard-step="1"]:not([data-onboard-phase="number"])');
+  const numberPanel = document.querySelector('.onboard-number-step');
+  const positionPanel = document.querySelector('.onboard-step[data-onboard-step="2"]');
+  const confirmPanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
+  if(!namePanel || !numberPanel) return false;
+
+  namePanel.hidden = true;
+  numberPanel.hidden = false;
+  if(positionPanel) positionPanel.hidden = true;
+  if(confirmPanel) confirmPanel.hidden = true;
+  return true;
+}
+
+function resetJerseyNumberState(){
+  localStorage.removeItem(JERSEY_NUMBER_CONFIRMED_KEY);
+  localStorage.setItem(JERSEY_NUMBER_KEY, DEFAULT_JERSEY_NUMBER);
+}
+
+function bindNameToNumber(){
+  document.addEventListener('click', event => {
+    const button = event.target.closest?.('[data-action="onboard-next-name"]');
+    if(!button) return;
+
+    const name = document.getElementById('nameInput')?.value?.trim();
+    if(!name || !document.querySelector('.onboard-number-step')) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    localStorage.setItem(PLAYER_NAME_KEY, name);
+    localStorage.removeItem(JERSEY_NUMBER_CONFIRMED_KEY);
+    showNumberPhase();
+  }, true);
+}
+
+function bindResetCleanup(){
+  document.addEventListener('click', event => {
+    const resetControl = event.target.closest?.('[data-action="reset"], [data-dev-reset-onboarding]');
+    if(!resetControl) return;
+
+    setTimeout(() => {
+      const resetCompleted = !localStorage.getItem(ONBOARDING_COMPLETE_KEY)
+        && !localStorage.getItem(PLAYER_NAME_KEY)
+        && !localStorage.getItem(SELECTED_POSITION_KEY);
+      if(resetCompleted) resetJerseyNumberState();
+    }, 0);
+  });
+}
+
+function initialiseLifecycle(){
+  const freshIdentity = !localStorage.getItem(PLAYER_NAME_KEY)
+    && !localStorage.getItem(SELECTED_POSITION_KEY)
+    && localStorage.getItem(ONBOARDING_COMPLETE_KEY) !== 'true';
+  if(freshIdentity) resetJerseyNumberState();
+
+  bindNameToNumber();
+  bindResetCleanup();
+  schedulePositionRepair();
+
+  const app = document.getElementById('app');
+  if(!app) return;
+
+  const observer = new MutationObserver(mutations => {
+    const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
+    if(!positionStep) return;
+
+    if(positionStep.dataset.positionLifecycleMounted !== 'true'){
+      positionStep.dataset.positionLifecycleMounted = 'true';
+      schedulePositionRepair();
+      return;
+    }
+
+    const becameVisible = mutations.some(mutation => mutation.type === 'attributes'
+      && mutation.attributeName === 'hidden'
+      && mutation.target === positionStep
+      && !positionStep.hidden);
+    if(becameVisible) schedulePositionRepair();
+  });
+  observer.observe(app, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
 }
 
 document.addEventListener('click', event => {
@@ -145,5 +236,9 @@ window.addEventListener('pitchiq:marker-state-change', event => {
   const marker = event.detail?.marker || document.querySelector('.onboard-step[data-onboard-step="2"] .position-marker.is-selected');
   syncSelectedPuck(marker);
 });
-window.addEventListener('DOMContentLoaded', scheduleOnboardingRepair);
-window.addEventListener('load', scheduleOnboardingRepair);
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initialiseLifecycle, { once: true });
+} else {
+  initialiseLifecycle();
+}
