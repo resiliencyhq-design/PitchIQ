@@ -1,0 +1,30 @@
+.academy-identity-tile-v2{grid-template-columns:1fr .9fr 1.25fr;padding:18px 10px 16px;border-color:#d7ff2e;border-radius:28px;background:rgba(2,14,10,.94)}
+.academy-identity-tile-v2 .academy-identity-cell{display:flex;min-width:0;min-height:142px;flex-direction:column;align-items:center;justify-content:flex-start;padding:8px 8px 6px}
+.academy-identity-tile-v2 .academy-identity-cell+.academy-identity-cell{border-left:1px solid rgba(215,255,46,.48)}
+.academy-identity-icon{width:54px;height:54px;margin:0 0 12px;color:#d7ff2e}
+.academy-jersey-icon{position:relative;width:58px;height:58px;margin:0 0 8px;color:#d7ff2e}
+.academy-jersey-icon svg{display:block;width:100%;height:100%}
+.academy-jersey-icon span{position:absolute;inset:24px 0 auto;display:block;color:#d7ff2e;font-size:.88rem;font-weight:950;line-height:1;text-align:center}
+.academy-position-badge{display:grid;min-width:58px;height:58px;place-items:center;margin:0 0 8px;padding:0 8px;border:2px solid #d7ff2e;border-radius:15px;color:#d7ff2e;font-size:1.34rem;font-weight:950;line-height:1;letter-spacing:-.04em}
+.academy-identity-tile-v2 small{margin:0 0 8px;color:#b7beb9;font-size:.61rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase}
+.academy-identity-tile-v2 strong{display:block;max-width:100%;overflow:hidden;color:#fff;font-size:.92rem;font-weight:950;line-height:1.12;text-overflow:ellipsis;white-space:nowrap}
+.academy-identity-tile-v2 .academy-identity-position strong{font-size:.82rem}
+@media (max-width:360px){
+  .academy-identity-tile-v2{padding-left:6px;padding-right:6px}
+  .academy-identity-tile-v2 .academy-identity-cell{min-height:126px;padding-left:4px;padding-right:4px}
+  .academy-identity-icon,.academy-jersey-icon{width:48px;height:48px}
+  .academy-jersey-icon span{inset:20px 0 auto;font-size:.76rem}
+  .academy-position-badge{min-width:50px;height:50px;border-radius:13px;font-size:1.08rem}
+  .academy-identity-tile-v2 strong{font-size:.8rem}
+  .academy-identity-tile-v2 .academy-identity-position strong{font-size:.7rem}
+}
+@media (max-height:740px){
+  .academy-identity-tile-v2{padding-top:8px;padding-bottom:8px}
+  .academy-identity-tile-v2 .academy-identity-cell{min-height:100px;padding-top:3px;padding-bottom:3px}
+  .academy-identity-icon,.academy-jersey-icon{width:39px;height:39px;margin-bottom:4px}
+  .academy-jersey-icon span{inset:16px 0 auto;font-size:.64rem}
+  .academy-position-badge{min-width:41px;height:39px;margin-bottom:4px;border-radius:10px;font-size:.88rem}
+  .academy-identity-tile-v2 small{margin-bottom:4px;font-size:.52rem}
+  .academy-identity-tile-v2 strong{font-size:.72rem}
+  .academy-identity-tile-v2 .academy-identity-position strong{font-size:.63rem}
+}
