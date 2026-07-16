@@ -77,7 +77,6 @@ function alignOnboardingLabels() {
       <div class="academy-welcome-glow" aria-hidden="true"></div>
       <header class="academy-welcome-header">
         <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
-        <button class="academy-info-button" type="button" data-academy-info aria-expanded="false" aria-controls="academyInfoPanel" aria-label="About your first assessment">ⓘ</button>
       </header>
       <div class="academy-welcome-title">
         <span class="academy-title-eyebrow">WELCOME TO</span>
@@ -85,10 +84,6 @@ function alignOnboardingLabels() {
         <div class="academy-title-divider" aria-hidden="true"><i></i><b>★</b><i></i></div>
         <p>Your Academy journey begins now.</p>
       </div>
-      <aside class="academy-info-panel" id="academyInfoPanel" hidden>
-        <strong>Your first assessment</strong>
-        <p>It takes around a minute, establishes your starting point and cannot be failed.</p>
-      </aside>
       <div class="academy-welcome-identity" aria-label="Player identity">
         <div><small>Player</small><strong data-identity-player>${player.name.toUpperCase()}</strong></div>
         <div><small>Number</small><strong data-identity-number>#${player.number}</strong></div>
@@ -119,16 +114,6 @@ function alignOnboardingLabels() {
   syncIdentitySummary(welcomePanel);
 }
 
-function toggleAcademyInfo(event) {
-  const button = event.target.closest?.("[data-academy-info]");
-  if (!button) return;
-  const panel = document.getElementById(button.getAttribute("aria-controls"));
-  if (!panel) return;
-  const willOpen = panel.hidden;
-  panel.hidden = !willOpen;
-  button.setAttribute("aria-expanded", String(willOpen));
-}
-
 function beginFirstAssessment(event) {
   const button = event.target.closest?.('[data-action="save-profile"]');
   if (!button || !button.closest(".academy-welcome-step")) return;
@@ -146,7 +131,6 @@ function beginFirstAssessment(event) {
 
 function initialise() {
   alignOnboardingLabels();
-  document.addEventListener("click", toggleAcademyInfo, true);
   document.addEventListener("click", beginFirstAssessment, true);
   const app = document.getElementById("app");
   if (app) new MutationObserver(alignOnboardingLabels).observe(app, { childList: true, subtree: true });
