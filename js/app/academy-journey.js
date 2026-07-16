@@ -67,7 +67,7 @@ function alignOnboardingLabels() {
     <div class="academy-welcome-glow" aria-hidden="true"></div>
     <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
     <h1><span>WELCOME TO</span><em>PITCHIQ ACADEMY</em></h1>
-    <p class="academy-welcome-intro">Your first challenge starts now.</p>
+    <p class="academy-welcome-intro">Your Academy journey begins now.</p>
     <div class="academy-welcome-identity" aria-label="Player identity">
       <div><small>Player</small><strong>${player.name.toUpperCase()}</strong></div>
       <div><small>Number</small><strong>#${player.number}</strong></div>
@@ -89,6 +89,7 @@ function alignOnboardingLabels() {
     </section>
     <div class="onboard-step-footer academy-welcome-footer">
       <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile">START ASSESSMENT →</button>
+      <p class="academy-welcome-reassurance">Every academy player completes one assessment before training begins.</p>
     </div>`;
 }
 
