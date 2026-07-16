@@ -42,7 +42,7 @@ function repairOnboardingLabels(){
   const step2 = document.querySelector('.onboard-step[data-onboard-step="2"]');
 
   if(step2 && !step2.querySelector('.academy-progress')){
-    step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(2));
+    step2.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
   }
   standardiseStepHeader(step2, 'Choose your favourite position');
 }
@@ -135,6 +135,17 @@ function scheduleOnboardingRepair(){
   setTimeout(maybeRunStep2Spawn, 120);
 }
 
+function initialiseStep2Lifecycle(){
+  scheduleOnboardingRepair();
+  const app = document.getElementById('app');
+  if(!app) return;
+
+  const observer = new MutationObserver(() => {
+    if(document.querySelector('.onboard-step[data-onboard-step="2"]')) scheduleOnboardingRepair();
+  });
+  observer.observe(app, { childList: true, subtree: true });
+}
+
 document.addEventListener('click', event => {
   const marker = event.target.closest?.('.onboard-step[data-onboard-step="2"] .position-marker');
   if(!marker) return;
@@ -145,5 +156,10 @@ window.addEventListener('pitchiq:marker-state-change', event => {
   const marker = event.detail?.marker || document.querySelector('.onboard-step[data-onboard-step="2"] .position-marker.is-selected');
   syncSelectedPuck(marker);
 });
-window.addEventListener('DOMContentLoaded', scheduleOnboardingRepair);
-window.addEventListener('load', scheduleOnboardingRepair);
+window.addEventListener('pitchiq:onboarding-phase-change', scheduleOnboardingRepair);
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initialiseStep2Lifecycle, { once: true });
+} else {
+  initialiseStep2Lifecycle();
+}
