@@ -26,6 +26,14 @@ function setTextIfChanged(element, text) {
   if (element && element.textContent !== text) element.textContent = text;
 }
 
+function syncIdentitySummary(welcomePanel) {
+  if (!welcomePanel) return;
+  const player = identity();
+  setTextIfChanged(welcomePanel.querySelector("[data-identity-player]"), player.name.toUpperCase());
+  setTextIfChanged(welcomePanel.querySelector("[data-identity-number]"), `#${player.number}`);
+  setTextIfChanged(welcomePanel.querySelector("[data-identity-position]"), player.position);
+}
+
 function alignOnboardingLabels() {
   const numberPanel = document.querySelector(".onboard-number-step");
   if (numberPanel) {
@@ -59,35 +67,40 @@ function alignOnboardingLabels() {
   }
 
   const welcomePanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
-  if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
-  welcomePanel.dataset.academyWelcome = "true";
-  welcomePanel.classList.add("academy-welcome-step");
-  const player = identity();
-  welcomePanel.innerHTML = `
-    <div class="academy-welcome-glow" aria-hidden="true"></div>
-    <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
-    <h1><span>WELCOME TO</span><em>PITCHIQ ACADEMY</em></h1>
-    <div class="academy-welcome-identity" aria-label="Player identity">
-      <div><small>Player</small><strong>${player.name.toUpperCase()}</strong></div>
-      <div><small>Number</small><strong>#${player.number}</strong></div>
-      <div><small>Position</small><strong>${player.position}</strong></div>
-    </div>
-    <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
-      <h2 id="academy-first-challenge-title">Your first challenge</h2>
-      <div class="academy-challenge-grid">
-        <div class="academy-challenge-fact">
-          <span class="academy-challenge-icon" aria-hidden="true">◷</span>
-          <div><strong>Short assessment</strong><small>30–90 seconds</small></div>
-        </div>
-        <div class="academy-challenge-fact">
-          <span class="academy-challenge-icon" aria-hidden="true">◉</span>
-          <div><strong>Football IQ</strong><small>Decisions, vision and awareness</small></div>
-        </div>
+  if (!welcomePanel) return;
+
+  if (welcomePanel.dataset.academyWelcome !== "true") {
+    welcomePanel.dataset.academyWelcome = "true";
+    welcomePanel.classList.add("academy-welcome-step");
+    const player = identity();
+    welcomePanel.innerHTML = `
+      <div class="academy-welcome-glow" aria-hidden="true"></div>
+      <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
+      <h1><span>WELCOME TO</span><em>PITCHIQ ACADEMY</em></h1>
+      <div class="academy-welcome-identity" aria-label="Player identity">
+        <div><small>Player</small><strong data-identity-player>${player.name.toUpperCase()}</strong></div>
+        <div><small>Number</small><strong data-identity-number>#${player.number}</strong></div>
+        <div><small>Position</small><strong data-identity-position>${player.position}</strong></div>
       </div>
-    </section>
-    <div class="onboard-step-footer academy-welcome-footer">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile">START ASSESSMENT →</button>
-    </div>`;
+      <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
+        <h2 id="academy-first-challenge-title">Your first challenge</h2>
+        <div class="academy-challenge-grid">
+          <div class="academy-challenge-fact">
+            <span class="academy-challenge-icon" aria-hidden="true">◷</span>
+            <div><strong>Short assessment</strong><small>30–90 seconds</small></div>
+          </div>
+          <div class="academy-challenge-fact">
+            <span class="academy-challenge-icon" aria-hidden="true">◉</span>
+            <div><strong>Football IQ</strong><small>Decisions, vision and awareness</small></div>
+          </div>
+        </div>
+      </section>
+      <div class="onboard-step-footer academy-welcome-footer">
+        <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile">START ASSESSMENT →</button>
+      </div>`;
+  }
+
+  syncIdentitySummary(welcomePanel);
 }
 
 function beginFirstAssessment(event) {
