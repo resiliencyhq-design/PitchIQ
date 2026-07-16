@@ -1,0 +1,15 @@
+.academy-welcome-step .academy-first-challenge{
+  margin-top:32px;
+}
+
+@media (max-height:820px){
+  .academy-welcome-step .academy-first-challenge{
+    margin-top:28px;
+  }
+}
+
+@media (max-height:740px){
+  .academy-welcome-step .academy-first-challenge{
+    margin-top:24px;
+  }
+}
