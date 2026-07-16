@@ -86,7 +86,6 @@ function alignOnboardingLabels() {
         <span class="academy-title-eyebrow">WELCOME TO</span>
         <h1><span>PITCH</span><em>IQ</em><strong>ACADEMY</strong></h1>
         <div class="academy-title-divider" aria-hidden="true"><i></i><b>★</b><i></i></div>
-        <p>Your Academy journey begins now.</p>
       </div>
       <div class="academy-welcome-identity academy-identity-tile-v2" aria-label="Player identity">
         <div class="academy-identity-cell academy-identity-player">
@@ -113,7 +112,6 @@ function alignOnboardingLabels() {
           <strong data-identity-position>${player.position.toUpperCase()}</strong>
         </div>
       </div>
-      <p class="academy-challenge-intro">Your first challenge starts now.</p>
       <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
         <div class="academy-challenge-badge" aria-hidden="true">◎</div>
         <h2 id="academy-first-challenge-title"><i></i><span>Your first challenge</span><i></i></h2>
