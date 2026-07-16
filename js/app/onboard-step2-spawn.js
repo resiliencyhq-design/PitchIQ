@@ -50,7 +50,8 @@ function repairOnboardingLabels(){
     positionStep.querySelector('.position-title')?.insertAdjacentHTML('afterend', academyProgress(3));
   }
   if(positionStep){
-    positionStep.querySelector('.position-title')?.replaceChildren(document.createTextNode('Step 3 of 3'));
+    const title = positionStep.querySelector('.position-title');
+    if(title?.textContent !== 'Step 3 of 3') title.textContent = 'Step 3 of 3';
     standardiseStepHeader(positionStep, 'Choose your favourite position');
   }
 }
@@ -155,7 +156,6 @@ function showNumberPhase(){
   numberPanel.hidden = false;
   if(positionPanel) positionPanel.hidden = true;
   if(confirmPanel) confirmPanel.hidden = true;
-  window.dispatchEvent(new CustomEvent('pitchiq:onboarding-phase-change', { detail: { phase: 'number' } }));
   return true;
 }
 
@@ -207,13 +207,23 @@ function initialiseLifecycle(){
   const app = document.getElementById('app');
   if(!app) return;
 
-  const observer = new MutationObserver(() => {
+  const observer = new MutationObserver(mutations => {
     const positionStep = document.querySelector('.onboard-step[data-onboard-step="2"]');
-    if(!positionStep || positionStep.dataset.positionLifecycleMounted === 'true') return;
-    positionStep.dataset.positionLifecycleMounted = 'true';
-    schedulePositionRepair();
+    if(!positionStep) return;
+
+    if(positionStep.dataset.positionLifecycleMounted !== 'true'){
+      positionStep.dataset.positionLifecycleMounted = 'true';
+      schedulePositionRepair();
+      return;
+    }
+
+    const becameVisible = mutations.some(mutation => mutation.type === 'attributes'
+      && mutation.attributeName === 'hidden'
+      && mutation.target === positionStep
+      && !positionStep.hidden);
+    if(becameVisible) schedulePositionRepair();
   });
-  observer.observe(app, { childList: true, subtree: true });
+  observer.observe(app, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
 }
 
 document.addEventListener('click', event => {
@@ -225,9 +235,6 @@ document.addEventListener('click', event => {
 window.addEventListener('pitchiq:marker-state-change', event => {
   const marker = event.detail?.marker || document.querySelector('.onboard-step[data-onboard-step="2"] .position-marker.is-selected');
   syncSelectedPuck(marker);
-});
-window.addEventListener('pitchiq:onboarding-phase-change', event => {
-  if(event.detail?.phase === 'position') schedulePositionRepair();
 });
 
 if(document.readyState === 'loading'){
