@@ -28,30 +28,15 @@ function setTextIfChanged(element, text) {
   if (element && element.textContent !== text) element.textContent = text;
 }
 
-function syncIdentitySummary(welcomePanel) {
-  if (!welcomePanel) return;
-  const player = identity();
-  setTextIfChanged(welcomePanel.querySelector("[data-identity-player]"), player.name.toUpperCase());
-  setTextIfChanged(welcomePanel.querySelector("[data-identity-number]"), `#${player.number}`);
-  setTextIfChanged(welcomePanel.querySelector("[data-identity-jersey-number]"), player.number);
-  setTextIfChanged(welcomePanel.querySelector("[data-identity-position-code]"), player.positionCode.toUpperCase());
-  setTextIfChanged(welcomePanel.querySelector("[data-identity-position]"), player.position.toUpperCase());
-}
-
 function alignOnboardingLabels() {
   const numberPanel = document.querySelector(".onboard-number-step");
   if (numberPanel) {
     setTextIfChanged(numberPanel.querySelector(".position-title"), "Step 2 of 3");
     const progress = numberPanel.querySelector(".academy-progress");
-    if (progress?.getAttribute("aria-label") !== "Step 2 of 3") {
-      progress?.setAttribute("aria-label", "Step 2 of 3");
-    }
-    const dots = numberPanel.querySelectorAll(".academy-progress span");
-    dots.forEach((dot, index) => {
+    if (progress?.getAttribute("aria-label") !== "Step 2 of 3") progress?.setAttribute("aria-label", "Step 2 of 3");
+    numberPanel.querySelectorAll(".academy-progress span").forEach((dot, index) => {
       const shouldBeActive = index <= 1;
-      if (dot.classList.contains("active") !== shouldBeActive) {
-        dot.classList.toggle("active", shouldBeActive);
-      }
+      if (dot.classList.contains("active") !== shouldBeActive) dot.classList.toggle("active", shouldBeActive);
     });
   }
 
@@ -59,80 +44,55 @@ function alignOnboardingLabels() {
   if (positionPanel) {
     setTextIfChanged(positionPanel.querySelector(".position-title"), "Step 3 of 3");
     const progress = positionPanel.querySelector(".academy-progress");
-    if (progress?.getAttribute("aria-label") !== "Step 3 of 3") {
-      progress?.setAttribute("aria-label", "Step 3 of 3");
-    }
+    if (progress?.getAttribute("aria-label") !== "Step 3 of 3") progress?.setAttribute("aria-label", "Step 3 of 3");
     positionPanel.querySelectorAll(".academy-progress span").forEach(dot => {
       if (!dot.classList.contains("active")) dot.classList.add("active");
     });
-    const heading = positionPanel.querySelector(".onboard-position-heading");
-    setTextIfChanged(heading, "CHOOSE YOUR POSITION");
+    setTextIfChanged(positionPanel.querySelector(".onboard-position-heading"), "CHOOSE YOUR POSITION");
     positionPanel.querySelector(".academy-journey-position-copy")?.remove();
   }
 
   const welcomePanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
-  if (!welcomePanel) return;
+  if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
 
-  if (welcomePanel.dataset.academyWelcome !== "true") {
-    welcomePanel.dataset.academyWelcome = "true";
-    welcomePanel.classList.add("academy-welcome-step");
-    const player = identity();
-    welcomePanel.innerHTML = `
-      <div class="academy-welcome-glow" aria-hidden="true"></div>
-      <header class="academy-welcome-header">
-        <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
-      </header>
-      <div class="academy-welcome-title">
-        <span class="academy-title-eyebrow">WELCOME TO</span>
-        <h1><span>PITCH</span><em>IQ</em><strong>ACADEMY</strong></h1>
-        <div class="academy-title-divider" aria-hidden="true"><i></i><b>★</b><i></i></div>
+  welcomePanel.dataset.academyWelcome = "true";
+  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths");
+  welcomePanel.innerHTML = `
+    <header class="academy-welcome-header">
+      <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
+    </header>
+    <div class="academy-discover-title">
+      <h1><span>Discover</span><strong>Your Strengths</strong></h1>
+    </div>
+    <div class="academy-discover-spacer" aria-hidden="true"></div>
+    <div class="academy-strength-pathway" aria-label="See, calm, improve">
+      <div class="academy-strength-item">
+        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M4 24s7-11 20-11 20 11 20 11-7 11-20 11S4 24 4 24Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="5.5" fill="none" stroke="currentColor" stroke-width="2.8"/>
+        </svg>
+        <span>See</span>
       </div>
-      <div class="academy-welcome-identity academy-identity-tile-v2" aria-label="Player identity">
-        <div class="academy-identity-cell academy-identity-player">
-          <svg class="academy-identity-icon" viewBox="0 0 64 64" aria-hidden="true">
-            <circle cx="32" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="3"/>
-            <path d="M13 55c2-13 9-20 19-20s17 7 19 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-          <small>Player</small>
-          <strong data-identity-player>${player.name.toUpperCase()}</strong>
-        </div>
-        <div class="academy-identity-cell academy-identity-number">
-          <div class="academy-jersey-icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72">
-              <path d="M25 10c3 4 7 6 11 6s8-2 11-6l13 7-7 13-7-4v35H26V26l-7 4-7-13 13-7Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-            </svg>
-            <span data-identity-jersey-number>${player.number}</span>
-          </div>
-          <small>Number</small>
-          <strong data-identity-number>#${player.number}</strong>
-        </div>
-        <div class="academy-identity-cell academy-identity-position">
-          <div class="academy-position-badge" data-identity-position-code>${player.positionCode.toUpperCase()}</div>
-          <small>Position</small>
-          <strong data-identity-position>${player.position.toUpperCase()}</strong>
-        </div>
+      <span class="academy-strength-arrow" aria-hidden="true">→</span>
+      <div class="academy-strength-item">
+        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
+          <path d="M17 25c2 3 4 4 7 4s5-1 7-4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <span>Calm</span>
       </div>
-      <section class="academy-first-challenge" aria-labelledby="academy-first-challenge-title">
-        <div class="academy-challenge-badge" aria-hidden="true">◎</div>
-        <h2 id="academy-first-challenge-title"><i></i><span>Your first challenge</span><i></i></h2>
-        <div class="academy-challenge-grid">
-          <div class="academy-challenge-fact">
-            <svg class="academy-challenge-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 12v13h11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-            <div><strong>Short assessment</strong><small>30–90 seconds</small></div>
-          </div>
-          <div class="academy-challenge-fact">
-            <svg class="academy-challenge-icon academy-brain-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M21 39c-5 0-8-3-8-7-4-1-6-4-6-8 0-3 2-6 5-7-1-5 3-9 8-9 2 0 4 1 5 3 1-2 3-3 6-3 5 0 8 4 8 9 3 1 5 4 5 7 0 4-2 7-6 8 0 4-3 7-8 7-3 0-5-2-5-5v-21m-4 6c-3 0-5 2-5 5m5 1c-3 0-5 2-5 5m9-10c3 0 5 2 5 5m-5 1c3 0 5 2 5 5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <div><strong>Football IQ</strong><small>Decisions, vision and awareness</small></div>
-          </div>
-        </div>
-        <p>A quick challenge that adapts to you.</p>
-      </section>
-      <div class="onboard-step-footer academy-welcome-footer">
-        <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>START ASSESSMENT</span><b aria-hidden="true">→</b></button>
-      </div>`;
-  }
-
-  syncIdentitySummary(welcomePanel);
+      <span class="academy-strength-arrow" aria-hidden="true">→</span>
+      <div class="academy-strength-item">
+        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="m24 5 5.7 11.6 12.8 1.9-9.2 9 2.2 12.7L24 34.2l-11.5 6 2.2-12.7-9.2-9 12.8-1.9L24 5Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
+        </svg>
+        <span>Improve</span>
+      </div>
+    </div>
+    <p class="academy-discover-message">Complete a few quick activities<br>to <strong>discover your strengths.</strong></p>
+    <div class="onboard-step-footer academy-welcome-footer">
+      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
+    </div>`;
 }
 
 function beginFirstAssessment(event) {
