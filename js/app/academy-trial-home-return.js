@@ -1,10 +1,10 @@
 const autoJugglerStyles = document.createElement("link");
 autoJugglerStyles.rel = "stylesheet";
-autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-0a-camera-shell-20260717";
+autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-0b-ball-tracking-20260717";
 document.head.appendChild(autoJugglerStyles);
 
-import("../lab/auto-juggler-camera.js?v=sprint-10-0a-camera-shell-20260717").catch(error => {
-  console.warn("[PitchIQ Lab] Auto Juggler camera shell failed to load", error);
+import("../lab/auto-juggler-camera.js?v=sprint-10-0b-ball-tracking-20260717").catch(error => {
+  console.warn("[PitchIQ Lab] Auto Juggler tracking prototype failed to load", error);
 });
 
 document.addEventListener("click", event => {
