@@ -1,9 +1,39 @@
+/* Sprint 9.16.1 — Identity Complete shell isolation.
+   Scope this reset only to the visible Discover Your Strengths presentation.
+   The Name, Number and Position onboarding screens retain the existing shell. */
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden])){
+  min-height:100dvh;
+  height:100dvh;
+  padding:0!important;
+  overflow:hidden;
+  background:#020807;
+}
+
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))>.onboard-content{
+  width:100%;
+  max-width:none;
+  min-height:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  gap:0;
+  overflow:hidden;
+}
+
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))::before,
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))::after,
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))>.onboard-content::before,
+#onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))>.onboard-content::after{
+  content:none!important;
+  display:none!important;
+}
+
 .academy-welcome-step.academy-discover-strengths{
   position:relative;
   display:flex;
   width:100%;
-  min-height:100dvh;
-  height:100dvh;
+  min-height:100%;
+  height:100%;
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
