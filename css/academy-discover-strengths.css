@@ -23,7 +23,7 @@
   background:
     linear-gradient(180deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.82) 100%),
     radial-gradient(circle at 50% 45%,rgba(215,255,46,.09),transparent 52%),
-    url("../assets/identity-strengths-pitch.webp") center/cover no-repeat;
+    url("../assets/backgrounds/identity-strengths-pitch.webp") center/cover no-repeat;
   pointer-events:none;
 }
 
@@ -32,7 +32,7 @@
   position:absolute;
   inset:0;
   z-index:1;
-  background:url("../assets/identity-strengths-overlay.png") center/cover no-repeat;
+  background:url("../assets/backgrounds/identity-strengths-overlay.png") center/cover no-repeat;
   opacity:.82;
   pointer-events:none;
 }
