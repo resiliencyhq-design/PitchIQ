@@ -27,15 +27,8 @@
   pointer-events:none;
 }
 
-.academy-discover-strengths::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  background:url("../assets/backgrounds/identity-strengths-overlay.png") center/cover no-repeat;
-  opacity:.82;
-  pointer-events:none;
-}
+/* Tactical overlay intentionally deferred to Sprint 9.17. */
+.academy-discover-strengths::after{content:none}
 
 .academy-discover-strengths>*{
   position:relative;
