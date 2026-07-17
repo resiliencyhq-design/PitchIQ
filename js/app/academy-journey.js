@@ -129,8 +129,7 @@ function alignOnboardingLabels() {
       </section>
       <div class="onboard-step-footer academy-welcome-footer">
         <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>START ASSESSMENT</span><b aria-hidden="true">→</b></button>
-      </div>
-      <p class="academy-welcome-reassurance"><span aria-hidden="true">✓</span> Every academy player completes one assessment before training begins.</p>`;
+      </div>`;
   }
 
   syncIdentitySummary(welcomePanel);
