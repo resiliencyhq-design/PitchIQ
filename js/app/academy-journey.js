@@ -56,40 +56,28 @@ function alignOnboardingLabels() {
   if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
 
   welcomePanel.dataset.academyWelcome = "true";
-  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths");
+  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths", "academy-pitch-first");
   welcomePanel.innerHTML = `
     <header class="academy-welcome-header">
       <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
     </header>
+    <div class="academy-discover-spacer" aria-label="Tactical awareness scene">
+      <div class="academy-tactical-overlay" aria-hidden="true">
+        <span class="academy-player-ring academy-player-ring--self"></span>
+        <span class="academy-player-ring academy-player-ring--teammate"></span>
+        <span class="academy-player-ring academy-player-ring--space"></span>
+        <span class="academy-pass-line academy-pass-line--solid"></span>
+        <span class="academy-pass-line academy-pass-line--dashed"></span>
+        <span class="academy-overlay-label academy-overlay-label--teammate">Teammate</span>
+        <span class="academy-overlay-label academy-overlay-label--space">Open space</span>
+        <span class="academy-overlay-label academy-overlay-label--lane">Passing lane</span>
+      </div>
+    </div>
     <div class="academy-discover-title">
+      <div class="academy-elastic-band" aria-hidden="true"></div>
       <h1><span>Discover</span><strong>Your Strengths</strong></h1>
     </div>
-    <div class="academy-discover-spacer" aria-hidden="true"></div>
-    <div class="academy-strength-pathway" aria-label="See, calm, improve">
-      <div class="academy-strength-item">
-        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
-          <path d="M4 24s7-11 20-11 20 11 20 11-7 11-20 11S4 24 4 24Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
-          <circle cx="24" cy="24" r="5.5" fill="none" stroke="currentColor" stroke-width="2.8"/>
-        </svg>
-        <span>See</span>
-      </div>
-      <span class="academy-strength-arrow" aria-hidden="true">→</span>
-      <div class="academy-strength-item">
-        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
-          <path d="M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
-          <path d="M17 25c2 3 4 4 7 4s5-1 7-4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-        </svg>
-        <span>Calm</span>
-      </div>
-      <span class="academy-strength-arrow" aria-hidden="true">→</span>
-      <div class="academy-strength-item">
-        <svg class="academy-strength-icon" viewBox="0 0 48 48" aria-hidden="true">
-          <path d="m24 5 5.7 11.6 12.8 1.9-9.2 9 2.2 12.7L24 34.2l-11.5 6 2.2-12.7-9.2-9 12.8-1.9L24 5Z" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linejoin="round"/>
-        </svg>
-        <span>Improve</span>
-      </div>
-    </div>
-    <p class="academy-discover-message">Complete a few quick activities<br>to <strong>discover your strengths.</strong></p>
+    <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
     <div class="onboard-step-footer academy-welcome-footer">
       <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
     </div>`;

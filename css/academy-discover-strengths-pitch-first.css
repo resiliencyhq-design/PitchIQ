@@ -1,0 +1,206 @@
+/* Sprint 10.3A.5 — approved pitch-first Identity Complete composition.
+   Final scoped override: uninterrupted tactical pitch, title below the scene,
+   elastic-band treatment, no pathway tile, and a single-screen iPhone stack. */
+
+.academy-welcome-step.academy-discover-strengths.academy-pitch-first{
+  box-sizing:border-box;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr) auto auto auto;
+  align-items:start;
+  justify-items:center;
+  row-gap:0;
+  width:100%;
+  height:100dvh;
+  min-height:100dvh;
+  padding:max(calc(env(safe-area-inset-top,0px) + 18px),70px) 18px max(calc(env(safe-area-inset-bottom,0px) + 14px),28px)!important;
+  overflow:hidden;
+  background:#020807;
+}
+
+.academy-pitch-first::before{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.02) 43%,rgba(0,0,0,.34) 66%,rgba(0,0,0,.97) 100%),
+    radial-gradient(circle at 50% 43%,rgba(215,255,46,.08),transparent 48%),
+    url("../assets/backgrounds/identity-strengths-pitch.webp") center top/cover no-repeat!important;
+}
+
+.academy-pitch-first .academy-welcome-header{
+  grid-row:1;
+  margin:0 auto 6px!important;
+  min-height:28px;
+}
+
+.academy-pitch-first .academy-welcome-kicker{
+  font-size:clamp(.67rem,2.8vw,.78rem);
+  letter-spacing:.19em;
+}
+
+.academy-pitch-first .academy-welcome-kicker span{
+  width:23px;
+  height:23px;
+}
+
+.academy-pitch-first .academy-discover-spacer{
+  position:relative;
+  grid-row:2;
+  align-self:stretch;
+  width:min(100%,430px);
+  min-height:0;
+}
+
+.academy-tactical-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.academy-player-ring{
+  position:absolute;
+  display:block;
+  border:2px solid #d7ff2e;
+  border-radius:50%;
+  box-shadow:0 0 10px rgba(215,255,46,.8),0 0 24px rgba(215,255,46,.38);
+  animation:academy-target-pulse 2.4s ease-in-out infinite;
+}
+
+.academy-player-ring--self{
+  left:47%;
+  top:61%;
+  width:54px;
+  height:22px;
+}
+
+.academy-player-ring--teammate{
+  left:20%;
+  top:40%;
+  width:43px;
+  height:17px;
+}
+
+.academy-player-ring--space{
+  right:7%;
+  top:45%;
+  width:45px;
+  height:18px;
+}
+
+.academy-pass-line{
+  position:absolute;
+  display:block;
+  height:2px;
+  transform-origin:left center;
+  background:#d7ff2e;
+  filter:drop-shadow(0 0 5px rgba(215,255,46,.75));
+}
+
+.academy-pass-line--solid{
+  left:27%;
+  top:44%;
+  width:31%;
+  transform:rotate(27deg);
+}
+
+.academy-pass-line--dashed{
+  left:54%;
+  top:63%;
+  width:37%;
+  transform:rotate(-22deg);
+  background:repeating-linear-gradient(90deg,#d7ff2e 0 10px,transparent 10px 17px);
+}
+
+.academy-overlay-label{
+  position:absolute;
+  padding:4px 8px;
+  border:1px solid rgba(215,255,46,.85);
+  border-radius:4px;
+  background:rgba(1,8,6,.82);
+  color:#d7ff2e;
+  font-size:.52rem;
+  font-weight:950;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  box-shadow:0 0 12px rgba(215,255,46,.12);
+}
+
+.academy-overlay-label--teammate{left:11%;top:29%}
+.academy-overlay-label--space{right:5%;top:31%}
+.academy-overlay-label--lane{left:49%;top:72%}
+
+.academy-pitch-first .academy-discover-title{
+  position:relative;
+  grid-row:3;
+  width:min(100%,430px);
+  margin:-6px auto 0!important;
+  padding:10px 0 2px;
+  isolation:isolate;
+}
+
+.academy-elastic-band{
+  position:absolute;
+  z-index:-1;
+  left:-12%;
+  right:-12%;
+  top:34%;
+  height:58%;
+  opacity:.72;
+  transform:rotate(-1.5deg);
+  background:
+    repeating-radial-gradient(ellipse at center,transparent 0 8px,rgba(215,255,46,.28) 9px 10px,transparent 11px 15px);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+}
+
+.academy-pitch-first .academy-discover-title h1{
+  font-size:clamp(2.25rem,10.7vw,3.35rem);
+  line-height:.88;
+  letter-spacing:-.06em;
+}
+
+.academy-pitch-first .academy-discover-title h1 strong{
+  margin-top:5px;
+}
+
+.academy-pitch-first .academy-discover-message{
+  grid-row:4;
+  margin:12px auto 0!important;
+  color:#f5f7f5;
+  font-size:clamp(.76rem,3.35vw,.9rem);
+  line-height:1.45;
+}
+
+.academy-pitch-first .academy-welcome-footer{
+  grid-row:5;
+  align-self:end;
+  margin:18px auto 0!important;
+  padding:0!important;
+}
+
+.academy-pitch-first .academy-welcome-footer .primary{
+  min-height:58px;
+  border-radius:18px;
+  font-size:1rem;
+}
+
+@media (max-height:760px){
+  .academy-welcome-step.academy-discover-strengths.academy-pitch-first{
+    padding-top:max(calc(env(safe-area-inset-top,0px) + 12px),58px)!important;
+    padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 10px),22px)!important;
+  }
+  .academy-pitch-first .academy-welcome-header{margin-bottom:2px!important}
+  .academy-pitch-first .academy-discover-title{margin-top:-12px!important;padding-top:6px}
+  .academy-pitch-first .academy-discover-title h1{font-size:clamp(1.95rem,9.4vw,2.8rem)}
+  .academy-pitch-first .academy-discover-message{margin-top:8px!important;font-size:.72rem;line-height:1.35}
+  .academy-pitch-first .academy-welcome-footer{margin-top:10px!important}
+  .academy-pitch-first .academy-welcome-footer .primary{min-height:50px;font-size:.86rem}
+  .academy-overlay-label{font-size:.46rem;padding:3px 6px}
+}
+
+@keyframes academy-target-pulse{
+  0%,100%{opacity:.72;transform:scale(.96)}
+  50%{opacity:1;transform:scale(1.05)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .academy-pitch-first .academy-player-ring{animation:none}
+}
