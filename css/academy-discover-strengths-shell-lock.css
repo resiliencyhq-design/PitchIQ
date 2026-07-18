@@ -1,0 +1,101 @@
+/* Sprint 10.3A.7 — Identity viewport restoration.
+   The visible Identity screen explicitly marks the shell active in JavaScript.
+   These rules remove every inherited onboarding constraint before coordinate polish. */
+
+body.identity-complete-active{
+  margin:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+  background:#020807!important;
+}
+
+body.identity-complete-active .world,
+body.identity-complete-active .bottom-nav,
+body.identity-complete-active #nav{
+  display:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+}
+
+body.identity-complete-active .app-shell,
+body.identity-complete-active #app,
+body.identity-complete-active #onboard,
+body.identity-complete-active #onboard>.onboard-content{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:#020807!important;
+}
+
+body.identity-complete-active .app-shell{
+  z-index:1000!important;
+}
+
+body.identity-complete-active #app{
+  z-index:1!important;
+}
+
+body.identity-complete-active #onboard,
+body.identity-complete-active #onboard>.onboard-content{
+  display:block!important;
+}
+
+body.identity-complete-active .academy-welcome-step.academy-discover-strengths.academy-pitch-first{
+  position:fixed!important;
+  inset:0!important;
+  z-index:5!important;
+  width:100vw!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:#020807!important;
+}
+
+body.identity-complete-active .academy-pitch-first::before{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100dvh!important;
+}
+
+body.identity-complete-active .academy-pitch-first .academy-discover-spacer,
+body.identity-complete-active .academy-pitch-first .academy-tactical-overlay{
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  transform:none!important;
+}
+
+@supports(height:100svh){
+  body.identity-complete-active .app-shell,
+  body.identity-complete-active #app,
+  body.identity-complete-active #onboard,
+  body.identity-complete-active #onboard>.onboard-content,
+  body.identity-complete-active .academy-welcome-step.academy-discover-strengths.academy-pitch-first,
+  body.identity-complete-active .academy-pitch-first::before,
+  body.identity-complete-active .academy-pitch-first .academy-discover-spacer,
+  body.identity-complete-active .academy-pitch-first .academy-tactical-overlay{
+    height:100svh!important;
+    min-height:100svh!important;
+  }
+}
