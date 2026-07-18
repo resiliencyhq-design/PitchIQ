@@ -1,0 +1,82 @@
+/* Sprint 10.3A.8 — Identity Complete scene isolation.
+   The presentation is rendered as a top-level body scene, outside the onboarding
+   scroll container. This file does not tune tactical or headline coordinates. */
+
+html.identity-scene-active,
+body.identity-scene-active{
+  width:100%;
+  height:100%;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  background:#020807;
+  touch-action:none;
+}
+
+body.identity-scene-active{
+  position:fixed!important;
+  inset:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+body.identity-scene-active>.world,
+body.identity-scene-active>.app-shell,
+body.identity-scene-active>#nav,
+body.identity-scene-active>.bottom-nav{
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+.identity-scene-source{
+  display:none!important;
+}
+
+#identity-complete-scene.identity-scene-isolated{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147482000!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100vw!important;
+  max-width:none!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  max-height:100dvh!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  transform:none!important;
+  translate:none!important;
+  background:#020807!important;
+  isolation:isolate;
+  touch-action:none;
+}
+
+#identity-complete-scene.identity-scene-isolated::before{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+}
+
+#identity-complete-scene.identity-scene-isolated>.academy-discover-spacer,
+#identity-complete-scene.identity-scene-isolated>.academy-tactical-overlay{
+  max-width:none!important;
+}
+
+#identity-complete-scene .academy-welcome-footer,
+#identity-complete-scene .academy-welcome-footer *{
+  touch-action:manipulation;
+}
+
+@supports (height:100svh){
+  #identity-complete-scene.identity-scene-isolated{
+    height:100svh!important;
+    min-height:100svh!important;
+    max-height:100svh!important;
+  }
+}
