@@ -1,0 +1,120 @@
+/* Sprint 10.3A.9 — final Identity Complete composition polish.
+   Scene isolation is already locked. This pass corrects inherited transform
+   animations, centres the CTA, and aligns the tactical overlay to the pitch. */
+
+/* The legacy welcome animations animate `transform`, which overrides the
+   translateX centring used by the isolated header and footer. Disable those
+   animations in the isolated scene and lock centring explicitly. */
+#identity-complete-scene .academy-welcome-header,
+#identity-complete-scene .academy-welcome-kicker,
+#identity-complete-scene .academy-welcome-footer{
+  animation:none!important;
+}
+
+#identity-complete-scene .academy-welcome-header{
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer{
+  left:50%!important;
+  right:auto!important;
+  width:min(84vw,410px)!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer .primary{
+  display:flex!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  transform:none!important;
+}
+
+/* Tactical overlay — aligned to the actual players and target space in the
+   approved 853 × 1844 Identity Strengths background composition. */
+#identity-complete-scene .academy-player-ring--teammate{
+  left:25.0%;
+  top:42.3%;
+  width:10.5vw;
+  height:2.15vw;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  left:44.3%;
+  top:48.9%;
+  width:13.2vw;
+  height:2.55vw;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  left:82.0%;
+  top:43.1%;
+  width:10.8vw;
+  height:2.15vw;
+}
+
+#identity-complete-scene .academy-pass-line--solid{
+  left:30.0%;
+  top:43.4%;
+  width:24.7%;
+  transform:rotate(34deg);
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  left:52.0%;
+  top:50.0%;
+  width:36.5%;
+  transform:rotate(-22deg);
+}
+
+#identity-complete-scene .academy-overlay-label--teammate{
+  left:13.2%;
+  top:32.0%;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  right:8.6%;
+  top:32.4%;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  left:54.0%;
+  top:52.3%;
+}
+
+/* Lower composition — preserve the pitch-first hierarchy while bringing the
+   approved title, copy and CTA into a balanced safe-area stack. */
+#identity-complete-scene .academy-discover-title{
+  top:63.4%!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .academy-elastic-band{
+  left:-14%;
+  right:-14%;
+  top:24%;
+  height:58%;
+  opacity:.46;
+  transform:rotate(-1deg);
+}
+
+#identity-complete-scene .academy-discover-message{
+  top:80.4%!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer{
+  bottom:max(calc(env(safe-area-inset-bottom,0px) + 16px),4.2dvh)!important;
+}
+
+@media (max-height:760px){
+  #identity-complete-scene .academy-discover-title{top:61.6%!important}
+  #identity-complete-scene .academy-discover-message{top:78.8%!important}
+  #identity-complete-scene .academy-welcome-footer{
+    bottom:max(calc(env(safe-area-inset-bottom,0px) + 10px),3dvh)!important;
+  }
+}
