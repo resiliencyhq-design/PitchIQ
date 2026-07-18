@@ -54,8 +54,8 @@ function identityMarkup() {
       <h1><span>Discover</span><strong>Your Strengths</strong></h1>
     </div>
     <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
-    <div class="onboard-step-footer academy-welcome-footer">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
+    <div class="onboard-step-footer academy-welcome-footer identity-canonical-cta-host">
+      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile" aria-label="Continue"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
     </div>`;
 }
 
