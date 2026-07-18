@@ -1,4 +1,4 @@
-/* Sprint 9.16.3 — Identity Complete viewport lock.
+/* Sprint 10.3A — Identity Complete layout polish.
    Scope the viewport reset only to the visible Discover Your Strengths presentation.
    Name, Number, Position and Academy Trial retain their existing layout behaviour. */
 #app:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])){
@@ -48,7 +48,7 @@
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
-  padding:calc(env(safe-area-inset-top,0px) + 12px) 18px calc(env(safe-area-inset-bottom,0px) + 10px);
+  padding:calc(env(safe-area-inset-top,0px) + 30px) 18px calc(env(safe-area-inset-bottom,0px) + 10px);
   overflow:hidden;
   background:#020807;
   text-align:center;
@@ -68,7 +68,7 @@
   pointer-events:none;
 }
 
-/* Tactical overlay intentionally deferred to Sprint 9.17. */
+/* Tactical overlay intentionally deferred to the overlay sprint. */
 .academy-discover-strengths::after{content:none}
 
 .academy-discover-strengths>*{
@@ -230,7 +230,7 @@
 
 @media (max-height:760px){
   .academy-welcome-step.academy-discover-strengths{
-    padding-top:calc(env(safe-area-inset-top,0px) + 7px);
+    padding-top:calc(env(safe-area-inset-top,0px) + 18px);
     padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
   }
   .academy-discover-strengths .academy-welcome-header{min-height:25px}
