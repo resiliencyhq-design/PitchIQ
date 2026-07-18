@@ -58,6 +58,26 @@ function alignOnboardingLabels() {
   welcomePanel.dataset.academyWelcome = "true";
   welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths");
   welcomePanel.innerHTML = `
+    <div class="academy-tactical-overlay" aria-hidden="true">
+      <svg viewBox="0 0 853 1844" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <defs>
+          <filter id="academy-overlay-glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <linearGradient id="academy-vision-cone" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#d7ff2e" stop-opacity=".25"/>
+            <stop offset="1" stop-color="#d7ff2e" stop-opacity=".02"/>
+          </linearGradient>
+        </defs>
+        <path class="academy-overlay-cone" d="M433 694 L355 548 L507 548 Z"/>
+        <path class="academy-overlay-pass" d="M433 694 C380 682 320 650 254 625"/>
+        <circle class="academy-overlay-ring academy-overlay-ring--player" cx="433" cy="694" r="38"/>
+        <circle class="academy-overlay-ring academy-overlay-ring--target" cx="254" cy="625" r="34"/>
+        <circle class="academy-overlay-pulse" cx="254" cy="625" r="18"/>
+        <path class="academy-overlay-arrow" d="M287 641 L258 626 L277 604"/>
+      </svg>
+    </div>
     <header class="academy-welcome-header">
       <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
     </header>
