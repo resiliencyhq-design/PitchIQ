@@ -270,6 +270,60 @@ body:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])) .world{
   .academy-discover-strengths .academy-welcome-footer .primary{min-height:49px;font-size:.82rem}
 }
 
+/* Sprint 10.3A.3 — approved target composition lock.
+   Use real grid tracks and explicit pixel spacing; no translate transforms. */
+.academy-welcome-step.academy-discover-strengths{
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr) auto 16px auto 10px auto;
+  align-items:start;
+  justify-items:center;
+  padding-top:max(calc(env(safe-area-inset-top,0px) + 24px),72px);
+  padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 16px),32px);
+}
+
+.academy-discover-strengths .academy-welcome-header{
+  grid-row:1;
+  margin:0 auto;
+}
+
+.academy-discover-title{
+  grid-row:2;
+  margin:6px auto 0;
+}
+
+.academy-discover-spacer{
+  grid-row:3;
+  width:100%;
+  min-height:0;
+}
+
+.academy-strength-pathway{
+  grid-row:4;
+  margin:0 auto;
+}
+
+.academy-discover-message{
+  grid-row:6;
+  margin:0 auto;
+}
+
+.academy-discover-strengths .academy-welcome-footer{
+  grid-row:8;
+  margin:0 auto;
+}
+
+@media (max-height:760px){
+  .academy-welcome-step.academy-discover-strengths{
+    grid-template-rows:auto auto minmax(0,1fr) auto 12px auto 8px auto;
+    padding-top:max(calc(env(safe-area-inset-top,0px) + 18px),60px);
+    padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 12px),24px);
+  }
+
+  .academy-discover-title{margin-top:5px}
+  .academy-discover-message{margin-top:0}
+  .academy-discover-strengths .academy-welcome-footer{margin-top:0}
+}
+
 @media (prefers-reduced-motion:reduce){
   .academy-discover-strengths *{animation:none!important;transition:none!important}
 }
