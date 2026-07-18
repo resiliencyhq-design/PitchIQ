@@ -1,34 +1,47 @@
-/* Sprint 10.3A.5 — approved pitch-first Identity Complete composition.
-   Final scoped override: uninterrupted tactical pitch, title below the scene,
-   elastic-band treatment, no pathway tile, and a single-screen iPhone stack. */
+/* Sprint 10.3A.6 — Identity Complete viewport coordinate lock.
+   One canonical full-viewport composition for the approved target. */
 
 .academy-welcome-step.academy-discover-strengths.academy-pitch-first{
+  position:absolute!important;
+  inset:0!important;
   box-sizing:border-box;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr);
-  grid-template-rows:auto minmax(0,1fr) auto auto auto;
-  align-items:start;
-  justify-items:center;
-  row-gap:0;
+  display:block!important;
   width:100%;
   height:100dvh;
   min-height:100dvh;
-  padding:max(calc(env(safe-area-inset-top,0px) + 18px),70px) 18px max(calc(env(safe-area-inset-bottom,0px) + 14px),28px)!important;
+  padding:0!important;
   overflow:hidden;
   background:#020807;
+  text-align:center;
+  isolation:isolate;
 }
 
 .academy-pitch-first::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
   background:
-    linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.02) 43%,rgba(0,0,0,.34) 66%,rgba(0,0,0,.97) 100%),
-    radial-gradient(circle at 50% 43%,rgba(215,255,46,.08),transparent 48%),
-    url("../assets/backgrounds/identity-strengths-pitch.webp") center top/cover no-repeat!important;
+    linear-gradient(180deg,rgba(0,0,0,.12) 0%,rgba(0,0,0,.02) 46%,rgba(0,0,0,.28) 58%,rgba(0,0,0,.96) 100%),
+    radial-gradient(circle at 50% 43%,rgba(215,255,46,.07),transparent 48%),
+    url("../assets/backgrounds/identity-strengths-pitch.webp") center top/cover no-repeat;
+  pointer-events:none;
+}
+
+.academy-pitch-first>*{
+  position:absolute;
+  z-index:2;
+  width:100%;
+  max-width:none;
 }
 
 .academy-pitch-first .academy-welcome-header{
-  grid-row:1;
-  margin:0 auto 6px!important;
+  top:max(calc(env(safe-area-inset-top,0px) + 56px),8.2dvh);
+  left:50%;
+  width:min(86vw,430px);
   min-height:28px;
+  margin:0!important;
+  transform:translateX(-50%);
 }
 
 .academy-pitch-first .academy-welcome-kicker{
@@ -41,17 +54,21 @@
   height:23px;
 }
 
+/* Full-screen tactical coordinate layer. */
 .academy-pitch-first .academy-discover-spacer{
-  position:relative;
-  grid-row:2;
-  align-self:stretch;
-  width:min(100%,430px);
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
   min-height:0;
+  pointer-events:none;
 }
 
 .academy-tactical-overlay{
   position:absolute;
   inset:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
 }
 
@@ -65,24 +82,24 @@
 }
 
 .academy-player-ring--self{
-  left:47%;
-  top:61%;
-  width:54px;
-  height:22px;
+  left:43.6%;
+  top:42.1%;
+  width:13.1vw;
+  height:2.5vw;
 }
 
 .academy-player-ring--teammate{
-  left:20%;
-  top:40%;
-  width:43px;
-  height:17px;
+  left:18.3%;
+  top:35.0%;
+  width:10.8vw;
+  height:2.1vw;
 }
 
 .academy-player-ring--space{
-  right:7%;
-  top:45%;
-  width:45px;
-  height:18px;
+  left:82.1%;
+  top:39.1%;
+  width:10.8vw;
+  height:2.1vw;
 }
 
 .academy-pass-line{
@@ -90,110 +107,130 @@
   display:block;
   height:2px;
   transform-origin:left center;
-  background:#d7ff2e;
   filter:drop-shadow(0 0 5px rgba(215,255,46,.75));
 }
 
 .academy-pass-line--solid{
-  left:27%;
-  top:44%;
-  width:31%;
-  transform:rotate(27deg);
+  left:27.0%;
+  top:36.1%;
+  width:25.5%;
+  transform:rotate(31deg);
+  background:#d7ff2e;
 }
 
 .academy-pass-line--dashed{
-  left:54%;
-  top:63%;
-  width:37%;
-  transform:rotate(-22deg);
+  left:50.2%;
+  top:43.3%;
+  width:37.5%;
+  transform:rotate(-15deg);
   background:repeating-linear-gradient(90deg,#d7ff2e 0 10px,transparent 10px 17px);
 }
 
 .academy-overlay-label{
   position:absolute;
   padding:4px 8px;
-  border:1px solid rgba(215,255,46,.85);
+  border:1px solid rgba(215,255,46,.88);
   border-radius:4px;
-  background:rgba(1,8,6,.82);
+  background:rgba(1,8,6,.84);
   color:#d7ff2e;
-  font-size:.52rem;
+  font-size:clamp(.45rem,1.7vw,.55rem);
   font-weight:950;
   letter-spacing:.06em;
   text-transform:uppercase;
   box-shadow:0 0 12px rgba(215,255,46,.12);
 }
 
-.academy-overlay-label--teammate{left:11%;top:29%}
-.academy-overlay-label--space{right:5%;top:31%}
-.academy-overlay-label--lane{left:49%;top:72%}
+.academy-overlay-label--teammate{left:13.4%;top:28.8%}
+.academy-overlay-label--space{right:8.7%;top:29.3%}
+.academy-overlay-label--lane{left:54.5%;top:47.0%}
 
 .academy-pitch-first .academy-discover-title{
-  position:relative;
-  grid-row:3;
-  width:min(100%,430px);
-  margin:-6px auto 0!important;
-  padding:10px 0 2px;
+  top:61.3%;
+  left:50%;
+  width:min(94vw,430px);
+  margin:0!important;
+  padding:0;
+  transform:translateX(-50%);
   isolation:isolate;
 }
 
 .academy-elastic-band{
   position:absolute;
   z-index:-1;
-  left:-12%;
-  right:-12%;
-  top:34%;
-  height:58%;
-  opacity:.72;
-  transform:rotate(-1.5deg);
-  background:
-    repeating-radial-gradient(ellipse at center,transparent 0 8px,rgba(215,255,46,.28) 9px 10px,transparent 11px 15px);
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  left:-8%;
+  right:-8%;
+  top:13%;
+  height:76%;
+  opacity:.78;
+  transform:rotate(-1.2deg);
+  background:repeating-radial-gradient(ellipse at center,transparent 0 8px,rgba(215,255,46,.3) 9px 10px,transparent 11px 15px);
+  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  pointer-events:none;
 }
 
 .academy-pitch-first .academy-discover-title h1{
-  font-size:clamp(2.25rem,10.7vw,3.35rem);
-  line-height:.88;
-  letter-spacing:-.06em;
+  margin:0;
+  color:#fff;
+  font-size:clamp(2.65rem,13vw,4rem);
+  font-weight:1000;
+  line-height:.84;
+  letter-spacing:-.065em;
+  text-transform:uppercase;
+  text-shadow:0 8px 28px rgba(0,0,0,.62);
 }
 
+.academy-pitch-first .academy-discover-title h1 span,
+.academy-pitch-first .academy-discover-title h1 strong{display:block}
+
 .academy-pitch-first .academy-discover-title h1 strong{
-  margin-top:5px;
+  margin-top:7px;
+  color:#d7ff2e;
+  font:inherit;
 }
 
 .academy-pitch-first .academy-discover-message{
-  grid-row:4;
-  margin:12px auto 0!important;
+  top:78.7%;
+  left:50%;
+  width:min(90vw,430px);
+  margin:0!important;
+  transform:translateX(-50%);
   color:#f5f7f5;
   font-size:clamp(.76rem,3.35vw,.9rem);
   line-height:1.45;
+  text-shadow:0 4px 16px rgba(0,0,0,.72);
+}
+
+.academy-pitch-first .academy-discover-message strong{
+  color:#d7ff2e;
+  font-weight:900;
 }
 
 .academy-pitch-first .academy-welcome-footer{
-  grid-row:5;
-  align-self:end;
-  margin:18px auto 0!important;
+  left:50%;
+  bottom:max(calc(env(safe-area-inset-bottom,0px) + 16px),4.6dvh);
+  width:min(84vw,410px);
+  margin:0!important;
   padding:0!important;
+  transform:translateX(-50%);
 }
 
 .academy-pitch-first .academy-welcome-footer .primary{
+  width:100%;
   min-height:58px;
+  margin:0;
   border-radius:18px;
   font-size:1rem;
 }
 
 @media (max-height:760px){
-  .academy-welcome-step.academy-discover-strengths.academy-pitch-first{
-    padding-top:max(calc(env(safe-area-inset-top,0px) + 12px),58px)!important;
-    padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 10px),22px)!important;
-  }
-  .academy-pitch-first .academy-welcome-header{margin-bottom:2px!important}
-  .academy-pitch-first .academy-discover-title{margin-top:-12px!important;padding-top:6px}
-  .academy-pitch-first .academy-discover-title h1{font-size:clamp(1.95rem,9.4vw,2.8rem)}
-  .academy-pitch-first .academy-discover-message{margin-top:8px!important;font-size:.72rem;line-height:1.35}
-  .academy-pitch-first .academy-welcome-footer{margin-top:10px!important}
+  .academy-pitch-first .academy-welcome-header{top:max(calc(env(safe-area-inset-top,0px) + 40px),7.2dvh)}
+  .academy-overlay-label{font-size:.44rem;padding:3px 6px}
+  .academy-pitch-first .academy-discover-title{top:59.8%}
+  .academy-pitch-first .academy-discover-title h1{font-size:clamp(2.15rem,11.4vw,3rem)}
+  .academy-pitch-first .academy-discover-message{top:77.2%;font-size:.72rem;line-height:1.35}
+  .academy-pitch-first .academy-welcome-footer{bottom:max(calc(env(safe-area-inset-bottom,0px) + 10px),3.2dvh)}
   .academy-pitch-first .academy-welcome-footer .primary{min-height:50px;font-size:.86rem}
-  .academy-overlay-label{font-size:.46rem;padding:3px 6px}
 }
 
 @keyframes academy-target-pulse{
