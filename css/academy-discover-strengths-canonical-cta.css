@@ -1,0 +1,63 @@
+/* Sprint 10.3A.12 — canonical CTA reuse.
+   Identity Complete already uses the shared onboarding CTA classes. This file
+   removes the remaining scene-specific visual treatment and applies the exact
+   onboarding Continue control asset, dimensions and interaction states. */
+
+#identity-complete-scene .identity-canonical-cta-host{
+  left:50%!important;
+  right:auto!important;
+  width:326px!important;
+  max-width:84vw!important;
+  height:76px!important;
+  margin:0!important;
+  padding:0!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1{
+  display:block!important;
+  width:326px!important;
+  max-width:100%!important;
+  height:76px!important;
+  min-height:76px!important;
+  max-height:76px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent url("../assets/controls/continue-button.png?v=861bbe23") center/contain no-repeat!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-shadow:none!important;
+  overflow:hidden!important;
+  transform:none!important;
+  filter:none!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+}
+
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1 span,
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1 b{
+  visibility:hidden!important;
+}
+
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1:focus-visible{
+  outline:2px solid rgba(215,255,46,.9)!important;
+  outline-offset:4px!important;
+}
+
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1:active{
+  transform:scale(.985)!important;
+}
+
+@media(max-width:360px){
+  #identity-complete-scene .identity-canonical-cta-host{
+    width:min(84vw,326px)!important;
+  }
+
+  #identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1{
+    width:100%!important;
+  }
+}
