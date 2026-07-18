@@ -1,15 +1,15 @@
 const autoJugglerStyles = document.createElement("link");
 autoJugglerStyles.rel = "stylesheet";
-autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-0e-iphone-camera-preview-20260718";
+autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-2-ball-detection-mvp-20260718";
 document.head.appendChild(autoJugglerStyles);
 
 const autoJugglerPreviewStyles = document.createElement("link");
 autoJugglerPreviewStyles.rel = "stylesheet";
-autoJugglerPreviewStyles.href = "css/auto-juggler-preview.css?v=sprint-10-0e-iphone-camera-preview-20260718";
+autoJugglerPreviewStyles.href = "css/auto-juggler-preview.css?v=sprint-10-2-ball-detection-mvp-20260718";
 document.head.appendChild(autoJugglerPreviewStyles);
 
-import("../lab/auto-juggler-camera.js?v=sprint-10-0e-iphone-camera-preview-20260718").catch(error => {
-  console.warn("[PitchIQ Lab] Auto Juggler camera preview failed to load", error);
+import("../lab/auto-juggler-camera.js?v=sprint-10-2-ball-detection-mvp-20260718").catch(error => {
+  console.warn("[PitchIQ Lab] Auto Juggler ball detector failed to load", error);
 });
 
 document.addEventListener("click", event => {
