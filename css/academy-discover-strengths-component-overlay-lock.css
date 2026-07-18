@@ -1,0 +1,103 @@
+/* Sprint 10.3A.11 — Component and overlay lock.
+   Preserve the isolated scene and approved composition while matching the
+   canonical onboarding CTA proportions and anchoring the tactical overlay
+   directly to the players in the Identity Strengths artwork. */
+
+/* Canonical primary CTA proportions used through onboarding. */
+#identity-complete-scene .academy-welcome-footer{
+  left:50%!important;
+  right:auto!important;
+  width:min(84vw,330px)!important;
+  max-width:330px!important;
+  transform:translateX(-50%)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer .primary{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:14px!important;
+  width:100%!important;
+  min-height:54px!important;
+  height:54px!important;
+  padding:0 22px!important;
+  margin:0!important;
+  border-radius:18px!important;
+  font-size:1rem!important;
+  line-height:1!important;
+  letter-spacing:.04em!important;
+  transform:none!important;
+}
+
+#identity-complete-scene .academy-welcome-footer .primary b{
+  font-size:1.7rem!important;
+  line-height:1!important;
+}
+
+/* Coordinate-only overlay correction against the 853 x 1844 artwork. */
+#identity-complete-scene .academy-player-ring--teammate{
+  left:24.8%!important;
+  top:42.05%!important;
+  width:10.2vw!important;
+  height:2.05vw!important;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  left:44.15%!important;
+  top:48.55%!important;
+  width:12.8vw!important;
+  height:2.45vw!important;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  left:82.2%!important;
+  top:42.55%!important;
+  width:10.2vw!important;
+  height:2.05vw!important;
+}
+
+#identity-complete-scene .academy-pass-line{
+  height:1.5px!important;
+  filter:drop-shadow(0 0 4px rgba(215,255,46,.62))!important;
+}
+
+#identity-complete-scene .academy-pass-line--solid{
+  left:29.6%!important;
+  top:43.05%!important;
+  width:25.3%!important;
+  transform:rotate(33.2deg)!important;
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  left:50.5%!important;
+  top:49.55%!important;
+  width:38.3%!important;
+  transform:rotate(-20.6deg)!important;
+  background:repeating-linear-gradient(90deg,#d7ff2e 0 9px,transparent 9px 16px)!important;
+}
+
+#identity-complete-scene .academy-overlay-label--teammate{
+  left:13.2%!important;
+  top:34.9%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  right:8.6%!important;
+  top:35.35%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  left:54.0%!important;
+  top:51.05%!important;
+}
+
+@media (max-width:360px){
+  #identity-complete-scene .academy-welcome-footer{
+    width:min(86vw,320px)!important;
+  }
+  #identity-complete-scene .academy-welcome-footer .primary{
+    min-height:52px!important;
+    height:52px!important;
+    font-size:.95rem!important;
+  }
+}
