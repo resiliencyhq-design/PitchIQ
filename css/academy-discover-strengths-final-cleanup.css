@@ -1,0 +1,86 @@
+/* Sprint 10.3A.14 — Identity Complete final cleanup.
+   Removes the remaining CTA artifact and applies the last coordinate-only
+   refinements without changing the locked CTA asset, copy, routing or scene shell. */
+
+/* Remove legacy decorative layers that can remain visible behind the reused CTA. */
+#identity-complete-scene .identity-canonical-cta-host,
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1{
+  background-color:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+
+#identity-complete-scene .identity-canonical-cta-host::before,
+#identity-complete-scene .identity-canonical-cta-host::after,
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1::before,
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Final pitch anchoring: place each ring at the target's ground contact point. */
+#identity-complete-scene .academy-player-ring--teammate{
+  left:24.4%!important;
+  top:46.45%!important;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  left:44.1%!important;
+  top:52.15%!important;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  left:81.8%!important;
+  top:41.75%!important;
+}
+
+/* Reconnect the lanes after the final ring placement. */
+#identity-complete-scene .academy-pass-line--solid{
+  left:30.0%!important;
+  top:47.15%!important;
+  width:22.0%!important;
+  transform:rotate(27.5deg)!important;
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  left:50.8%!important;
+  top:52.75%!important;
+  width:38.4%!important;
+  transform:rotate(-31deg)!important;
+}
+
+#identity-complete-scene .academy-overlay-label--teammate{
+  top:37.2%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  top:37.2%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  left:54.0%!important;
+  top:54.1%!important;
+}
+
+/* Centre the elastic/ripple treatment under the title without restyling it. */
+#identity-complete-scene .academy-elastic-band{
+  left:-10%!important;
+  right:-10%!important;
+  transform:rotate(0deg)!important;
+  background-position:center center!important;
+}
+
+/* Increase copy-to-CTA separation while retaining bottom safe-area clearance. */
+#identity-complete-scene .identity-canonical-cta-host{
+  bottom:max(calc(env(safe-area-inset-bottom,0px) + 8px),3.4dvh)!important;
+}
+
+@media(max-width:360px){
+  #identity-complete-scene .academy-player-ring--teammate{left:24.1%!important}
+  #identity-complete-scene .academy-player-ring--self{left:43.8%!important;top:52.0%!important}
+  #identity-complete-scene .academy-player-ring--space{left:81.5%!important}
+  #identity-complete-scene .academy-pass-line--solid{left:29.8%!important;width:22.2%!important}
+  #identity-complete-scene .academy-pass-line--dashed{left:50.6%!important;width:38.6%!important}
+}
