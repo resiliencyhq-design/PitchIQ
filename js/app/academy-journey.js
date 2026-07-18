@@ -10,6 +10,10 @@ const POSITION_LABELS = {
   CB: "Centre Back", RB: "Right Back", GK: "Goalkeeper"
 };
 
+let identityScene = null;
+let identitySource = null;
+let identityObserver = null;
+
 function positionLabel(value) {
   return POSITION_LABELS[value] || value || "—";
 }
@@ -26,6 +30,95 @@ function identity() {
 
 function setTextIfChanged(element, text) {
   if (element && element.textContent !== text) element.textContent = text;
+}
+
+function identityMarkup() {
+  return `
+    <header class="academy-welcome-header">
+      <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
+    </header>
+    <div class="academy-discover-spacer" aria-label="Tactical awareness scene">
+      <div class="academy-tactical-overlay" aria-hidden="true">
+        <span class="academy-player-ring academy-player-ring--self"></span>
+        <span class="academy-player-ring academy-player-ring--teammate"></span>
+        <span class="academy-player-ring academy-player-ring--space"></span>
+        <span class="academy-pass-line academy-pass-line--solid"></span>
+        <span class="academy-pass-line academy-pass-line--dashed"></span>
+        <span class="academy-overlay-label academy-overlay-label--teammate">Teammate</span>
+        <span class="academy-overlay-label academy-overlay-label--space">Open space</span>
+        <span class="academy-overlay-label academy-overlay-label--lane">Passing lane</span>
+      </div>
+    </div>
+    <div class="academy-discover-title">
+      <div class="academy-elastic-band" aria-hidden="true"></div>
+      <h1><span>Discover</span><strong>Your Strengths</strong></h1>
+    </div>
+    <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
+    <div class="onboard-step-footer academy-welcome-footer">
+      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
+    </div>`;
+}
+
+function configureIdentitySource(welcomePanel) {
+  if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
+  welcomePanel.dataset.academyWelcome = "true";
+  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths", "academy-pitch-first");
+  welcomePanel.innerHTML = identityMarkup();
+}
+
+function unlockDocumentScroll() {
+  document.documentElement.classList.remove("identity-scene-active");
+  document.body.classList.remove("identity-scene-active");
+}
+
+function removeIdentityScene({ restoreSource = true } = {}) {
+  identityScene?.remove();
+  identityScene = null;
+
+  if (identitySource && restoreSource) {
+    identitySource.classList.remove("identity-scene-source");
+    identitySource.removeAttribute("aria-hidden");
+  }
+
+  identitySource = null;
+  unlockDocumentScroll();
+}
+
+function mountIdentityScene(source) {
+  if (!source || source.hidden || !source.isConnected) return;
+  if (identityScene && identitySource === source) return;
+
+  removeIdentityScene();
+  identitySource = source;
+  source.classList.add("identity-scene-source");
+  source.setAttribute("aria-hidden", "true");
+
+  const scene = document.createElement("section");
+  scene.id = "identity-complete-scene";
+  scene.className = "academy-welcome-step academy-discover-strengths academy-pitch-first identity-scene-isolated";
+  scene.setAttribute("role", "dialog");
+  scene.setAttribute("aria-modal", "true");
+  scene.setAttribute("aria-label", "Identity complete");
+  scene.innerHTML = identityMarkup();
+
+  document.body.appendChild(scene);
+  identityScene = scene;
+  document.documentElement.classList.add("identity-scene-active");
+  document.body.classList.add("identity-scene-active");
+  window.scrollTo(0, 0);
+}
+
+function syncIdentityScene() {
+  const source = document.querySelector('.onboard-step[data-onboard-step="3"].academy-discover-strengths');
+  const onboardExists = Boolean(document.getElementById("onboard"));
+
+  if (!onboardExists || !source) {
+    if (identityScene) removeIdentityScene({ restoreSource: false });
+    return;
+  }
+
+  if (!source.hidden) mountIdentityScene(source);
+  else if (identityScene) removeIdentityScene();
 }
 
 function alignOnboardingLabels() {
@@ -53,34 +146,8 @@ function alignOnboardingLabels() {
   }
 
   const welcomePanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
-  if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
-
-  welcomePanel.dataset.academyWelcome = "true";
-  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths", "academy-pitch-first");
-  welcomePanel.innerHTML = `
-    <header class="academy-welcome-header">
-      <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
-    </header>
-    <div class="academy-discover-spacer" aria-label="Tactical awareness scene">
-      <div class="academy-tactical-overlay" aria-hidden="true">
-        <span class="academy-player-ring academy-player-ring--self"></span>
-        <span class="academy-player-ring academy-player-ring--teammate"></span>
-        <span class="academy-player-ring academy-player-ring--space"></span>
-        <span class="academy-pass-line academy-pass-line--solid"></span>
-        <span class="academy-pass-line academy-pass-line--dashed"></span>
-        <span class="academy-overlay-label academy-overlay-label--teammate">Teammate</span>
-        <span class="academy-overlay-label academy-overlay-label--space">Open space</span>
-        <span class="academy-overlay-label academy-overlay-label--lane">Passing lane</span>
-      </div>
-    </div>
-    <div class="academy-discover-title">
-      <div class="academy-elastic-band" aria-hidden="true"></div>
-      <h1><span>Discover</span><strong>Your Strengths</strong></h1>
-    </div>
-    <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
-    <div class="onboard-step-footer academy-welcome-footer">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
-    </div>`;
+  configureIdentitySource(welcomePanel);
+  syncIdentityScene();
 }
 
 function beginFirstAssessment(event) {
@@ -95,14 +162,21 @@ function beginFirstAssessment(event) {
   localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
+  removeIdentityScene({ restoreSource: false });
   window.location.hash = "academy-trials";
 }
 
 function initialise() {
   alignOnboardingLabels();
   document.addEventListener("click", beginFirstAssessment, true);
-  const app = document.getElementById("app");
-  if (app) new MutationObserver(alignOnboardingLabels).observe(app, { childList: true, subtree: true });
+  identityObserver = new MutationObserver(() => alignOnboardingLabels());
+  identityObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["hidden", "class", "style", "aria-hidden"]
+  });
+  window.addEventListener("pagehide", () => removeIdentityScene({ restoreSource: false }), { once: true });
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialise, { once: true });
