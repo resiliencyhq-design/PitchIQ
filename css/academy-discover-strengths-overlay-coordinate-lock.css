@@ -1,0 +1,67 @@
+/* Sprint 10.3A.13 — tactical overlay coordinate lock.
+   Coordinate-only correction against the approved 853 × 1844 pitch artwork.
+   CTA, title, copy, scene isolation and routing remain unchanged. */
+
+/* Target rings: centre each marker on its intended pitch target. */
+#identity-complete-scene .academy-player-ring--teammate{
+  left:24.4%!important;
+  top:46.25%!important;
+  width:11.2vw!important;
+  height:2.25vw!important;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  left:44.1%!important;
+  top:49.55%!important;
+  width:13.4vw!important;
+  height:2.6vw!important;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  left:82.2%!important;
+  top:41.55%!important;
+  width:11.1vw!important;
+  height:2.2vw!important;
+}
+
+/* Lines connect ring centre to ring centre on the rendered iPhone canvas. */
+#identity-complete-scene .academy-pass-line--solid{
+  left:30.0%!important;
+  top:46.95%!important;
+  width:21.4%!important;
+  height:1.5px!important;
+  transform:rotate(18deg)!important;
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  left:50.8%!important;
+  top:50.15%!important;
+  width:39.0%!important;
+  height:1.5px!important;
+  transform:rotate(-25.5deg)!important;
+  background:repeating-linear-gradient(90deg,#d7ff2e 0 9px,transparent 9px 16px)!important;
+}
+
+/* Labels sit close to their referenced targets without obscuring players. */
+#identity-complete-scene .academy-overlay-label--teammate{
+  left:13.2%!important;
+  top:36.9%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  right:8.6%!important;
+  top:36.9%!important;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  left:54.0%!important;
+  top:51.8%!important;
+}
+
+@media (max-width:360px){
+  #identity-complete-scene .academy-player-ring--teammate{left:24.1%!important}
+  #identity-complete-scene .academy-player-ring--self{left:43.8%!important}
+  #identity-complete-scene .academy-player-ring--space{left:81.8%!important}
+  #identity-complete-scene .academy-pass-line--solid{left:29.8%!important;width:21.6%!important}
+  #identity-complete-scene .academy-pass-line--dashed{left:50.6%!important;width:39.2%!important}
+}
