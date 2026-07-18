@@ -1,4 +1,4 @@
-/* Sprint 10.3A — Identity Complete layout polish.
+/* Sprint 10.3B — Identity Complete tactical overlay.
    Scope the viewport reset only to the visible Discover Your Strengths presentation.
    Name, Number, Position and Academy Trial retain their existing layout behaviour. */
 #app:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])){
@@ -68,8 +68,77 @@
   pointer-events:none;
 }
 
-/* Tactical overlay intentionally deferred to the overlay sprint. */
 .academy-discover-strengths::after{content:none}
+
+.academy-tactical-overlay{
+  position:absolute!important;
+  inset:0;
+  z-index:1!important;
+  width:100%!important;
+  max-width:none!important;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.academy-tactical-overlay svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.academy-overlay-cone{
+  fill:url(#academy-vision-cone);
+  stroke:rgba(215,255,46,.28);
+  stroke-width:2;
+  filter:url(#academy-overlay-glow);
+}
+
+.academy-overlay-pass{
+  fill:none;
+  stroke:#d7ff2e;
+  stroke-width:7;
+  stroke-linecap:round;
+  stroke-dasharray:18 16;
+  filter:url(#academy-overlay-glow);
+  animation:academy-pass-flow 2.4s linear infinite;
+}
+
+.academy-overlay-ring{
+  fill:rgba(215,255,46,.035);
+  stroke:#d7ff2e;
+  stroke-width:5;
+  filter:url(#academy-overlay-glow);
+}
+
+.academy-overlay-ring--player{opacity:.8}
+.academy-overlay-ring--target{opacity:1}
+
+.academy-overlay-pulse{
+  fill:none;
+  stroke:#d7ff2e;
+  stroke-width:4;
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:academy-target-pulse 2.6s ease-out infinite;
+}
+
+.academy-overlay-arrow{
+  fill:none;
+  stroke:#d7ff2e;
+  stroke-width:7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:url(#academy-overlay-glow);
+}
+
+@keyframes academy-pass-flow{
+  to{stroke-dashoffset:-68}
+}
+
+@keyframes academy-target-pulse{
+  0%{opacity:.9;transform:scale(.72)}
+  70%,100%{opacity:0;transform:scale(2.25)}
+}
 
 .academy-discover-strengths>*{
   position:relative;
