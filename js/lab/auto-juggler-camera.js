@@ -1,4 +1,4 @@
-import {createAutoJugglerDetector} from "./auto-juggler-detector.js?v=sprint-10-0e-20260718";
+import {createAutoJugglerDetector} from "./auto-juggler-detector.js?v=sprint-10-2-ball-detection-mvp-20260718";
 import {createJuggleEventDetector} from "./auto-juggler-events.js?v=sprint-10-0e-20260718";
 import {createAutoJugglerValidation} from "./auto-juggler-validation.js?v=sprint-10-0e-20260718";
 
@@ -204,8 +204,10 @@ function waitForEvent(target, eventName, timeoutMs){
 }
 
 async function waitForMetadata(video){
-  if(video.readyState >= HTMLMediaElement.HAVE_METADATA) return;
-  await waitForEvent(video, "loadedmetadata", 5000);
+  if(video.readyState >= HTMLMediaElement.HAVE_METADATA && video.videoWidth > 0 && video.videoHeight > 0) return;
+  if(video.readyState < HTMLMediaElement.HAVE_METADATA) await waitForEvent(video, "loadedmetadata", 5000);
+  if(video.videoWidth > 0 && video.videoHeight > 0) return;
+  await waitForEvent(video, "resize", 3000);
 }
 
 async function playVideo(video){
@@ -359,205 +361,161 @@ function renderShell(){
         <canvas id="autoJugglerOverlay" class="auto-juggler-overlay" aria-hidden="true"></canvas>
         <canvas id="autoJugglerProcessing" class="auto-juggler-processing" aria-hidden="true"></canvas>
         <div class="auto-juggler-frame" aria-hidden="true"><span></span></div>
-        <div class="auto-juggler-countdown" id="autoJugglerCountdown" hidden></div>
-        <div class="auto-juggler-event-flash" id="autoJugglerEventFlash" hidden aria-hidden="true">0</div>
+        <div class="auto-juggler-countdown" id="autoJugglerCountdown" hidden>3</div>
+        <div class="auto-juggler-event-flash" id="autoJugglerEventFlash" hidden>1</div>
       </div>
-
-      <p id="autoJugglerStatus" class="auto-juggler-status" data-state="idle" role="status" aria-live="polite">
-        Enable the camera, then complete one short validation attempt.
-      </p>
-
-      <section class="auto-juggler-preview-panel" aria-label="Camera preview diagnostics">
+      <p class="auto-juggler-status" id="autoJugglerStatus">Enable the camera to begin.</p>
+      <section class="auto-juggler-preview-diagnostics" aria-label="Camera preview diagnostics">
         <div><small>Track</small><b id="autoJugglerTrackState">—</b></div>
         <div><small>Ready state</small><b id="autoJugglerVideoReadyState">0</b></div>
         <div><small>Video size</small><b id="autoJugglerVideoSize">0×0</b></div>
         <div><small>Playback</small><b id="autoJugglerPlaybackState">PAUSED</b></div>
         <div><small>Frame</small><b id="autoJugglerFrameState">NO</b></div>
       </section>
-
-      <section class="auto-juggler-event-panel" aria-label="Provisional juggle events">
+      <section class="auto-juggler-event-panel" aria-label="Juggle event diagnostics">
         <div><small>Provisional count</small><b id="autoJugglerCount">0</b></div>
         <div><small>Motion phase</small><b id="autoJugglerPhase">SEARCHING</b></div>
         <div><small>Rejected turns</small><b id="autoJugglerRejected">0</b></div>
       </section>
-
-      <section class="auto-juggler-validation-panel" aria-label="Validation metrics">
+      <section class="auto-juggler-validation-panel" aria-label="Validation diagnostics">
         <div><small>Session</small><b id="autoJugglerSessionState">READY</b></div>
         <div><small>Duration</small><b id="autoJugglerDuration">0.0s</b></div>
         <div><small>Tracking coverage</small><b id="autoJugglerCoverage">0%</b></div>
         <div><small>Average confidence</small><b id="autoJugglerAverageConfidence">0%</b></div>
       </section>
-
-      <section class="auto-juggler-diagnostics" id="autoJugglerDiagnostics">
+      <section class="auto-juggler-diagnostics" id="autoJugglerDiagnostics" aria-label="Ball tracking diagnostics">
         <div><small>Tracking</small><b id="autoJugglerTrackStatus">READY</b></div>
         <div><small>Confidence</small><b id="autoJugglerConfidence">0%</b></div>
         <div><small>Direction</small><b id="autoJugglerDirection">—</b></div>
         <div><small>Movement</small><b id="autoJugglerMovement">—</b></div>
         <div><small>Frames</small><b id="autoJugglerFrames">0</b></div>
       </section>
-
       <div class="auto-juggler-actions">
-        <button type="button" class="auto-juggler-secondary" data-auto-juggler-action="camera">ENABLE CAMERA</button>
-        <button type="button" class="primary mega" id="autoJugglerStart" data-auto-juggler-action="countdown" disabled>START VALIDATION</button>
+        <button class="auto-juggler-secondary" type="button" data-auto-juggler-action="camera">Enable Camera</button>
+        <button class="trial-primary" id="autoJugglerStart" type="button" data-auto-juggler-action="start" disabled>Start Validation</button>
       </div>
-
-      <button type="button" class="auto-juggler-finish" id="autoJugglerFinish" data-auto-juggler-action="finish" disabled>FINISH ATTEMPT</button>
-
+      <button class="auto-juggler-finish" id="autoJugglerFinish" type="button" data-auto-juggler-action="finish" disabled>Finish Attempt</button>
       <section class="auto-juggler-result" id="autoJugglerResult" hidden>
-        <small>Final in-memory result</small>
-        <strong id="autoJugglerFinalCount">0</strong>
-        <b id="autoJugglerResultQuality">INSUFFICIENT TRACKING DATA</b>
-        <label>Observed contacts<input id="autoJugglerManualCount" type="number" inputmode="numeric" min="0" placeholder="Enter manual count"></label>
-        <div id="autoJugglerComparison" hidden>
-          <span>Estimated accuracy <b id="autoJugglerAccuracy">—</b></span>
-          <span>Count error <b id="autoJugglerError">—</b></span>
-        </div>
+        <small>Provisional result</small><strong id="autoJugglerFinalCount">0</strong><b id="autoJugglerResultQuality">INSUFFICIENT TRACKING DATA</b>
+        <label>Observed contact count<input id="autoJugglerManualCount" type="number" min="0" inputmode="numeric" placeholder="Enter count"></label>
+        <div id="autoJugglerComparison" hidden><span>Estimated accuracy <b id="autoJugglerAccuracy">—</b></span><span>Error <b id="autoJugglerError">—</b></span></div>
       </section>
-
-      <p class="auto-juggler-privacy">Validation only. The result remains in memory and is not added to player progress.</p>
+      <p class="auto-juggler-privacy">Frames are processed on this device. Nothing is uploaded or saved.</p>
     </main>
   </section>`;
 }
 
-function beginCountdown(){
-  if(!stream) return setStatus("Enable the camera first.", "error");
-
-  const video = document.getElementById("autoJugglerVideo");
-  const track = stream.getVideoTracks()[0];
-  if(!video || video.videoWidth <= 0 || video.videoHeight <= 0 || video.paused || track?.readyState !== "live"){
-    const start = document.getElementById("autoJugglerStart");
-    if(start) start.disabled = true;
-    setStatus("Camera image is not ready. Enable the camera again before testing.", "error");
-    updatePreviewDiagnostics(video, track, false);
-    return;
-  }
-
-  stopTracking();
-  validation?.reset?.();
-  stopCountdown();
-
-  const overlay = document.getElementById("autoJugglerCountdown");
-  const start = document.getElementById("autoJugglerStart");
-  const finish = document.getElementById("autoJugglerFinish");
-  if(!overlay) return;
-
-  if(start) start.disabled = true;
-  if(finish) finish.disabled = true;
-  overlay.hidden = false;
-
-  const sequence = ["3", "2", "1", "GO"];
-  let index = 0;
-  overlay.textContent = sequence[index];
-
-  countdownTimer = setInterval(() => {
-    index += 1;
-    if(index < sequence.length){
-      overlay.textContent = sequence[index];
-      return;
-    }
-
-    stopCountdown();
-    setTimeout(() => {
-      overlay.hidden = true;
-      if(start){
-        start.disabled = false;
-        start.textContent = "RESTART VALIDATION";
-      }
-      if(finish) finish.disabled = false;
-
-      tracking = true;
-      eventDetector?.reset?.();
-      detector?.reset?.();
-      validation?.start?.();
-      detector?.start?.();
-      setStatus("Validation active. Finish the attempt when juggling stops.", "ready");
-      updateDiagnostics({missedFrames:0});
-    }, 650);
-  }, 850);
+function mount(){
+  if(mounted || !app) return;
+  mounted = true;
+  previousMarkup = app.innerHTML;
+  previousNavVisible = nav?.classList.contains("visible") || false;
+  document.body.classList.add("auto-juggler-open");
+  nav?.classList.remove("visible");
+  app.innerHTML = renderShell();
+  ensureDetector();
+  startCamera();
 }
 
-function finishAttempt(){
-  if(!tracking) return;
-  validation?.finish?.();
-  tracking = false;
-  detector?.stop?.();
-
-  const finish = document.getElementById("autoJugglerFinish");
-  if(finish) finish.disabled = true;
-
-  setStatus("Attempt complete. Enter the observed contact count to compare accuracy.", "ready");
-}
-
-function restoreHome(){
+function unmount(){
+  if(!mounted) return;
+  mounted = false;
   stopCountdown();
   stopCamera();
   detector?.destroy?.();
   detector = null;
   eventDetector = null;
   validation = null;
-  mounted = false;
   document.body.classList.remove("auto-juggler-open");
-
-  if(previousMarkup) app.innerHTML = previousMarkup;
-  if(nav) nav.classList.toggle("visible", previousNavVisible);
-  window.dispatchEvent(new HashChangeEvent("hashchange"));
+  document.body.classList.remove("auto-juggler-camera-active");
+  app.innerHTML = previousMarkup;
+  if(previousNavVisible) nav?.classList.add("visible");
+  else nav?.classList.remove("visible");
 }
 
-export function mountAutoJuggler(){
-  if(!app || mounted) return;
-  mounted = true;
-  previousMarkup = app.innerHTML;
-  previousNavVisible = nav?.classList.contains("visible") || false;
-  document.body.classList.add("auto-juggler-open");
-  if(nav) nav.classList.remove("visible");
+function beginCountdown(){
+  if(!stream || tracking) return;
+  const countdown = document.getElementById("autoJugglerCountdown");
+  const start = document.getElementById("autoJugglerStart");
+  const finish = document.getElementById("autoJugglerFinish");
+  if(!countdown || !start || !finish) return;
 
-  app.innerHTML = renderShell();
-  app.scrollTop = 0;
-  updateDiagnostics();
-  updateEventState();
+  stopTracking();
+  validation?.reset?.();
   updateValidation();
-  updatePreviewDiagnostics(document.getElementById("autoJugglerVideo"), null, false);
+  updateEventState();
+
+  let value = 3;
+  countdown.hidden = false;
+  countdown.textContent = String(value);
+  start.disabled = true;
+  finish.disabled = true;
+  setStatus("Get ready…", "ready");
+
+  stopCountdown();
+  countdownTimer = setInterval(() => {
+    value -= 1;
+    if(value > 0){
+      countdown.textContent = String(value);
+      return;
+    }
+    if(value === 0){
+      countdown.textContent = "GO";
+      return;
+    }
+
+    stopCountdown();
+    countdown.hidden = true;
+    tracking = true;
+    detector?.reset?.();
+    eventDetector?.reset?.();
+    validation?.begin?.();
+    detector?.start?.();
+    finish.disabled = false;
+    setStatus("Tracking ball movement. Tap Finish Attempt when done.", "ready");
+  }, 700);
 }
 
-function injectLabTile(){
-  const grid = document.querySelector("#home .home-actions-grid");
-  if(!grid || grid.querySelector("[data-auto-juggler-launch]")) return;
+function finishAttempt(){
+  if(!tracking) return;
+  stopTracking({finish:true});
+  const start = document.getElementById("autoJugglerStart");
+  const finish = document.getElementById("autoJugglerFinish");
+  if(start) start.disabled = false;
+  if(finish) finish.disabled = true;
+  setStatus("Attempt complete. Enter the observed contact count to compare accuracy.", "ready");
+}
 
-  const tile = document.createElement("button");
-  tile.type = "button";
-  tile.className = "home-action-card auto-juggler-home-card";
-  tile.dataset.autoJugglerLaunch = "true";
-  tile.innerHTML = `<b>◉</b><span>PitchIQ Lab</span><small>Auto Juggler</small>`;
-  grid.appendChild(tile);
+function compareManualCount(){
+  const input = document.getElementById("autoJugglerManualCount");
+  if(!input || input.value === "") return;
+  validation?.compareManual?.(Number(input.value));
 }
 
 document.addEventListener("click", event => {
-  const launch = event.target.closest("[data-auto-juggler-launch]");
-  if(launch){
+  const entry = event.target.closest?.("[data-auto-juggler-open]");
+  if(entry){
     event.preventDefault();
-    mountAutoJuggler();
+    mount();
     return;
   }
 
-  const action = event.target.closest("[data-auto-juggler-action]")?.dataset.autoJugglerAction;
-  if(action === "back") restoreHome();
+  if(!mounted) return;
+  const action = event.target.closest?.("[data-auto-juggler-action]")?.dataset.autoJugglerAction;
+  if(action === "back") unmount();
   if(action === "camera") startCamera();
-  if(action === "countdown") beginCountdown();
+  if(action === "start") beginCountdown();
   if(action === "finish") finishAttempt();
 });
 
 document.addEventListener("input", event => {
-  if(event.target?.id === "autoJugglerManualCount") validation?.setManualCount(event.target.value);
+  if(event.target?.id === "autoJugglerManualCount") compareManualCount();
 });
 
 window.addEventListener("pagehide", () => {
-  stopCountdown();
-  stopCamera();
+  if(mounted) stopCamera();
 });
 
 document.addEventListener("visibilitychange", () => {
-  if(document.hidden) stopCamera();
+  if(document.hidden && mounted) stopCamera();
 });
-
-new MutationObserver(injectLabTile).observe(app, {childList:true, subtree:true});
-injectLabTile();
