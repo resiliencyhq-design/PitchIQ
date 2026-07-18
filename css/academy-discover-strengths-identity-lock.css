@@ -1,0 +1,118 @@
+/* Sprint 10.3A.10 — Identity Complete visual lock.
+   Final measured refinement after scene isolation and iPhone validation. */
+
+/* Keep the intended hierarchy: completion state, tactical scene, headline, copy, CTA. */
+#identity-complete-scene .academy-discover-title{
+  top:64.5%!important;
+}
+
+/* Subtle supporting energy treatment rather than a competing graphic. */
+#identity-complete-scene .academy-elastic-band{
+  left:-17%;
+  right:-17%;
+  top:29%;
+  height:50%;
+  opacity:.34;
+  transform:rotate(-.8deg);
+  background:repeating-radial-gradient(
+    ellipse at center,
+    transparent 0 11px,
+    rgba(215,255,46,.24) 12px 13px,
+    transparent 14px 20px
+  );
+  mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);
+}
+
+/* Overlay alignment against the approved Identity Strengths artwork. */
+#identity-complete-scene .academy-player-ring--teammate{
+  left:25.4%;
+  top:42.25%;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  left:44.15%;
+  top:48.95%;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  left:82.7%;
+  top:43.0%;
+}
+
+#identity-complete-scene .academy-pass-line{
+  height:1.6px;
+  opacity:.88;
+  filter:drop-shadow(0 0 4px rgba(215,255,46,.62));
+}
+
+#identity-complete-scene .academy-pass-line--solid{
+  left:30.2%;
+  top:43.35%;
+  width:24.3%;
+  transform:rotate(34deg);
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  left:51.9%;
+  top:49.95%;
+  width:37.2%;
+  transform:rotate(-22deg);
+  background:repeating-linear-gradient(90deg,#d7ff2e 0 9px,transparent 9px 16px);
+}
+
+#identity-complete-scene .academy-overlay-label--teammate{
+  left:13.2%;
+  top:33.1%;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  right:8.6%;
+  top:33.5%;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  left:54.0%;
+  top:53.2%;
+}
+
+/* Keep copy readable and establish a visible gap before the CTA. */
+#identity-complete-scene .academy-discover-message{
+  top:81.0%!important;
+  width:min(88vw,410px)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer{
+  bottom:max(calc(env(safe-area-inset-bottom,0px) + 14px),3.2dvh)!important;
+}
+
+#identity-complete-scene .academy-welcome-footer .primary{
+  height:96px!important;
+  min-height:96px!important;
+  max-height:96px!important;
+  padding:0 24px!important;
+  border-radius:32px!important;
+  font-size:1.12rem!important;
+}
+
+@media (max-height:760px){
+  #identity-complete-scene .academy-discover-title{top:62.8%!important}
+  #identity-complete-scene .academy-discover-message{top:79.6%!important}
+  #identity-complete-scene .academy-welcome-footer{
+    bottom:max(calc(env(safe-area-inset-bottom,0px) + 10px),2.5dvh)!important;
+  }
+  #identity-complete-scene .academy-welcome-footer .primary{
+    height:78px!important;
+    min-height:78px!important;
+    max-height:78px!important;
+    border-radius:26px!important;
+    font-size:1rem!important;
+  }
+}
+
+@media (max-width:390px){
+  #identity-complete-scene .academy-overlay-label{
+    padding:3px 7px;
+    font-size:clamp(.43rem,1.65vw,.52rem);
+  }
+}
