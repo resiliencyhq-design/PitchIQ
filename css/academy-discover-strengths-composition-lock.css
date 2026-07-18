@@ -1,0 +1,61 @@
+/* Sprint 10.3A.4 — Identity Complete composition-model repair.
+   This file is intentionally loaded after the presentation stylesheet so the
+   iPhone layout has one final, narrowly scoped source of truth. */
+
+.academy-welcome-step.academy-discover-strengths{
+  box-sizing:border-box;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto auto clamp(210px,31dvh,270px) auto 16px auto 10px auto;
+  align-content:start;
+  align-items:start;
+  justify-items:center;
+  row-gap:0;
+  padding-top:max(calc(env(safe-area-inset-top,0px) + 24px),84px)!important;
+  padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 16px),34px)!important;
+  overflow:hidden;
+}
+
+.academy-discover-strengths .academy-welcome-header{
+  grid-row:1;
+  margin:0 auto!important;
+}
+
+.academy-discover-title{
+  grid-row:2;
+  margin:6px auto 0!important;
+}
+
+.academy-discover-spacer{
+  grid-row:3;
+  width:100%;
+  min-height:0;
+}
+
+.academy-strength-pathway{
+  grid-row:4;
+  margin:0 auto!important;
+}
+
+.academy-discover-message{
+  grid-row:6;
+  margin:0 auto!important;
+}
+
+.academy-discover-strengths .academy-welcome-footer{
+  grid-row:8;
+  margin:0 auto!important;
+  padding:0!important;
+}
+
+@media (max-height:760px){
+  .academy-welcome-step.academy-discover-strengths{
+    grid-template-rows:auto auto clamp(145px,24dvh,185px) auto 12px auto 8px auto;
+    padding-top:max(calc(env(safe-area-inset-top,0px) + 18px),66px)!important;
+    padding-bottom:max(calc(env(safe-area-inset-bottom,0px) + 12px),26px)!important;
+  }
+
+  .academy-discover-title{
+    margin-top:5px!important;
+  }
+}
