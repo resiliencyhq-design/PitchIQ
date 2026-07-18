@@ -204,7 +204,7 @@ function waitForEvent(target, eventName, timeoutMs){
 }
 
 async function waitForMetadata(video){
-  if(video.readyState >= HTMLMediaElement.HAVE_METADATA && video.videoWidth > 0 && video.videoHeight > 0) return;
+  if(video.readyState >= HTMLMediaElement.HAVE_METADATA) return;
   await waitForEvent(video, "loadedmetadata", 5000);
 }
 
