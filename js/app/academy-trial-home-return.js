@@ -12,10 +12,6 @@ import("../lab/auto-juggler-camera.js?v=sprint-10-0e-iphone-camera-preview-20260
   console.warn("[PitchIQ Lab] Auto Juggler camera preview failed to load", error);
 });
 
-import("./academy-trial-camera-recovery.js?v=sprint-10-1-academy-live-camera-20260718").catch(error => {
-  console.warn("[PitchIQ Assessment] Camera recovery failed to load", error);
-});
-
 document.addEventListener("click", event => {
   const button = event.target.closest?.('[data-trial-route="home"]');
   if(!button) return;
