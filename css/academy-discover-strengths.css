@@ -1,18 +1,31 @@
-/* Sprint 10.3A.1 — Identity Complete final composition lock.
-   Scope the viewport reset only to the visible Discover Your Strengths presentation.
-   Name, Number, Position and Academy Trial retain their existing layout behaviour. */
+/* Sprint 10.3A.2 — Identity Complete viewport and composition fix.
+   Lock the Discover Your Strengths presentation to the full viewport, remove
+   transform-only positioning, and prevent the global world background showing through. */
+body:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])) .world{
+  opacity:0;
+  visibility:hidden;
+}
+
 #app:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])){
+  position:absolute;
+  inset:0;
   top:0;
-  bottom:auto;
+  bottom:0;
+  width:100%;
   height:100dvh;
   min-height:100dvh;
+  padding:0!important;
   padding-bottom:0!important;
   scroll-padding-bottom:0;
   overflow:hidden;
   overscroll-behavior:none;
+  background:#020807;
 }
 
 #onboard.onboard-v1:has(.academy-discover-strengths:not([hidden])){
+  position:absolute;
+  inset:0;
+  width:100%;
   min-height:100dvh;
   height:100dvh;
   padding:0!important;
@@ -21,14 +34,17 @@
 }
 
 #onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))>.onboard-content{
+  position:absolute;
+  inset:0;
   width:100%;
   max-width:none;
-  min-height:100%;
-  height:100%;
+  min-height:100dvh;
+  height:100dvh;
   margin:0;
   padding:0;
   gap:0;
   overflow:hidden;
+  background:#020807;
 }
 
 #onboard.onboard-v1:has(.academy-discover-strengths:not([hidden]))::before,
@@ -40,18 +56,20 @@
 }
 
 .academy-welcome-step.academy-discover-strengths{
-  position:relative;
+  position:absolute;
+  inset:0;
   display:flex;
   width:100%;
-  min-height:0;
-  height:100%;
+  min-height:100dvh;
+  height:100dvh;
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
-  padding:calc(env(safe-area-inset-top,0px) + 30px) 18px calc(env(safe-area-inset-bottom,0px) + 10px);
+  padding:calc(env(safe-area-inset-top,0px) + 30px) 18px calc(env(safe-area-inset-bottom,0px) + 28px);
   overflow:hidden;
   background:#020807;
   text-align:center;
+  isolation:isolate;
 }
 
 .academy-discover-strengths[hidden]{display:none}
@@ -60,6 +78,7 @@
   content:"";
   position:absolute;
   inset:0;
+  min-height:100dvh;
   z-index:0;
   background:
     linear-gradient(180deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.82) 100%),
@@ -83,8 +102,7 @@
   min-height:30px;
   align-items:center;
   justify-content:center;
-  margin:0 auto;
-  transform:translateY(9px);
+  margin:9px auto 0;
 }
 
 .academy-discover-strengths .academy-welcome-kicker{
@@ -112,7 +130,6 @@
 
 .academy-discover-title{
   margin:12px auto 0;
-  transform:translateY(9px);
 }
 
 .academy-discover-title h1{
@@ -155,7 +172,6 @@
   box-shadow:0 15px 44px rgba(0,0,0,.35),inset 0 0 24px rgba(215,255,46,.035);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
-  transform:translateY(-18px);
 }
 
 .academy-strength-item{
@@ -189,7 +205,6 @@
   font-size:.84rem;
   line-height:1.35;
   text-shadow:0 4px 16px rgba(0,0,0,.65);
-  transform:translateY(-18px);
 }
 
 .academy-discover-message strong{
@@ -201,7 +216,6 @@
   flex:0 0 auto;
   margin:8px auto 0;
   padding:0;
-  transform:translateY(-18px);
 }
 
 .academy-discover-strengths .academy-welcome-footer .primary{
@@ -236,7 +250,7 @@
 @media (max-height:760px){
   .academy-welcome-step.academy-discover-strengths{
     padding-top:calc(env(safe-area-inset-top,0px) + 18px);
-    padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
+    padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
   }
   .academy-discover-strengths::before{
     background:
@@ -244,15 +258,15 @@
       radial-gradient(circle at 50% 45%,rgba(215,255,46,.09),transparent 52%),
       url("../assets/backgrounds/identity-strengths-pitch.webp") center calc(50% - 16px)/cover no-repeat;
   }
-  .academy-discover-strengths .academy-welcome-header{min-height:25px;transform:translateY(6px)}
+  .academy-discover-strengths .academy-welcome-header{min-height:25px;margin-top:6px}
   .academy-discover-strengths .academy-welcome-kicker{font-size:.64rem}
   .academy-discover-strengths .academy-welcome-kicker span{width:19px;height:19px}
-  .academy-discover-title{margin-top:7px;transform:translateY(6px)}
+  .academy-discover-title{margin-top:7px}
   .academy-discover-title h1{font-size:clamp(1.75rem,8.8vw,2.55rem)}
-  .academy-strength-pathway{padding-top:9px;padding-bottom:8px;transform:translateY(-12px)}
+  .academy-strength-pathway{padding-top:9px;padding-bottom:8px}
   .academy-strength-icon{width:30px;height:30px}
-  .academy-discover-message{margin-top:6px;font-size:.75rem;transform:translateY(-12px)}
-  .academy-discover-strengths .academy-welcome-footer{margin-top:6px;transform:translateY(-12px)}
+  .academy-discover-message{margin-top:6px;font-size:.75rem}
+  .academy-discover-strengths .academy-welcome-footer{margin-top:6px}
   .academy-discover-strengths .academy-welcome-footer .primary{min-height:49px;font-size:.82rem}
 }
 
