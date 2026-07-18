@@ -3,6 +3,7 @@ const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
 const ONBOARDING_COMPLETE_KEY = "pitchiqOnboardingComplete";
 const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
+const IDENTITY_ACTIVE_CLASS = "identity-complete-active";
 
 const POSITION_LABELS = {
   LW: "Left Wing", ST: "Striker", RW: "Right Wing", CAM: "Central Attacking Midfielder",
@@ -26,6 +27,25 @@ function identity() {
 
 function setTextIfChanged(element, text) {
   if (element && element.textContent !== text) element.textContent = text;
+}
+
+function panelIsRendered(panel) {
+  if (!panel || !panel.isConnected) return false;
+  const style = getComputedStyle(panel);
+  return style.display !== "none" && style.visibility !== "hidden" && panel.getClientRects().length > 0;
+}
+
+function syncIdentityShellState() {
+  const panel = document.querySelector(".academy-discover-strengths.academy-pitch-first");
+  const active = panelIsRendered(panel);
+  document.body.classList.toggle(IDENTITY_ACTIVE_CLASS, active);
+
+  const app = document.getElementById("app");
+  const onboard = panel?.closest("#onboard");
+  const content = panel?.closest(".onboard-content");
+  app?.classList.toggle(IDENTITY_ACTIVE_CLASS, active);
+  onboard?.classList.toggle(IDENTITY_ACTIVE_CLASS, active);
+  content?.classList.toggle(IDENTITY_ACTIVE_CLASS, active);
 }
 
 function alignOnboardingLabels() {
@@ -53,34 +73,41 @@ function alignOnboardingLabels() {
   }
 
   const welcomePanel = document.querySelector('.onboard-step[data-onboard-step="3"]');
-  if (!welcomePanel || welcomePanel.dataset.academyWelcome === "true") return;
+  if (!welcomePanel) {
+    syncIdentityShellState();
+    return;
+  }
 
-  welcomePanel.dataset.academyWelcome = "true";
-  welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths", "academy-pitch-first");
-  welcomePanel.innerHTML = `
-    <header class="academy-welcome-header">
-      <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
-    </header>
-    <div class="academy-discover-spacer" aria-label="Tactical awareness scene">
-      <div class="academy-tactical-overlay" aria-hidden="true">
-        <span class="academy-player-ring academy-player-ring--self"></span>
-        <span class="academy-player-ring academy-player-ring--teammate"></span>
-        <span class="academy-player-ring academy-player-ring--space"></span>
-        <span class="academy-pass-line academy-pass-line--solid"></span>
-        <span class="academy-pass-line academy-pass-line--dashed"></span>
-        <span class="academy-overlay-label academy-overlay-label--teammate">Teammate</span>
-        <span class="academy-overlay-label academy-overlay-label--space">Open space</span>
-        <span class="academy-overlay-label academy-overlay-label--lane">Passing lane</span>
+  if (welcomePanel.dataset.academyWelcome !== "true") {
+    welcomePanel.dataset.academyWelcome = "true";
+    welcomePanel.classList.add("academy-welcome-step", "academy-discover-strengths", "academy-pitch-first");
+    welcomePanel.innerHTML = `
+      <header class="academy-welcome-header">
+        <div class="academy-welcome-kicker"><span aria-hidden="true">✓</span> Identity complete</div>
+      </header>
+      <div class="academy-discover-spacer" aria-label="Tactical awareness scene">
+        <div class="academy-tactical-overlay" aria-hidden="true">
+          <span class="academy-player-ring academy-player-ring--self"></span>
+          <span class="academy-player-ring academy-player-ring--teammate"></span>
+          <span class="academy-player-ring academy-player-ring--space"></span>
+          <span class="academy-pass-line academy-pass-line--solid"></span>
+          <span class="academy-pass-line academy-pass-line--dashed"></span>
+          <span class="academy-overlay-label academy-overlay-label--teammate">Teammate</span>
+          <span class="academy-overlay-label academy-overlay-label--space">Open space</span>
+          <span class="academy-overlay-label academy-overlay-label--lane">Passing lane</span>
+        </div>
       </div>
-    </div>
-    <div class="academy-discover-title">
-      <div class="academy-elastic-band" aria-hidden="true"></div>
-      <h1><span>Discover</span><strong>Your Strengths</strong></h1>
-    </div>
-    <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
-    <div class="onboard-step-footer academy-welcome-footer">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
-    </div>`;
+      <div class="academy-discover-title">
+        <div class="academy-elastic-band" aria-hidden="true"></div>
+        <h1><span>Discover</span><strong>Your Strengths</strong></h1>
+      </div>
+      <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
+      <div class="onboard-step-footer academy-welcome-footer">
+        <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
+      </div>`;
+  }
+
+  requestAnimationFrame(syncIdentityShellState);
 }
 
 function beginFirstAssessment(event) {
@@ -95,14 +122,28 @@ function beginFirstAssessment(event) {
   localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
+  document.body.classList.remove(IDENTITY_ACTIVE_CLASS);
   window.location.hash = "academy-trials";
 }
 
 function initialise() {
   alignOnboardingLabels();
   document.addEventListener("click", beginFirstAssessment, true);
+  window.addEventListener("hashchange", () => requestAnimationFrame(syncIdentityShellState));
+  window.addEventListener("pageshow", () => requestAnimationFrame(syncIdentityShellState));
+
   const app = document.getElementById("app");
-  if (app) new MutationObserver(alignOnboardingLabels).observe(app, { childList: true, subtree: true });
+  if (app) {
+    new MutationObserver(() => {
+      alignOnboardingLabels();
+      requestAnimationFrame(syncIdentityShellState);
+    }).observe(app, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["hidden", "class", "style", "aria-hidden"]
+    });
+  }
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialise, { once: true });
