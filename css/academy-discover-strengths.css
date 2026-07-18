@@ -1,4 +1,4 @@
-/* Sprint 10.3A — Identity Complete layout polish.
+/* Sprint 10.3A.1 — Identity Complete final composition lock.
    Scope the viewport reset only to the visible Discover Your Strengths presentation.
    Name, Number, Position and Academy Trial retain their existing layout behaviour. */
 #app:has(#onboard.onboard-v1 .academy-discover-strengths:not([hidden])){
@@ -64,7 +64,7 @@
   background:
     linear-gradient(180deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.82) 100%),
     radial-gradient(circle at 50% 45%,rgba(215,255,46,.09),transparent 52%),
-    url("../assets/backgrounds/identity-strengths-pitch.webp") center/cover no-repeat;
+    url("../assets/backgrounds/identity-strengths-pitch.webp") center calc(50% - 24px)/cover no-repeat;
   pointer-events:none;
 }
 
@@ -84,6 +84,7 @@
   align-items:center;
   justify-content:center;
   margin:0 auto;
+  transform:translateY(9px);
 }
 
 .academy-discover-strengths .academy-welcome-kicker{
@@ -111,6 +112,7 @@
 
 .academy-discover-title{
   margin:12px auto 0;
+  transform:translateY(9px);
 }
 
 .academy-discover-title h1{
@@ -153,6 +155,7 @@
   box-shadow:0 15px 44px rgba(0,0,0,.35),inset 0 0 24px rgba(215,255,46,.035);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
+  transform:translateY(-18px);
 }
 
 .academy-strength-item{
@@ -181,11 +184,12 @@
 }
 
 .academy-discover-message{
-  margin:11px auto 0;
+  margin:7px auto 0;
   color:#f2f5f2;
   font-size:.84rem;
   line-height:1.35;
   text-shadow:0 4px 16px rgba(0,0,0,.65);
+  transform:translateY(-18px);
 }
 
 .academy-discover-message strong{
@@ -195,8 +199,9 @@
 
 .academy-discover-strengths .academy-welcome-footer{
   flex:0 0 auto;
-  margin:12px auto 0;
+  margin:8px auto 0;
   padding:0;
+  transform:translateY(-18px);
 }
 
 .academy-discover-strengths .academy-welcome-footer .primary{
@@ -233,15 +238,21 @@
     padding-top:calc(env(safe-area-inset-top,0px) + 18px);
     padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
   }
-  .academy-discover-strengths .academy-welcome-header{min-height:25px}
+  .academy-discover-strengths::before{
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.82) 100%),
+      radial-gradient(circle at 50% 45%,rgba(215,255,46,.09),transparent 52%),
+      url("../assets/backgrounds/identity-strengths-pitch.webp") center calc(50% - 16px)/cover no-repeat;
+  }
+  .academy-discover-strengths .academy-welcome-header{min-height:25px;transform:translateY(6px)}
   .academy-discover-strengths .academy-welcome-kicker{font-size:.64rem}
   .academy-discover-strengths .academy-welcome-kicker span{width:19px;height:19px}
-  .academy-discover-title{margin-top:7px}
+  .academy-discover-title{margin-top:7px;transform:translateY(6px)}
   .academy-discover-title h1{font-size:clamp(1.75rem,8.8vw,2.55rem)}
-  .academy-strength-pathway{padding-top:9px;padding-bottom:8px}
+  .academy-strength-pathway{padding-top:9px;padding-bottom:8px;transform:translateY(-12px)}
   .academy-strength-icon{width:30px;height:30px}
-  .academy-discover-message{margin-top:8px;font-size:.75rem}
-  .academy-discover-strengths .academy-welcome-footer{margin-top:8px}
+  .academy-discover-message{margin-top:6px;font-size:.75rem;transform:translateY(-12px)}
+  .academy-discover-strengths .academy-welcome-footer{margin-top:6px;transform:translateY(-12px)}
   .academy-discover-strengths .academy-welcome-footer .primary{min-height:49px;font-size:.82rem}
 }
 
