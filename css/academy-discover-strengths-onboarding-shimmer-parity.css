@@ -1,0 +1,47 @@
+/* Sprint 10.3A.16 — exact onboarding CTA shimmer parity.
+   This reproduces the canonical splash/onboarding sweep from splash-fit.css
+   while keeping the effect owned and clipped by the Identity CTA. */
+
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+
+/* Override Sprint 10.3A.14's broad pseudo-element suppression only for the
+   canonical button itself. Footer pseudo-elements remain disabled. */
+#identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:-30% auto -30% -40%!important;
+  width:34%!important;
+  border-radius:0!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent)!important;
+  box-shadow:none!important;
+  filter:none!important;
+  opacity:1!important;
+  transform:skewX(-18deg)!important;
+  pointer-events:none!important;
+  animation:academyCtaSweep .86s ease-out .58s both,academyCtaIdle 4s ease-in-out 3s infinite!important;
+}
+
+/* Exact canonical onboarding animation timing and travel. */
+@keyframes academyCtaSweep{
+  from{left:-42%}
+  to{left:116%}
+}
+
+@keyframes academyCtaIdle{
+  0%,78%,100%{left:-42%;opacity:0}
+  84%{opacity:.85}
+  96%{left:116%;opacity:0}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #identity-complete-scene .identity-canonical-cta-host .onboard-cta-v1::after{
+    animation:none!important;
+    display:none!important;
+  }
+}
