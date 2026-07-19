@@ -16,8 +16,10 @@ function applyHomeRecommendation(){
   if(!card || !mission) return;
   const activity = footballIqActivity();
   const best = window.PitchIQFootballIqProgress?.get?.()?.missions?.[mission.id]?.personalBest;
+  const signature = `w1-5:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}:${activity.readiness}`;
+  if(card.dataset.fiqAdaptiveSignature === signature) return;
   card.dataset.fiqAdaptiveMission = mission.id;
-  card.dataset.signature = `w1-5:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}`;
+  card.dataset.fiqAdaptiveSignature = signature;
   card.innerHTML = `<div class="home-adaptive-copy">
     <span>Today's Mission</span>
     <small>${FOOTBALL_IQ_CATEGORY_LABELS[mission.category] || "Football IQ"} · ${mission.minutes} min · ${mission.xp} XP</small>
@@ -43,12 +45,15 @@ function applyLibraryRecommendations(){
   if(!panel || !active) return;
   let section = panel.querySelector("[data-fiq-adaptive-recommendations]");
   const recommendations = footballIqRecommendations(3);
+  const signature = recommendations.map(item => `${item.id}:${item.recommendationReason}`).join("|");
   if(!section){
     section = document.createElement("section");
     section.dataset.fiqAdaptiveRecommendations = "true";
     section.className = "fiq-adaptive-recommendations";
     panel.prepend(section);
   }
+  if(section.dataset.signature === signature) return;
+  section.dataset.signature = signature;
   section.innerHTML = `<div class="fiq-adaptive-heading"><div><span>Personal Coach</span><h2>Recommended for you</h2></div><small>Updates after every mission</small></div><div class="fiq-adaptive-grid">${recommendations.map((item,index)=>adaptiveCard(item,index===0)).join("")}</div>`;
 }
 
