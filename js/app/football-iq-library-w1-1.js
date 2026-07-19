@@ -1,3 +1,12 @@
+const STYLE_ID = "pitchiq-football-iq-library-w1-1-css";
+if(!document.getElementById(STYLE_ID)){
+  const link = document.createElement("link");
+  link.id = STYLE_ID;
+  link.rel = "stylesheet";
+  link.href = "css/football-iq-library-w1-1.css?v=w1-1-mission-library-shell-20260719";
+  document.head.appendChild(link);
+}
+
 const APP = document.getElementById("app");
 const NAV = document.getElementById("nav");
 const ROUTE = "football-iq-library";
