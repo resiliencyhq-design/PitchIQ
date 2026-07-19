@@ -16,6 +16,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "pattern-recognition",
     scoringProfile: "accuracy-reaction-sequence",
   }),
+  "predict-next": Object.freeze({
+    adapterId: "predict-next-v1",
+    cueProfile: "pattern-anticipation",
+    scoringProfile: "prediction-accuracy-reaction-confidence",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {

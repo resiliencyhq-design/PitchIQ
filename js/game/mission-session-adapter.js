@@ -21,6 +21,13 @@ const SPOT_THE_CUE_PATTERNS = Object.freeze([
   Object.freeze(["right", "left", "right"]),
 ]);
 
+const PREDICT_NEXT_PATTERNS = Object.freeze([
+  Object.freeze(["red", "blue", "red", "blue"]),
+  Object.freeze(["left", "left", "right", "right"]),
+  Object.freeze(["check", "left", "check", "right"]),
+  Object.freeze(["turn", "drive", "turn", "drive"]),
+]);
+
 function readJson(storage, key) {
   try {
     return JSON.parse(storage?.getItem?.(key) || "null");
@@ -60,6 +67,21 @@ export function createMissionDrill(missionId) {
       missionId,
       adapterId: "spot-the-cue-v1",
       scoringProfile: "accuracy-reaction-sequence",
+      patternIndex: 0,
+      patternStep: 0,
+    };
+  }
+
+  if (missionId === "predict-next") {
+    return {
+      id: "mission-predict-next-v1",
+      name: "Predict the Next Play",
+      seconds: 45,
+      difficulty: 1,
+      cuePool: PREDICT_NEXT_PATTERNS.flat(),
+      missionId,
+      adapterId: "predict-next-v1",
+      scoringProfile: "prediction-accuracy-reaction-confidence",
       patternIndex: 0,
       patternStep: 0,
     };
@@ -110,14 +132,44 @@ function nextSpotTheCue(drill) {
   };
 }
 
+function nextPredictNextCue(drill) {
+  const patternIndex = Number.isInteger(drill.patternIndex) ? drill.patternIndex : 0;
+  const pattern = PREDICT_NEXT_PATTERNS[patternIndex % PREDICT_NEXT_PATTERNS.length];
+  const patternStep = Number.isInteger(drill.patternStep) ? drill.patternStep : 0;
+  const step = patternStep % pattern.length;
+  const predictionRequired = step === pattern.length - 1;
+  const cueId = pattern[step];
+
+  drill.patternStep = step + 1;
+  if (predictionRequired) {
+    drill.patternStep = 0;
+    drill.patternIndex = patternIndex + 1;
+  }
+
+  return {
+    ...getCue(cueId),
+    missionId: "predict-next",
+    adapterId: "predict-next-v1",
+    patternIndex,
+    sequencePosition: step + 1,
+    sequenceLength: pattern.length,
+    contextCue: !predictionRequired,
+    predictionRequired,
+    expectedPrediction: predictionRequired ? cueId : null,
+    scoringWeight: predictionRequired ? 1.5 : 0.5,
+    presentedAt: Date.now(),
+  };
+}
+
 export function nextMissionCue(drill) {
   if (drill?.adapterId === "scan-first-v1") return nextScanFirstCue(drill);
   if (drill?.adapterId === "spot-the-cue-v1") return nextSpotTheCue(drill);
+  if (drill?.adapterId === "predict-next-v1") return nextPredictNextCue(drill);
   return null;
 }
 
-export function missionScoreForResult(cue, correct, reactionMs = null) {
-  if (cue?.adapterId !== "scan-first-v1" && cue?.adapterId !== "spot-the-cue-v1") return null;
+export function missionScoreForResult(cue, correct, reactionMs = null, evidence = {}) {
+  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1"].includes(cue?.adapterId)) return null;
 
   const weight = Number(cue.scoringWeight || 1);
   const accuracyPoints = correct ? Math.round(100 * weight) : 0;
@@ -127,12 +179,22 @@ export function missionScoreForResult(cue, correct, reactionMs = null) {
   const sequenceCompletionBonus = correct && cue.adapterId === "spot-the-cue-v1" && cue.sequenceComplete
     ? 50
     : 0;
+  const anticipationBonus = correct && cue.adapterId === "predict-next-v1" && cue.predictionRequired
+    ? 75
+    : 0;
+  const confidence = Number(evidence?.confidence);
+  const confidenceMultiplier = cue.adapterId === "predict-next-v1" && Number.isFinite(confidence)
+    ? Math.max(0.5, Math.min(1.25, confidence))
+    : 1;
+  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus;
 
   return {
     missionId: cue.missionId,
     accuracyPoints,
     reactionBonus,
     sequenceCompletionBonus,
-    total: accuracyPoints + reactionBonus + sequenceCompletionBonus,
+    anticipationBonus,
+    confidenceMultiplier,
+    total: Math.round(subtotal * confidenceMultiplier),
   };
 }
