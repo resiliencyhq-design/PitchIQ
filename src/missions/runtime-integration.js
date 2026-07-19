@@ -36,6 +36,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "defensive-line-passing-lane-progression",
     scoringProfile: "line-breaking-recognition-progression-reaction",
   }),
+  "transition-scan": Object.freeze({
+    adapterId: "transition-scan-v1",
+    cueProfile: "possession-change-scan-threat-lane",
+    scoringProfile: "transition-recognition-early-scan-decision-reaction",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {
