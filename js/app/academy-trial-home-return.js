@@ -76,7 +76,7 @@ import("./academy-season-entry.js?v=sprint-15-0-academy-season-20260719").catch(
 import("./coach-dashboard-entry.js?v=sprint-16-0-coach-dashboard-20260719").catch(error => { console.warn("[PitchIQ] Coach Dashboard experience failed to load", error); });
 import("./match-intelligence-entry.js?v=sprint-17-0-match-intelligence-20260719").catch(error => { console.warn("[PitchIQ] Match Intelligence experience failed to load", error); });
 import("./ai-coach-entry.js?v=sprint-12-6a-coach-identity-20260719").catch(error => { console.warn("[PitchIQ] AI Coach experience failed to load", error); });
-import("./pre-training-coach-brief.js?v=sprint-12-6b-pre-training-brief-20260719").catch(error => { console.warn("[PitchIQ] Pre-training coach brief failed to load; Live Rep remains available", error); });
+import("./pre-training-coach-brief.js?v=sprint-12-6d-progressive-coaching-memory-20260719").catch(error => { console.warn("[PitchIQ] Pre-training coach brief failed to load; Live Rep remains available", error); });
 import("./post-training-coach-reflection.js?v=sprint-12-6c-post-training-reflection-20260719").catch(error => { console.warn("[PitchIQ] Post-training coach reflection failed to load; Results remain available", error); });
 import("./team-intelligence-entry.js?v=sprint-19-0-team-intelligence-20260719").catch(error => { console.warn("[PitchIQ] Team Intelligence experience failed to load", error); });
 import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => { console.warn("[PitchIQ] Home Sprint 10.3.1 enhancements failed to load", error); });
