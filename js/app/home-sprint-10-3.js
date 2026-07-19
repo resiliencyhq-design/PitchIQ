@@ -10,42 +10,53 @@ function syncHomeActiveState(){
   document.documentElement.classList.toggle("pitchiq-home-active", Boolean(getActiveHome()));
 }
 
-function injectStartTrainingAction(){
-  const home = document.querySelector("#home");
-  if(!home || home.querySelector(".home-start-training")){
-    syncHomeActiveState();
-    return;
+function removeDuplicateTrainingAction(home){
+  home?.querySelectorAll(".home-start-training").forEach(button => button.remove());
+}
+
+function readCurrentXp(home){
+  const levelPanel = home?.querySelector(".home-level-panel");
+  if(!levelPanel) return 0;
+  const match = levelPanel.textContent.match(/([\d,]+)\s*\/\s*[\d,]+\s*XP/i);
+  return match ? Number(match[1].replaceAll(",", "")) : 0;
+}
+
+function findRewardThresholdElement(home){
+  const mission = home?.querySelector(".home-mock-mission");
+  if(!mission) return null;
+
+  return [...mission.querySelectorAll("small, span, p, em, strong, b, div")].find(element => {
+    const text = element.textContent.trim();
+    return /^Unlock at\s*[\d,]+\s*XP$/i.test(text) || element.classList.contains("home-reward-progress");
+  }) || null;
+}
+
+function syncRewardProgress(home){
+  const element = findRewardThresholdElement(home);
+  if(!element) return;
+
+  const thresholdMatch = element.textContent.match(/Unlock at\s*([\d,]+)\s*XP/i);
+  if(thresholdMatch){
+    element.dataset.rewardTargetXp = thresholdMatch[1].replaceAll(",", "");
   }
 
-  const mission = home.querySelector(".home-mock-mission");
-  const grid = home.querySelector(".home-v7-grid");
-  if(!grid) return;
+  const targetXp = Number(element.dataset.rewardTargetXp || 0);
+  if(!targetXp) return;
 
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "home-start-training";
-  button.setAttribute("data-route", "training");
-  button.setAttribute("aria-label", "Start training");
-  button.innerHTML = `
-    <span class="home-start-training-icon" aria-hidden="true">⚽</span>
-    <span class="home-start-training-copy">
-      <strong>START TRAINING</strong>
-      <small>Continue your journey</small>
-    </span>
-    <span class="home-start-training-arrow" aria-hidden="true">›</span>
-  `;
-
-  if(mission && mission.parentElement === grid){
-    mission.insertAdjacentElement("afterend", button);
-  }else{
-    grid.appendChild(button);
-  }
-
-  syncHomeActiveState();
+  const currentXp = readCurrentXp(home);
+  const remainingXp = Math.max(0, targetXp - currentXp);
+  element.classList.add("home-reward-progress");
+  element.textContent = remainingXp > 0
+    ? `${remainingXp.toLocaleString()} XP remaining`
+    : "Reward ready";
 }
 
 function refreshHomeEnhancements(){
-  injectStartTrainingAction();
+  const home = document.querySelector("#home");
+  if(home){
+    removeDuplicateTrainingAction(home);
+    syncRewardProgress(home);
+  }
   syncHomeActiveState();
 }
 
