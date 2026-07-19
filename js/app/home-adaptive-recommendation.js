@@ -6,6 +6,8 @@ import "./technical-training-library-w2-1.js?v=w2-2-technical-catalogue-20260719
 import "./technical-training-detail-w2-3.js?v=w2-3-technical-detail-20260719";
 import "./technical-training-progression-w2-4.js?v=w2-4-technical-progression-20260719";
 import "./technical-training-progression-ui-w2-4.js?v=w2-4-technical-progression-20260719";
+import "./technical-training-adaptive-w2-5.js?v=w2-5-adaptive-technical-20260719";
+import "./technical-training-adaptive-ui-w2-5.js?v=w2-5-adaptive-technical-20260719";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";

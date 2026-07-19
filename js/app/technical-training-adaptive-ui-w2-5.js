@@ -1,0 +1,12 @@
+import { TECHNICAL_CATEGORY_LABELS } from "../data/technical-training-drills.js?v=w2-2-technical-catalogue-20260719";
+import { adaptiveTechnicalSummary } from "./technical-training-adaptive-w2-5.js?v=w2-5-adaptive-technical-20260719";
+
+const STYLE_ID="pitchiq-technical-adaptive-w2-5-css";
+if(!document.getElementById(STYLE_ID)){const link=document.createElement("link");link.id=STYLE_ID;link.rel="stylesheet";link.href="css/technical-training-adaptive-w2-5.css?v=w2-5-adaptive-technical-20260719";document.head.appendChild(link)}
+function markup(){const {recommendation,weakestCategory}=adaptiveTechnicalSummary();if(!recommendation)return "";const {drill,reason}=recommendation;return `<section class="technical-adaptive-card" data-technical-adaptive-card><span>PitchIQ Coach Recommendation</span><h2>${drill.title}</h2><p>${reason}</p><div class="technical-adaptive-meta"><b>${TECHNICAL_CATEGORY_LABELS[drill.category]}</b><b>${drill.minutes} min</b><b>${drill.xp} XP</b><b>${drill.personalBest?`Best ${drill.personalBest}%`:"New drill"}</b></div><button type="button" data-technical-adaptive-open="${drill.id}">Train this next →</button>${weakestCategory?`<div class="technical-adaptive-note">Current focus: ${TECHNICAL_CATEGORY_LABELS[weakestCategory.id]} · ${weakestCategory.mastery}</div>`:""}</section>`}
+function apply(){const library=document.querySelector("[data-technical-training-library] .technical-library-content");if(library&&!library.querySelector("[data-technical-adaptive-card]")){const hero=library.querySelector(".technical-library-hero");hero?.insertAdjacentHTML("afterend",markup())}const detail=document.querySelector("[data-technical-detail] .technical-detail-content");if(detail&&!detail.querySelector("[data-technical-adaptive-card]")){detail.insertAdjacentHTML("beforeend",`<div class="technical-adaptive-detail">${markup()}</div>`)} }
+let scheduled=false;function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;apply()})}
+new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener("pitchiq:technical-progress",schedule);window.addEventListener("hashchange",schedule);window.addEventListener("pageshow",schedule);
+document.addEventListener("click",event=>{const trigger=event.target.closest?.("[data-technical-adaptive-open]");if(!trigger)return;event.preventDefault();event.stopImmediatePropagation();window.location.hash=`technical-training-drill/${encodeURIComponent(trigger.dataset.technicalAdaptiveOpen)}`},true);
+schedule();
