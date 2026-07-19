@@ -2,7 +2,8 @@ import "./home-content-composition.js?v=sprint-h4-football-iq-world-card-2026071
 import "./football-iq-library-w1-1.js?v=w1-1-mission-library-shell-20260719";
 import "./football-iq-progression-ui-w1-4.js?v=w1-4-progression-20260719";
 import "./football-iq-adaptive-ui-w1-5.js?v=w1-5-adaptive-recommendations-20260719";
-import "./technical-training-library-w2-1.js?v=w2-1-technical-library-20260719";
+import "./technical-training-library-w2-1.js?v=w2-2-technical-catalogue-20260719";
+import "./technical-training-detail-w2-3.js?v=w2-3-technical-detail-20260719";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
