@@ -1,4 +1,4 @@
-import "./home-content-composition.js?v=sprint-h2-home-content-wrapper-20260719";
+import "./home-content-composition.js?v=sprint-h4-football-iq-world-card-20260719";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
@@ -26,19 +26,19 @@ export function homeRecommendationView(selection) {
   if (!mission) {
     return {
       mode: "empty",
-      eyebrow: "Football IQ training",
-      title: "Start your first Football IQ mission",
-      description: "Enter Training to build your first personalised development focus.",
-      focus: "Ready when you are",
+      eyebrow: "Football IQ Training",
+      title: "Build your football brain",
+      description: "Choose a mission to train scanning, vision, decision-making and positioning.",
+      focus: "Mission library",
     };
   }
 
   return {
     mode: selection.mode || "balanced_evidence_building",
-    eyebrow: selection.mode === "personalised" ? "Your priority" : "Today's focus",
+    eyebrow: "Football IQ Training",
     title: mission.title || "Football IQ Mission",
     description: mission.description || "Complete a short Football IQ training rep.",
-    focus: `${DRILL_LABELS[mission.drillId] || "Football IQ"} mission`,
+    focus: `Recommended · ${DRILL_LABELS[mission.drillId] || "Football IQ"}`,
   };
 }
 
@@ -60,7 +60,8 @@ export function renderHomeAdaptiveRecommendation(home, selection) {
   if (!card || card.dataset.signature === signature) return Boolean(card);
   card.dataset.signature = signature;
   card.dataset.recommendationMode = view.mode;
-  card.innerHTML = `<div class="home-adaptive-copy"><span>${view.eyebrow}</span><small>${view.focus}</small><h2>${view.title}</h2><p>${view.description}</p></div><button type="button" data-route="training">Continue Training →</button>`;
+  card.setAttribute("aria-label", "Football IQ Training");
+  card.innerHTML = `<div class="home-adaptive-copy"><span>${view.eyebrow}</span><small>${view.focus}</small><h2>${view.title}</h2><p>${view.description}</p></div><button type="button" data-route="training">Explore missions →</button>`;
   return true;
 }
 
