@@ -1,0 +1,97 @@
+#home .home-adaptive-recommendation {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+  border: 1px solid rgba(117, 219, 255, 0.24);
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(77, 203, 255, 0.2), transparent 36%),
+    linear-gradient(145deg, rgba(11, 37, 67, 0.96), rgba(7, 22, 43, 0.98));
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+}
+
+#home .home-adaptive-recommendation::after {
+  content: "IQ";
+  position: absolute;
+  right: 18px;
+  top: 4px;
+  font-size: 78px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  color: rgba(255, 255, 255, 0.035);
+  pointer-events: none;
+}
+
+#home .home-adaptive-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+#home .home-adaptive-copy > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #72d8ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+#home .home-adaptive-copy > small {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(98, 205, 255, 0.11);
+  color: rgba(232, 248, 255, 0.8);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#home .home-adaptive-copy h2 {
+  margin: 0 0 7px;
+  color: #fff;
+  font-size: clamp(21px, 5.4vw, 28px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+#home .home-adaptive-copy p {
+  max-width: 37ch;
+  margin: 0;
+  color: rgba(229, 241, 252, 0.68);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+#home .home-adaptive-recommendation > button {
+  position: relative;
+  z-index: 1;
+  min-width: 132px;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid rgba(122, 222, 255, 0.35);
+  border-radius: 15px;
+  background: rgba(80, 200, 255, 0.13);
+  color: #f4fbff;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  #home .home-adaptive-recommendation {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  #home .home-adaptive-recommendation > button {
+    width: 100%;
+  }
+}
