@@ -2,19 +2,16 @@ import { assertObservation } from "../scoring/contracts.js";
 import { scorePlayerProfile } from "../scoring/engine.js";
 import { createFootballIQProfile } from "../profile/football-iq-profile.js";
 import { saveFootballIQProfile } from "../profile/football-iq-storage.js";
+import { createFootballIQDeveloperSnapshot } from "../profile/football-iq-debug.js";
 
 function validateObservationSet(observations, { playerId, label }) {
-  if (!Array.isArray(observations)) {
-    throw new TypeError(`${label} must be an array.`);
-  }
+  if (!Array.isArray(observations)) throw new TypeError(`${label} must be an array.`);
 
   return observations.map((observation) => {
     assertObservation(observation);
-
     if (observation.playerId !== playerId) {
       throw new RangeError(`${label} contains evidence for another player.`);
     }
-
     return { ...observation };
   });
 }
@@ -44,10 +41,7 @@ export function validateAssessmentEvidence(payload) {
     assessmentId,
     playerId,
     completedAt: completionDate.toISOString(),
-    observations: validateObservationSet(observations, {
-      playerId,
-      label: "observations",
-    }),
+    observations: validateObservationSet(observations, { playerId, label: "observations" }),
     matchChallengeObservations: validateObservationSet(matchChallengeObservations, {
       playerId,
       label: "matchChallengeObservations",
@@ -62,17 +56,19 @@ export function generateFootballIQProfileFromAssessment(payload, { now = new Dat
     matchChallengeObservations: evidence.matchChallengeObservations,
     now,
   });
+  const profile = createFootballIQProfile({
+    assessmentId: evidence.assessmentId,
+    playerId: evidence.playerId,
+    assessmentDate: evidence.completedAt,
+    scoringResult,
+    generatedAt: now,
+  });
 
   return {
     evidence,
     scoringResult,
-    profile: createFootballIQProfile({
-      assessmentId: evidence.assessmentId,
-      playerId: evidence.playerId,
-      assessmentDate: evidence.completedAt,
-      scoringResult,
-      generatedAt: now,
-    }),
+    profile,
+    developerSnapshot: createFootballIQDeveloperSnapshot({ evidence, scoringResult, profile }),
   };
 }
 
