@@ -52,7 +52,7 @@ function applyProgression(){
       if(status) status.textContent = "Newly unlocked";
       if(button){
         button.disabled = false;
-        button.dataset.fiqOpenMission = id;
+        button.dataset.fiqProgressionOpen = id;
         button.textContent = "View mission →";
       }
     }
@@ -61,6 +61,7 @@ function applyProgression(){
   const detail = root.matches("[data-football-iq-detail]") ? root : null;
   if(detail){
     const id = detail.dataset.footballIqDetail;
+    const mission = missionById(id);
     const saved = missionProgress(id, progress);
     if(saved){
       const values = detail.querySelectorAll(".fiq-detail-progress strong");
@@ -68,6 +69,10 @@ function applyProgression(){
       if(values[1]) values[1].textContent = saved.attempts || "None yet";
       if(values[2]) values[2].textContent = saved.completed ? "Yes" : "Not yet";
       if(values[3]) values[3].textContent = friendlyDate(saved.lastPlayed);
+    }
+    if(mission && isMissionUnlocked(mission, progress)){
+      const lockedPanel = detail.querySelector(".fiq-detail-locked");
+      if(lockedPanel) lockedPanel.outerHTML = `<button type="button" class="fiq-detail-start" data-fiq-start-mission="${id}">Start Mission</button>`;
     }
   }
 }
@@ -85,6 +90,13 @@ window.addEventListener("hashchange", scheduleApply);
 window.addEventListener("pageshow", scheduleApply);
 
 document.addEventListener("click", event => {
+  const progressionOpen = event.target.closest?.("[data-fiq-progression-open]");
+  if(progressionOpen){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.hash = `football-iq-mission/${encodeURIComponent(progressionOpen.dataset.fiqProgressionOpen)}`;
+    return;
+  }
   const start = event.target.closest?.("[data-fiq-start-mission]");
   if(start) rememberActiveMission(start.dataset.fiqStartMission);
 }, true);
