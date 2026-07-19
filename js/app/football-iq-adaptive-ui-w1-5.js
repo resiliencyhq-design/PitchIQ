@@ -1,13 +1,14 @@
-import { FOOTBALL_IQ_CATEGORY_LABELS } from "../data/football-iq-missions.js?v=s21-3-season-curriculum-20260719";
+import { FOOTBALL_IQ_CATEGORY_LABELS } from "../data/football-iq-missions.js?v=s21-4-assessment-benchmarks-20260719";
 import { adaptiveFootballIqPlan, footballIqActivity, footballIqRecommendations, primaryFootballIqRecommendation } from "./football-iq-recommendations-w1-5.js?v=s21-2-adaptive-plan-20260719";
-import { footballIqSeason } from "./football-iq-curriculum-s21-3.js?v=s21-3-season-curriculum-20260719";
+import { footballIqSeason } from "./football-iq-curriculum-s21-3.js?v=s21-4-assessment-benchmarks-20260719";
+import { footballIqAssessment } from "./football-iq-assessment-s21-4.js?v=s21-4-assessment-benchmarks-20260719";
 
 const STYLE_ID = "pitchiq-football-iq-adaptive-w1-5-css";
 if(!document.getElementById(STYLE_ID)){
   const link = document.createElement("link");
   link.id = STYLE_ID;
   link.rel = "stylesheet";
-  link.href = "css/football-iq-adaptive-w1-5.css?v=s21-3-season-curriculum-20260719";
+  link.href = "css/football-iq-adaptive-w1-5.css?v=s21-4-assessment-benchmarks-20260719";
   document.head.appendChild(link);
 }
 
@@ -17,7 +18,7 @@ function applyHomeRecommendation(){
   if(!card || !mission) return;
   const activity = footballIqActivity();
   const best = window.PitchIQFootballIqProgress?.get?.()?.missions?.[mission.id]?.personalBest;
-  const signature = `s21-3:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}:${activity.readiness}`;
+  const signature = `s21-4:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}:${activity.readiness}`;
   if(card.dataset.fiqAdaptiveSignature === signature) return;
   card.dataset.fiqAdaptiveMission = mission.id;
   card.dataset.fiqAdaptiveSignature = signature;
@@ -47,6 +48,30 @@ function curriculumPhase(phase, index, activeIndex){
     <div><span>${state} · ${phase.weeks}</span><h3>${phase.title}</h3><p>${phase.objective}</p><small>${moduleLabels}</small></div>
     <div class="fiq-curriculum-phase-score"><strong>${phase.percent}%</strong><small>${phase.completed}/${phase.total} complete</small></div>
   </article>`;
+}
+
+function applyAssessmentDashboard(){
+  const root = document.querySelector("[data-football-iq-library]");
+  const content = root?.querySelector?.(".fiq-library-content");
+  if(!root || !content) return;
+  let section = content.querySelector("[data-fiq-assessment-dashboard]");
+  const assessment = footballIqAssessment();
+  const signature = `${assessment.score}:${assessment.band}:${assessment.checkpoints.map(item=>`${item.id}:${item.status}:${item.score}`).join("|")}`;
+  if(!section){
+    section = document.createElement("section");
+    section.dataset.fiqAssessmentDashboard = "true";
+    section.className = "fiq-assessment-dashboard";
+    const curriculum = content.querySelector("[data-fiq-season-curriculum]");
+    curriculum?.insertAdjacentElement("afterend", section);
+  }
+  if(section.dataset.signature === signature) return;
+  section.dataset.signature = signature;
+  const strengths = assessment.strengths.map(item=>`<b>${item.label} ${item.score}%</b>`).join("") || "<b>Complete missions to identify strengths</b>";
+  const priorities = assessment.priorities.map(item=>`<b>${item.label} ${item.score}%</b>`).join("") || "<b>Begin your first module</b>";
+  section.innerHTML = `<div class="fiq-assessment-score"><span>Football IQ benchmark</span><strong>${assessment.score}</strong><small>${assessment.band} · ${assessment.badge} badge</small></div>
+    <div class="fiq-assessment-summary"><div><span>Current phase</span><strong>${assessment.currentPhase}</strong></div><div><span>Season progress</span><strong>${assessment.seasonPercent}%</strong></div></div>
+    <div class="fiq-assessment-insights"><article><span>Strengths</span><div>${strengths}</div></article><article><span>Development priorities</span><div>${priorities}</div></article></div>
+    <div class="fiq-assessment-checkpoints">${assessment.checkpoints.map((item,index)=>`<article class="is-${item.status}"><span>${index+1}</span><div><small>${item.phase}</small><strong>${item.title}</strong></div><b>${item.status === "passed" ? `${item.score}% · ${item.badge}` : item.status.replace("-"," ")}</b></article>`).join("")}</div>`;
 }
 
 function applySeasonCurriculum(){
@@ -134,6 +159,7 @@ function apply(){
     scheduled = false;
     applyHomeRecommendation();
     applySeasonCurriculum();
+    applyAssessmentDashboard();
     applyLibraryRecommendations();
     applyModuleRecommendation();
   });
