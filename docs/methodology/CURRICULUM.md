@@ -1,34 +1,82 @@
-# PitchIQ Football Intelligence Curriculum v1.0
+# PitchIQ Football Intelligence Curriculum v2.0
 
-**Status:** Locked
+**Status:** Locked learning model  
+**Governing contract:** [Sprint 22.0 — Football IQ Content Framework Lock](../sprints/sprint-22-0-content-framework-lock.md)
 
-The Academy progressively develops football thinking rather than presenting unrelated tests.
+PitchIQ develops football thinking through a structured curriculum rather than presenting unrelated tests or drills.
 
-| Stage | Mission | Primary construct | Educational question |
-|---|---|---|---|
-| 1 | Radar Scan | Awareness | What do you notice? |
-| 2 | Read the Play | Game Reading | What do those clues mean? |
-| 3 | Best Option | Decision Quality | What should you do? |
-| 4 | Chaos Mode | Adaptability | What changes your decision? |
-| 5 | Space Master | Use of Space | Where should you be? |
-| Final | Match Challenge | Integrated Football IQ | Can you put it all together? |
+## Curriculum structure
 
-## Learning progression
+The curriculum contains seven learning modules. Each module contains three core missions that progress from recognition to consistent application under pressure.
 
-> Notice → Understand → Choose → Adapt → Move → Perform
+| Module | Foundation | Developing | Advanced | End-state competency |
+|---|---|---|---|---|
+| Awareness | Find the Third Player | See Beyond the Ball | Track Three Players | Maintains awareness of teammates, opponents and useful space beyond the immediate ball action. |
+| Scanning | Scan Before Receiving | Scan While Moving | Scan During Transition | Gathers relevant information repeatedly before receiving, moving and reacting to transition. |
+| Vision | Predict the Next Play | See the Weak Side | Spot the Overload | Recognises developing patterns and valuable options before they become obvious. |
+| Decision Making | Forward or Secure | Risk vs Reward | First-Time Decision | Selects an appropriate action quickly while balancing opportunity, pressure and possession risk. |
+| Positioning | Move Before the Pass | Create a Passing Lane | Arrive at the Right Time | Moves early into useful spaces that improve the next action for the player and teammates. |
+| Anticipation | Read the Trigger | Predict the Bounce | Intercept Early | Uses body shape, ball flight and movement cues to act before the outcome is obvious. |
+| Communication | Give Early Information | Trigger a Teammate | Lead the Press | Gives clear, early information that changes or improves a teammate’s action. |
 
-Each mission teaches one new way of seeing football. The Academy Final integrates the five constructs without introducing a sixth construct.
+Target library: **21 core missions**.
+
+## Three-stage learning progression
+
+### Foundation — recognise
+
+- one clear cue;
+- reduced information load;
+- generous response time;
+- obvious visual or positional clues;
+- priority on correct recognition rather than speed.
+
+### Developing — repeat consistently
+
+- multiple relevant cues;
+- moderate distraction or pressure;
+- reduced response time;
+- comparison of plausible actions;
+- priority on consistency and earlier recognition.
+
+### Advanced — apply under pressure
+
+- several simultaneous cues;
+- realistic uncertainty;
+- short decision windows;
+- competing high-value options;
+- priority on speed, accuracy and match-context application.
+
+## Player development pathway
+
+> Mission experience → Module mastery → Adaptive plan → Curriculum phase → Benchmark → Academy progression
+
+The 12-week season pathway organises module work into a development sequence. Adaptive recommendations may change which mission is trained next, but they must remain consistent with the learner’s evidence, module needs and curriculum stage.
 
 ## Learning spiral
 
-Players revisit the same constructs through increasingly difficult, age-appropriate and position-relevant challenges. The construct remains stable while football complexity increases.
+Players revisit stable football-intelligence constructs through increasingly complex, age-appropriate and position-relevant challenges. Complexity increases while the learning construct remains clear.
 
 ## Development cycle
 
-Assess → Understand → Train → Apply → Reflect → Reassess → Improve
+> Assess → Understand → Train → Apply → Reflect → Reassess → Improve
+
+## Assessment principles
+
+Every mission assesses at least:
+
+- **Recognition** — identifying the important cue or option;
+- **Timing** — responding early enough;
+- **Decision quality** — selecting an action appropriate to the picture.
+
+Mission completion, XP and engagement are not by themselves proof of Football IQ mastery. Capability conclusions require valid evidence and remain separate from rewards.
+
+## Transfer principle
+
+PitchIQ trains behaviours that may support match performance, but app performance must not be presented as automatic transfer to real games. Every mission includes a transfer prompt that asks the player where and when the learning could be applied on the field.
 
 ## Final Academy principle
 
 > PitchIQ develops independent football thinkers.
 
-The Academy should finish with a performance and a development pathway, not merely a report.
+The Academy should produce a performance record and a personalised development pathway, not merely a score or report.
