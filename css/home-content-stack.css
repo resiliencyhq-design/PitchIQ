@@ -1,0 +1,6 @@
+/* Sprint H2 — structural Home hooks only.
+   display: contents preserves the current layout pixel-for-pixel while giving
+   later Home sprints a stable, scoped composition boundary beneath the hero. */
+#home .home-content-stack {
+  display: contents;
+}
