@@ -1,5 +1,6 @@
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
+const TRAINING_ROUTE_SELECTOR = `${CARD_SELECTOR} [data-route="training"]`;
 const DRILL_LABELS = Object.freeze({
   scanning: "Scanning",
   vision: "Vision",
@@ -61,6 +62,19 @@ export function renderHomeAdaptiveRecommendation(home, selection) {
   return true;
 }
 
+export function routeAdaptiveTrainingClick(event, root = document) {
+  const trigger = event?.target?.closest?.(TRAINING_ROUTE_SELECTOR);
+  if (!trigger) return false;
+
+  const canonicalTrainingButton = root.querySelector?.('#nav [data-route="training"]');
+  if (!canonicalTrainingButton || canonicalTrainingButton === trigger) return false;
+
+  event.preventDefault?.();
+  event.stopImmediatePropagation?.();
+  canonicalTrainingButton.click();
+  return true;
+}
+
 function refreshHomeRecommendation() {
   const home = document.querySelector("#home.active, #home");
   if (!home) return;
@@ -75,10 +89,11 @@ if (typeof document !== "undefined") {
     });
   }
   document.addEventListener("click", (event) => {
+    if (routeAdaptiveTrainingClick(event)) return;
     if (event.target.closest?.('[data-route="home"]')) setTimeout(refreshHomeRecommendation, 0);
   }, true);
   window.addEventListener("pageshow", refreshHomeRecommendation);
   refreshHomeRecommendation();
 }
 
-export { ADAPTIVE_CURRENT_KEY };
+export { ADAPTIVE_CURRENT_KEY, TRAINING_ROUTE_SELECTOR };
