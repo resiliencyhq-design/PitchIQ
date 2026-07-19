@@ -48,6 +48,11 @@ homeSprint103Styles.rel = "stylesheet";
 homeSprint103Styles.href = "css/home-sprint-10-3.css?v=sprint-10-3-1-home-simplification-20260719";
 document.head.appendChild(homeSprint103Styles);
 
+const homeAdaptiveRecommendationStyles = document.createElement("link");
+homeAdaptiveRecommendationStyles.rel = "stylesheet";
+homeAdaptiveRecommendationStyles.href = "css/home-adaptive-recommendation.css?v=sprint-12-5d-home-display-20260719";
+document.head.appendChild(homeAdaptiveRecommendationStyles);
+
 import("../lab/auto-juggler-camera.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
   console.warn("[PitchIQ Lab] Auto Juggler ball detector failed to load", error);
 });
@@ -82,6 +87,10 @@ import("./ai-coach-entry.js?v=sprint-18-0-ai-coach-20260719").catch(error => {
 
 import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => {
   console.warn("[PitchIQ] Home Sprint 10.3.1 enhancements failed to load", error);
+});
+
+import("./home-adaptive-recommendation.js?v=sprint-12-5d-home-display-20260719").catch(error => {
+  console.warn("[PitchIQ] Home adaptive recommendation failed to load", error);
 });
 
 import("./training-evidence-entry.js?v=sprint-13-0-evidence-loop-20260719").catch(error => {
