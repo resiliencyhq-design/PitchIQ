@@ -1,16 +1,34 @@
 import { MENTALITY_BANDS, SCORING_VERSION } from "./contracts.js";
 
 const DIMENSION_EVENTS = Object.freeze({
-  persistence: ["sequence_completed", "continued_after_error", "premature_exit"],
-  recovery: ["strong_response_after_error", "weak_response_after_error"],
-  learning: ["improved_after_feedback", "repeated_error_after_feedback"],
-  composure: ["stable_under_pressure", "destabilised_under_pressure"],
-  consistency: ["consistent_response", "high_variability"],
+  persistence: {
+    positive: ["sequence_completed", "continued_after_error"],
+    negative: ["premature_exit"],
+  },
+  recovery: {
+    positive: ["strong_response_after_error"],
+    negative: ["weak_response_after_error"],
+  },
+  learning: {
+    positive: ["improved_after_feedback"],
+    negative: ["repeated_error_after_feedback"],
+  },
+  composure: {
+    positive: ["stable_under_pressure"],
+    negative: ["destabilised_under_pressure"],
+  },
+  consistency: {
+    positive: ["consistent_response"],
+    negative: ["high_variability"],
+  },
 });
 
 function normaliseEvent(event) {
   if (typeof event === "string") return { type: event, value: 1 };
-  return { type: event?.type, value: Number.isFinite(Number(event?.value)) ? Number(event.value) : 1 };
+  return {
+    type: event?.type,
+    value: Number.isFinite(Number(event?.value)) ? Number(event.value) : 1,
+  };
 }
 
 function bandFromRate(rate, evidenceCount) {
@@ -21,21 +39,23 @@ function bandFromRate(rate, evidenceCount) {
   return MENTALITY_BANDS.EMERGING;
 }
 
-function scoreDimension(events, [positiveA, positiveB, negative]) {
-  const relevant = events.filter((event) => [positiveA, positiveB, negative].includes(event.type));
+function scoreDimension(events, config) {
+  const relevant = events.filter((event) =>
+    [...config.positive, ...config.negative].includes(event.type),
+  );
   const positive = relevant
-    .filter((event) => event.type === positiveA || event.type === positiveB)
+    .filter((event) => config.positive.includes(event.type))
     .reduce((sum, event) => sum + event.value, 0);
-  const negativeTotal = relevant
-    .filter((event) => event.type === negative)
+  const negative = relevant
+    .filter((event) => config.negative.includes(event.type))
     .reduce((sum, event) => sum + event.value, 0);
-  const total = positive + negativeTotal;
+  const total = positive + negative;
   const rate = total === 0 ? 0 : positive / total;
 
   return {
     band: bandFromRate(rate, relevant.length),
     positiveEvidence: Number(positive.toFixed(3)),
-    negativeEvidence: Number(negativeTotal.toFixed(3)),
+    negativeEvidence: Number(negative.toFixed(3)),
     evidenceCount: relevant.length,
     positiveRate: Number(rate.toFixed(3)),
   };
@@ -47,9 +67,9 @@ export function inferMatchMentality(observations) {
   );
 
   const dimensions = Object.fromEntries(
-    Object.entries(DIMENSION_EVENTS).map(([dimension, eventTypes]) => [
+    Object.entries(DIMENSION_EVENTS).map(([dimension, config]) => [
       dimension,
-      scoreDimension(events, eventTypes),
+      scoreDimension(events, config),
     ]),
   );
 
