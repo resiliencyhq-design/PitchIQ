@@ -40,7 +40,7 @@ document.head.appendChild(matchIntelligenceStyles);
 
 const aiCoachStyles = document.createElement("link");
 aiCoachStyles.rel = "stylesheet";
-aiCoachStyles.href = "css/ai-coach.css?v=sprint-18-0-ai-coach-20260719";
+aiCoachStyles.href = "css/ai-coach.css?v=sprint-12-6a-coach-identity-20260719";
 document.head.appendChild(aiCoachStyles);
 
 const teamIntelligenceStyles = document.createElement("link");
@@ -86,7 +86,7 @@ import("./match-intelligence-entry.js?v=sprint-17-0-match-intelligence-20260719"
   console.warn("[PitchIQ] Match Intelligence experience failed to load", error);
 });
 
-import("./ai-coach-entry.js?v=sprint-18-0-ai-coach-20260719").catch(error => {
+import("./ai-coach-entry.js?v=sprint-12-6a-coach-identity-20260719").catch(error => {
   console.warn("[PitchIQ] AI Coach experience failed to load", error);
 });
 
