@@ -21,6 +21,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "pattern-anticipation",
     scoringProfile: "prediction-accuracy-reaction-confidence",
   }),
+  "read-pressure": Object.freeze({
+    adapterId: "read-pressure-v1",
+    cueProfile: "pressure-source-intensity-direction",
+    scoringProfile: "pressure-recognition-decision-reaction",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {
