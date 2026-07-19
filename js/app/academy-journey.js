@@ -150,6 +150,22 @@ function alignOnboardingLabels() {
   syncIdentityScene();
 }
 
+function navigateToAcademyOrientation() {
+  const targetHash = "#academy-trials";
+  const oldURL = window.location.href;
+
+  if (window.location.hash === targetHash) {
+    window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL: oldURL }));
+  } else {
+    window.location.hash = targetHash;
+  }
+
+  window.setTimeout(() => {
+    const orientationVisible = Boolean(document.querySelector(".trial-shell .trial-list-head"));
+    if (!orientationVisible) window.location.replace(`${window.location.pathname}${window.location.search}${targetHash}`);
+  }, 180);
+}
+
 function beginFirstAssessment(event) {
   const button = event.target.closest?.('[data-action="save-profile"]');
   if (!button || !button.closest(".academy-welcome-step")) return;
@@ -163,7 +179,7 @@ function beginFirstAssessment(event) {
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
   removeIdentityScene({ restoreSource: false });
-  window.location.hash = "academy-trials";
+  navigateToAcademyOrientation();
 }
 
 function initialise() {
