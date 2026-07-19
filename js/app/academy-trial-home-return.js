@@ -8,12 +8,21 @@ autoJugglerPreviewStyles.rel = "stylesheet";
 autoJugglerPreviewStyles.href = "css/auto-juggler-preview.css?v=sprint-10-2-1-home-tile-restore-20260719";
 document.head.appendChild(autoJugglerPreviewStyles);
 
+const footballIQResultsStyles = document.createElement("link");
+footballIQResultsStyles.rel = "stylesheet";
+footballIQResultsStyles.href = "css/football-iq-results.css?v=sprint-12-3-football-iq-results-20260719";
+document.head.appendChild(footballIQResultsStyles);
+
 import("../lab/auto-juggler-camera.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
   console.warn("[PitchIQ Lab] Auto Juggler ball detector failed to load", error);
 });
 
 import("../lab/auto-juggler-home-entry.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
   console.warn("[PitchIQ Lab] Auto Juggler Home tile failed to load", error);
+});
+
+import("./football-iq-results-entry.js?v=sprint-12-3-football-iq-results-20260719").catch(error => {
+  console.warn("[PitchIQ] Football IQ results experience failed to load", error);
 });
 
 document.addEventListener("click", event => {
