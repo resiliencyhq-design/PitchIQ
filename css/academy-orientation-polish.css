@@ -1,0 +1,11 @@
+.orientation-preview-polished{position:relative;overflow:hidden}
+.orientation-preview-polished:before{content:"";position:fixed;inset:88px 18px 96px;pointer-events:none;opacity:.34;background:linear-gradient(90deg,transparent 49.4%,rgba(215,255,46,.12) 49.5% 50.5%,transparent 50.6%),linear-gradient(0deg,transparent 49.4%,rgba(215,255,46,.08) 49.5% 50.5%,transparent 50.6%),radial-gradient(circle at 50% 50%,transparent 0 20%,rgba(215,255,46,.1) 20.4% 20.8%,transparent 21.2%),linear-gradient(90deg,transparent 10%,rgba(215,255,46,.08) 10.2% 10.5%,transparent 10.7% 89.3%,rgba(215,255,46,.08) 89.5% 89.8%,transparent 90%);border:1px solid rgba(215,255,46,.07);border-radius:28px;mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent)}
+.orientation-preview-polished>*{position:relative;z-index:1}
+.orientation-preview-polished .trial-list-head{margin:4px 0 18px}
+.orientation-preview-polished .trial-list-head h1{margin-top:7px;margin-bottom:8px}
+.orientation-preview-polished .trial-list-head p{max-width:310px;margin:0 auto;color:#dce8df;font-size:14px;line-height:1.3;font-weight:750;letter-spacing:0;text-transform:none}
+.orientation-preview-polished .trial-grid{gap:12px}
+.orientation-preview-polished .trial-card{min-height:88px;padding:15px 16px;border-color:rgba(215,255,46,.32);box-shadow:0 0 22px rgba(215,255,46,.06)}
+.orientation-preview-polished .trial-card strong{font-size:18px;line-height:1.05}
+.orientation-preview-polished .trial-card small{font-size:14px;line-height:1.2}
+.orientation-preview-polished .trial-primary{margin-top:8px}
