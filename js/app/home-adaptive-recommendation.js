@@ -10,6 +10,7 @@ import "./technical-training-adaptive-w2-5.js?v=w2-5-adaptive-technical-20260719
 import "./technical-training-adaptive-ui-w2-5.js?v=w2-5-adaptive-technical-20260719";
 import "./academy-unified-profile-ui-a1.js?v=a1-unified-profile-20260719";
 import "./academy-performance-index-ui-a2.js?v=a2-performance-index-20260719";
+import "./academy-skill-radar-ui-a3.js?v=a3-skill-radar-20260719";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
