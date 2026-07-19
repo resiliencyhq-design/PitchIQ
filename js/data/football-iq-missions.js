@@ -18,8 +18,38 @@ export const FOOTBALL_IQ_CATEGORY_LABELS = Object.freeze({
   communication:"Communication",
 });
 
+export const FOOTBALL_IQ_MODULES = Object.freeze({
+  awareness:Object.freeze({ id:"awareness", title:"Awareness", icon:"◉", description:"Notice teammates, opponents and space before the moment demands a decision.", coachingPrompt:"See the whole picture earlier." }),
+  scanning:Object.freeze({ id:"scanning", title:"Scanning", icon:"◎", description:"Build reliable checking habits before receiving, turning and transitioning.", coachingPrompt:"Look early. Look again." }),
+  vision:Object.freeze({ id:"vision", title:"Vision", icon:"◇", description:"Recognise developing patterns and see valuable options beyond the obvious pass.", coachingPrompt:"See what opens next." }),
+  decision:Object.freeze({ id:"decision", title:"Decision Making", icon:"↯", description:"Choose the right action quickly by balancing opportunity, pressure and risk.", coachingPrompt:"Decide earlier with purpose." }),
+  positioning:Object.freeze({ id:"positioning", title:"Positioning", icon:"⌖", description:"Move into useful spaces that improve passing angles and support the next action.", coachingPrompt:"Arrive where the game needs you." }),
+  anticipation:Object.freeze({ id:"anticipation", title:"Anticipation", icon:"≫", description:"Read triggers and predict the next action before it becomes obvious.", coachingPrompt:"React to the clue, not the outcome." }),
+  communication:Object.freeze({ id:"communication", title:"Communication", icon:"◌", description:"Give clear, early information that helps teammates act faster and with confidence.", coachingPrompt:"Make teammates quicker." }),
+});
+
 export function missionById(id){
   return FOOTBALL_IQ_MISSIONS.find(mission => mission.id === id) || null;
+}
+
+export function moduleById(id){
+  return FOOTBALL_IQ_MODULES[id] || null;
+}
+
+export function missionsForModule(moduleId){
+  return FOOTBALL_IQ_MISSIONS.filter(mission => mission.category === moduleId);
+}
+
+export function moduleProgress(moduleId){
+  const missions = missionsForModule(moduleId);
+  const completed = missions.filter(mission => mission.status === "completed");
+  const available = missions.filter(mission => mission.status !== "locked");
+  const totalMinutes = available.reduce((sum, mission) => sum + Number(mission.minutes || 0), 0);
+  const latest = completed.find(mission => mission.lastPlayed)?.lastPlayed || null;
+  const percent = missions.length ? Math.round((completed.length / missions.length) * 100) : 0;
+  const mastery = percent >= 80 ? "Advanced" : percent >= 40 ? "Developing" : "Foundation";
+  const nextMission = available.find(mission => mission.status !== "completed") || completed[0] || null;
+  return Object.freeze({ total:missions.length, completed:completed.length, available:available.length, percent, mastery, totalMinutes, lastTrained:latest, nextMission });
 }
 
 export function relatedMissions(mission, limit=3){
