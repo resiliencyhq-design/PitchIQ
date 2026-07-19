@@ -3,14 +3,20 @@ const GRID_SELECTOR = ".home-v7-grid";
 const HERO_SELECTOR = ".home-hero-card";
 const STACK_CLASS = "home-content-stack";
 const STYLE_ID = "pitchiq-home-content-stack-css";
+const MISSION_STYLE_ID = "pitchiq-home-todays-mission-h3-css";
+
+function appendStylesheet(id, href) {
+  if (document.getElementById(id)) return;
+  const link = document.createElement("link");
+  link.id = id;
+  link.rel = "stylesheet";
+  link.href = href;
+  document.head.appendChild(link);
+}
 
 function ensureStylesheet() {
-  if (document.getElementById(STYLE_ID)) return;
-  const link = document.createElement("link");
-  link.id = STYLE_ID;
-  link.rel = "stylesheet";
-  link.href = "css/home-content-stack.css?v=sprint-h2-home-content-wrapper-20260719";
-  document.head.appendChild(link);
+  appendStylesheet(STYLE_ID, "css/home-content-stack.css?v=sprint-h2-home-content-wrapper-20260719");
+  appendStylesheet(MISSION_STYLE_ID, "css/home-todays-mission-h3.css?v=sprint-h3-todays-mission-recomposition-20260719");
 }
 
 function assignSlot(element, slot) {
@@ -45,7 +51,7 @@ export function applyHomeContentComposition(root = document) {
     movable.forEach(child => stack.appendChild(child));
   }
 
-  home.dataset.homeComposition = "h2";
+  home.dataset.homeComposition = "h3";
   return true;
 }
 
