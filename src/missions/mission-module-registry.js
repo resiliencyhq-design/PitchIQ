@@ -23,6 +23,24 @@ export const MISSION_MODULES = Object.freeze({
     status: "planned",
     capabilities: [...SHARED, "patternCue", "sequenceCue", "screenTap", "accuracyScoring", "reactionTimeScoring"],
   },
+  "find-third-player": {
+    moduleId: "find-third-player",
+    constructId: "awareness",
+    status: "ready_for_runtime_adapter",
+    capabilities: [...SHARED, "sequenceCue", "directionalButtons", "accuracyScoring", "reactionTimeScoring"],
+  },
+  "see-beyond-ball": {
+    moduleId: "see-beyond-ball",
+    constructId: "awareness",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "patternCue", "sequenceCue", "screenTap", "accuracyScoring", "reactionTimeScoring"],
+  },
+  "track-three-players": {
+    moduleId: "track-three-players",
+    constructId: "awareness",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "sequenceCue", "dualTaskCue", "directionalButtons", "accuracyScoring", "reactionTimeScoring", "consistencyScoring"],
+  },
   "predict-next": {
     moduleId: "predict-next",
     constructId: "gameReading",
