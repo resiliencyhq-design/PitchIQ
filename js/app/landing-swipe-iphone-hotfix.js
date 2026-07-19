@@ -1,13 +1,16 @@
 /* Sprint 9.1 hotfix — reliable iPhone Safari landing progression.
    main.js remains the primary owner of the landing interaction. This module:
    1. translates a valid native touch swipe into the existing accepted click path;
-   2. watches for the visible completed state; and
-   3. retries the same in-memory landing action only while splash remains visible. */
+   2. watches for the visible completed state;
+   3. retries the same in-memory landing action only while splash remains visible; and
+   4. uses the established onboarding route as a final escape hatch if the landing
+      screen still has not advanced. */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
 const MIN_DISTANCE = 72;
 const MIN_RATIO = 0.42;
 const RECOVERY_DELAY_MS = 900;
+const FINAL_FALLBACK_DELAY_MS = 1800;
 
 function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
@@ -23,6 +26,17 @@ function activateExistingLanding(swipe) {
   }));
 }
 
+function advanceToOnboardingFallback() {
+  if (!isLandingVisible()) return;
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("dev", "1");
+  url.searchParams.set("autoOnboard", "1");
+  url.searchParams.set("v", "landing-final-fallback-20260719");
+  url.hash = "onboard";
+  window.location.replace(url.toString());
+}
+
 function bindLandingFallback() {
   const swipe = document.querySelector(SWIPE_SELECTOR);
   if (!swipe || swipe.dataset.iphoneTouchFallback === "true") return;
@@ -32,12 +46,23 @@ function bindLandingFallback() {
   let startY = 0;
   let tracking = false;
   let recoveryTimer = null;
+  let finalFallbackTimer = null;
+
+  const armFinalFallback = () => {
+    window.clearTimeout(finalFallbackTimer);
+    finalFallbackTimer = window.setTimeout(() => {
+      if (swipe.classList.contains("complete") && isLandingVisible()) {
+        advanceToOnboardingFallback();
+      }
+    }, FINAL_FALLBACK_DELAY_MS);
+  };
 
   const armRecovery = () => {
     window.clearTimeout(recoveryTimer);
     recoveryTimer = window.setTimeout(() => {
       if (swipe.classList.contains("complete") && isLandingVisible()) {
         activateExistingLanding(swipe);
+        armFinalFallback();
       }
     }, RECOVERY_DELAY_MS);
   };
@@ -73,6 +98,7 @@ function bindLandingFallback() {
     event.preventDefault();
     activateExistingLanding(swipe);
     armRecovery();
+    armFinalFallback();
   }, { passive: false });
 }
 
