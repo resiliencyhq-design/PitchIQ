@@ -1,18 +1,13 @@
 import { AI_COACH_IDENTITY } from "../../src/coaching/ai-coach.js";
+import { resolveProgressiveCoachingMemory } from "../../src/coaching/progressive-coaching-memory.js";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
+const REFLECTION_HISTORY_KEY = "pitchiq.coachReflection.history.v1";
+const TRAINING_EVIDENCE_KEY = "pitchiq.trainingEvidence.v1";
 const bypassedButtons = new WeakSet();
 let activeBrief = null;
 
-const FOCUS_LABELS = Object.freeze({
-  scanning: "Scanning",
-  vision: "Vision",
-  decision: "Decision making",
-  reaction: "Reaction",
-  dual: "Dual task",
-  position: "Positioning"
-});
-
+const FOCUS_LABELS = Object.freeze({ scanning: "Scanning", vision: "Vision", decision: "Decision making", reaction: "Reaction", dual: "Dual task", position: "Positioning" });
 const NOTICE_CUES = Object.freeze({
   scanning: "Before the ball arrives, check one option on each side.",
   vision: "Look away from the ball once and notice where the space is opening.",
@@ -22,20 +17,16 @@ const NOTICE_CUES = Object.freeze({
   position: "Check your distance and angle before the next pass arrives."
 });
 
-function readSelection() {
-  try {
-    return JSON.parse(localStorage.getItem(ADAPTIVE_CURRENT_KEY));
-  } catch {
-    return null;
-  }
-}
+function readJson(key, fallback) { try { const value = JSON.parse(localStorage.getItem(key) || "null"); return value ?? fallback; } catch { return fallback; } }
+function readSelection() { return readJson(ADAPTIVE_CURRENT_KEY, null); }
+function readMemoryInputs() { return { reflections: readJson(REFLECTION_HISTORY_KEY, []), trainingEvidence: readJson(TRAINING_EVIDENCE_KEY, []) }; }
 
-export function buildPreTrainingBrief(selection) {
+export function buildPreTrainingBrief(selection, memoryInputs = {}) {
   const mission = selection?.mission || {};
   const focusId = mission.drillId || "scanning";
   const focus = FOCUS_LABELS[focusId] || "Football IQ";
   const personalised = selection?.mode === "personalised";
-
+  const memory = resolveProgressiveCoachingMemory({ selection, ...memoryInputs });
   return Object.freeze({
     coachName: AI_COACH_IDENTITY.name,
     coachRole: AI_COACH_IDENTITY.role,
@@ -44,69 +35,36 @@ export function buildPreTrainingBrief(selection) {
     explanation: personalised
       ? `Your current Football IQ evidence suggests ${focus.toLowerCase()} is a useful focus today.`
       : `Today we’re building more evidence around ${focus.toLowerCase()}.`,
+    memoryMessage: memory.message,
+    memoryStage: memory.stage,
     noticeCue: NOTICE_CUES[focusId] || "Notice one useful option before your next action.",
     personalised
   });
 }
 
-function continueToLiveRep(button) {
-  if (!button) return;
-  bypassedButtons.add(button);
-  button.click();
-}
-
-function removeBrief() {
-  activeBrief?.remove();
-  activeBrief = null;
-}
+function continueToLiveRep(button) { if (!button) return; bypassedButtons.add(button); button.click(); }
+function removeBrief() { activeBrief?.remove(); activeBrief = null; }
 
 export function showPreTrainingCoachBrief(button, selection = readSelection()) {
   removeBrief();
-  const brief = buildPreTrainingBrief(selection);
+  const brief = buildPreTrainingBrief(selection, readMemoryInputs());
   const overlay = document.createElement("div");
   overlay.className = "pre-training-coach-brief";
   overlay.dataset.preTrainingCoachBrief = "true";
+  overlay.dataset.coachingMemoryStage = brief.memoryStage;
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-labelledby", "preTrainingCoachBriefTitle");
-  overlay.innerHTML = `
-    <section class="pre-training-coach-brief__card">
-      <p class="pre-training-coach-brief__coach">${brief.coachName}</p>
-      <p class="pre-training-coach-brief__role">${brief.coachRole}</p>
-      <p class="pre-training-coach-brief__mode">${brief.modeLabel}</p>
-      <h2 id="preTrainingCoachBriefTitle">${brief.missionTitle}</h2>
-      <p class="pre-training-coach-brief__explanation">${brief.explanation}</p>
-      <div class="pre-training-coach-brief__notice">
-        <span>Notice this</span>
-        <strong>${brief.noticeCue}</strong>
-      </div>
-      <button class="pre-training-coach-brief__start" type="button" data-coach-brief-start>Start Live Rep →</button>
-      <button class="pre-training-coach-brief__skip" type="button" data-coach-brief-skip>Skip brief</button>
-    </section>
-  `;
-
-  const proceed = () => {
-    removeBrief();
-    continueToLiveRep(button);
-  };
+  overlay.innerHTML = `<section class="pre-training-coach-brief__card"><p class="pre-training-coach-brief__coach">${brief.coachName}</p><p class="pre-training-coach-brief__role">${brief.coachRole}</p><p class="pre-training-coach-brief__mode">${brief.modeLabel}</p><h2 id="preTrainingCoachBriefTitle">${brief.missionTitle}</h2><p class="pre-training-coach-brief__explanation">${brief.explanation}</p><p class="pre-training-coach-brief__memory" data-coaching-memory>${brief.memoryMessage}</p><div class="pre-training-coach-brief__notice"><span>Notice this</span><strong>${brief.noticeCue}</strong></div><button class="pre-training-coach-brief__start" type="button" data-coach-brief-start>Start Live Rep →</button><button class="pre-training-coach-brief__skip" type="button" data-coach-brief-skip>Skip brief</button></section>`;
+  const proceed = () => { removeBrief(); continueToLiveRep(button); };
   overlay.querySelector("[data-coach-brief-start]")?.addEventListener("click", proceed, { once: true });
   overlay.querySelector("[data-coach-brief-skip]")?.addEventListener("click", proceed, { once: true });
-  document.body.appendChild(overlay);
-  activeBrief = overlay;
-  overlay.querySelector("[data-coach-brief-start]")?.focus();
-  return overlay;
+  document.body.appendChild(overlay); activeBrief = overlay; overlay.querySelector("[data-coach-brief-start]")?.focus(); return overlay;
 }
 
-if (typeof document !== "undefined") {
-  document.addEventListener("click", event => {
-    const button = event.target.closest?.('[data-action="start-mission-training"]');
-    if (!button) return;
-    if (bypassedButtons.has(button)) {
-      bypassedButtons.delete(button);
-      return;
-    }
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    showPreTrainingCoachBrief(button);
-  }, true);
-}
+if (typeof document !== "undefined") document.addEventListener("click", event => {
+  const button = event.target.closest?.('[data-action="start-mission-training"]');
+  if (!button) return;
+  if (bypassedButtons.has(button)) { bypassedButtons.delete(button); return; }
+  event.preventDefault(); event.stopImmediatePropagation(); showPreTrainingCoachBrief(button);
+}, true);
