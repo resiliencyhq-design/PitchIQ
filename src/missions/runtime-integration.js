@@ -26,6 +26,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "pressure-source-intensity-direction",
     scoringProfile: "pressure-recognition-decision-reaction",
   }),
+  "find-third-player": Object.freeze({
+    adapterId: "find-third-player-v1",
+    cueProfile: "third-player-lane-recognition",
+    scoringProfile: "third-player-identification-scanning-reaction",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {

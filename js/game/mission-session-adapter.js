@@ -28,6 +28,13 @@ const READ_PRESSURE_SCENARIOS = Object.freeze([
   Object.freeze({ cues: ["blue", "right", "turn"], source: "double-press", direction: "right", intensity: 3, bestResponse: "turn" }),
 ]);
 
+const THIRD_PLAYER_SCENARIOS = Object.freeze([
+  Object.freeze({ cues: ["check", "left", "right", "drive"], primaryOption: "left", secondaryOption: "right", thirdPlayerOption: "drive", blockedLanes: ["left"], pressureSource: "front" }),
+  Object.freeze({ cues: ["check", "right", "left", "turn"], primaryOption: "right", secondaryOption: "left", thirdPlayerOption: "turn", blockedLanes: ["right"], pressureSource: "rear" }),
+  Object.freeze({ cues: ["red", "left", "blue", "right"], primaryOption: "red", secondaryOption: "left", thirdPlayerOption: "right", blockedLanes: ["red", "left"], pressureSource: "left" }),
+  Object.freeze({ cues: ["blue", "right", "red", "left"], primaryOption: "blue", secondaryOption: "right", thirdPlayerOption: "left", blockedLanes: ["blue", "right"], pressureSource: "right" }),
+]);
+
 function readJson(storage, key) {
   try {
     return JSON.parse(storage?.getItem?.(key) || "null");
@@ -54,6 +61,9 @@ export function createMissionDrill(missionId) {
   }
   if (missionId === "read-pressure") {
     return { id: "mission-read-pressure-v1", name: "Read the Pressure", seconds: 45, difficulty: 1, cuePool: READ_PRESSURE_SCENARIOS.flatMap((scenario) => scenario.cues), missionId, adapterId: "read-pressure-v1", scoringProfile: "pressure-recognition-decision-reaction", scenarioIndex: 0, scenarioStep: 0 };
+  }
+  if (missionId === "find-third-player") {
+    return { id: "mission-find-third-player-v1", name: "Find the Third Player", seconds: 45, difficulty: 1, cuePool: THIRD_PLAYER_SCENARIOS.flatMap((scenario) => scenario.cues), missionId, adapterId: "find-third-player-v1", scoringProfile: "third-player-identification-scanning-reaction", scenarioIndex: 0, scenarioStep: 0 };
   }
   return null;
 }
@@ -118,16 +128,47 @@ function nextReadPressureCue(drill) {
   };
 }
 
+function nextThirdPlayerCue(drill) {
+  const scenarioIndex = Number.isInteger(drill.scenarioIndex) ? drill.scenarioIndex : 0;
+  const scenario = THIRD_PLAYER_SCENARIOS[scenarioIndex % THIRD_PLAYER_SCENARIOS.length];
+  const scenarioStep = Number.isInteger(drill.scenarioStep) ? drill.scenarioStep : 0;
+  const step = scenarioStep % scenario.cues.length;
+  const decisionRequired = step === scenario.cues.length - 1;
+  const cueId = scenario.cues[step];
+  drill.scenarioStep = step + 1;
+  if (decisionRequired) { drill.scenarioStep = 0; drill.scenarioIndex = scenarioIndex + 1; }
+  return {
+    ...getCue(cueId),
+    missionId: "find-third-player",
+    adapterId: "find-third-player-v1",
+    scenarioIndex,
+    sequencePosition: step + 1,
+    sequenceLength: scenario.cues.length,
+    primaryOption: scenario.primaryOption,
+    secondaryOption: scenario.secondaryOption,
+    thirdPlayerOption: scenario.thirdPlayerOption,
+    blockedLanes: [...scenario.blockedLanes],
+    pressureSource: scenario.pressureSource,
+    passingLaneAvailable: decisionRequired,
+    contextCue: !decisionRequired,
+    decisionRequired,
+    expectedDecision: decisionRequired ? scenario.thirdPlayerOption : null,
+    scoringWeight: decisionRequired ? 1.6 : 0.5,
+    presentedAt: Date.now(),
+  };
+}
+
 export function nextMissionCue(drill) {
   if (drill?.adapterId === "scan-first-v1") return nextScanFirstCue(drill);
   if (drill?.adapterId === "spot-the-cue-v1") return nextSpotTheCue(drill);
   if (drill?.adapterId === "predict-next-v1") return nextPredictNextCue(drill);
   if (drill?.adapterId === "read-pressure-v1") return nextReadPressureCue(drill);
+  if (drill?.adapterId === "find-third-player-v1") return nextThirdPlayerCue(drill);
   return null;
 }
 
 export function missionScoreForResult(cue, correct, reactionMs = null, evidence = {}) {
-  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1", "read-pressure-v1"].includes(cue?.adapterId)) return null;
+  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1", "read-pressure-v1", "find-third-player-v1"].includes(cue?.adapterId)) return null;
   const weight = Number(cue.scoringWeight || 1);
   const accuracyPoints = correct ? Math.round(100 * weight) : 0;
   const reactionBonus = correct && Number.isFinite(reactionMs) ? Math.max(0, Math.round((1800 - reactionMs) / 20)) : 0;
@@ -135,8 +176,12 @@ export function missionScoreForResult(cue, correct, reactionMs = null, evidence 
   const anticipationBonus = correct && cue.adapterId === "predict-next-v1" && cue.predictionRequired ? 75 : 0;
   const pressureRecognitionBonus = correct && cue.adapterId === "read-pressure-v1" ? Number(cue.pressureIntensity || 1) * 20 : 0;
   const pressureDecisionBonus = correct && cue.adapterId === "read-pressure-v1" && cue.decisionRequired ? 60 : 0;
+  const thirdPlayerBonus = correct && cue.adapterId === "find-third-player-v1" && cue.decisionRequired ? 90 : 0;
+  const laneRecognitionBonus = correct && cue.adapterId === "find-third-player-v1" && cue.passingLaneAvailable ? 40 : 0;
+  const scanCount = Number(evidence?.scanCount);
+  const scanningBonus = cue.adapterId === "find-third-player-v1" && Number.isFinite(scanCount) ? Math.max(0, Math.min(50, Math.round(scanCount * 10))) : 0;
   const confidence = Number(evidence?.confidence);
   const confidenceMultiplier = cue.adapterId === "predict-next-v1" && Number.isFinite(confidence) ? Math.max(0.5, Math.min(1.25, confidence)) : 1;
-  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus + pressureRecognitionBonus + pressureDecisionBonus;
-  return { missionId: cue.missionId, accuracyPoints, reactionBonus, sequenceCompletionBonus, anticipationBonus, pressureRecognitionBonus, pressureDecisionBonus, confidenceMultiplier, total: Math.round(subtotal * confidenceMultiplier) };
+  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus + pressureRecognitionBonus + pressureDecisionBonus + thirdPlayerBonus + laneRecognitionBonus + scanningBonus;
+  return { missionId: cue.missionId, accuracyPoints, reactionBonus, sequenceCompletionBonus, anticipationBonus, pressureRecognitionBonus, pressureDecisionBonus, thirdPlayerBonus, laneRecognitionBonus, scanningBonus, confidenceMultiplier, total: Math.round(subtotal * confidenceMultiplier) };
 }
