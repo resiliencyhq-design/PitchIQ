@@ -1,12 +1,13 @@
-import { FOOTBALL_IQ_CATEGORY_LABELS } from "../data/football-iq-missions.js?v=s21-2-adaptive-plan-20260719";
+import { FOOTBALL_IQ_CATEGORY_LABELS } from "../data/football-iq-missions.js?v=s21-3-season-curriculum-20260719";
 import { adaptiveFootballIqPlan, footballIqActivity, footballIqRecommendations, primaryFootballIqRecommendation } from "./football-iq-recommendations-w1-5.js?v=s21-2-adaptive-plan-20260719";
+import { footballIqSeason } from "./football-iq-curriculum-s21-3.js?v=s21-3-season-curriculum-20260719";
 
 const STYLE_ID = "pitchiq-football-iq-adaptive-w1-5-css";
 if(!document.getElementById(STYLE_ID)){
   const link = document.createElement("link");
   link.id = STYLE_ID;
   link.rel = "stylesheet";
-  link.href = "css/football-iq-adaptive-w1-5.css?v=s21-2-adaptive-plan-20260719";
+  link.href = "css/football-iq-adaptive-w1-5.css?v=s21-3-season-curriculum-20260719";
   document.head.appendChild(link);
 }
 
@@ -16,7 +17,7 @@ function applyHomeRecommendation(){
   if(!card || !mission) return;
   const activity = footballIqActivity();
   const best = window.PitchIQFootballIqProgress?.get?.()?.missions?.[mission.id]?.personalBest;
-  const signature = `s21-2:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}:${activity.readiness}`;
+  const signature = `s21-3:${mission.id}:${best || 0}:${activity.streak}:${activity.weekly}:${activity.readiness}`;
   if(card.dataset.fiqAdaptiveSignature === signature) return;
   card.dataset.fiqAdaptiveMission = mission.id;
   card.dataset.fiqAdaptiveSignature = signature;
@@ -36,6 +37,38 @@ function adaptiveCard(item, primary=false, step=0){
     <h3>${item.title}</h3><p>${item.recommendationReason}</p>
     <button type="button" data-fiq-adaptive-open="${item.id}">View mission →</button>
   </article>`;
+}
+
+function curriculumPhase(phase, index, activeIndex){
+  const state = phase.status === "complete" ? "Complete" : index === activeIndex ? "Current phase" : phase.status === "locked" ? "Locked" : "Up next";
+  const moduleLabels = phase.modules.map(module => FOOTBALL_IQ_CATEGORY_LABELS[module] || module).join(" · ");
+  return `<article class="fiq-curriculum-phase${index === activeIndex ? " is-active" : ""}${phase.status === "complete" ? " is-complete" : ""}">
+    <div class="fiq-curriculum-phase-number">${index + 1}</div>
+    <div><span>${state} · ${phase.weeks}</span><h3>${phase.title}</h3><p>${phase.objective}</p><small>${moduleLabels}</small></div>
+    <div class="fiq-curriculum-phase-score"><strong>${phase.percent}%</strong><small>${phase.completed}/${phase.total} complete</small></div>
+  </article>`;
+}
+
+function applySeasonCurriculum(){
+  const root = document.querySelector("[data-football-iq-library]");
+  const content = root?.querySelector?.(".fiq-library-content");
+  if(!root || !content) return;
+  let section = content.querySelector("[data-fiq-season-curriculum]");
+  const season = footballIqSeason();
+  const signature = season.phases.map(phase => `${phase.id}:${phase.completed}:${phase.percent}:${phase.status}`).join("|");
+  if(!section){
+    section = document.createElement("section");
+    section.dataset.fiqSeasonCurriculum = "true";
+    section.className = "fiq-season-curriculum";
+    const tabs = content.querySelector(".fiq-library-tabs");
+    tabs?.insertAdjacentElement("beforebegin", section);
+  }
+  if(section.dataset.signature === signature) return;
+  section.dataset.signature = signature;
+  section.innerHTML = `<div class="fiq-curriculum-heading"><div><span>12-week pathway</span><h2>${season.title}</h2><p>${season.subtitle}</p></div><strong>${season.percent}%</strong></div>
+    <div class="fiq-curriculum-progress"><i style="width:${season.percent}%"></i></div>
+    <div class="fiq-curriculum-meta"><b>${season.completedPhases}/${season.phases.length} phases complete</b><b>${season.activePhase ? `Now: ${season.activePhase.title}` : "Season complete"}</b></div>
+    <div class="fiq-curriculum-phases">${season.phases.map((phase,index)=>curriculumPhase(phase,index,season.activeIndex)).join("")}</div>`;
 }
 
 function applyLibraryRecommendations(){
@@ -100,6 +133,7 @@ function apply(){
   requestAnimationFrame(() => {
     scheduled = false;
     applyHomeRecommendation();
+    applySeasonCurriculum();
     applyLibraryRecommendations();
     applyModuleRecommendation();
   });
