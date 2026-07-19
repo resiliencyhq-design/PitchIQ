@@ -36,7 +36,7 @@ function syncRewardProgress(home){
   if(!element) return;
 
   const thresholdMatch = element.textContent.match(/Unlock at\s*([\d,]+)\s*XP/i);
-  if(thresholdMatch){
+  if(thresholdMatch && !element.dataset.rewardTargetXp){
     element.dataset.rewardTargetXp = thresholdMatch[1].replaceAll(",", "");
   }
 
@@ -45,10 +45,19 @@ function syncRewardProgress(home){
 
   const currentXp = readCurrentXp(home);
   const remainingXp = Math.max(0, targetXp - currentXp);
-  element.classList.add("home-reward-progress");
-  element.textContent = remainingXp > 0
+  const nextText = remainingXp > 0
     ? `${remainingXp.toLocaleString()} XP remaining`
     : "Reward ready";
+
+  if(!element.classList.contains("home-reward-progress")){
+    element.classList.add("home-reward-progress");
+  }
+
+  // Avoid repeatedly mutating textContent from inside the observer callback.
+  // Rewriting identical text triggers another childList mutation and can lock the app.
+  if(element.textContent !== nextText){
+    element.textContent = nextText;
+  }
 }
 
 function refreshHomeEnhancements(){
