@@ -36,11 +36,25 @@
   bottom: auto !important;
   top: auto !important;
   grid-row: 2 !important;
-  width: calc(100% - 24px) !important;
+  justify-self: center !important;
+  align-self: end !important;
+  box-sizing: border-box !important;
+  width: min(calc(100% - 24px), 406px) !important;
+  min-width: 0 !important;
   max-width: 406px !important;
   margin: 8px auto calc(8px + env(safe-area-inset-bottom)) !important;
+  transform: none !important;
+  translate: none !important;
   flex: 0 0 auto !important;
   z-index: 30 !important;
+}
+
+/* Clear any legacy viewport/fixed-nav centering rules on the tile itself. */
+.app-shell > #nav.bottom-nav.visible.nav,
+.app-shell > #nav.bottom-nav.visible.bottom-nav {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  transform-origin: center !important;
 }
 
 /* The scrolling viewport already ends above the navigation row, so the
