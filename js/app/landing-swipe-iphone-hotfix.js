@@ -1,16 +1,12 @@
-/* Sprint 9.1 hotfix — reliable iPhone Safari landing progression.
-   main.js remains the primary owner of the landing interaction. This module:
-   1. translates a valid native touch swipe into the existing accepted click path;
-   2. watches for the visible completed state;
-   3. retries the same in-memory landing action only while splash remains visible; and
-   4. uses the established onboarding route as a final escape hatch if the landing
-      screen still has not advanced. */
+/* iPhone Safari landing recovery.
+   main.js remains the normal pointer/keyboard owner. This module provides a
+   complete native-touch path when Safari does not deliver the pointer drag
+   sequence reliably, then reuses the established landing action. */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
-const MIN_DISTANCE = 72;
-const MIN_RATIO = 0.42;
-const RECOVERY_DELAY_MS = 900;
-const FINAL_FALLBACK_DELAY_MS = 1800;
+const COMPLETE_THRESHOLD = 0.82;
+const RECOVERY_DELAY_MS = 650;
+const FINAL_FALLBACK_DELAY_MS = 1500;
 
 function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
@@ -28,25 +24,52 @@ function activateExistingLanding(swipe) {
 
 function advanceToOnboardingFallback() {
   if (!isLandingVisible()) return;
-
   const url = new URL(window.location.href);
   url.searchParams.set("dev", "1");
   url.searchParams.set("autoOnboard", "1");
-  url.searchParams.set("v", "landing-final-fallback-20260719");
+  url.searchParams.set("v", "native-touch-landing-owner-20260720");
   url.hash = "onboard";
   window.location.replace(url.toString());
 }
 
 function bindLandingFallback() {
   const swipe = document.querySelector(SWIPE_SELECTOR);
-  if (!swipe || swipe.dataset.iphoneTouchFallback === "true") return;
+  const track = swipe?.querySelector(".splash-swipe-track");
+  const handle = swipe?.querySelector(".splash-swipe-handle");
+  if (!swipe || !track || !handle || swipe.dataset.iphoneTouchFallback === "true") return;
   swipe.dataset.iphoneTouchFallback = "true";
 
   let startX = 0;
   let startY = 0;
   let tracking = false;
+  let progress = 0;
   let recoveryTimer = null;
   let finalFallbackTimer = null;
+
+  const metrics = () => {
+    const trackRect = track.getBoundingClientRect();
+    const handleRect = handle.getBoundingClientRect();
+    const startOffset = Math.max(0, handleRect.left - trackRect.left);
+    const rightPadding = Math.max(6, startOffset);
+    return {
+      maxTravel: Math.max(1, trackRect.width - handleRect.width - startOffset - rightPadding)
+    };
+  };
+
+  const setProgress = value => {
+    progress = Math.max(0, Math.min(1, value));
+    const maxTravel = metrics().maxTravel;
+    swipe.style.setProperty("--swipe-progress", String(progress));
+    swipe.style.setProperty("--swipe-reveal", `${progress * 100}%`);
+    swipe.style.setProperty("--swipe-x", `${maxTravel * progress}px`);
+    swipe.style.setProperty("--swipe-rotate", `${360 * progress}deg`);
+  };
+
+  const reset = () => {
+    tracking = false;
+    swipe.classList.remove("dragging");
+    if (!swipe.classList.contains("complete")) setProgress(0);
+  };
 
   const armFinalFallback = () => {
     window.clearTimeout(finalFallbackTimer);
@@ -67,6 +90,17 @@ function bindLandingFallback() {
     }, RECOVERY_DELAY_MS);
   };
 
+  const complete = () => {
+    if (swipe.classList.contains("complete")) return;
+    tracking = false;
+    setProgress(1);
+    swipe.classList.remove("dragging");
+    swipe.classList.add("complete");
+    activateExistingLanding(swipe);
+    armRecovery();
+    armFinalFallback();
+  };
+
   new MutationObserver(armRecovery).observe(swipe, {
     attributes: true,
     attributeFilter: ["class", "style"]
@@ -82,24 +116,29 @@ function bindLandingFallback() {
     startX = touch.clientX;
     startY = touch.clientY;
     tracking = true;
+    swipe.classList.add("dragging");
+    setProgress(0);
   }, { passive: true });
 
-  swipe.addEventListener("touchend", event => {
+  swipe.addEventListener("touchmove", event => {
     if (!tracking || swipe.classList.contains("complete")) return;
-    tracking = false;
-    const touch = event.changedTouches?.[0];
+    const touch = event.touches?.[0];
     if (!touch) return;
     const dx = touch.clientX - startX;
     const dy = Math.abs(touch.clientY - startY);
-    const width = Math.max(1, swipe.getBoundingClientRect().width);
-    const completed = dx >= Math.max(MIN_DISTANCE, width * MIN_RATIO) && dx > dy * 1.35;
-    if (!completed) return;
-
-    event.preventDefault();
-    activateExistingLanding(swipe);
-    armRecovery();
-    armFinalFallback();
+    if (dx > 4 && dx > dy) event.preventDefault();
+    setProgress(dx / metrics().maxTravel);
   }, { passive: false });
+
+  swipe.addEventListener("touchend", event => {
+    if (!tracking || swipe.classList.contains("complete")) return;
+    const touch = event.changedTouches?.[0];
+    if (touch) setProgress((touch.clientX - startX) / metrics().maxTravel);
+    event.preventDefault();
+    progress >= COMPLETE_THRESHOLD ? complete() : reset();
+  }, { passive: false });
+
+  swipe.addEventListener("touchcancel", reset, { passive: true });
 }
 
 function initialise() {
