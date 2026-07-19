@@ -1,0 +1,114 @@
+#home .home-content-stack > .home-actions-grid.home-world-stack {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 14px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#home .home-content-stack > .home-actions-grid.home-world-stack > .home-world-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 52px minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto auto !important;
+  align-items: center !important;
+  column-gap: 15px !important;
+  row-gap: 4px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 112px !important;
+  padding: 20px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  text-align: left !important;
+}
+
+#home .home-world-card > b {
+  grid-column: 1 !important;
+  grid-row: 1 / span 3 !important;
+  width: 52px !important;
+  height: 52px !important;
+  margin: 0 !important;
+  border-radius: 17px !important;
+  font-size: 22px !important;
+}
+
+#home .home-world-card > span {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: auto !important;
+  margin: 0 !important;
+  font-size: clamp(20px, 5.2vw, 25px) !important;
+  line-height: 1.05 !important;
+  white-space: normal !important;
+}
+
+#home .home-world-card > small {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  width: auto !important;
+  max-width: 32ch !important;
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+}
+
+#home .home-world-card::before {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  margin-top: 5px !important;
+  color: rgba(255,255,255,.74) !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase !important;
+}
+
+#home .home-world-card[data-home-world="technical-training"]::before { content: "Enter training"; }
+#home .home-world-card[data-home-world="results"]::before { content: "View progress"; }
+#home .home-world-card[data-home-world="lab"]::before { content: "Enter lab"; }
+
+#home .home-world-card::after {
+  grid-column: 3 !important;
+  grid-row: 1 / span 3 !important;
+  align-self: center !important;
+  margin: 0 !important;
+  font-size: 25px !important;
+}
+
+/* The world card is now the single Home entry for PitchIQ Lab. */
+#home .home-trial-entry,
+#home .auto-juggler-home-card {
+  display: none !important;
+}
+
+/* Supporting content is intentionally quieter and follows weekly progress. */
+#home .home-secondary-row {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+#home .home-secondary-row > .home-pack-card { order: 1 !important; width: 100% !important; }
+#home .home-secondary-row > .home-training-stats { order: 2 !important; width: 100% !important; }
+
+#home [data-academy-season="true"] {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 390px) {
+  #home .home-content-stack > .home-actions-grid.home-world-stack > .home-world-card {
+    min-height: 104px !important;
+    padding: 18px !important;
+    grid-template-columns: 48px minmax(0, 1fr) auto !important;
+    column-gap: 13px !important;
+  }
+
+  #home .home-world-card > b {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
