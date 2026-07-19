@@ -48,6 +48,11 @@ preTrainingCoachBriefStyles.rel = "stylesheet";
 preTrainingCoachBriefStyles.href = "css/pre-training-coach-brief.css?v=sprint-12-6b-pre-training-brief-20260719";
 document.head.appendChild(preTrainingCoachBriefStyles);
 
+const postTrainingCoachReflectionStyles = document.createElement("link");
+postTrainingCoachReflectionStyles.rel = "stylesheet";
+postTrainingCoachReflectionStyles.href = "css/post-training-coach-reflection.css?v=sprint-12-6c-post-training-reflection-20260719";
+document.head.appendChild(postTrainingCoachReflectionStyles);
+
 const teamIntelligenceStyles = document.createElement("link");
 teamIntelligenceStyles.rel = "stylesheet";
 teamIntelligenceStyles.href = "css/team-intelligence.css?v=sprint-19-0-team-intelligence-20260719";
@@ -97,6 +102,10 @@ import("./ai-coach-entry.js?v=sprint-12-6a-coach-identity-20260719").catch(error
 
 import("./pre-training-coach-brief.js?v=sprint-12-6b-pre-training-brief-20260719").catch(error => {
   console.warn("[PitchIQ] Pre-training coach brief failed to load; Live Rep remains available", error);
+});
+
+import("./post-training-coach-reflection.js?v=sprint-12-6c-post-training-reflection-20260719").catch(error => {
+  console.warn("[PitchIQ] Post-training coach reflection failed to load; Results remain available", error);
 });
 
 import("./team-intelligence-entry.js?v=sprint-19-0-team-intelligence-20260719").catch(error => {
