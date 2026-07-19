@@ -4,14 +4,7 @@ export const ACTIVE_MISSION_RUNTIME_KEY = "pitchiq.missionRuntime.active.v1";
 export const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 
 const SCAN_FIRST_SEQUENCE = Object.freeze([
-  "check",
-  "left",
-  "check",
-  "red",
-  "check",
-  "right",
-  "check",
-  "blue",
+  "check", "left", "check", "red", "check", "right", "check", "blue",
 ]);
 
 const SPOT_THE_CUE_PATTERNS = Object.freeze([
@@ -26,6 +19,13 @@ const PREDICT_NEXT_PATTERNS = Object.freeze([
   Object.freeze(["left", "left", "right", "right"]),
   Object.freeze(["check", "left", "check", "right"]),
   Object.freeze(["turn", "drive", "turn", "drive"]),
+]);
+
+const READ_PRESSURE_SCENARIOS = Object.freeze([
+  Object.freeze({ cues: ["check", "left", "right"], source: "single-defender", direction: "left", intensity: 1, bestResponse: "right" }),
+  Object.freeze({ cues: ["check", "right", "left"], source: "single-defender", direction: "right", intensity: 1, bestResponse: "left" }),
+  Object.freeze({ cues: ["red", "left", "drive"], source: "closing-lane", direction: "left", intensity: 2, bestResponse: "drive" }),
+  Object.freeze({ cues: ["blue", "right", "turn"], source: "double-press", direction: "right", intensity: 3, bestResponse: "turn" }),
 ]);
 
 function readJson(storage, key) {
@@ -44,49 +44,17 @@ export function activeMissionId(storage = globalThis.sessionStorage, fallbackSto
 
 export function createMissionDrill(missionId) {
   if (missionId === "scan-first") {
-    return {
-      id: "mission-scan-first-v1",
-      name: "Scan First",
-      seconds: 45,
-      difficulty: 1,
-      cuePool: [...SCAN_FIRST_SEQUENCE],
-      missionId,
-      adapterId: "scan-first-v1",
-      scoringProfile: "accuracy-reaction",
-      sequenceIndex: 0,
-    };
+    return { id: "mission-scan-first-v1", name: "Scan First", seconds: 45, difficulty: 1, cuePool: [...SCAN_FIRST_SEQUENCE], missionId, adapterId: "scan-first-v1", scoringProfile: "accuracy-reaction", sequenceIndex: 0 };
   }
-
   if (missionId === "spot-the-cue") {
-    return {
-      id: "mission-spot-the-cue-v1",
-      name: "Spot the Cue",
-      seconds: 45,
-      difficulty: 1,
-      cuePool: SPOT_THE_CUE_PATTERNS.flat(),
-      missionId,
-      adapterId: "spot-the-cue-v1",
-      scoringProfile: "accuracy-reaction-sequence",
-      patternIndex: 0,
-      patternStep: 0,
-    };
+    return { id: "mission-spot-the-cue-v1", name: "Spot the Cue", seconds: 45, difficulty: 1, cuePool: SPOT_THE_CUE_PATTERNS.flat(), missionId, adapterId: "spot-the-cue-v1", scoringProfile: "accuracy-reaction-sequence", patternIndex: 0, patternStep: 0 };
   }
-
   if (missionId === "predict-next") {
-    return {
-      id: "mission-predict-next-v1",
-      name: "Predict the Next Play",
-      seconds: 45,
-      difficulty: 1,
-      cuePool: PREDICT_NEXT_PATTERNS.flat(),
-      missionId,
-      adapterId: "predict-next-v1",
-      scoringProfile: "prediction-accuracy-reaction-confidence",
-      patternIndex: 0,
-      patternStep: 0,
-    };
+    return { id: "mission-predict-next-v1", name: "Predict the Next Play", seconds: 45, difficulty: 1, cuePool: PREDICT_NEXT_PATTERNS.flat(), missionId, adapterId: "predict-next-v1", scoringProfile: "prediction-accuracy-reaction-confidence", patternIndex: 0, patternStep: 0 };
   }
-
+  if (missionId === "read-pressure") {
+    return { id: "mission-read-pressure-v1", name: "Read the Pressure", seconds: 45, difficulty: 1, cuePool: READ_PRESSURE_SCENARIOS.flatMap((scenario) => scenario.cues), missionId, adapterId: "read-pressure-v1", scoringProfile: "pressure-recognition-decision-reaction", scenarioIndex: 0, scenarioStep: 0 };
+  }
   return null;
 }
 
@@ -96,13 +64,7 @@ function nextScanFirstCue(drill) {
   const cueId = pool[index % pool.length];
   drill.sequenceIndex = index + 1;
   const base = getCue(cueId);
-  return {
-    ...base,
-    missionId: "scan-first",
-    adapterId: "scan-first-v1",
-    scoringWeight: base.type === "scan" ? 1.25 : 1,
-    presentedAt: Date.now(),
-  };
+  return { ...base, missionId: "scan-first", adapterId: "scan-first-v1", scoringWeight: base.type === "scan" ? 1.25 : 1, presentedAt: Date.now() };
 }
 
 function nextSpotTheCue(drill) {
@@ -112,24 +74,9 @@ function nextSpotTheCue(drill) {
   const step = patternStep % pattern.length;
   const cueId = pattern[step];
   const sequenceComplete = step === pattern.length - 1;
-
   drill.patternStep = step + 1;
-  if (sequenceComplete) {
-    drill.patternStep = 0;
-    drill.patternIndex = patternIndex + 1;
-  }
-
-  return {
-    ...getCue(cueId),
-    missionId: "spot-the-cue",
-    adapterId: "spot-the-cue-v1",
-    patternIndex,
-    sequencePosition: step + 1,
-    sequenceLength: pattern.length,
-    sequenceComplete,
-    scoringWeight: sequenceComplete ? 1.35 : 1,
-    presentedAt: Date.now(),
-  };
+  if (sequenceComplete) { drill.patternStep = 0; drill.patternIndex = patternIndex + 1; }
+  return { ...getCue(cueId), missionId: "spot-the-cue", adapterId: "spot-the-cue-v1", patternIndex, sequencePosition: step + 1, sequenceLength: pattern.length, sequenceComplete, scoringWeight: sequenceComplete ? 1.35 : 1, presentedAt: Date.now() };
 }
 
 function nextPredictNextCue(drill) {
@@ -139,24 +86,34 @@ function nextPredictNextCue(drill) {
   const step = patternStep % pattern.length;
   const predictionRequired = step === pattern.length - 1;
   const cueId = pattern[step];
-
   drill.patternStep = step + 1;
-  if (predictionRequired) {
-    drill.patternStep = 0;
-    drill.patternIndex = patternIndex + 1;
-  }
+  if (predictionRequired) { drill.patternStep = 0; drill.patternIndex = patternIndex + 1; }
+  return { ...getCue(cueId), missionId: "predict-next", adapterId: "predict-next-v1", patternIndex, sequencePosition: step + 1, sequenceLength: pattern.length, contextCue: !predictionRequired, predictionRequired, expectedPrediction: predictionRequired ? cueId : null, scoringWeight: predictionRequired ? 1.5 : 0.5, presentedAt: Date.now() };
+}
 
+function nextReadPressureCue(drill) {
+  const scenarioIndex = Number.isInteger(drill.scenarioIndex) ? drill.scenarioIndex : 0;
+  const scenario = READ_PRESSURE_SCENARIOS[scenarioIndex % READ_PRESSURE_SCENARIOS.length];
+  const scenarioStep = Number.isInteger(drill.scenarioStep) ? drill.scenarioStep : 0;
+  const step = scenarioStep % scenario.cues.length;
+  const decisionRequired = step === scenario.cues.length - 1;
+  const cueId = scenario.cues[step];
+  drill.scenarioStep = step + 1;
+  if (decisionRequired) { drill.scenarioStep = 0; drill.scenarioIndex = scenarioIndex + 1; }
   return {
     ...getCue(cueId),
-    missionId: "predict-next",
-    adapterId: "predict-next-v1",
-    patternIndex,
+    missionId: "read-pressure",
+    adapterId: "read-pressure-v1",
+    scenarioIndex,
     sequencePosition: step + 1,
-    sequenceLength: pattern.length,
-    contextCue: !predictionRequired,
-    predictionRequired,
-    expectedPrediction: predictionRequired ? cueId : null,
-    scoringWeight: predictionRequired ? 1.5 : 0.5,
+    sequenceLength: scenario.cues.length,
+    pressureSource: scenario.source,
+    pressureDirection: scenario.direction,
+    pressureIntensity: scenario.intensity,
+    contextCue: !decisionRequired,
+    decisionRequired,
+    expectedDecision: decisionRequired ? scenario.bestResponse : null,
+    scoringWeight: decisionRequired ? 1 + scenario.intensity * 0.2 : 0.5,
     presentedAt: Date.now(),
   };
 }
@@ -165,36 +122,21 @@ export function nextMissionCue(drill) {
   if (drill?.adapterId === "scan-first-v1") return nextScanFirstCue(drill);
   if (drill?.adapterId === "spot-the-cue-v1") return nextSpotTheCue(drill);
   if (drill?.adapterId === "predict-next-v1") return nextPredictNextCue(drill);
+  if (drill?.adapterId === "read-pressure-v1") return nextReadPressureCue(drill);
   return null;
 }
 
 export function missionScoreForResult(cue, correct, reactionMs = null, evidence = {}) {
-  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1"].includes(cue?.adapterId)) return null;
-
+  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1", "read-pressure-v1"].includes(cue?.adapterId)) return null;
   const weight = Number(cue.scoringWeight || 1);
   const accuracyPoints = correct ? Math.round(100 * weight) : 0;
-  const reactionBonus = correct && Number.isFinite(reactionMs)
-    ? Math.max(0, Math.round((1800 - reactionMs) / 20))
-    : 0;
-  const sequenceCompletionBonus = correct && cue.adapterId === "spot-the-cue-v1" && cue.sequenceComplete
-    ? 50
-    : 0;
-  const anticipationBonus = correct && cue.adapterId === "predict-next-v1" && cue.predictionRequired
-    ? 75
-    : 0;
+  const reactionBonus = correct && Number.isFinite(reactionMs) ? Math.max(0, Math.round((1800 - reactionMs) / 20)) : 0;
+  const sequenceCompletionBonus = correct && cue.adapterId === "spot-the-cue-v1" && cue.sequenceComplete ? 50 : 0;
+  const anticipationBonus = correct && cue.adapterId === "predict-next-v1" && cue.predictionRequired ? 75 : 0;
+  const pressureRecognitionBonus = correct && cue.adapterId === "read-pressure-v1" ? Number(cue.pressureIntensity || 1) * 20 : 0;
+  const pressureDecisionBonus = correct && cue.adapterId === "read-pressure-v1" && cue.decisionRequired ? 60 : 0;
   const confidence = Number(evidence?.confidence);
-  const confidenceMultiplier = cue.adapterId === "predict-next-v1" && Number.isFinite(confidence)
-    ? Math.max(0.5, Math.min(1.25, confidence))
-    : 1;
-  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus;
-
-  return {
-    missionId: cue.missionId,
-    accuracyPoints,
-    reactionBonus,
-    sequenceCompletionBonus,
-    anticipationBonus,
-    confidenceMultiplier,
-    total: Math.round(subtotal * confidenceMultiplier),
-  };
+  const confidenceMultiplier = cue.adapterId === "predict-next-v1" && Number.isFinite(confidence) ? Math.max(0.5, Math.min(1.25, confidence)) : 1;
+  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus + pressureRecognitionBonus + pressureDecisionBonus;
+  return { missionId: cue.missionId, accuracyPoints, reactionBonus, sequenceCompletionBonus, anticipationBonus, pressureRecognitionBonus, pressureDecisionBonus, confidenceMultiplier, total: Math.round(subtotal * confidenceMultiplier) };
 }
