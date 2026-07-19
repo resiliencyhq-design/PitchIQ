@@ -1,15 +1,19 @@
 const autoJugglerStyles = document.createElement("link");
 autoJugglerStyles.rel = "stylesheet";
-autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-2-ball-detection-mvp-20260718";
+autoJugglerStyles.href = "css/auto-juggler.css?v=sprint-10-2-1-home-tile-restore-20260719";
 document.head.appendChild(autoJugglerStyles);
 
 const autoJugglerPreviewStyles = document.createElement("link");
 autoJugglerPreviewStyles.rel = "stylesheet";
-autoJugglerPreviewStyles.href = "css/auto-juggler-preview.css?v=sprint-10-2-ball-detection-mvp-20260718";
+autoJugglerPreviewStyles.href = "css/auto-juggler-preview.css?v=sprint-10-2-1-home-tile-restore-20260719";
 document.head.appendChild(autoJugglerPreviewStyles);
 
-import("../lab/auto-juggler-camera.js?v=sprint-10-2-ball-detection-mvp-20260718").catch(error => {
+import("../lab/auto-juggler-camera.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
   console.warn("[PitchIQ Lab] Auto Juggler ball detector failed to load", error);
+});
+
+import("../lab/auto-juggler-home-entry.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
+  console.warn("[PitchIQ Lab] Auto Juggler Home tile failed to load", error);
 });
 
 document.addEventListener("click", event => {
