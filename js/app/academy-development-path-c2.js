@@ -27,7 +27,7 @@ export function getAcademyDevelopmentPath(){
   const milestones=[
     {id:"academy-level",label:`Reach Academy Level ${nextLevel}`,progress:clamp(((profile.academyXp%200)/200)*100),detail:`${projection.remainingXp} XP remaining`},
     {id:"performance-index",label:"Build Academy Performance Index",progress:index.score,detail:index.evidence.label},
-    {id:"development-focus",label:priority?`Develop ${priority.label}`:"Establish a development focus",progress:priority?priority.score:0,detail:priority?`${priority.score}% current evidence":"Complete training to identify a priority"`}
+    {id:"development-focus",label:priority?`Develop ${priority.label}`:"Establish a development focus",progress:priority?priority.score:0,detail:priority?`${priority.score}% current evidence`:"Complete training to identify a priority"}
   ];
   return Object.freeze({version:"1.0",generatedAt:new Date().toISOString(),stage:index.label,academyLevel:profile.academyLevel,indexScore:index.score,evidence:index.evidence,trend:movement,forecast:projection,strongest,priority,milestones,state:profile.history.length?"active":"building",guardrails:{readOnly:true,usesRecordedEvidenceOnly:true,doesNotChangeScores:true,doesNotChangeXp:true,doesNotUnlockContent:true}});
 }
