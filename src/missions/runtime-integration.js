@@ -11,6 +11,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "scan-colour-direction",
     scoringProfile: "accuracy-reaction",
   }),
+  "spot-the-cue": Object.freeze({
+    adapterId: "spot-the-cue-v1",
+    cueProfile: "pattern-recognition",
+    scoringProfile: "accuracy-reaction-sequence",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {
