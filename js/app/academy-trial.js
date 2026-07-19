@@ -55,19 +55,10 @@ function top(title, backRoute="home", allowBack=true){
 }
 function intro(){
   const player = playerIdentity();
-  return shell(`${top("PitchIQ", "home", false)}<article class="trial-hero"><div class="trial-shield">★</div><span class="trial-kicker">Welcome to PitchIQ Academy</span><h1>Begin your <em>first assessment</em></h1><p>Every academy player completes one assessment before training begins.</p><div class="trial-identity-strip"><div><small>Player</small><b>${player.name.toUpperCase()}</b></div><div><small>Number</small><b>#${player.number}</b></div><div><small>Position</small><b>${player.position}</b></div></div><ul class="trial-benefits"><li><i>◷</i><span><b>Short assessment</b><small>30–90 seconds</small></span></li><li><i>⚽</i><span><b>Football intelligence</b><small>Decisions, vision and awareness</small></span></li><li><i>☆</i><span><b>Earn your academy place</b><small>Your Home hub unlocks after completion</small></span></li></ul><button class="trial-primary" type="button" data-trial-route="academy-trials">Begin first assessment →</button></article>`);
+  return shell(`${top("PitchIQ", "home", false)}<article class="trial-hero"><div class="trial-shield">★</div><span class="trial-kicker">Welcome to PitchIQ Academy</span><h1>Let’s get you <em>match ready</em></h1><p>Meet your coach, learn the PitchIQ tools and play a few quick challenges.</p><div class="trial-identity-strip"><div><small>Player</small><b>${player.name.toUpperCase()}</b></div><div><small>Number</small><b>#${player.number}</b></div><div><small>Position</small><b>${player.position}</b></div></div><ul class="trial-benefits"><li><i>◷</i><span><b>Meet your coach</b><small>Hear the cues that guide training</small></span></li><li><i>◉</i><span><b>Learn the camera</b><small>Set up your training space</small></span></li><li><i>⚽</i><span><b>Play mini challenges</b><small>Learn by playing</small></span></li></ul><button class="trial-primary" type="button" data-trial-route="academy-trials">Enter the Academy →</button></article>`);
 }
-const trials = [
-  ["◉","Scanning","Find the best option before the pass arrives."],
-  ["◷","Decision Speed","Make the right decision in less time."],
-  ["♢","Defensive Shape","Place yourself in the best position to defend."],
-  ["↯","Transition Reaction","React quickly when possession changes."],
-  ["◎","Finishing Vision","Pick the right target and create the chance."]
-];
-function trialList(){
-  const cards = trials.map(([icon,name,copy]) => `<button class="trial-card" type="button" disabled><span class="trial-card-icon">${icon}</span><span><strong>${name}</strong><small>${copy}</small></span><span class="lock">⌑</span></button>`).join("");
-  const skipCard = `<button class="trial-card available" type="button" data-skip-academy-trial><span class="trial-card-icon">→</span><span><strong>Skip Trial for Now</strong><small>Trial activities are still being prepared. Continue into the Academy.</small></span><span class="trial-new">CONTINUE</span></button>`;
-  return shell(`${top("Academy Assessment", "academy-trial")}<div class="trial-list-head"><span class="trial-kicker">First assessment</span><h1>Choose Your First Assessment</h1><p>Complete one assessment to earn your place in the Academy.</p></div><span class="trial-section-label">Coming soon</span><div class="trial-grid">${cards}${skipCard}</div>`);
+function orientationPreview(){
+  return shell(`${top("Academy Orientation", "academy-trial")}<div class="trial-list-head"><span class="trial-kicker">Your welcome session</span><h1>Learn the Tools</h1><p>A quick guided warm-up will show you how your coach, camera and challenges work.</p></div><div class="trial-grid"><div class="trial-card available"><span class="trial-card-icon">◷</span><span><strong>Meet Your Coach</strong><small>Listen for simple cues during each activity.</small></span><span class="trial-new">1</span></div><div class="trial-card available"><span class="trial-card-icon">◉</span><span><strong>Camera Finder</strong><small>Learn how to set up your training space.</small></span><span class="trial-new">2</span></div><div class="trial-card available"><span class="trial-card-icon">⚡</span><span><strong>Quick Challenge</strong><small>Try a short game-like interaction.</small></span><span class="trial-new">3</span></div><button class="trial-primary" type="button" data-complete-orientation>Start Orientation →</button></div>`);
 }
 function assessmentBrief(){
   return shell(`${top("Assessment Brief", "home")}<main class="lab-stage"><div class="lab-orb">⚽</div><span class="trial-kicker">Assessment brief</span><h1>Juggling Assessment</h1><p>Use good lighting and enough space so your full body and the ground stay visible.</p><div class="lab-facts"><div class="lab-fact"><b>◉</b><small>3–5m distance</small></div><div class="lab-fact"><b>♙</b><small>Full body in frame</small></div><div class="lab-fact"><b>☀</b><small>Good light</small></div></div><div class="lab-note"><strong>Today's assessment</strong><p>Complete your juggling attempt and record a manual reference count while camera-counting remains under development.</p></div><button class="trial-primary" type="button" data-lab-stage="guide">Continue</button></main>`);
@@ -86,7 +77,7 @@ function labResult(){
 }
 function academyAccepted(){
   const player = playerIdentity();
-  return shell(`${top("PitchIQ Academy", "academy-trials", false)}<main class="academy-accepted"><div class="trial-shield">★</div><span class="trial-kicker">Assessment complete</span><h1>ACADEMY<br><em>ACCEPTED</em></h1><p>Congratulations, ${player.name}. You have earned your place in PitchIQ Academy.</p><button class="trial-primary" type="button" data-lab-stage="avatar">Choose your avatar →</button></main>`);
+  return shell(`${top("PitchIQ Academy", "academy-trials", false)}<main class="academy-accepted"><div class="trial-shield">★</div><span class="trial-kicker">Orientation complete</span><h1>ACADEMY<br><em>ACCEPTED</em></h1><p>Welcome, ${player.name}. You know the tools and your coach is ready.</p><button class="trial-primary" type="button" data-lab-stage="avatar">Choose your avatar →</button></main>`);
 }
 function avatarSelection(){
   const options = [["captain","🧭"],["playmaker","⚡"],["guardian","🛡️"]];
@@ -99,7 +90,7 @@ function renderFeature(){
   nav?.classList.remove("visible");
   const route = currentHash();
   if(route === "academy-trial") app.innerHTML = intro();
-  if(route === "academy-trials") app.innerHTML = trialList();
+  if(route === "academy-trials") app.innerHTML = orientationPreview();
   if(route === "lab-juggling"){
     if(labStage === "welcome") app.innerHTML = assessmentBrief();
     if(labStage === "guide") app.innerHTML = labGuide();
@@ -131,7 +122,7 @@ function bindFeature(){
     if(button.dataset.trialRoute === "home") returnHome();
     else routeTo(button.dataset.trialRoute);
   }));
-  app.querySelector("[data-skip-academy-trial]")?.addEventListener("click", () => {
+  app.querySelector("[data-complete-orientation]")?.addEventListener("click", () => {
     labStage = "accepted";
     routeTo("lab-juggling");
   });
