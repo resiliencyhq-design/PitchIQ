@@ -42,7 +42,7 @@ function saveSelection(selection) {
   }
 }
 
-function fallbackSelection() {
+export function fallbackSelection() {
   return {
     mode: "fallback",
     sourceConstructId: "awareness",
@@ -57,7 +57,7 @@ function fallbackSelection() {
 }
 
 function waitForTrainingHome(token, attempts = 20) {
-  if (token !== requestToken) return Promise.resolve(null);
+  if (token !== requestToken || typeof document === "undefined") return Promise.resolve(null);
   const screen = document.querySelector("#training.training-reactive");
   if (screen) return Promise.resolve(screen);
   if (attempts <= 0) return Promise.resolve(null);
@@ -110,11 +110,15 @@ async function activateForTrainingRoute() {
   applyAdaptiveMissionToTrainingScreen(screen, selection);
 }
 
-document.addEventListener("click", (event) => {
-  const routeButton = event.target.closest?.('[data-route="training"]');
-  if (routeButton) activateForTrainingRoute();
-}, true);
+if (typeof document !== "undefined") {
+  document.addEventListener("click", (event) => {
+    const routeButton = event.target.closest?.('[data-route="training"]');
+    if (routeButton) activateForTrainingRoute();
+  }, true);
+}
 
-window.addEventListener("hashchange", () => {
-  if (location.hash.toLowerCase() === "#training") activateForTrainingRoute();
-});
+if (typeof window !== "undefined") {
+  window.addEventListener("hashchange", () => {
+    if (location.hash.toLowerCase() === "#training") activateForTrainingRoute();
+  });
+}
