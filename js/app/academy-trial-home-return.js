@@ -35,6 +35,10 @@ import("./football-iq-results-entry.js?v=sprint-12-4b-player-development-2026071
   console.warn("[PitchIQ] Football IQ results and development experiences failed to load", error);
 });
 
+import("./adaptive-training-entry.js?v=sprint-12-5-adaptive-training-20260719").catch(error => {
+  console.warn("[PitchIQ] Adaptive Training mission selection failed to load", error);
+});
+
 import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => {
   console.warn("[PitchIQ] Home Sprint 10.3.1 enhancements failed to load", error);
 });
