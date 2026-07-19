@@ -42,6 +42,13 @@ const BREAK_THE_LINE_SCENARIOS = Object.freeze([
   Object.freeze({ cues: ["blue", "right", "check", "left"], defensiveLineShape: "stepping-line", passingLaneState: "opens-left-channel", receiverMovement: "drops-then-spins", pressureSource: "right", lineBreakingOption: "left" }),
 ]);
 
+const TRANSITION_SCAN_SCENARIOS = Object.freeze([
+  Object.freeze({ cues: ["check", "left", "red", "drive"], transitionType: "attack", possessionState: "won", firstVisualTarget: "forward-lane", availablePassingLanes: ["central", "left"], defensiveThreats: [], selectedAction: "drive" }),
+  Object.freeze({ cues: ["check", "right", "blue", "turn"], transitionType: "defence", possessionState: "lost", firstVisualTarget: "danger-runner", availablePassingLanes: [], defensiveThreats: ["right-channel-runner"], selectedAction: "turn" }),
+  Object.freeze({ cues: ["red", "check", "left", "right"], transitionType: "attack", possessionState: "won", firstVisualTarget: "wide-release", availablePassingLanes: ["right", "inside"], defensiveThreats: ["recovering-midfielder"], selectedAction: "right" }),
+  Object.freeze({ cues: ["blue", "check", "right", "left"], transitionType: "defence", possessionState: "lost", firstVisualTarget: "central-overload", availablePassingLanes: [], defensiveThreats: ["central-runner", "left-overlap"], selectedAction: "left" }),
+]);
+
 function readJson(storage, key) {
   try {
     return JSON.parse(storage?.getItem?.(key) || "null");
@@ -74,6 +81,9 @@ export function createMissionDrill(missionId) {
   }
   if (missionId === "break-the-line") {
     return { id: "mission-break-the-line-v1", name: "Break the Line", seconds: 45, difficulty: 1, cuePool: BREAK_THE_LINE_SCENARIOS.flatMap((scenario) => scenario.cues), missionId, adapterId: "break-the-line-v1", scoringProfile: "line-breaking-recognition-progression-reaction", scenarioIndex: 0, scenarioStep: 0 };
+  }
+  if (missionId === "transition-scan") {
+    return { id: "mission-transition-scan-v1", name: "Transition Scan", seconds: 45, difficulty: 1, cuePool: TRANSITION_SCAN_SCENARIOS.flatMap((scenario) => scenario.cues), missionId, adapterId: "transition-scan-v1", scoringProfile: "transition-recognition-early-scan-decision-reaction", scenarioIndex: 0, scenarioStep: 0 };
   }
   return null;
 }
@@ -198,6 +208,37 @@ function nextBreakTheLineCue(drill) {
   };
 }
 
+function nextTransitionScanCue(drill) {
+  const scenarioIndex = Number.isInteger(drill.scenarioIndex) ? drill.scenarioIndex : 0;
+  const scenario = TRANSITION_SCAN_SCENARIOS[scenarioIndex % TRANSITION_SCAN_SCENARIOS.length];
+  const scenarioStep = Number.isInteger(drill.scenarioStep) ? drill.scenarioStep : 0;
+  const step = scenarioStep % scenario.cues.length;
+  const decisionRequired = step === scenario.cues.length - 1;
+  const cueId = scenario.cues[step];
+  drill.scenarioStep = step + 1;
+  if (decisionRequired) { drill.scenarioStep = 0; drill.scenarioIndex = scenarioIndex + 1; }
+  return {
+    ...getCue(cueId),
+    missionId: "transition-scan",
+    adapterId: "transition-scan-v1",
+    scenarioIndex,
+    sequencePosition: step + 1,
+    sequenceLength: scenario.cues.length,
+    transitionType: scenario.transitionType,
+    possessionState: scenario.possessionState,
+    scanTiming: step === 0 ? "immediate" : "continuing",
+    firstVisualTarget: scenario.firstVisualTarget,
+    availablePassingLanes: [...scenario.availablePassingLanes],
+    defensiveThreats: [...scenario.defensiveThreats],
+    threatIdentified: scenario.defensiveThreats.length > 0,
+    contextCue: !decisionRequired,
+    decisionRequired,
+    expectedDecision: decisionRequired ? scenario.selectedAction : null,
+    scoringWeight: decisionRequired ? 1.75 : step === 0 ? 0.8 : 0.5,
+    presentedAt: Date.now(),
+  };
+}
+
 export function nextMissionCue(drill) {
   if (drill?.adapterId === "scan-first-v1") return nextScanFirstCue(drill);
   if (drill?.adapterId === "spot-the-cue-v1") return nextSpotTheCue(drill);
@@ -205,11 +246,12 @@ export function nextMissionCue(drill) {
   if (drill?.adapterId === "read-pressure-v1") return nextReadPressureCue(drill);
   if (drill?.adapterId === "find-third-player-v1") return nextThirdPlayerCue(drill);
   if (drill?.adapterId === "break-the-line-v1") return nextBreakTheLineCue(drill);
+  if (drill?.adapterId === "transition-scan-v1") return nextTransitionScanCue(drill);
   return null;
 }
 
 export function missionScoreForResult(cue, correct, reactionMs = null, evidence = {}) {
-  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1", "read-pressure-v1", "find-third-player-v1", "break-the-line-v1"].includes(cue?.adapterId)) return null;
+  if (!["scan-first-v1", "spot-the-cue-v1", "predict-next-v1", "read-pressure-v1", "find-third-player-v1", "break-the-line-v1", "transition-scan-v1"].includes(cue?.adapterId)) return null;
   const weight = Number(cue.scoringWeight || 1);
   const accuracyPoints = correct ? Math.round(100 * weight) : 0;
   const reactionBonus = correct && Number.isFinite(reactionMs) ? Math.max(0, Math.round((1800 - reactionMs) / 20)) : 0;
@@ -222,10 +264,14 @@ export function missionScoreForResult(cue, correct, reactionMs = null, evidence 
   const lineBreakingBonus = correct && cue.adapterId === "break-the-line-v1" && cue.lineBreakingOpportunity ? 100 : 0;
   const progressiveDecisionBonus = correct && cue.adapterId === "break-the-line-v1" && cue.progressiveDecision ? 60 : 0;
   const passingLaneBonus = correct && cue.adapterId === "break-the-line-v1" && cue.passingLaneState ? 40 : 0;
+  const transitionRecognitionBonus = correct && cue.adapterId === "transition-scan-v1" ? 50 : 0;
+  const earlyScanBonus = correct && cue.adapterId === "transition-scan-v1" && cue.scanTiming === "immediate" ? 60 : 0;
+  const transitionDecisionBonus = correct && cue.adapterId === "transition-scan-v1" && cue.decisionRequired ? 90 : 0;
+  const threatIdentificationBonus = correct && cue.adapterId === "transition-scan-v1" && cue.threatIdentified ? 50 : 0;
   const scanCount = Number(evidence?.scanCount);
-  const scanningBonus = ["find-third-player-v1", "break-the-line-v1"].includes(cue.adapterId) && Number.isFinite(scanCount) ? Math.max(0, Math.min(50, Math.round(scanCount * 10))) : 0;
+  const scanningBonus = ["find-third-player-v1", "break-the-line-v1", "transition-scan-v1"].includes(cue.adapterId) && Number.isFinite(scanCount) ? Math.max(0, Math.min(50, Math.round(scanCount * 10))) : 0;
   const confidence = Number(evidence?.confidence);
   const confidenceMultiplier = cue.adapterId === "predict-next-v1" && Number.isFinite(confidence) ? Math.max(0.5, Math.min(1.25, confidence)) : 1;
-  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus + pressureRecognitionBonus + pressureDecisionBonus + thirdPlayerBonus + laneRecognitionBonus + lineBreakingBonus + progressiveDecisionBonus + passingLaneBonus + scanningBonus;
-  return { missionId: cue.missionId, accuracyPoints, reactionBonus, sequenceCompletionBonus, anticipationBonus, pressureRecognitionBonus, pressureDecisionBonus, thirdPlayerBonus, laneRecognitionBonus, lineBreakingBonus, progressiveDecisionBonus, passingLaneBonus, scanningBonus, confidenceMultiplier, total: Math.round(subtotal * confidenceMultiplier) };
+  const subtotal = accuracyPoints + reactionBonus + sequenceCompletionBonus + anticipationBonus + pressureRecognitionBonus + pressureDecisionBonus + thirdPlayerBonus + laneRecognitionBonus + lineBreakingBonus + progressiveDecisionBonus + passingLaneBonus + transitionRecognitionBonus + earlyScanBonus + transitionDecisionBonus + threatIdentificationBonus + scanningBonus;
+  return { missionId: cue.missionId, accuracyPoints, reactionBonus, sequenceCompletionBonus, anticipationBonus, pressureRecognitionBonus, pressureDecisionBonus, thirdPlayerBonus, laneRecognitionBonus, lineBreakingBonus, progressiveDecisionBonus, passingLaneBonus, transitionRecognitionBonus, earlyScanBonus, transitionDecisionBonus, threatIdentificationBonus, scanningBonus, confidenceMultiplier, total: Math.round(subtotal * confidenceMultiplier) };
 }
