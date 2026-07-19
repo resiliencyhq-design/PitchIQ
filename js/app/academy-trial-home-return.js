@@ -23,6 +23,11 @@ footballIQProgressStyles.rel = "stylesheet";
 footballIQProgressStyles.href = "css/football-iq-progress.css?v=sprint-14-0-progress-20260719";
 document.head.appendChild(footballIQProgressStyles);
 
+const academySeasonStyles = document.createElement("link");
+academySeasonStyles.rel = "stylesheet";
+academySeasonStyles.href = "css/academy-season.css?v=sprint-15-0-academy-season-20260719";
+document.head.appendChild(academySeasonStyles);
+
 const homeSprint103Styles = document.createElement("link");
 homeSprint103Styles.rel = "stylesheet";
 homeSprint103Styles.href = "css/home-sprint-10-3.css?v=sprint-10-3-1-home-simplification-20260719";
@@ -42,6 +47,10 @@ import("./football-iq-results-entry.js?v=sprint-12-4b-player-development-2026071
 
 import("./football-iq-progress-entry.js?v=sprint-14-0-progress-20260719").catch(error => {
   console.warn("[PitchIQ] Football IQ progress experience failed to load", error);
+});
+
+import("./academy-season-entry.js?v=sprint-15-0-academy-season-20260719").catch(error => {
+  console.warn("[PitchIQ] Academy Season experience failed to load", error);
 });
 
 import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => {
