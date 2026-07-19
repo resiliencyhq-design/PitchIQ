@@ -38,6 +38,11 @@ matchIntelligenceStyles.rel = "stylesheet";
 matchIntelligenceStyles.href = "css/match-intelligence.css?v=sprint-17-0-match-intelligence-20260719";
 document.head.appendChild(matchIntelligenceStyles);
 
+const aiCoachStyles = document.createElement("link");
+aiCoachStyles.rel = "stylesheet";
+aiCoachStyles.href = "css/ai-coach.css?v=sprint-18-0-ai-coach-20260719";
+document.head.appendChild(aiCoachStyles);
+
 const homeSprint103Styles = document.createElement("link");
 homeSprint103Styles.rel = "stylesheet";
 homeSprint103Styles.href = "css/home-sprint-10-3.css?v=sprint-10-3-1-home-simplification-20260719";
@@ -69,6 +74,10 @@ import("./coach-dashboard-entry.js?v=sprint-16-0-coach-dashboard-20260719").catc
 
 import("./match-intelligence-entry.js?v=sprint-17-0-match-intelligence-20260719").catch(error => {
   console.warn("[PitchIQ] Match Intelligence experience failed to load", error);
+});
+
+import("./ai-coach-entry.js?v=sprint-18-0-ai-coach-20260719").catch(error => {
+  console.warn("[PitchIQ] AI Coach experience failed to load", error);
 });
 
 import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => {
