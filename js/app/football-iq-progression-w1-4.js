@@ -1,3 +1,5 @@
+import { FOOTBALL_IQ_MISSIONS } from "../data/football-iq-missions.js?v=s21-1-module-progress-20260719";
+
 const STORAGE_KEY = "pitchiq.footballIq.progress.v1";
 const ACTIVE_MISSION_KEY = "pitchiq.footballIq.activeMission";
 const XP_PER_LEVEL = 100;
@@ -21,6 +23,11 @@ function normalise(raw={}){
     completedMissionIds: Array.isArray(raw.completedMissionIds) ? [...new Set(raw.completedMissionIds)] : [],
     missions: raw.missions && typeof raw.missions === "object" ? raw.missions : {},
   };
+}
+
+function asTime(value){
+  const time = value ? new Date(value).getTime() : NaN;
+  return Number.isFinite(time) ? time : 0;
 }
 
 export function getFootballIqProgress(){
@@ -50,6 +57,59 @@ export function isMissionUnlocked(mission, progress=getFootballIqProgress()){
 
 export function missionProgress(missionId, progress=getFootballIqProgress()){
   return progress.missions[missionId] || null;
+}
+
+export function missionSnapshot(mission, progress=getFootballIqProgress()){
+  if(!mission) return null;
+  const saved = missionProgress(mission.id, progress) || {};
+  const unlocked = isMissionUnlocked(mission, progress);
+  const completed = Boolean(saved.completed);
+  return Object.freeze({
+    ...mission,
+    status: unlocked ? (completed ? "completed" : "available") : "locked",
+    attempts: Number(saved.attempts || 0),
+    personalBest: Number(saved.personalBest || 0),
+    lastPlayed: saved.lastPlayed || null,
+    completed,
+    unlocked,
+  });
+}
+
+export function formatFootballIqDate(value, now=new Date()){
+  const time = asTime(value);
+  if(!time) return "Not recorded";
+  const elapsed = Math.max(0, now.getTime() - time);
+  const days = Math.floor(elapsed / 86400000);
+  if(days === 0) return "today";
+  if(days === 1) return "yesterday";
+  if(days < 7) return `${days} days ago`;
+  return new Date(time).toLocaleDateString(undefined, { day:"numeric", month:"short" });
+}
+
+export function moduleProgressSnapshot(moduleId, progress=getFootballIqProgress()){
+  const missions = FOOTBALL_IQ_MISSIONS
+    .filter(mission => mission.category === moduleId)
+    .map(mission => missionSnapshot(mission, progress));
+  const eligible = missions.filter(mission => mission.unlocked);
+  const completed = eligible.filter(mission => mission.completed);
+  const performance = eligible.length
+    ? Math.round(eligible.reduce((sum, mission) => sum + mission.personalBest, 0) / eligible.length)
+    : 0;
+  const mastery = performance >= 90 ? "Mastered" : performance >= 70 ? "Strong" : performance >= 40 ? "Developing" : "Foundation";
+  const latestTime = Math.max(...completed.map(mission => asTime(mission.lastPlayed)), 0);
+  const nextMission = eligible
+    .slice()
+    .sort((a,b) => Number(a.completed) - Number(b.completed) || a.personalBest - b.personalBest || asTime(a.lastPlayed) - asTime(b.lastPlayed))[0] || null;
+  return Object.freeze({
+    missions,
+    total: eligible.length,
+    completed: completed.length,
+    percent: performance,
+    mastery,
+    totalMinutes: eligible.reduce((sum, mission) => sum + Number(mission.minutes || 0), 0),
+    lastTrained: latestTime ? new Date(latestTime).toISOString() : null,
+    nextMission,
+  });
 }
 
 export function rememberActiveMission(missionId){
@@ -93,4 +153,5 @@ window.PitchIQFootballIqProgress = Object.freeze({
   get: getFootballIqProgress,
   complete: recordFootballIqCompletion,
   activeMissionId,
+  module: moduleProgressSnapshot,
 });
