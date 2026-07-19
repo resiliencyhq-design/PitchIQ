@@ -1,3 +1,5 @@
+import "./home-content-composition.js?v=sprint-h2-home-content-wrapper-20260719";
+
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
 const TRAINING_ROUTE_SELECTOR = `${CARD_SELECTOR} [data-route="training"]`;
