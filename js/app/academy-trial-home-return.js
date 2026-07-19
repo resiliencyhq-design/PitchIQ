@@ -13,6 +13,11 @@ footballIQResultsStyles.rel = "stylesheet";
 footballIQResultsStyles.href = "css/football-iq-results.css?v=sprint-12-3-football-iq-results-20260719";
 document.head.appendChild(footballIQResultsStyles);
 
+const homeSprint103Styles = document.createElement("link");
+homeSprint103Styles.rel = "stylesheet";
+homeSprint103Styles.href = "css/home-sprint-10-3.css?v=sprint-10-3-home-action-hierarchy-20260719";
+document.head.appendChild(homeSprint103Styles);
+
 import("../lab/auto-juggler-camera.js?v=sprint-10-2-1-home-tile-restore-20260719").catch(error => {
   console.warn("[PitchIQ Lab] Auto Juggler ball detector failed to load", error);
 });
@@ -23,6 +28,10 @@ import("../lab/auto-juggler-home-entry.js?v=sprint-10-2-1-home-tile-restore-2026
 
 import("./football-iq-results-entry.js?v=sprint-12-3-football-iq-results-20260719").catch(error => {
   console.warn("[PitchIQ] Football IQ results experience failed to load", error);
+});
+
+import("./home-sprint-10-3.js?v=sprint-10-3-home-action-hierarchy-20260719").catch(error => {
+  console.warn("[PitchIQ] Home Sprint 10.3 enhancements failed to load", error);
 });
 
 document.addEventListener("click", event => {
