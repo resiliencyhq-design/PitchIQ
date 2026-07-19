@@ -59,6 +59,24 @@ export const MISSION_MODULES = Object.freeze({
     status: "content_ready_generic_runtime",
     capabilities: [...SHARED, "sequenceCue", "dualTaskCue", "directionalButtons", "accuracyScoring", "reactionTimeScoring", "consistencyScoring"],
   },
+  "predict-next-play": {
+    moduleId: "predict-next-play",
+    constructId: "gameReading",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "patternCue", "sequenceCue", "screenTap", "predictionQualityScoring", "reactionTimeScoring"],
+  },
+  "see-weak-side": {
+    moduleId: "see-weak-side",
+    constructId: "gameReading",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "tacticalBoard", "patternCue", "directionalButtons", "predictionQualityScoring", "reactionTimeScoring"],
+  },
+  "spot-overload": {
+    moduleId: "spot-overload",
+    constructId: "gameReading",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "tacticalBoard", "animatedPlayers", "directionalButtons", "predictionQualityScoring", "reactionTimeScoring", "consistencyScoring"],
+  },
   "predict-next": {
     moduleId: "predict-next",
     constructId: "gameReading",
