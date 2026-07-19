@@ -1,4 +1,5 @@
 import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h5-home-world-stack-20260719";
+import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 
 const HOME_SELECTOR = "#home";
 const GRID_SELECTOR = ".home-v7-grid";
@@ -8,6 +9,7 @@ const STYLE_ID = "pitchiq-home-content-stack-css";
 const MISSION_STYLE_ID = "pitchiq-home-todays-mission-h3-css";
 const FOOTBALL_IQ_STYLE_ID = "pitchiq-home-football-iq-h4-css";
 const WORLD_STACK_STYLE_ID = "pitchiq-home-world-stack-h5-css";
+const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
 
 function appendStylesheet(id, href) {
   if (document.getElementById(id)) return;
@@ -23,6 +25,7 @@ function ensureStylesheet() {
   appendStylesheet(MISSION_STYLE_ID, "css/home-todays-mission-h3.css?v=sprint-h3-todays-mission-recomposition-20260719");
   appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h5-home-world-stack-20260719");
+  appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
 }
 
 function assignSlot(element, slot) {
@@ -58,7 +61,8 @@ export function applyHomeContentComposition(root = document) {
   }
 
   applyHomeWorldStack(root);
-  home.dataset.homeComposition = "h5";
+  applyHomeWorldPolish(root);
+  home.dataset.homeComposition = "h6";
   return true;
 }
 
