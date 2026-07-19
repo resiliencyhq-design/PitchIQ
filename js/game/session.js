@@ -1,11 +1,17 @@
 import { DRILLS, recommendedDrills } from "../data/drills.js";
 import { getCue } from "../data/cues.js";
+import { activeMissionId, createMissionDrill, nextMissionCue } from "./mission-session-adapter.js";
 
 export function createSession({ position="Winger", drillId=null, level=1 } = {}){
+  const missionId = activeMissionId();
+  const missionDrill = createMissionDrill(missionId);
   const pool = recommendedDrills(position);
-  const drill = DRILLS.find(d => d.id === drillId) || pool[Math.min(pool.length-1, Math.max(0, level % pool.length))] || DRILLS[0];
+  const drill = missionDrill || DRILLS.find(d => d.id === drillId) || pool[Math.min(pool.length-1, Math.max(0, level % pool.length))] || DRILLS[0];
   return {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    missionId: missionDrill?.missionId || null,
+    adapterId: missionDrill?.adapterId || null,
+    scoringProfile: missionDrill?.scoringProfile || null,
     drill,
     startedAt: Date.now(),
     timeLeft: drill.seconds,
@@ -18,6 +24,8 @@ export function createSession({ position="Winger", drillId=null, level=1 } = {})
 }
 
 export function nextCue(drill){
+  const missionCue = nextMissionCue(drill);
+  if (missionCue) return missionCue;
   const id = drill.cuePool[Math.floor(Math.random()*drill.cuePool.length)];
   return getCue(id);
 }
