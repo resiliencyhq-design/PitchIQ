@@ -30,12 +30,15 @@ function assessmentDate() {
   }
 }
 
-function publishReadiness() {
-  const readiness = calculateAssessmentReadiness(listTrainingEvidence(playerId()), {
+function calculateReadiness() {
+  return calculateAssessmentReadiness(listTrainingEvidence(playerId()), {
     lastAssessmentAt: assessmentDate(),
   });
-  window.dispatchEvent(new CustomEvent(READINESS_EVENT, { detail: readiness }));
+}
+
+function publishReadiness(readiness = calculateReadiness()) {
   localStorage.setItem("pitchiq.assessmentReadiness.v1", JSON.stringify(readiness));
+  window.dispatchEvent(new CustomEvent(READINESS_EVENT, { detail: readiness }));
   return readiness;
 }
 
@@ -65,10 +68,10 @@ function readinessCard(readiness) {
   return card;
 }
 
-function renderReadiness() {
+function renderReadiness(readiness = calculateReadiness()) {
   const screen = document.querySelector("#training, [data-training-screen]");
-  if (!screen || screen.querySelector("[data-training-evidence-readiness]")) return;
-  const readiness = publishReadiness();
+  if (!screen) return;
+  screen.querySelector("[data-training-evidence-readiness]")?.remove();
   const target = screen.querySelector(".ux-actions") || screen;
   target.appendChild(readinessCard(readiness));
 }
@@ -79,12 +82,11 @@ document.addEventListener("click", (event) => {
     setTimeout(recordCompletedSession, 0);
   }
   if (event.target.closest?.('[data-route="training"]')) {
-    setTimeout(renderReadiness, 50);
+    setTimeout(() => renderReadiness(), 50);
   }
 }, true);
 
-window.addEventListener("load", () => setTimeout(renderReadiness, 100));
-window.addEventListener(READINESS_EVENT, () => {
-  document.querySelector("[data-training-evidence-readiness]")?.remove();
-  renderReadiness();
+window.addEventListener("load", () => setTimeout(() => renderReadiness(), 100));
+window.addEventListener(READINESS_EVENT, (event) => {
+  renderReadiness(event.detail || calculateReadiness());
 });
