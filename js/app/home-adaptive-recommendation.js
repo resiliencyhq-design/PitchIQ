@@ -16,6 +16,7 @@ import "./academy-session-builder-ui-b2.js?v=b2-session-builder-20260719";
 import "./academy-dynamic-difficulty-ui-b3.js?v=b3-dynamic-difficulty-20260719";
 import "./academy-season-planner-ui-c1.js?v=c1-season-planner-20260720";
 import "./academy-development-path-ui-c2.js?v=c2-development-path-20260720";
+import "./academy-parent-coach-dashboard-ui-c3.js?v=c3-parent-coach-dashboard-20260720";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
