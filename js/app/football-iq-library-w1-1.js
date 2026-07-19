@@ -1,11 +1,11 @@
-import { FOOTBALL_IQ_CATEGORY_LABELS, FOOTBALL_IQ_MISSIONS, missionById, missionsForView, relatedMissions } from "../data/football-iq-missions.js?v=w1-3-mission-detail-20260719";
+import { FOOTBALL_IQ_CATEGORY_LABELS, FOOTBALL_IQ_MISSIONS, FOOTBALL_IQ_MODULES, missionById, missionsForView, relatedMissions, moduleById, missionsForModule, moduleProgress } from "../data/football-iq-missions.js?v=s21-0-module-experience-20260719";
 
 const LIBRARY_STYLE_ID = "pitchiq-football-iq-library-w1-1-css";
 if(!document.getElementById(LIBRARY_STYLE_ID)){
   const link = document.createElement("link");
   link.id = LIBRARY_STYLE_ID;
   link.rel = "stylesheet";
-  link.href = "css/football-iq-library-w1-1.css?v=w1-2-mission-cards-20260719";
+  link.href = "css/football-iq-library-w1-1.css?v=s21-0-module-experience-20260719";
   document.head.appendChild(link);
 }
 const DETAIL_STYLE_ID = "pitchiq-football-iq-mission-detail-w1-3-css";
@@ -20,16 +20,9 @@ if(!document.getElementById(DETAIL_STYLE_ID)){
 const APP = document.getElementById("app");
 const NAV = document.getElementById("nav");
 const LIBRARY_ROUTE = "football-iq-library";
+const MODULE_ROUTE = "football-iq-module";
 const DETAIL_ROUTE = "football-iq-mission";
-const CATEGORIES = [
-  ["awareness", "Awareness", "◉"],
-  ["scanning", "Scanning", "◎"],
-  ["vision", "Vision", "◇"],
-  ["decision", "Decision Making", "↯"],
-  ["positioning", "Positioning", "⌖"],
-  ["anticipation", "Anticipation", "≫"],
-  ["communication", "Communication", "◌"],
-];
+const CATEGORIES = Object.values(FOOTBALL_IQ_MODULES).map(module => [module.id, module.title, module.icon]);
 let activeTab = "recommended";
 let activeCategory = "";
 
@@ -39,6 +32,7 @@ function hashParts(){
   return { route:route.toLowerCase(), id:decodeURIComponent(id) };
 }
 function isLibraryRoute(){ return hashParts().route === LIBRARY_ROUTE; }
+function isModuleRoute(){ return hashParts().route === MODULE_ROUTE; }
 function isDetailRoute(){ return hashParts().route === DETAIL_ROUTE; }
 function stars(value){ return `${"★".repeat(value)}${"☆".repeat(Math.max(0,5-value))}`; }
 function showWorldShell(){
@@ -61,13 +55,24 @@ function missionCard(mission, compact=false){
   </article>`;
 }
 
+function moduleMissionRow(mission){
+  const locked = mission.status === "locked";
+  const completed = mission.status === "completed";
+  const status = completed ? "Complete" : locked ? `Level ${mission.unlockLevel || 2}` : "Available";
+  return `<article class="fiq-module-mission${locked ? " is-locked" : ""}${completed ? " is-completed" : ""}">
+    <span class="fiq-module-mission-state" aria-hidden="true">${completed ? "✓" : locked ? "○" : "→"}</span>
+    <div><small>${status}</small><h3>${mission.title}</h3><p>${mission.description}</p><span>${mission.minutes} min · ${stars(mission.difficulty)} · ${mission.xp} XP</span></div>
+    <button type="button" ${locked ? "disabled" : `data-fiq-open-mission="${mission.id}"`}>${locked ? "Locked" : completed ? "Review" : "Start"}</button>
+  </article>`;
+}
+
 function renderMissionList(){
   const panel = APP?.querySelector?.("[data-fiq-panel]");
   if(!panel) return;
   const missions = missionsForView(activeTab, activeCategory);
   const title = activeCategory ? FOOTBALL_IQ_CATEGORY_LABELS[activeCategory] : activeTab === "recommended" ? "Recommended Today" : activeTab === "browse" ? "All Missions" : activeTab === "completed" ? "Completed Missions" : "Locked Missions";
   const clear = activeCategory ? `<button type="button" class="fiq-category-clear" data-fiq-category-clear>All categories</button>` : "";
-  panel.innerHTML = `<div class="fiq-library-section-head"><span>${title}</span><small>${missions.length} mission${missions.length === 1 ? "" : "s"}</small></div>${clear}<div class="fiq-mission-grid">${missions.map(mission=>missionCard(mission)).join("") || `<div class="fiq-mission-empty"><strong>No missions here yet</strong><p>Complete more Football IQ training to build this collection.</p></div>`}</div><div class="fiq-library-section-head"><span>Mission Categories</span><small>7 skills</small></div><div class="fiq-library-categories">${CATEGORIES.map(([id,label,icon])=>`<button type="button" class="${activeCategory === id ? "active" : ""}" data-fiq-category="${id}"><b>${icon}</b><span>${label}</span><small>${FOOTBALL_IQ_MISSIONS.filter(mission=>mission.category===id).length} mission</small><i>→</i></button>`).join("")}</div>`;
+  panel.innerHTML = `<div class="fiq-library-section-head"><span>${title}</span><small>${missions.length} mission${missions.length === 1 ? "" : "s"}</small></div>${clear}<div class="fiq-mission-grid">${missions.map(mission=>missionCard(mission)).join("") || `<div class="fiq-mission-empty"><strong>No missions here yet</strong><p>Complete more Football IQ training to build this collection.</p></div>`}</div><div class="fiq-library-section-head"><span>Mission Categories</span><small>7 skills</small></div><div class="fiq-library-categories">${CATEGORIES.map(([id,label,icon])=>`<button type="button" data-fiq-open-module="${id}"><b>${icon}</b><span>${label}</span><small>${FOOTBALL_IQ_MISSIONS.filter(mission=>mission.category===id).length} mission${FOOTBALL_IQ_MISSIONS.filter(mission=>mission.category===id).length === 1 ? "" : "s"}</small><i>→</i></button>`).join("")}</div>`;
 }
 
 function renderLibrary(){
@@ -95,6 +100,40 @@ function renderLibrary(){
   return true;
 }
 
+function renderModule(){
+  if(!APP || !isModuleRoute()) return false;
+  const module = moduleById(hashParts().id);
+  if(!module){ window.location.hash = LIBRARY_ROUTE; return false; }
+  showWorldShell();
+  const missions = missionsForModule(module.id);
+  const progress = moduleProgress(module.id);
+  const next = progress.nextMission;
+  APP.innerHTML = `<section class="screen app active fiq-library-shell fiq-module-shell" data-football-iq-module="${module.id}">
+    <header class="fiq-library-topbar">
+      <button type="button" class="fiq-library-back" data-fiq-module-back aria-label="Back to Mission Library">←</button>
+      <div><span>PitchIQ Academy</span><strong>Football IQ Training</strong></div>
+      <span class="fiq-library-level">${progress.mastery}</span>
+    </header>
+    <main class="fiq-library-content">
+      <section class="fiq-module-hero">
+        <span class="fiq-module-icon">${module.icon}</span>
+        <span class="fiq-library-kicker">Football IQ Module</span>
+        <h1>${module.title}</h1>
+        <p>${module.description}</p>
+        <strong>${module.coachingPrompt}</strong>
+      </section>
+      <section class="fiq-module-progress" aria-label="Module progress">
+        <div class="fiq-module-progress-head"><div><small>Module progress</small><strong>${progress.percent}%</strong></div><span>${progress.completed} of ${progress.total} complete</span></div>
+        <div class="fiq-module-progress-track"><i style="width:${progress.percent}%"></i></div>
+        <div class="fiq-module-progress-meta"><span>${progress.mastery}</span><span>${progress.totalMinutes} min available</span><span>${progress.lastTrained ? `Last trained ${progress.lastTrained}` : "Ready to begin"}</span></div>
+      </section>
+      ${next ? `<button type="button" class="fiq-module-continue" data-fiq-open-mission="${next.id}"><span><small>Continue training</small><strong>${next.title}</strong></span><b>→</b></button>` : ""}
+      <section class="fiq-module-list"><div class="fiq-library-section-head"><span>Missions</span><small>${missions.length} total</small></div>${missions.map(moduleMissionRow).join("") || `<div class="fiq-mission-empty"><strong>Missions coming soon</strong><p>This module is ready for its first training mission.</p></div>`}</section>
+    </main>
+  </section>`;
+  return true;
+}
+
 function progressMarkup(mission){
   const completed = mission.status === "completed";
   const attempts = Number(mission.attempts || 0);
@@ -116,7 +155,7 @@ function renderMissionDetail(){
   const locked = mission.status === "locked";
   APP.innerHTML = `<section class="screen app active fiq-detail-shell" data-football-iq-detail="${mission.id}">
     <header class="fiq-detail-topbar">
-      <button type="button" class="fiq-detail-back" data-fiq-detail-back aria-label="Back to Mission Library">←</button>
+      <button type="button" class="fiq-detail-back" data-fiq-detail-back data-fiq-detail-category="${mission.category}" aria-label="Back to ${category}">←</button>
       <div><span>PitchIQ Academy</span><strong>Football IQ Training</strong></div>
       <span class="fiq-detail-level">LEVEL 1</span>
     </header>
@@ -143,6 +182,7 @@ function renderMissionDetail(){
 
 function renderCurrentFootballIqRoute(){
   if(isLibraryRoute()) return renderLibrary();
+  if(isModuleRoute()) return renderModule();
   if(isDetailRoute()) return renderMissionDetail();
   return false;
 }
@@ -154,6 +194,11 @@ function openMission(id){
   if(!missionById(id) || missionById(id)?.status === "locked") return;
   window.location.hash = `${DETAIL_ROUTE}/${encodeURIComponent(id)}`;
   renderMissionDetail();
+}
+function openModule(id){
+  if(!moduleById(id)) return;
+  window.location.hash = `${MODULE_ROUTE}/${encodeURIComponent(id)}`;
+  renderModule();
 }
 function activateTab(button){
   activeTab = button.dataset.fiqTab || "recommended";
@@ -171,8 +216,12 @@ document.addEventListener("click", event => {
   if(homeCard){ event.preventDefault(); event.stopImmediatePropagation(); window.location.hash = LIBRARY_ROUTE; renderLibrary(); return; }
   const homeButton = event.target.closest?.("[data-fiq-library-home]");
   if(homeButton){ event.preventDefault(); returnHome(); return; }
+  const moduleBack = event.target.closest?.("[data-fiq-module-back]");
+  if(moduleBack){ event.preventDefault(); window.location.hash = LIBRARY_ROUTE; renderLibrary(); return; }
   const detailBack = event.target.closest?.("[data-fiq-detail-back]");
-  if(detailBack){ event.preventDefault(); window.location.hash = LIBRARY_ROUTE; renderLibrary(); return; }
+  if(detailBack){ event.preventDefault(); openModule(detailBack.dataset.fiqDetailCategory); return; }
+  const moduleButton = event.target.closest?.("[data-fiq-open-module]");
+  if(moduleButton){ event.preventDefault(); event.stopImmediatePropagation(); openModule(moduleButton.dataset.fiqOpenModule); return; }
   const missionButton = event.target.closest?.("[data-fiq-open-mission]");
   if(missionButton){ event.preventDefault(); event.stopImmediatePropagation(); openMission(missionButton.dataset.fiqOpenMission); return; }
   const start = event.target.closest?.("[data-fiq-start-mission]");
@@ -180,7 +229,7 @@ document.addEventListener("click", event => {
   const tab = event.target.closest?.("[data-fiq-tab]");
   if(tab){ event.preventDefault(); activateTab(tab); return; }
   const category = event.target.closest?.("[data-fiq-category]");
-  if(category){ event.preventDefault(); activeCategory = category.dataset.fiqCategory || ""; activeTab = "browse"; APP?.querySelectorAll?.("[data-fiq-tab]").forEach(tabButton=>tabButton.classList.toggle("active",tabButton.dataset.fiqTab==="browse")); renderMissionList(); return; }
+  if(category){ event.preventDefault(); openModule(category.dataset.fiqCategory); return; }
   const clear = event.target.closest?.("[data-fiq-category-clear]");
   if(clear){ event.preventDefault(); activeCategory = ""; renderMissionList(); }
 }, true);
