@@ -4,6 +4,7 @@ const HERO_SELECTOR = ".home-hero-card";
 const STACK_CLASS = "home-content-stack";
 const STYLE_ID = "pitchiq-home-content-stack-css";
 const MISSION_STYLE_ID = "pitchiq-home-todays-mission-h3-css";
+const FOOTBALL_IQ_STYLE_ID = "pitchiq-home-football-iq-h4-css";
 
 function appendStylesheet(id, href) {
   if (document.getElementById(id)) return;
@@ -17,6 +18,7 @@ function appendStylesheet(id, href) {
 function ensureStylesheet() {
   appendStylesheet(STYLE_ID, "css/home-content-stack.css?v=sprint-h2-home-content-wrapper-20260719");
   appendStylesheet(MISSION_STYLE_ID, "css/home-todays-mission-h3.css?v=sprint-h3-todays-mission-recomposition-20260719");
+  appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
 }
 
 function assignSlot(element, slot) {
@@ -37,7 +39,7 @@ export function applyHomeContentComposition(root = document) {
   assignSlot(grid.querySelector(":scope > .home-mock-mission, :scope > .home-content-stack > .home-mock-mission"), "todays-mission");
   assignSlot(grid.querySelector(":scope > .home-actions-grid, :scope > .home-content-stack > .home-actions-grid"), "quick-actions");
   assignSlot(grid.querySelector(":scope > .home-secondary-row, :scope > .home-content-stack > .home-secondary-row"), "supporting-content");
-  assignSlot(grid.querySelector(".home-adaptive-recommendation"), "football-iq-recommendation");
+  assignSlot(grid.querySelector(".home-adaptive-recommendation"), "football-iq-training");
 
   let stack = grid.querySelector(`:scope > .${STACK_CLASS}`);
   if (!stack) {
@@ -51,7 +53,7 @@ export function applyHomeContentComposition(root = document) {
     movable.forEach(child => stack.appendChild(child));
   }
 
-  home.dataset.homeComposition = "h3";
+  home.dataset.homeComposition = "h4";
   return true;
 }
 
