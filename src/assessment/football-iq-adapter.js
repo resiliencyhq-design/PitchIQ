@@ -3,7 +3,7 @@ import { scorePlayerProfile } from "../scoring/engine.js";
 import { createFootballIQProfile } from "../profile/football-iq-profile.js";
 import { saveFootballIQProfile } from "../profile/football-iq-storage.js";
 
-function validateObservationSet(observations, { assessmentId, playerId, label }) {
+function validateObservationSet(observations, { playerId, label }) {
   if (!Array.isArray(observations)) {
     throw new TypeError(`${label} must be an array.`);
   }
@@ -13,10 +13,6 @@ function validateObservationSet(observations, { assessmentId, playerId, label })
 
     if (observation.playerId !== playerId) {
       throw new RangeError(`${label} contains evidence for another player.`);
-    }
-
-    if (observation.assessmentId !== assessmentId) {
-      throw new RangeError(`${label} contains evidence for another assessment.`);
     }
 
     return { ...observation };
@@ -49,12 +45,10 @@ export function validateAssessmentEvidence(payload) {
     playerId,
     completedAt: completionDate.toISOString(),
     observations: validateObservationSet(observations, {
-      assessmentId,
       playerId,
       label: "observations",
     }),
     matchChallengeObservations: validateObservationSet(matchChallengeObservations, {
-      assessmentId,
       playerId,
       label: "matchChallengeObservations",
     }),
