@@ -1,0 +1,32 @@
+.development-screen{min-height:100dvh;background:linear-gradient(180deg,#07182d 0%,#0b2440 48%,#071522 100%);color:#fff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.development-wrap{width:min(100%,430px);margin:0 auto;padding:16px 18px 28px;display:grid;gap:16px}
+.development-top{min-height:48px;display:grid;grid-template-columns:72px 1fr 72px;align-items:center;font-size:.72rem;letter-spacing:.14em;font-weight:800}
+.development-top button{min-height:48px;border:0;background:transparent;color:#c8d7e7;text-align:left;font:inherit;cursor:pointer}
+.development-top span{text-align:center}
+.development-hero,.development-card,.development-panel,.development-closing{border:1px solid rgba(255,255,255,.12);border-radius:24px;background:rgba(255,255,255,.07);box-shadow:0 18px 46px rgba(0,0,0,.22)}
+.development-hero{padding:24px;text-align:center;background:radial-gradient(circle at 50% 18%,rgba(67,218,170,.2),transparent 45%),rgba(255,255,255,.07)}
+.development-hero>span,.development-card>span,.development-panel>span{display:block;color:#79e6bd;font-size:.7rem;letter-spacing:.14em;font-weight:900}
+.development-hero h1{margin:10px 0 8px;font-size:clamp(1.65rem,7vw,2.2rem);line-height:1.04}
+.development-hero p,.development-card p,.development-panel p,.development-closing p{color:#c8d7e7;line-height:1.55}
+.development-score{width:112px;height:112px;margin:18px auto;display:grid;place-items:center;border-radius:50%;border:2px solid rgba(121,230,189,.68);font-size:2.7rem;font-weight:900;background:rgba(0,0,0,.2)}
+.development-meta{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:12px;color:#b9c9d9;font-size:.78rem}
+.development-evidence{margin-top:20px;padding:16px;border-radius:16px;background:rgba(0,0,0,.2);display:grid;gap:5px;text-align:left}
+.development-evidence small{color:#b9c9d9;line-height:1.45}
+.development-stack{display:grid;gap:14px}
+.development-card,.development-panel{padding:20px}
+.development-card h2,.development-panel h2,.development-closing h2{margin:8px 0;font-size:1.35rem}
+.development-card footer{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);display:grid;gap:4px}
+.development-card footer b{font-size:.82rem;color:#fff}
+.development-card footer small{color:#9fb3c7;line-height:1.4}
+.strength-card{border-color:rgba(121,230,189,.34)}
+.priority-card{border-color:rgba(255,202,99,.3)}
+.priority-card>span{color:#ffd379}
+.training-focus ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+.training-focus li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:14px;border-radius:16px;background:rgba(0,0,0,.18)}
+.training-focus li>span{font-size:1.2rem;color:#79e6bd}
+.training-focus li b{display:block;margin-bottom:4px}
+.training-focus li p{margin:0;font-size:.9rem}
+.development-closing{padding:22px;text-align:center}
+.development-closing .mega{width:100%;min-height:52px;margin-top:12px}
+@media (max-width:360px){.development-wrap{padding-inline:14px}.development-hero,.development-card,.development-panel,.development-closing{border-radius:20px}.development-meta{font-size:.7rem}}
+@media (prefers-reduced-motion:reduce){.development-screen *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
