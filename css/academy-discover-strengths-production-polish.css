@@ -1,0 +1,164 @@
+/* Sprint 10.3A.19 — Identity Complete production polish.
+   Clear one-time tactical story, restrained stadium ambience and a smooth CTA exit.
+   Layout, copy, routing, CTA artwork and locked overlay coordinates remain unchanged. */
+
+#identity-complete-scene{
+  transition:opacity .26s ease,filter .26s ease,transform .26s ease;
+}
+
+/* Make the tactical story legible: teammate -> lane -> open space. */
+#identity-complete-scene .academy-player-ring--teammate{
+  animation:
+    identityProductionRingReveal .46s cubic-bezier(.16,.82,.22,1) .28s both,
+    identityProductionRingBreathe 5.4s ease-in-out 2.75s infinite!important;
+}
+
+#identity-complete-scene .academy-pass-line--solid{
+  animation:identityProductionSolidDraw .72s cubic-bezier(.18,.76,.24,1) .78s both!important;
+  transform-origin:left center;
+}
+
+#identity-complete-scene .academy-player-ring--self{
+  animation:
+    identityProductionRingReveal .42s cubic-bezier(.16,.82,.22,1) 1.28s both,
+    identityProductionRingBreathe 5.4s ease-in-out 2.95s infinite!important;
+}
+
+#identity-complete-scene .academy-pass-line--dashed{
+  animation:identityProductionDashedDraw .82s cubic-bezier(.18,.76,.24,1) 1.58s both!important;
+  transform-origin:left center;
+}
+
+#identity-complete-scene .academy-player-ring--space{
+  animation:
+    identityProductionRingReveal .48s cubic-bezier(.16,.82,.22,1) 2.05s both,
+    identityProductionRingBreathe 5.4s ease-in-out 3.15s infinite!important;
+}
+
+#identity-complete-scene .academy-overlay-label--teammate{
+  animation:identityProductionLabel .34s ease-out .46s both!important;
+}
+
+#identity-complete-scene .academy-overlay-label--lane{
+  animation:identityProductionLabel .34s ease-out 1.46s both!important;
+}
+
+#identity-complete-scene .academy-overlay-label--space{
+  animation:identityProductionLabel .34s ease-out 2.25s both!important;
+}
+
+/* A visible but restrained single scan. It supports the reveal without becoming a loop. */
+#identity-complete-scene .academy-tactical-overlay::before{
+  left:-52%;
+  top:24%;
+  width:42%;
+  height:38%;
+  background:linear-gradient(
+    102deg,
+    transparent 0%,
+    rgba(215,255,46,.03) 20%,
+    rgba(215,255,46,.18) 47%,
+    rgba(79,255,170,.10) 61%,
+    transparent 100%
+  );
+  filter:blur(7px);
+  animation:identityProductionScan 3.8s cubic-bezier(.2,.72,.22,1) .08s both;
+}
+
+/* Quiet living-stadium ambience after the tactical reveal settles. */
+#identity-complete-scene .academy-tactical-overlay::after{
+  left:5%;
+  right:5%;
+  top:27%;
+  height:35%;
+  background:
+    radial-gradient(ellipse at 50% 58%,rgba(215,255,46,.07),transparent 58%),
+    linear-gradient(90deg,transparent,rgba(255,255,255,.025),transparent);
+  opacity:.22;
+  animation:identityProductionAmbience 7.2s ease-in-out 3.1s infinite;
+}
+
+/* Premium but quick exit. Navigation still occurs through the existing route handler. */
+#identity-complete-scene.identity-scene-exiting{
+  opacity:0;
+  filter:brightness(.82) blur(1px);
+  transform:scale(.995);
+  pointer-events:none;
+}
+
+#identity-complete-scene.identity-scene-exiting .academy-tactical-overlay{
+  opacity:0;
+  transform:scale(.985);
+  transition:opacity .22s ease,transform .22s ease;
+}
+
+#identity-complete-scene.identity-scene-exiting [data-action="save-profile"]{
+  transform:translateY(2px) scale(.985)!important;
+  filter:brightness(.96);
+  transition:transform .12s ease,filter .12s ease;
+}
+
+@keyframes identityProductionScan{
+  0%{left:-52%;opacity:0}
+  10%{opacity:.72}
+  75%{opacity:.48}
+  100%{left:118%;opacity:0}
+}
+
+@keyframes identityProductionRingReveal{
+  0%{opacity:0;filter:brightness(.62);box-shadow:0 0 0 rgba(215,255,46,0)}
+  58%{opacity:1;filter:brightness(1.42);box-shadow:0 0 20px rgba(215,255,46,.94),0 0 42px rgba(215,255,46,.48)}
+  100%{opacity:1;filter:brightness(1);box-shadow:0 0 10px rgba(215,255,46,.78),0 0 24px rgba(215,255,46,.34)}
+}
+
+@keyframes identityProductionRingBreathe{
+  0%,100%{opacity:.84;filter:brightness(.95);box-shadow:0 0 8px rgba(215,255,46,.62),0 0 20px rgba(215,255,46,.23)}
+  50%{opacity:1;filter:brightness(1.1);box-shadow:0 0 13px rgba(215,255,46,.86),0 0 29px rgba(215,255,46,.36)}
+}
+
+@keyframes identityProductionSolidDraw{
+  0%{opacity:0;transform:rotate(27.5deg) scaleX(0)}
+  24%{opacity:.74}
+  100%{opacity:1;transform:rotate(27.5deg) scaleX(1)}
+}
+
+@keyframes identityProductionDashedDraw{
+  0%{opacity:0;transform:rotate(-31deg) scaleX(0)}
+  24%{opacity:.74}
+  100%{opacity:1;transform:rotate(-31deg) scaleX(1)}
+}
+
+@keyframes identityProductionLabel{
+  from{opacity:0;filter:blur(2px);transform:translateY(3px)}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}
+}
+
+@keyframes identityProductionAmbience{
+  0%,100%{opacity:.16;transform:scale(.985)}
+  50%{opacity:.34;transform:scale(1.018)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #identity-complete-scene,
+  #identity-complete-scene .academy-tactical-overlay,
+  #identity-complete-scene .academy-tactical-overlay::before,
+  #identity-complete-scene .academy-tactical-overlay::after,
+  #identity-complete-scene .academy-player-ring,
+  #identity-complete-scene .academy-pass-line,
+  #identity-complete-scene .academy-overlay-label,
+  #identity-complete-scene [data-action="save-profile"]{
+    animation:none!important;
+    transition:none!important;
+  }
+
+  #identity-complete-scene .academy-tactical-overlay::before,
+  #identity-complete-scene .academy-tactical-overlay::after{
+    display:none!important;
+  }
+
+  #identity-complete-scene .academy-player-ring,
+  #identity-complete-scene .academy-pass-line,
+  #identity-complete-scene .academy-overlay-label{
+    opacity:1!important;
+  }
+}

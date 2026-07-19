@@ -13,6 +13,7 @@ const POSITION_LABELS = {
 let identityScene = null;
 let identitySource = null;
 let identityObserver = null;
+let identityTransitioning = false;
 
 function positionLabel(value) {
   return POSITION_LABELS[value] || value || "—";
@@ -74,6 +75,7 @@ function unlockDocumentScroll() {
 function removeIdentityScene({ restoreSource = true } = {}) {
   identityScene?.remove();
   identityScene = null;
+  identityTransitioning = false;
 
   if (identitySource && restoreSource) {
     identitySource.classList.remove("identity-scene-source");
@@ -150,11 +152,17 @@ function alignOnboardingLabels() {
   syncIdentityScene();
 }
 
+function completeIdentityTransition() {
+  removeIdentityScene({ restoreSource: false });
+  window.location.hash = "academy-trials";
+}
+
 function beginFirstAssessment(event) {
   const button = event.target.closest?.('[data-action="save-profile"]');
-  if (!button || !button.closest(".academy-welcome-step")) return;
+  if (!button || !button.closest(".academy-welcome-step") || identityTransitioning) return;
   event.preventDefault();
   event.stopImmediatePropagation();
+  identityTransitioning = true;
 
   const player = identity();
   localStorage.setItem(PLAYER_NAME_KEY, player.name);
@@ -162,8 +170,19 @@ function beginFirstAssessment(event) {
   localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
-  removeIdentityScene({ restoreSource: false });
-  window.location.hash = "academy-trials";
+
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  const scene = button.closest("#identity-complete-scene");
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  if (!scene || reduceMotion) {
+    completeIdentityTransition();
+    return;
+  }
+
+  scene.classList.add("identity-scene-exiting");
+  window.setTimeout(completeIdentityTransition, 260);
 }
 
 function initialise() {
