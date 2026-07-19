@@ -31,6 +31,11 @@ const NATIVE_ADAPTERS = Object.freeze({
     cueProfile: "third-player-lane-recognition",
     scoringProfile: "third-player-identification-scanning-reaction",
   }),
+  "break-the-line": Object.freeze({
+    adapterId: "break-the-line-v1",
+    cueProfile: "defensive-line-passing-lane-progression",
+    scoringProfile: "line-breaking-recognition-progression-reaction",
+  }),
 });
 
 export function resolveMissionIntegration(selection, options = {}) {
