@@ -1,0 +1,88 @@
+export const ACADEMY_SEASON_VERSION = "1.0.0";
+
+const CONSTRUCTS = [
+  ["awareness", "Awareness"],
+  ["gameReading", "Game Reading"],
+  ["decisionQuality", "Decision Quality"],
+  ["adaptability", "Adaptability"],
+  ["useOfSpace", "Use of Space"],
+];
+
+function score(profile, id) {
+  const value = profile?.constructs?.[id]?.score;
+  return Number.isFinite(value) ? value : null;
+}
+
+function sortedConstructs(profile) {
+  return CONSTRUCTS.map(([id, label]) => ({ id, label, score: score(profile, id) }))
+    .sort((a, b) => (a.score ?? Infinity) - (b.score ?? Infinity));
+}
+
+export function academyLevel({ sessions = 0, activeDays = 0, weeklyReviews = 0 } = {}) {
+  const points = sessions + activeDays * 2 + weeklyReviews * 3;
+  if (points >= 30) return { id: 3, label: "Academy Level 3", points };
+  if (points >= 12) return { id: 2, label: "Academy Level 2", points };
+  return { id: 1, label: "Academy Level 1", points };
+}
+
+export function buildWeeklyPlan({ profile = null, evidenceSummary = {}, weekStart = new Date() } = {}) {
+  const ranked = sortedConstructs(profile);
+  const primary = ranked[0] || { id: "awareness", label: "Awareness" };
+  const secondary = ranked[1] || { id: "decisionQuality", label: "Decision Quality" };
+  const targetSessions = 4;
+  const completedSessions = Math.min(targetSessions, Number(evidenceSummary.sessions) || 0);
+  return {
+    version: ACADEMY_SEASON_VERSION,
+    weekStart: new Date(weekStart).toISOString(),
+    primary,
+    secondary,
+    objective: `Complete ${targetSessions} quality sessions focused on ${primary.label}.`,
+    recommendedMissions: [
+      { constructId: primary.id, title: `Build ${primary.label}` },
+      { constructId: secondary.id, title: `Support ${secondary.label}` },
+      { constructId: primary.id, title: `${primary.label} under pressure` },
+    ],
+    progress: { completedSessions, targetSessions },
+  };
+}
+
+export function buildWeeklyReport({ plan, evidenceSummary = {} } = {}) {
+  const sessions = Number(evidenceSummary.sessions) || 0;
+  const activeDays = Number(evidenceSummary.activeDays) || 0;
+  const evidenceQuality = Number(evidenceSummary.evidenceQuality) || 0;
+  return {
+    sessions,
+    activeDays,
+    evidenceQuality,
+    consistency: activeDays >= 3 ? "Strong" : activeDays >= 2 ? "Building" : "Starting",
+    strongestImprovement: plan?.secondary?.label || "Consistency",
+    nextPriority: plan?.primary?.label || "Awareness",
+    coachMessage: sessions
+      ? `You trained on ${activeDays} active day${activeDays === 1 ? "" : "s"}. Keep building quality around ${plan?.primary?.label || "your main focus"}.`
+      : "Your academy week is ready. Complete your first mission to begin building evidence.",
+  };
+}
+
+export function buildSeasonTimeline({ profiles = [], joinedAt = null, weeklyReviews = [] } = {}) {
+  const milestones = [];
+  if (joinedAt) milestones.push({ type: "joined", at: joinedAt, title: "Joined the Academy" });
+  [...profiles].forEach((profile, index) => milestones.push({
+    type: index === 0 ? "assessment" : "reassessment",
+    at: profile.assessmentDate || profile.generatedAt || profile.assessedAt,
+    title: index === 0 ? "Football IQ assessment completed" : "Football IQ reassessment completed",
+  }));
+  weeklyReviews.forEach((review) => milestones.push({ type: "weekly-review", at: review.createdAt, title: "Weekly academy review" }));
+  return milestones.filter((item) => item.at).sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
+}
+
+export function buildAcademySeason(input = {}) {
+  const plan = buildWeeklyPlan(input);
+  const report = buildWeeklyReport({ plan, evidenceSummary: input.evidenceSummary });
+  const level = academyLevel({
+    sessions: report.sessions,
+    activeDays: report.activeDays,
+    weeklyReviews: input.weeklyReviews?.length || 0,
+  });
+  const timeline = buildSeasonTimeline(input);
+  return { plan, report, level, timeline };
+}
