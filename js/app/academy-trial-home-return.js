@@ -39,6 +39,10 @@ import("./home-sprint-10-3.js?v=hotfix-home-load-loop-20260719").catch(error => 
   console.warn("[PitchIQ] Home Sprint 10.3.1 enhancements failed to load", error);
 });
 
+import("./training-evidence-entry.js?v=sprint-13-0-evidence-loop-20260719").catch(error => {
+  console.warn("[PitchIQ] Training evidence loop failed to load", error);
+});
+
 document.addEventListener("click", event => {
   const button = event.target.closest?.('[data-trial-route="home"]');
   if(!button) return;
