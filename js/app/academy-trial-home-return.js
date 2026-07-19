@@ -52,6 +52,12 @@ import("./training-evidence-entry.js?v=sprint-13-0-evidence-loop-20260719").catc
   console.warn("[PitchIQ] Training evidence loop failed to load", error);
 });
 
+// Registers a lightweight route listener only. The adaptive engine is loaded
+// after the player explicitly enters Training, never during application boot.
+import("./adaptive-training-entry.js?v=sprint-12-5b-training-screen-integration-20260719").catch(error => {
+  console.warn("[PitchIQ] Adaptive training route integration failed to load", error);
+});
+
 document.addEventListener("click", event => {
   const button = event.target.closest?.('[data-trial-route="home"]');
   if(!button) return;
