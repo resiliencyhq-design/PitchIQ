@@ -23,6 +23,24 @@ export const MISSION_MODULES = Object.freeze({
     status: "planned",
     capabilities: [...SHARED, "patternCue", "sequenceCue", "screenTap", "accuracyScoring", "reactionTimeScoring"],
   },
+  "scan-before-receive": {
+    moduleId: "scan-before-receive",
+    constructId: "awareness",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "directionCue", "screenTap", "accuracyScoring", "reactionTimeScoring"],
+  },
+  "scan-while-moving": {
+    moduleId: "scan-while-moving",
+    constructId: "awareness",
+    status: "content_ready_generic_runtime",
+    capabilities: [...SHARED, "sequenceCue", "dualTaskCue", "directionalButtons", "accuracyScoring", "reactionTimeScoring", "consistencyScoring"],
+  },
+  "transition-scan": {
+    moduleId: "transition-scan",
+    constructId: "awareness",
+    status: "ready_for_runtime_adapter",
+    capabilities: [...SHARED, "sequenceCue", "dualTaskCue", "directionalButtons", "accuracyScoring", "reactionTimeScoring", "decisionQualityScoring"],
+  },
   "find-third-player": {
     moduleId: "find-third-player",
     constructId: "awareness",
