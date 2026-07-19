@@ -119,6 +119,6 @@ export function renderFootballIQResults({ profile } = {}) {
     </section>
     <section class="fiq-dimensions"><header><span>Your five dimensions</span><h2>You’re building a clearer picture of your game.</h2></header>${CONSTRUCTS.map((construct) => renderConstructCard(construct, resolvedProfile)).join("")}</section>
     <section class="fiq-insights">${renderMentality(resolvedProfile)}${renderMatchChallenge(resolvedProfile)}</section>
-    <section class="fiq-closing"><h2>Keep building.</h2><p>Every challenge adds evidence and helps your profile become more accurate.</p><button class="primary mega" data-route="home">BACK TO ACADEMY</button></section>
+    <section class="fiq-closing"><h2>Turn insight into development.</h2><p>See your strongest area and the next skills worth building.</p><button class="primary mega" data-development-route="open">MY DEVELOPMENT</button><button class="primary mega" data-route="home">BACK TO ACADEMY</button></section>
   </div></section>`;
 }

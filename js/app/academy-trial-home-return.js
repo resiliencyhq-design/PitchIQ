@@ -10,8 +10,13 @@ document.head.appendChild(autoJugglerPreviewStyles);
 
 const footballIQResultsStyles = document.createElement("link");
 footballIQResultsStyles.rel = "stylesheet";
-footballIQResultsStyles.href = "css/football-iq-results.css?v=sprint-12-3-football-iq-results-20260719";
+footballIQResultsStyles.href = "css/football-iq-results.css?v=sprint-12-4b-player-development-20260719";
 document.head.appendChild(footballIQResultsStyles);
+
+const playerDevelopmentStyles = document.createElement("link");
+playerDevelopmentStyles.rel = "stylesheet";
+playerDevelopmentStyles.href = "css/player-development.css?v=sprint-12-4b-player-development-20260719";
+document.head.appendChild(playerDevelopmentStyles);
 
 const homeSprint103Styles = document.createElement("link");
 homeSprint103Styles.rel = "stylesheet";
@@ -26,8 +31,8 @@ import("../lab/auto-juggler-home-entry.js?v=sprint-10-2-1-home-tile-restore-2026
   console.warn("[PitchIQ Lab] Auto Juggler Home tile failed to load", error);
 });
 
-import("./football-iq-results-entry.js?v=sprint-12-3-football-iq-results-20260719").catch(error => {
-  console.warn("[PitchIQ] Football IQ results experience failed to load", error);
+import("./football-iq-results-entry.js?v=sprint-12-4b-player-development-20260719").catch(error => {
+  console.warn("[PitchIQ] Football IQ results and development experiences failed to load", error);
 });
 
 import("./home-sprint-10-3.js?v=sprint-10-3-1-home-simplification-20260719").catch(error => {

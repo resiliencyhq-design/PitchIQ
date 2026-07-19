@@ -1,6 +1,14 @@
 import { renderFootballIQResults } from "../../src/results/football-iq-results.js";
+import { renderPlayerDevelopment } from "../../src/development/player-development.js";
 
 let footballIQNavigationRequested = false;
+
+function replaceCurrentResults(markup) {
+  const currentResults = document.querySelector("#app > #results, #app #results");
+  if (!currentResults) return false;
+  currentResults.outerHTML = markup;
+  return true;
+}
 
 function renderIntoApp() {
   if (!footballIQNavigationRequested) return;
@@ -12,6 +20,16 @@ function renderIntoApp() {
 }
 
 document.addEventListener("click", (event) => {
+  const developmentControl = event.target.closest?.("[data-development-route]");
+  if (developmentControl) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const action = developmentControl.dataset.developmentRoute;
+    replaceCurrentResults(action === "results" ? renderFootballIQResults() : renderPlayerDevelopment());
+    window.scrollTo({ top: 0, behavior: "instant" });
+    return;
+  }
+
   const routeControl = event.target.closest?.('[data-route="results"]');
   if (!routeControl) return;
   footballIQNavigationRequested = true;
