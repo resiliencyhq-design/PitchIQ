@@ -1,5 +1,5 @@
-/* Sprint 10.3 — Home action and hierarchy
-   Isolated overrides preserve the existing Home renderer and route contracts. */
+/* Sprint 10.3.1 — Home simplification
+   Keeps the existing Home renderer, routes, progression and mission logic intact. */
 
 #home.home-aaa{
   padding-bottom:calc(176px + env(safe-area-inset-bottom));
@@ -9,103 +9,71 @@
   gap:14px;
 }
 
-/* Compact the passive Level status card so the player remains the hero. */
+/* Remove the duplicate Sprint 10.3 CTA. The mission's Continue Training action is canonical. */
+#home .home-start-training{
+  display:none !important;
+}
+
+/* Make the passive Level status card lighter and expose more of the player. */
 #home .home-level-panel{
-  min-height:88px;
-  padding:11px 13px 10px;
-  gap:5px;
-  border-radius:17px;
+  width:88% !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:8px 12px 8px !important;
+  gap:4px !important;
+  border-radius:16px !important;
+  transform:translateY(9px);
 }
 
 #home .home-level-panel span{
-  font-size:14px;
+  font-size:13px !important;
+  line-height:1 !important;
 }
 
 #home .home-level-panel span b{
-  font-size:24px;
+  font-size:22px !important;
 }
 
 #home .home-level-panel small,
 #home .home-level-panel em{
-  font-size:11px;
+  font-size:10px !important;
+  line-height:1.05 !important;
 }
 
 #home .home-level-panel .xpbar,
 #home .home-level-panel .xp-bar{
-  height:7px;
+  height:6px !important;
 }
 
-/* Reveal more of the selected player without changing avatar assets. */
 #home .home-hero-center{
-  overflow:visible;
+  overflow:visible !important;
+  z-index:2;
 }
 
 #home .home-player-figure{
-  height:258px;
-  overflow:visible;
-  transform:translateY(10px);
+  height:282px !important;
+  overflow:visible !important;
+  transform:translate(4px,18px) !important;
 }
 
 #home .home-player-figure img{
-  width:min(166px,125%);
-  max-height:258px;
-  object-position:center bottom;
+  width:min(184px,138%) !important;
+  max-height:282px !important;
+  object-position:center bottom !important;
 }
 
-/* Clear daily action between mission content and persistent navigation. */
-#home .home-start-training{
-  width:100%;
-  min-height:72px;
-  margin:0;
-  padding:14px 18px;
-  border:0;
-  border-radius:26px;
-  display:grid;
-  grid-template-columns:48px minmax(0,1fr) 24px;
-  align-items:center;
-  gap:13px;
-  text-align:left;
-  background:linear-gradient(100deg,var(--lime,#d7ff2e),var(--green,#31f79a));
-  color:#03100b;
-  box-shadow:0 18px 48px rgba(172,255,44,.25),inset 0 1px 0 rgba(255,255,255,.55);
-}
-
-#home .home-start-training-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:#03100b;
-  color:var(--lime,#d7ff2e);
-  font-size:22px;
-}
-
-#home .home-start-training-copy{
-  display:grid;
-  gap:2px;
-}
-
-#home .home-start-training-copy strong{
-  font-size:20px;
-  line-height:1;
-  font-weight:1000;
-  letter-spacing:.01em;
-}
-
-#home .home-start-training-copy small{
-  color:rgba(3,16,11,.76);
-  font-size:12px;
-  font-weight:850;
-}
-
-#home .home-start-training-arrow{
-  font-size:30px;
-  line-height:1;
+/* Dynamic reward proximity supplied by the Sprint 10.3.1 enhancer. */
+#home .home-reward-progress{
+  display:block;
+  margin-top:4px;
+  color:rgba(247,255,248,.72);
+  font-size:11px;
+  line-height:1.08;
   font-weight:900;
+  text-align:center;
 }
 
-/* Shorter persistent navigation with an unmistakable Home state. */
+/* Retain the clearer, shorter persistent navigation from Sprint 10.3. */
 html.pitchiq-home-active .nav,
 html.pitchiq-home-active .bottom-nav{
   height:76px;
@@ -144,37 +112,33 @@ html.pitchiq-home-active .bottom-nav button[data-route="home"]::after{
 }
 
 @media(max-width:395px){
+  #home .home-level-panel{
+    width:86% !important;
+    padding:7px 10px !important;
+  }
+
   #home .home-player-figure{
-    height:244px;
+    height:268px !important;
+    transform:translate(3px,16px) !important;
   }
 
   #home .home-player-figure img{
-    width:min(150px,125%);
-    max-height:244px;
-  }
-
-  #home .home-start-training{
-    min-height:68px;
-    grid-template-columns:42px minmax(0,1fr) 20px;
-    padding:12px 15px;
-  }
-
-  #home .home-start-training-icon{
-    width:40px;
-    height:40px;
-  }
-
-  #home .home-start-training-copy strong{
-    font-size:18px;
+    width:min(170px,136%) !important;
+    max-height:268px !important;
   }
 }
 
 @media(max-height:720px){
-  #home .home-player-figure{
+  #home .home-level-panel{
     transform:translateY(5px);
   }
 
-  #home .home-start-training{
-    min-height:64px;
+  #home .home-player-figure{
+    height:252px !important;
+    transform:translate(3px,10px) !important;
+  }
+
+  #home .home-player-figure img{
+    max-height:252px !important;
   }
 }
