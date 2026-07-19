@@ -43,6 +43,12 @@ import("./training-evidence-entry.js?v=sprint-13-0-evidence-loop-20260719").catc
   console.warn("[PitchIQ] Training evidence loop failed to load", error);
 });
 
+// Sprint 12.5B registers only a route listener here. The adaptive engine itself
+// is dynamically imported after the player explicitly enters Training.
+import("./adaptive-training-entry.js?v=sprint-12-5b-training-screen-integration-20260719").catch(error => {
+  console.warn("[PitchIQ] Adaptive training route integration failed to load", error);
+});
+
 document.addEventListener("click", event => {
   const button = event.target.closest?.('[data-trial-route="home"]');
   if(!button) return;
