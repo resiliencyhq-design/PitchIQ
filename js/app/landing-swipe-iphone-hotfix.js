@@ -1,7 +1,7 @@
 /* iPhone Safari landing input bridge.
  * main.js owns completion and routing through PitchIQApp.enterFromLanding().
- * This module only recognises a valid native touch swipe when pointer events
- * are incomplete, then calls that direct application API.
+ * This module recognises native touch completion and, critically, calls the
+ * direct application router synchronously from the same pointer/touch event.
  */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
@@ -13,14 +13,22 @@ function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
 }
 
+function swipeProgress(swipe) {
+  if (!swipe) return 0;
+  if (swipe.classList.contains("complete")) return 1;
+  const value = Number.parseFloat(getComputedStyle(swipe).getPropertyValue("--swipe-progress"));
+  return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
+}
+
 function activatePrimaryLandingController() {
-  if (!isLandingVisible()) return;
+  if (!isLandingVisible()) return false;
   const enterFromLanding = window.PitchIQApp?.enterFromLanding;
   if (typeof enterFromLanding === "function") {
     enterFromLanding();
-  } else {
-    console.error("[PitchIQ iPhone landing] Direct app router API is unavailable.");
+    return true;
   }
+  console.error("[PitchIQ iPhone landing] Direct app router API is unavailable.");
+  return false;
 }
 
 function bindLandingFallback() {
@@ -36,7 +44,7 @@ function bindLandingFallback() {
   const armRecovery = () => {
     window.clearTimeout(recoveryTimer);
     recoveryTimer = window.setTimeout(() => {
-      if (swipe.classList.contains("complete") && isLandingVisible()) {
+      if (swipeProgress(swipe) >= 0.82 && isLandingVisible()) {
         activatePrimaryLandingController();
       }
     }, RECOVERY_DELAY_MS);
@@ -47,18 +55,32 @@ function bindLandingFallback() {
     attributeFilter: ["class", "style"]
   });
 
-  swipe.addEventListener("pointerup", armRecovery, { passive: true });
+  /* main.js registers first. By the time this listener runs, a successful
+   * pointerup has already applied .complete. Route immediately in this same
+   * event instead of depending on an iOS timer callback. */
+  swipe.addEventListener("pointerup", () => {
+    if (swipeProgress(swipe) >= 0.82) activatePrimaryLandingController();
+    else armRecovery();
+  }, { passive: true });
 
   swipe.addEventListener("touchstart", event => {
     const touch = event.touches?.[0];
-    if (!touch || swipe.classList.contains("complete")) return;
+    if (!touch) return;
     startX = touch.clientX;
     startY = touch.clientY;
     tracking = true;
   }, { passive: true });
 
   swipe.addEventListener("touchend", event => {
-    if (!tracking || swipe.classList.contains("complete")) return;
+    /* Pointer handling may already have marked the swipe complete. Do not
+     * return in that state: this is the synchronous iPhone route opportunity. */
+    if (swipeProgress(swipe) >= 0.82) {
+      tracking = false;
+      activatePrimaryLandingController();
+      return;
+    }
+    if (!tracking) return;
+
     tracking = false;
     const touch = event.changedTouches?.[0];
     if (!touch) return;
