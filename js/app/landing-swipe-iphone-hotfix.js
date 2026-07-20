@@ -1,11 +1,12 @@
 /* iPhone Safari landing recovery.
-   main.js remains the normal pointer/keyboard owner. This module provides a
+   main.js remains the primary pointer/keyboard owner. This module provides a
    complete native-touch path when Safari does not deliver the pointer drag
-   sequence reliably, then guarantees that a completed swipe reaches onboarding. */
+   sequence reliably, then reuses the established landing action. */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
 const COMPLETE_THRESHOLD = 0.82;
-const DIRECT_ROUTE_DELAY_MS = 450;
+const RECOVERY_DELAY_MS = 650;
+const FINAL_FALLBACK_DELAY_MS = 1500;
 
 function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
@@ -26,7 +27,7 @@ function advanceToOnboardingFallback() {
   const url = new URL(window.location.href);
   url.searchParams.set("dev", "1");
   url.searchParams.set("autoOnboard", "1");
-  url.searchParams.set("v", "landing-completion-race-fix-20260720");
+  url.searchParams.set("v", "stable-native-swipe-handoff-20260720");
   url.hash = "onboard";
   window.location.replace(url.toString());
 }
@@ -42,7 +43,8 @@ function bindLandingFallback() {
   let startY = 0;
   let tracking = false;
   let progress = 0;
-  let directRouteTimer = null;
+  let recoveryTimer = null;
+  let finalFallbackTimer = null;
 
   const metrics = () => {
     const trackRect = track.getBoundingClientRect();
@@ -69,41 +71,48 @@ function bindLandingFallback() {
     if (!swipe.classList.contains("complete")) setProgress(0);
   };
 
-  const requestAdvance = () => {
-    if (!isLandingVisible()) return;
-    activateExistingLanding(swipe);
-    window.clearTimeout(directRouteTimer);
-    directRouteTimer = window.setTimeout(() => {
-      if (isLandingVisible()) advanceToOnboardingFallback();
-    }, DIRECT_ROUTE_DELAY_MS);
+  const armFinalFallback = () => {
+    window.clearTimeout(finalFallbackTimer);
+    finalFallbackTimer = window.setTimeout(() => {
+      if (swipe.classList.contains("complete") && isLandingVisible()) {
+        advanceToOnboardingFallback();
+      }
+    }, FINAL_FALLBACK_DELAY_MS);
+  };
+
+  const armRecovery = () => {
+    window.clearTimeout(recoveryTimer);
+    recoveryTimer = window.setTimeout(() => {
+      if (swipe.classList.contains("complete") && isLandingVisible()) {
+        activateExistingLanding(swipe);
+        armFinalFallback();
+      }
+    }, RECOVERY_DELAY_MS);
   };
 
   const complete = () => {
+    if (swipe.classList.contains("complete")) {
+      armRecovery();
+      armFinalFallback();
+      return;
+    }
     tracking = false;
     setProgress(1);
     swipe.classList.remove("dragging");
     swipe.classList.add("complete");
-    requestAdvance();
+    activateExistingLanding(swipe);
+    armRecovery();
+    armFinalFallback();
   };
 
-  new MutationObserver(() => {
-    if (swipe.classList.contains("complete") && isLandingVisible()) requestAdvance();
-  }).observe(swipe, {
+  new MutationObserver(armRecovery).observe(swipe, {
     attributes: true,
-    attributeFilter: ["class"]
+    attributeFilter: ["class", "style"]
   });
 
-  swipe.addEventListener("pointerup", () => {
-    if (swipe.classList.contains("complete")) requestAdvance();
-  }, { passive: true });
-
-  swipe.addEventListener("click", () => {
-    if (swipe.classList.contains("complete")) requestAdvance();
-  }, { passive: true });
-
-  swipe.addEventListener("keydown", () => {
-    if (swipe.classList.contains("complete")) requestAdvance();
-  });
+  swipe.addEventListener("pointerup", armRecovery, { passive: true });
+  swipe.addEventListener("click", armRecovery, { passive: true });
+  swipe.addEventListener("keydown", armRecovery);
 
   swipe.addEventListener("touchstart", event => {
     const touch = event.touches?.[0];
@@ -116,7 +125,7 @@ function bindLandingFallback() {
   }, { passive: true });
 
   swipe.addEventListener("touchmove", event => {
-    if (!tracking) return;
+    if (!tracking || swipe.classList.contains("complete")) return;
     const touch = event.touches?.[0];
     if (!touch) return;
     const dx = touch.clientX - startX;
@@ -127,7 +136,7 @@ function bindLandingFallback() {
 
   swipe.addEventListener("touchend", event => {
     if (!tracking) {
-      if (swipe.classList.contains("complete")) requestAdvance();
+      if (swipe.classList.contains("complete")) complete();
       return;
     }
     const touch = event.changedTouches?.[0];
