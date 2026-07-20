@@ -1,8 +1,8 @@
-/* Sprint 9.1 hotfix — reliable iPhone Safari landing progression.
-   main.js remains the primary owner of the landing interaction. This module:
-   1. translates a valid native touch swipe into the existing accepted click path;
-   2. watches for the visible completed state; and
-   3. retries the same in-memory landing action only while splash remains visible. */
+/* iPhone Safari landing input bridge.
+   main.js remains the single owner of completion and routing. This module only:
+   1. recognises a valid native touch swipe when pointer events are incomplete;
+   2. forwards that gesture to the swipe element's existing Enter handler; and
+   3. retries the same in-memory handler only while the completed splash remains visible. */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
 const MIN_DISTANCE = 72;
@@ -13,13 +13,13 @@ function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
 }
 
-function activateExistingLanding(swipe) {
+function activatePrimaryLandingController(swipe) {
   if (!swipe || !isLandingVisible()) return;
-  swipe.dispatchEvent(new MouseEvent("click", {
+  swipe.dispatchEvent(new KeyboardEvent("keydown", {
+    key: "Enter",
+    code: "Enter",
     bubbles: true,
-    cancelable: true,
-    view: window,
-    detail: 1
+    cancelable: true
   }));
 }
 
@@ -37,7 +37,7 @@ function bindLandingFallback() {
     window.clearTimeout(recoveryTimer);
     recoveryTimer = window.setTimeout(() => {
       if (swipe.classList.contains("complete") && isLandingVisible()) {
-        activateExistingLanding(swipe);
+        activatePrimaryLandingController(swipe);
       }
     }, RECOVERY_DELAY_MS);
   };
@@ -48,8 +48,6 @@ function bindLandingFallback() {
   });
 
   swipe.addEventListener("pointerup", armRecovery, { passive: true });
-  swipe.addEventListener("click", armRecovery, { passive: true });
-  swipe.addEventListener("keydown", armRecovery);
 
   swipe.addEventListener("touchstart", event => {
     const touch = event.touches?.[0];
@@ -71,7 +69,7 @@ function bindLandingFallback() {
     if (!completed) return;
 
     event.preventDefault();
-    activateExistingLanding(swipe);
+    activatePrimaryLandingController(swipe);
     armRecovery();
   }, { passive: false });
 }
