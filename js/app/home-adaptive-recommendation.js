@@ -19,6 +19,7 @@ import "./academy-development-path-ui-c2.js?v=c2-development-path-20260720";
 import "./academy-parent-coach-dashboard-ui-c3.js?v=c3-parent-coach-dashboard-20260720";
 import "./academy-achievement-system-ui-c4.js?v=c4-achievements-20260720";
 import "./academy-analytics-ui-c5.js?v=c5-academy-analytics-20260720";
+import "./learning-academy-ui-e1.js?v=e1-learning-academy-20260720";
 
 const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const CARD_SELECTOR = "[data-home-adaptive-recommendation]";
