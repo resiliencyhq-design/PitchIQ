@@ -1,7 +1,7 @@
 /* Landing completion recovery bridge.
- * The primary swipe controller in main.js owns routing. This module only
- * replays its existing keyboard-accessibility completion path when another
- * visual swipe layer reaches completion without progressing the screen.
+ * main.js owns routing and exposes PitchIQApp.enterFromLanding(). This module
+ * only retries that direct router API when a visually completed swipe remains
+ * on the splash screen.
  */
 const SWIPE_SELECTOR = "[data-splash-swipe]";
 const RECOVERY_DELAY_MS = 620;
@@ -27,21 +27,18 @@ function recoverThroughPrimaryController(){
   if(recoverySent||!landingVisible()||swipeProgress(swipe)<0.82)return;
   recoverySent=true;
 
-  /* main.js already binds Enter/Space to its private enter() function, which
-   * calls handleAction("enter") and therefore the authoritative goto() router.
-   */
-  swipe.dispatchEvent(new KeyboardEvent("keydown",{
-    key:"Enter",
-    code:"Enter",
-    bubbles:true,
-    cancelable:true
-  }));
+  const enterFromLanding=window.PitchIQApp?.enterFromLanding;
+  if(typeof enterFromLanding==="function"){
+    enterFromLanding();
+  }else{
+    console.error("[PitchIQ landing handoff] Direct app router API is unavailable.");
+  }
 
   window.setTimeout(()=>{
     if(landingVisible()){
       console.error("[PitchIQ landing handoff] Swipe completed but the primary app router did not replace the splash screen.");
       document.dispatchEvent(new CustomEvent("pitchiq:landing-handoff-failed",{
-        detail:{progress:swipeProgress(swipe)}
+        detail:{progress:swipeProgress(swipe),routerAvailable:typeof window.PitchIQApp?.enterFromLanding==="function"}
       }));
     }
   },DIAGNOSTIC_DELAY_MS);
