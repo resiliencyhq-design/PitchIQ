@@ -1,8 +1,8 @@
 /* iPhone Safari landing input bridge.
-   main.js remains the single owner of completion and routing. This module only:
-   1. recognises a valid native touch swipe when pointer events are incomplete;
-   2. forwards that gesture to the swipe element's existing Enter handler; and
-   3. retries the same in-memory handler only while the completed splash remains visible. */
+ * main.js owns completion and routing through PitchIQApp.enterFromLanding().
+ * This module only recognises a valid native touch swipe when pointer events
+ * are incomplete, then calls that direct application API.
+ */
 
 const SWIPE_SELECTOR = "[data-splash-swipe]";
 const MIN_DISTANCE = 72;
@@ -13,14 +13,14 @@ function isLandingVisible() {
   return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]"));
 }
 
-function activatePrimaryLandingController(swipe) {
-  if (!swipe || !isLandingVisible()) return;
-  swipe.dispatchEvent(new KeyboardEvent("keydown", {
-    key: "Enter",
-    code: "Enter",
-    bubbles: true,
-    cancelable: true
-  }));
+function activatePrimaryLandingController() {
+  if (!isLandingVisible()) return;
+  const enterFromLanding = window.PitchIQApp?.enterFromLanding;
+  if (typeof enterFromLanding === "function") {
+    enterFromLanding();
+  } else {
+    console.error("[PitchIQ iPhone landing] Direct app router API is unavailable.");
+  }
 }
 
 function bindLandingFallback() {
@@ -37,7 +37,7 @@ function bindLandingFallback() {
     window.clearTimeout(recoveryTimer);
     recoveryTimer = window.setTimeout(() => {
       if (swipe.classList.contains("complete") && isLandingVisible()) {
-        activatePrimaryLandingController(swipe);
+        activatePrimaryLandingController();
       }
     }, RECOVERY_DELAY_MS);
   };
@@ -69,7 +69,7 @@ function bindLandingFallback() {
     if (!completed) return;
 
     event.preventDefault();
-    activatePrimaryLandingController(swipe);
+    activatePrimaryLandingController();
     armRecovery();
   }, { passive: false });
 }
