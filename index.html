@@ -89,7 +89,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "authoritative-landing-handoff-20260720";
+    window.__PITCHIQ_BUILD__ = "landing-single-router-owner-20260720";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -105,59 +105,11 @@
       var box = document.getElementById("pitchiq-boot-watchdog");
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
-    (function(){
-      var recoveryTimer = 0;
-      var directRouteTimer = 0;
-      var recovering = false;
-      function landingVisible(){ return Boolean(document.querySelector("#splash, .splash-cover-v3, [data-splash-swipe]")); }
-      function swipeProgress(swipe){
-        if (!swipe) return 0;
-        if (swipe.classList.contains("complete")) return 1;
-        var cssProgress = parseFloat(getComputedStyle(swipe).getPropertyValue("--swipe-progress"));
-        if (isFinite(cssProgress) && cssProgress > 0) return Math.max(0, Math.min(1, cssProgress));
-        var handle = swipe.querySelector(".splash-swipe-handle");
-        var track = swipe.querySelector(".splash-swipe-track") || swipe;
-        if (!handle || !track) return 0;
-        var handleRect = handle.getBoundingClientRect();
-        var trackRect = track.getBoundingClientRect();
-        var travel = Math.max(1, trackRect.width - handleRect.width);
-        return Math.max(0, Math.min(1, (handleRect.left - trackRect.left) / travel));
-      }
-      function directRoute(){
-        if (!landingVisible()) return;
-        var url = new URL(location.href);
-        url.searchParams.set("dev", "1");
-        url.searchParams.set("autoOnboard", "1");
-        url.searchParams.set("v", "authoritative-landing-handoff-20260720");
-        url.searchParams.set("landingHandoff", String(Date.now()));
-        url.hash = "onboard";
-        location.replace(url.toString());
-      }
-      function activateLanding(){
-        if (recovering || !landingVisible()) return;
-        var swipe = document.querySelector("[data-splash-swipe]");
-        if (!swipe) return;
-        recovering = true;
-        swipe.dispatchEvent(new MouseEvent("click", { bubbles:true, cancelable:true, view:window, detail:1 }));
-        clearTimeout(directRouteTimer);
-        directRouteTimer = setTimeout(directRoute, 700);
-        setTimeout(function(){ recovering = false; }, 800);
-      }
-      function arm(){
-        clearTimeout(recoveryTimer);
-        recoveryTimer = setTimeout(function(){
-          var swipe = document.querySelector("[data-splash-swipe]");
-          if (landingVisible() && swipeProgress(swipe) >= 0.72) activateLanding();
-        }, 250);
-      }
-      document.addEventListener("pointerup", arm, true);
-      document.addEventListener("touchend", arm, true);
-    })();
   </script>
-  <script type="module" src="js/app/main.js?v=authoritative-landing-handoff-20260720"></script>
+  <script type="module" src="js/app/main.js?v=landing-single-router-owner-20260720"></script>
   <script type="module" src="js/app/mission-runtime-integration.js?v=sprint-20-1-mission-runtime-integration-20260719"></script>
-  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=authoritative-landing-handoff-20260720"></script>
-  <script type="module" src="js/app/landing-handoff-authority.js?v=authoritative-landing-handoff-20260720"></script>
+  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=landing-single-router-owner-20260720"></script>
+  <script type="module" src="js/app/landing-handoff-authority.js?v=landing-single-router-owner-20260720"></script>
   <script type="module" src="js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710"></script>
   <script type="module" src="js/app/onboard-number.js?v=sprint-10-2-number-selector-routing-20260716"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
