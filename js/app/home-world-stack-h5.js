@@ -48,6 +48,7 @@ export const HOME_WORLDS = Object.freeze([
     badge: "Experimental",
     modules: [
       { id:"pitchiq-lab", title:"PitchIQ Lab", description:"Experimental tools and camera features", icon:"⚗", route:"lab-juggling" },
+      { id:"calmsense", title:"CalmSense", description:"Measure breathing rhythm with your phone", icon:"◌", route:"lab-calmsense" },
     ],
   },
 ]);
