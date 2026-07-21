@@ -1,6 +1,7 @@
 import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h13-home-information-architecture-20260721";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
+import { applyHomePerformanceSnapshot } from "./home-performance-snapshot-h14.js?v=sprint-h14-mission-control-dashboard-20260721";
 
 const HOME_SELECTOR = "#home";
 const GRID_SELECTOR = ".home-v7-grid";
@@ -13,6 +14,7 @@ const WORLD_STACK_STYLE_ID = "pitchiq-home-world-stack-h5-css";
 const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
 const FOUR_WORLDS_STYLE_ID = "pitchiq-home-four-worlds-h16-css";
 const H13_STYLE_ID = "pitchiq-home-information-architecture-h13-css";
+const H14_STYLE_ID = "pitchiq-home-performance-snapshot-h14-css";
 
 function appendStylesheet(id, href) {
   let link = document.getElementById(id);
@@ -35,6 +37,7 @@ function ensureStylesheet() {
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
   appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h16-four-worlds-home-20260721");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
+  appendStylesheet(H14_STYLE_ID, "css/home-performance-snapshot-h14.css?v=sprint-h14-mission-control-dashboard-20260721");
 }
 
 function assignSlot(element, slot) {
@@ -90,7 +93,7 @@ function applyHomeInformationArchitecture(home, stack) {
     }
   }
 
-  home.dataset.homeComposition = "h13-status-action-worlds-rewards";
+  home.dataset.homeComposition = "h14-mission-control-dashboard";
 }
 
 export function applyHomeContentComposition(root = document) {
@@ -125,6 +128,7 @@ export function applyHomeContentComposition(root = document) {
   applyHomeWorldStack(root);
   applyHomeWorldPolish(root);
   applyHomeInformationArchitecture(home, stack);
+  applyHomePerformanceSnapshot(root);
   return true;
 }
 
