@@ -49,7 +49,10 @@ function loadMentalImageryRuntime() {
   }
   ensureStylesheet();
   if (!runtimePromise) {
-    runtimePromise = import("../lab/mental-imagery.js?v=sprint-l2-mental-imagery-lab-20260721")
+    runtimePromise = Promise.all([
+      import("../lab/mental-imagery.js?v=sprint-l2-mental-imagery-lab-20260721"),
+      import("../lab/mental-imagery-player-controller.js?v=sprint-l2-mental-imagery-audio-20260721")
+    ])
       .then(() => true)
       .catch(error => {
         runtimePromise = null;
