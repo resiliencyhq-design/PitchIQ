@@ -1,9 +1,19 @@
 const PLUGIN_NAME = "PitchIQHaptics";
+const STYLE_ID = "pitchiq-native-haptics-css";
 const INTENSITIES = Object.freeze({ gentle: 0.3, medium: 0.6, strong: 0.9 });
 let enabled = true;
 let intensity = "medium";
 let nativeAvailable = false;
 let originalVibrate = null;
+
+function ensureStyles() {
+  if (document.getElementById(STYLE_ID)) return;
+  const link = document.createElement("link");
+  link.id = STYLE_ID;
+  link.rel = "stylesheet";
+  link.href = "css/lab-native-haptics.css?v=native-haptics-20260721";
+  document.head.appendChild(link);
+}
 
 function plugin() {
   return globalThis.Capacitor?.Plugins?.[PLUGIN_NAME] || null;
@@ -85,6 +95,7 @@ function controlsMarkup() {
 
 function injectControls() {
   if (location.hash.replace(/^#/, "") !== "lab-vibro-focus") return;
+  ensureStyles();
   const intro = document.querySelector(".vibro-intro");
   if (!intro || intro.querySelector("[data-native-haptics-controls]")) return;
   const capability = intro.querySelector(".vibro-capability");
