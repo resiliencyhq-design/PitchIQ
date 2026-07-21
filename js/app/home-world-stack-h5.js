@@ -47,7 +47,8 @@ export function applyHomeWorldStack(root = document) {
   actions.setAttribute("aria-label", "PitchIQ Academy development worlds");
   ensureWorldsHeading(actions);
 
-  const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier" });
+  const academy = createWorldCard(actions, { world:"academy", route:"academy-world", icon:"◆", title:"Academy Journey", description:"Pathways, weekly plans and unlocks" });
+  const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier", after:academy });
   const reflect = createWorldCard(actions, { world:"reflect", route:"reflect-world", icon:"◎", title:"Reflect", description:"Turn every session into learning", after:footballIq });
   const mindIq = createWorldCard(actions, { world:"mindiq", route:"mindiq-world", icon:"◇", title:"MindIQ", description:"Build confidence, focus and resilience", after:reflect });
   const coach = createWorldCard(actions, { world:"coach", route:"coach-world", icon:"✦", title:"Coach Intelligence", description:"Your next best action, explained", after:mindIq });
@@ -55,6 +56,7 @@ export function applyHomeWorldStack(root = document) {
   const results = actions.querySelector('[data-route="results"]');
   const player = actions.querySelector('[data-route="player"], [data-home-world="lab"]');
 
+  setCopy(academy, "◆", "Academy Journey", "Pathways, weekly plans and unlocks", "academy");
   setCopy(footballIq, "◉", "Football IQ", "See, scan and decide earlier", "football-iq");
   setCopy(reflect, "◎", "Reflect", "Turn every session into learning", "reflect");
   setCopy(mindIq, "◇", "MindIQ", "Build confidence, focus and resilience", "mindiq");
@@ -68,7 +70,7 @@ export function applyHomeWorldStack(root = document) {
     setCopy(player, "⚗", "PitchIQ Lab", "Explore experimental tools and camera features", "lab");
   }
 
-  home.dataset.homeWorlds = "h12-coach-intelligence";
+  home.dataset.homeWorlds = "h13-academy-mission-system";
   return true;
 }
 
