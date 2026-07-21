@@ -24,6 +24,15 @@ test("identity completion explicitly dispatches the canonical route after overla
   assert.match(journey, /window\.dispatchEvent\(new HashChangeEvent\("hashchange"/);
 });
 
+test("identity overlay cannot remount after an Academy feature route begins", async () => {
+  const journey = await source(journeyUrl);
+  assert.match(journey, /const ACADEMY_FEATURE_HASHES = new Set/);
+  assert.match(journey, /let identityJourneyComplete = ACADEMY_FEATURE_HASHES\.has/);
+  assert.match(journey, /function academyFeatureRouteActive\(\)/);
+  assert.match(journey, /if \(academyFeatureRouteActive\(\)\) return;/);
+  assert.match(journey, /identityJourneyComplete = true;\s*removeIdentityScene/);
+});
+
 test("the personalised welcome owns the single Start Orientation action", async () => {
   const orientation = await source(orientationUrl);
   assert.match(orientation, /const ORIENTATION_ROUTE = "academy-trial"/);
@@ -44,8 +53,8 @@ test("first-step back restores the welcome rather than creating a route loop", a
   assert.doesNotMatch(orientation, /window\.location\.hash = "academy-trial";\s*return;/);
 });
 
-test("production cache keys load the consolidated Academy modules", async () => {
+test("production cache keys load the overlay route guard", async () => {
   const index = await source(indexUrl);
-  assert.match(index, /academy-journey\.js\?v=sprint-c1-academy-trial-render-recovery-20260721/);
+  assert.match(index, /academy-journey\.js\?v=sprint-c2-identity-overlay-route-guard-20260721/);
   assert.match(index, /academy-orientation-interactive\.js\?v=sprint-c-academy-journey-consolidation-20260721/);
 });
