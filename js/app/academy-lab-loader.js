@@ -1,3 +1,5 @@
+import "./mental-imagery-lab-loader.js?v=sprint-l2-mental-imagery-lab-20260721";
+
 const LAB_ROUTE = "lab-juggling";
 const LAB_RETURN_ROUTE = "home";
 let labRuntimePromise = null;
