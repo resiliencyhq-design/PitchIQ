@@ -1,4 +1,3 @@
-import { readSelection } from "./mission-runtime-integration.js?v=sprint-h8-adaptive-mission-hub-20260721";
 import { primaryFootballIqRecommendation } from "./football-iq-recommendations-w1-5.js?v=sprint-h8-adaptive-mission-hub-20260721";
 import { FOOTBALL_IQ_CATEGORY_LABELS } from "../data/football-iq-missions.js?v=sprint-h8-adaptive-mission-hub-20260721";
 import { getFootballIqProgress } from "./football-iq-progression-w1-4.js?v=sprint-h8-adaptive-mission-hub-20260721";
@@ -7,6 +6,7 @@ const HOME_SELECTOR = "#home";
 const CARD_SELECTOR = ".home-mock-mission";
 const STYLE_ID = "pitchiq-home-adaptive-mission-h8-css";
 const STYLE_HREF = "css/home-adaptive-mission-h8.css?v=sprint-h8-adaptive-mission-hub-20260721";
+const ADAPTIVE_CURRENT_KEY = "pitchiq.adaptiveTraining.current.v1";
 const FALLBACK_MISSION = Object.freeze({
   id: "technical-foundation",
   title: "Build your technical foundation",
@@ -29,6 +29,15 @@ function ensureStylesheet() {
   if (link.getAttribute("href") !== STYLE_HREF) link.setAttribute("href", STYLE_HREF);
 }
 
+function readSelection(storage = globalThis.localStorage) {
+  try {
+    const value = JSON.parse(storage?.getItem?.(ADAPTIVE_CURRENT_KEY) || "null");
+    return value?.mission?.id ? value : null;
+  } catch {
+    return null;
+  }
+}
+
 function text(value, fallback = "") {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
@@ -36,6 +45,16 @@ function text(value, fallback = "") {
 function number(value, fallback = 0) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  })[character]);
 }
 
 function isComplete(selection) {
@@ -96,8 +115,9 @@ function statusCopy(mission) {
 }
 
 function actionMarkup(mission) {
+  const missionId = escapeHtml(mission.id);
   if (mission.route === "football-iq") {
-    return `<button type="button" class="home-adaptive-mission-action" data-h8-open-football-iq="${mission.id}">Start Mission <span aria-hidden="true">→</span></button>`;
+    return `<button type="button" class="home-adaptive-mission-action" data-h8-open-football-iq="${missionId}">Start Mission <span aria-hidden="true">→</span></button>`;
   }
   const label = mission.source === "active" ? "Continue Mission" : "Start Mission";
   return `<button type="button" class="home-adaptive-mission-action" data-route="training" data-action="start-mission-training">${label} <span aria-hidden="true">→</span></button>`;
@@ -107,9 +127,9 @@ function missionMarkup(mission) {
   const progress = mission.source === "active" && mission.progress > 0
     ? `<div class="home-adaptive-mission-progress" aria-label="Mission progress"><i style="width:${Math.min(100, mission.progress)}%"></i></div>`
     : "";
-  return `<div class="home-adaptive-mission-heading"><div><span>Today's Mission</span><small>${mission.world}</small></div><b>${statusCopy(mission)}</b></div>
-    <h2>${mission.title}</h2>
-    <p>${mission.focus}</p>
+  return `<div class="home-adaptive-mission-heading"><div><span>Today's Mission</span><small>${escapeHtml(mission.world)}</small></div><b>${escapeHtml(statusCopy(mission))}</b></div>
+    <h2>${escapeHtml(mission.title)}</h2>
+    <p>${escapeHtml(mission.focus)}</p>
     <div class="home-adaptive-mission-meta"><span>${mission.minutes} min</span><span>${mission.xp} XP</span><span>${mission.source === "active" ? "Resume" : mission.source === "recommended" ? "Adaptive" : "Foundation"}</span></div>
     ${progress}
     ${actionMarkup(mission)}`;
@@ -157,9 +177,9 @@ if (typeof document !== "undefined") {
   if (app) new MutationObserver(() => queueMicrotask(refresh)).observe(app, { childList: true, subtree: false });
   ["pageshow", "pitchiq:football-iq-progress", "pitchiq:assessment-readiness", "pitchiq:mission-complete"].forEach(name => window.addEventListener(name, refresh));
   window.addEventListener("storage", event => {
-    if (["pitchiq.adaptiveTraining.current.v1", "pitchiq.adaptiveMission.v1"].includes(event.key)) refresh();
+    if ([ADAPTIVE_CURRENT_KEY, "pitchiq.adaptiveMission.v1"].includes(event.key)) refresh();
   });
   refresh();
 }
 
-export { FALLBACK_MISSION };
+export { ADAPTIVE_CURRENT_KEY, FALLBACK_MISSION, readSelection };
