@@ -1,0 +1,4 @@
+const STYLE_ID="pitchiq-academy-world-h13-css";
+function ensureStyle(){if(document.getElementById(STYLE_ID))return;const link=document.createElement("link");link.id=STYLE_ID;link.rel="stylesheet";link.href="css/academy-world-h13.css?v=sprint-h13-academy-mission-system-20260721";document.head.appendChild(link);}
+async function load(){if(location.hash.replace(/^#/,"").split("/")[0]!=="academy-world")return;ensureStyle();const module=await import("./academy-world-h13.js?v=sprint-h13-academy-mission-system-20260721");module.mountAcademyWorld();}
+if(typeof window!=="undefined"){window.addEventListener("hashchange",load);window.addEventListener("pageshow",load);load();}
