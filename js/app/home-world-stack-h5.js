@@ -1,3 +1,5 @@
+import "../lab/vibro-focus.js";
+
 const HOME_SELECTOR = "#home";
 const ACTIONS_SELECTOR = ".home-actions-grid";
 const WORLDS_HEADING_CLASS = "home-academy-worlds-heading";
@@ -49,6 +51,7 @@ export const HOME_WORLDS = Object.freeze([
     modules: [
       { id:"pitchiq-lab", title:"PitchIQ Lab", description:"Experimental tools and camera features", icon:"⚗", route:"lab-juggling" },
       { id:"calmsense", title:"CalmSense", description:"Measure breathing rhythm with your phone", icon:"◌", route:"lab-calmsense" },
+      { id:"vibro-focus", title:"Vibro Focus", description:"Test calm, focus and recovery vibration patterns", icon:"≋", route:"lab-vibro-focus" },
     ],
   },
 ]);
