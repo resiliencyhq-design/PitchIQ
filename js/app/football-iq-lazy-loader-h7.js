@@ -17,7 +17,11 @@ export function isFootballIqRoute(route = currentRoute()) {
 export function loadFootballIqWorld() {
   if (!isFootballIqRoute()) return Promise.resolve(false);
   if (!loaderPromise) {
-    loaderPromise = import("./football-iq-library-w1-1.js?v=sprint-h7-development-worlds-20260721")
+    loaderPromise = import("./football-iq-library-w1-1.js?v=sprint-h9-football-iq-world-20260721")
+      .then(() => Promise.all([
+        import("./football-iq-adaptive-ui-w1-5.js?v=sprint-h9-football-iq-world-20260721"),
+        import("./football-iq-world-h9.js?v=sprint-h9-football-iq-world-20260721"),
+      ]))
       .then(() => true)
       .catch(error => {
         loaderPromise = null;
