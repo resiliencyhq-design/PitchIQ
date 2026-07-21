@@ -3,6 +3,7 @@ const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
 const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
 const ONBOARDING_COMPLETE_KEY = "pitchiqOnboardingComplete";
 const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
+const ACADEMY_FEATURE_HASHES = new Set(["#academy-trial", "#academy-trials", "#lab-juggling"]);
 
 const POSITION_LABELS = {
   LW: "Left Wing", ST: "Striker", RW: "Right Wing", CAM: "Central Attacking Midfielder",
@@ -13,6 +14,7 @@ const POSITION_LABELS = {
 let identityScene = null;
 let identitySource = null;
 let identityObserver = null;
+let identityJourneyComplete = ACADEMY_FEATURE_HASHES.has(window.location.hash.toLowerCase());
 
 function positionLabel(value) {
   return POSITION_LABELS[value] || value || "—";
@@ -84,7 +86,12 @@ function removeIdentityScene({ restoreSource = true } = {}) {
   unlockDocumentScroll();
 }
 
+function academyFeatureRouteActive() {
+  return identityJourneyComplete || ACADEMY_FEATURE_HASHES.has(window.location.hash.toLowerCase());
+}
+
 function mountIdentityScene(source) {
+  if (academyFeatureRouteActive()) return;
   if (!source || source.hidden || !source.isConnected) return;
   if (identityScene && identitySource === source) return;
 
@@ -109,6 +116,11 @@ function mountIdentityScene(source) {
 }
 
 function syncIdentityScene() {
+  if (academyFeatureRouteActive()) {
+    if (identityScene) removeIdentityScene({ restoreSource: false });
+    return;
+  }
+
   const source = document.querySelector('.onboard-step[data-onboard-step="3"].academy-discover-strengths');
   const onboardExists = Boolean(document.getElementById("onboard"));
 
@@ -161,8 +173,6 @@ function navigateToAcademyOrientation() {
 
   if (window.location.hash !== targetHash) window.location.hash = targetHash;
 
-  // The identity scene is a top-level overlay. Explicitly dispatch the route after
-  // removing it so the Academy renderer cannot lose the handoff during that DOM change.
   window.queueMicrotask(() => dispatchAcademyTrialRoute(oldURL));
 
   window.setTimeout(() => {
@@ -184,6 +194,7 @@ function beginFirstAssessment(event) {
   localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
   localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
+  identityJourneyComplete = true;
   removeIdentityScene({ restoreSource: false });
   navigateToAcademyOrientation();
 }
@@ -198,6 +209,7 @@ function initialise() {
     attributes: true,
     attributeFilter: ["hidden", "class", "style", "aria-hidden"]
   });
+  window.addEventListener("hashchange", syncIdentityScene);
   window.addEventListener("pagehide", () => removeIdentityScene({ restoreSource: false }), { once: true });
 }
 
