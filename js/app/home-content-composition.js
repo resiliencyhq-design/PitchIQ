@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h7-development-worlds-20260721";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h16-four-worlds-home-20260721";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
@@ -11,6 +11,7 @@ const MISSION_STYLE_ID = "pitchiq-home-todays-mission-h3-css";
 const FOOTBALL_IQ_STYLE_ID = "pitchiq-home-football-iq-h4-css";
 const WORLD_STACK_STYLE_ID = "pitchiq-home-world-stack-h5-css";
 const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
+const FOUR_WORLDS_STYLE_ID = "pitchiq-home-four-worlds-h16-css";
 
 function appendStylesheet(id, href) {
   let link = document.getElementById(id);
@@ -31,6 +32,7 @@ function ensureStylesheet() {
   appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h7-development-worlds-20260721");
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
+  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h16-four-worlds-home-20260721");
 }
 
 function assignSlot(element, slot) {
@@ -68,7 +70,7 @@ export function applyHomeContentComposition(root = document) {
   applyHomeAdaptiveMission(root);
   applyHomeWorldStack(root);
   applyHomeWorldPolish(root);
-  home.dataset.homeComposition = "h8";
+  home.dataset.homeComposition = "h16-four-worlds";
   return true;
 }
 
