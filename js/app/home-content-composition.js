@@ -1,5 +1,6 @@
 import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h7-development-worlds-20260721";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
+import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
 const HOME_SELECTOR = "#home";
 const GRID_SELECTOR = ".home-v7-grid";
@@ -64,9 +65,10 @@ export function applyHomeContentComposition(root = document) {
     movable.forEach(child => stack.appendChild(child));
   }
 
+  applyHomeAdaptiveMission(root);
   applyHomeWorldStack(root);
   applyHomeWorldPolish(root);
-  home.dataset.homeComposition = "h7";
+  home.dataset.homeComposition = "h8";
   return true;
 }
 
