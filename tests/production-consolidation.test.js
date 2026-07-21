@@ -27,7 +27,7 @@ test("bootstrap activates the approved Home composition", async () => {
 
 test("Academy Home return delegates to canonical navigation without reload", async () => {
   const bootstrap = await source(bootstrapUrl);
-  assert.match(bootstrap, /#nav \[data-route=\\"home\\"\]/);
+  assert.match(bootstrap, /#nav \[data-route="home"\]/);
   assert.match(bootstrap, /control\.click\(\)/);
   assert.doesNotMatch(bootstrap, /window\.location\.reload|location\.reload/);
 });
