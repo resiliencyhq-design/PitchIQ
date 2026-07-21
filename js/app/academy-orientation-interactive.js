@@ -1,6 +1,7 @@
 const app = document.getElementById("app");
 
-const ORIENTATION_ROUTE = "academy-trials";
+const ORIENTATION_ROUTE = "academy-trial";
+const LEGACY_ORIENTATION_ROUTE = "academy-trials";
 let active = false;
 let step = 0;
 let originalStartButton = null;
@@ -35,8 +36,12 @@ const steps = [
   }
 ];
 
+function currentRoute(){
+  return window.location.hash.replace(/^#/, "").toLowerCase();
+}
+
 function isOrientationRoute(){
-  return window.location.hash.replace(/^#/, "").toLowerCase() === ORIENTATION_ROUTE;
+  return currentRoute() === ORIENTATION_ROUTE;
 }
 
 function progressMarkup(current){
@@ -71,6 +76,14 @@ function renderStep(index){
     </main>
   </section>`;
   bindStep();
+}
+
+function restoreWelcome(){
+  active = false;
+  originalStartButton = null;
+  document.body.classList.remove("orientation-interactive-active");
+  const oldURL = window.location.href;
+  window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL: oldURL }));
 }
 
 function completeOrientation(){
@@ -122,9 +135,7 @@ function bindStep(){
   document.body.classList.add("orientation-interactive-active");
   app.querySelector("[data-orientation-back]")?.addEventListener("click", () => {
     if(step === 0){
-      active = false;
-      document.body.classList.remove("orientation-interactive-active");
-      window.location.hash = "academy-trial";
+      restoreWelcome();
       return;
     }
     renderStep(step - 1);
@@ -140,6 +151,15 @@ function bindStep(){
   });
 }
 
+function canonicaliseWelcome(){
+  if(!isOrientationRoute() || active) return;
+  const button = app.querySelector('[data-trial-route="academy-trials"], [data-complete-orientation]');
+  if(!button) return;
+  button.removeAttribute("data-trial-route");
+  button.setAttribute("data-complete-orientation", "");
+  button.textContent = "Start Orientation →";
+}
+
 function startInteractiveOrientation(event){
   const button = event.target.closest?.("[data-complete-orientation]");
   if(!button || !isOrientationRoute()) return;
@@ -149,12 +169,25 @@ function startInteractiveOrientation(event){
   renderStep(0);
 }
 
+function redirectLegacyRoute(){
+  if(currentRoute() !== LEGACY_ORIENTATION_ROUTE) return false;
+  window.location.replace(`${window.location.pathname}${window.location.search}#${ORIENTATION_ROUTE}`);
+  return true;
+}
+
 function leaveIfRouteChanged(){
+  if(redirectLegacyRoute()) return;
   if(active && !isOrientationRoute() && window.location.hash !== "#lab-juggling"){
     active = false;
     document.body.classList.remove("orientation-interactive-active");
   }
+  window.setTimeout(canonicaliseWelcome, 0);
 }
 
 document.addEventListener("click", startInteractiveOrientation, true);
 window.addEventListener("hashchange", leaveIfRouteChanged);
+
+const welcomeObserver = new MutationObserver(canonicaliseWelcome);
+welcomeObserver.observe(app, {childList:true, subtree:true});
+
+if(!redirectLegacyRoute()) canonicaliseWelcome();
