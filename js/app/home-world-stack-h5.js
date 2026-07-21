@@ -48,7 +48,8 @@ export function applyHomeWorldStack(root = document) {
   ensureWorldsHeading(actions);
 
   const academy = createWorldCard(actions, { world:"academy", route:"academy-world", icon:"◆", title:"Academy Journey", description:"Pathways, weekly plans and unlocks" });
-  const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier", after:academy });
+  const twin = createWorldCard(actions, { world:"player-twin", route:"player-twin", icon:"◈", title:"Player Twin", description:"See how your development is changing over time", after:academy });
+  const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier", after:twin });
   const reflect = createWorldCard(actions, { world:"reflect", route:"reflect-world", icon:"◎", title:"Reflect", description:"Turn every session into learning", after:footballIq });
   const mindIq = createWorldCard(actions, { world:"mindiq", route:"mindiq-world", icon:"◇", title:"MindIQ", description:"Build confidence, focus and resilience", after:reflect });
   const coach = createWorldCard(actions, { world:"coach", route:"coach-world", icon:"✦", title:"Coach Intelligence", description:"Your next best action, explained", after:mindIq });
@@ -57,6 +58,7 @@ export function applyHomeWorldStack(root = document) {
   const player = actions.querySelector('[data-route="player"], [data-home-world="lab"]');
 
   setCopy(academy, "◆", "Academy Journey", "Pathways, weekly plans and unlocks", "academy");
+  setCopy(twin, "◈", "Player Twin", "See how your development is changing over time", "player-twin");
   setCopy(footballIq, "◉", "Football IQ", "See, scan and decide earlier", "football-iq");
   setCopy(reflect, "◎", "Reflect", "Turn every session into learning", "reflect");
   setCopy(mindIq, "◇", "MindIQ", "Build confidence, focus and resilience", "mindiq");
@@ -70,7 +72,7 @@ export function applyHomeWorldStack(root = document) {
     setCopy(player, "⚗", "PitchIQ Lab", "Explore experimental tools and camera features", "lab");
   }
 
-  home.dataset.homeWorlds = "h13-academy-mission-system";
+  home.dataset.homeWorlds = "h14-player-twin";
   return true;
 }
 
