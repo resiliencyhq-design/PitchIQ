@@ -1,0 +1,12 @@
+.academy-runtime-canonical{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 104px)}
+.academy-runtime-canonical .trial-hero,
+.academy-runtime-canonical .orientation-stage,
+.academy-runtime-canonical .academy-accepted,
+.academy-runtime-canonical .lab-stage{overflow:visible}
+.academy-canonical-cta-dock{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:30;margin-top:20px;padding:10px 0 2px;background:linear-gradient(180deg,rgba(2,8,7,0),rgba(2,8,7,.96) 28%)}
+.academy-canonical-cta-dock .trial-primary{position:relative;z-index:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media(max-width:480px){
+  .academy-runtime-canonical{padding-left:14px;padding-right:14px}
+  .academy-runtime-canonical .trial-hero{padding-bottom:12px}
+  .academy-runtime-canonical .trial-benefits{margin-bottom:8px}
+}
