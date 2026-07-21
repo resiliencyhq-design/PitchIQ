@@ -150,20 +150,26 @@ function alignOnboardingLabels() {
   syncIdentityScene();
 }
 
+function dispatchAcademyTrialRoute(oldURL) {
+  const newURL = window.location.href;
+  window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL }));
+}
+
 function navigateToAcademyOrientation() {
   const targetHash = "#academy-trial";
   const oldURL = window.location.href;
 
-  if (window.location.hash === targetHash) {
-    window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL: oldURL }));
-  } else {
-    window.location.hash = targetHash;
-  }
+  if (window.location.hash !== targetHash) window.location.hash = targetHash;
+
+  // The identity scene is a top-level overlay. Explicitly dispatch the route after
+  // removing it so the Academy renderer cannot lose the handoff during that DOM change.
+  window.queueMicrotask(() => dispatchAcademyTrialRoute(oldURL));
 
   window.setTimeout(() => {
     const welcomeVisible = Boolean(document.querySelector(".trial-shell .trial-hero"));
-    if (!welcomeVisible) window.location.replace(`${window.location.pathname}${window.location.search}${targetHash}`);
-  }, 180);
+    if (welcomeVisible) return;
+    dispatchAcademyTrialRoute(oldURL);
+  }, 80);
 }
 
 function beginFirstAssessment(event) {
