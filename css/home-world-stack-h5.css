@@ -1,19 +1,41 @@
+#home .home-academy-worlds-heading {
+  display: grid;
+  gap: 3px;
+  margin: 2px 2px 10px;
+  text-align: left;
+}
+
+#home .home-academy-worlds-heading > span {
+  color: #f5f8f6;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#home .home-academy-worlds-heading > small {
+  color: rgba(230, 240, 250, 0.58);
+  font-size: 12px;
+}
+
 #home .home-actions-grid.home-world-stack {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
   margin: 0;
 }
 
 #home .home-world-card {
   position: relative;
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) auto;
+  grid-template-columns: 42px minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
   align-items: center;
-  gap: 14px;
+  gap: 5px 10px;
   width: 100%;
-  min-height: 92px;
-  padding: 18px;
+  min-height: 142px;
+  padding: 16px;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 22px;
   background: linear-gradient(145deg, rgba(15, 28, 48, 0.96), rgba(7, 17, 31, 0.98));
@@ -23,13 +45,14 @@
 }
 
 #home .home-world-card::after {
-  content: "→";
-  grid-column: 3;
-  grid-row: 1 / span 2;
-  align-self: center;
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 20px;
-  font-weight: 800;
+  content: "Continue →";
+  grid-column: 1 / -1;
+  grid-row: 3;
+  align-self: end;
+  margin-top: 8px;
+  color: #d7ff2e;
+  font-size: 12px;
+  font-weight: 850;
 }
 
 #home .home-world-card > b {
@@ -37,19 +60,19 @@
   grid-row: 1 / span 2;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 15px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
   background: rgba(118, 221, 255, 0.12);
   color: #8ee4ff;
-  font-size: 20px;
+  font-size: 19px;
 }
 
 #home .home-world-card > span {
   grid-column: 2;
   grid-row: 1;
   align-self: end;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 850;
   letter-spacing: -0.02em;
 }
@@ -59,28 +82,56 @@
   grid-row: 2;
   align-self: start;
   color: rgba(230, 240, 250, 0.62);
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.35;
 }
 
+#home .home-world-card[data-home-world="football-iq"] {
+  border-color: rgba(49, 247, 154, 0.35);
+  background: linear-gradient(145deg, rgba(5, 60, 39, 0.96), rgba(4, 24, 22, 0.99));
+}
+
+#home .home-world-card[data-home-world="football-iq"] > b {
+  background: rgba(49, 247, 154, 0.14);
+  color: #65ffc0;
+}
+
+#home .home-world-card[data-home-world="technical-training"] {
+  border-color: rgba(255, 190, 74, 0.34);
+  background: linear-gradient(145deg, rgba(74, 47, 7, 0.96), rgba(28, 20, 6, 0.99));
+}
+
 #home .home-world-card[data-home-world="technical-training"] > b {
+  background: rgba(255, 190, 74, 0.14);
+  color: #ffc35d;
+}
+
+#home .home-world-card[data-home-world="progress"] > b {
   background: rgba(215, 255, 46, 0.12);
   color: #d7ff2e;
 }
 
-#home .home-world-card[data-home-world="results"] > b {
-  background: rgba(255, 190, 74, 0.12);
-  color: #ffc35d;
+#home .home-world-card[data-home-world="lab"] {
+  border-color: rgba(118, 221, 255, 0.3);
+  background: linear-gradient(145deg, rgba(7, 44, 69, 0.96), rgba(5, 20, 35, 0.99));
 }
 
 #home .home-world-card[data-home-world="lab"] > b {
-  background: rgba(183, 125, 255, 0.13);
-  color: #cba1ff;
+  background: rgba(118, 221, 255, 0.13);
+  color: #8ee4ff;
 }
 
-@media (max-width: 390px) {
+#home .home-world-card[data-home-world="lab"]::after {
+  content: "Explore →";
+  color: #8ee4ff;
+}
+
+@media (max-width: 350px) {
+  #home .home-actions-grid.home-world-stack {
+    grid-template-columns: 1fr;
+  }
+
   #home .home-world-card {
-    min-height: 86px;
-    padding: 16px;
+    min-height: 100px;
   }
 }
