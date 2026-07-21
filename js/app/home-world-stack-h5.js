@@ -1,3 +1,4 @@
+import "../lab/native-haptics-bridge.js";
 import "../lab/vibro-focus.js";
 
 const HOME_SELECTOR = "#home";
