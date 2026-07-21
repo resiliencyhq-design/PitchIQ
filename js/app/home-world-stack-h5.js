@@ -25,29 +25,16 @@ function ensureWorldsHeading(actions) {
   return heading;
 }
 
-function createFootballIqCard(actions) {
-  let card = actions.querySelector('[data-home-world="football-iq"]');
+function createWorldCard(actions, { world, route, icon, title, description, after }) {
+  let card = actions.querySelector(`[data-home-world="${world}"]`);
   if (card) return card;
   card = document.createElement("button");
   card.type = "button";
   card.className = "home-action-card home-world-card";
-  card.dataset.homeWorld = "football-iq";
-  card.dataset.homeFootballIqRoute = "football-iq-library";
-  card.innerHTML = "<b>◉</b><span>Football IQ</span><small>See, scan and decide earlier</small>";
-  actions.prepend(card);
-  return card;
-}
-
-function createReflectCard(actions, footballIq) {
-  let card = actions.querySelector('[data-home-world="reflect"]');
-  if (card) return card;
-  card = document.createElement("button");
-  card.type = "button";
-  card.className = "home-action-card home-world-card";
-  card.dataset.homeWorld = "reflect";
-  card.dataset.homeReflectRoute = "reflect-world";
-  card.innerHTML = "<b>◎</b><span>Reflect</span><small>Turn every session into learning</small>";
-  footballIq?.insertAdjacentElement("afterend", card);
+  card.dataset.homeWorld = world;
+  card.dataset.homeWorldRoute = route;
+  card.innerHTML = `<b>${icon}</b><span>${title}</span><small>${description}</small>`;
+  if (after) after.insertAdjacentElement("afterend", card); else actions.prepend(card);
   return card;
 }
 
@@ -60,14 +47,16 @@ export function applyHomeWorldStack(root = document) {
   actions.setAttribute("aria-label", "PitchIQ Academy development worlds");
   ensureWorldsHeading(actions);
 
-  const footballIq = createFootballIqCard(actions);
-  const reflect = createReflectCard(actions, footballIq);
+  const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier" });
+  const reflect = createWorldCard(actions, { world:"reflect", route:"reflect-world", icon:"◎", title:"Reflect", description:"Turn every session into learning", after:footballIq });
+  const mindIq = createWorldCard(actions, { world:"mindiq", route:"mindiq-world", icon:"◇", title:"MindIQ", description:"Build confidence, focus and resilience", after:reflect });
   const training = actions.querySelector('[data-route="training"]');
   const results = actions.querySelector('[data-route="results"]');
   const player = actions.querySelector('[data-route="player"], [data-home-world="lab"]');
 
   setCopy(footballIq, "◉", "Football IQ", "See, scan and decide earlier", "football-iq");
   setCopy(reflect, "◎", "Reflect", "Turn every session into learning", "reflect");
+  setCopy(mindIq, "◇", "MindIQ", "Build confidence, focus and resilience", "mindiq");
   setCopy(training, "⚽", "Technical Training", "Build touch, control and ball mastery", "technical-training");
   setCopy(results, "▮▮▮", "Progress", "Track development and review your latest rep", "progress");
 
@@ -77,7 +66,7 @@ export function applyHomeWorldStack(root = document) {
     setCopy(player, "⚗", "PitchIQ Lab", "Explore experimental tools and camera features", "lab");
   }
 
-  home.dataset.homeWorlds = "h10-reflect-world";
+  home.dataset.homeWorlds = "h11-mindiq-world";
   return true;
 }
 
@@ -85,12 +74,8 @@ function refreshWorldStack() { applyHomeWorldStack(document); }
 
 if (typeof document !== "undefined") {
   document.addEventListener("click", event => {
-    const footballIq = event.target.closest?.('[data-home-football-iq-route="football-iq-library"]');
-    if (footballIq) { event.preventDefault(); window.location.hash = "football-iq-library"; return; }
-
-    const reflect = event.target.closest?.('[data-home-reflect-route="reflect-world"]');
-    if (reflect) { event.preventDefault(); window.location.hash = "reflect-world"; return; }
-
+    const world = event.target.closest?.("[data-home-world-route]");
+    if (world) { event.preventDefault(); window.location.hash = world.dataset.homeWorldRoute; return; }
     const lab = event.target.closest?.('[data-home-lab-route="lab-juggling"]');
     if (!lab) return;
     event.preventDefault();
