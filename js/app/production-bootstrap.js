@@ -1,17 +1,17 @@
-import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h7-development-worlds-20260721";
+import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
 const APP_SELECTOR = "#app";
 const HOME_SELECTOR = "#home";
 const CANONICAL_HOME_CONTROL = '#nav [data-route="home"]';
 
 function markProductionBuild() {
-  document.documentElement.dataset.pitchiqProductionBuild = "sprint-h7";
+  document.documentElement.dataset.pitchiqProductionBuild = "sprint-h8";
 }
 
 function applyCurrentHome() {
   const applied = applyHomeContentComposition(document);
   if (applied) {
-    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h7-academy-worlds");
+    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h8-adaptive-mission-hub");
   }
   return applied;
 }
