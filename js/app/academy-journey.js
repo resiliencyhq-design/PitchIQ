@@ -151,7 +151,7 @@ function alignOnboardingLabels() {
 }
 
 function navigateToAcademyOrientation() {
-  const targetHash = "#academy-trials";
+  const targetHash = "#academy-trial";
   const oldURL = window.location.href;
 
   if (window.location.hash === targetHash) {
@@ -161,8 +161,8 @@ function navigateToAcademyOrientation() {
   }
 
   window.setTimeout(() => {
-    const orientationVisible = Boolean(document.querySelector(".trial-shell .trial-list-head"));
-    if (!orientationVisible) window.location.replace(`${window.location.pathname}${window.location.search}${targetHash}`);
+    const welcomeVisible = Boolean(document.querySelector(".trial-shell .trial-hero"));
+    if (!welcomeVisible) window.location.replace(`${window.location.pathname}${window.location.search}${targetHash}`);
   }, 180);
 }
 
