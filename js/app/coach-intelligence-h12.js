@@ -1,7 +1,7 @@
-import { getFootballIqProgress } from "./football-iq-progression-w1-4.js?v=sprint-h12-coach-intelligence-20260721";
-import { primaryFootballIqRecommendation } from "./football-iq-recommendations-w1-5.js?v=sprint-h12-coach-intelligence-20260721";
-import { getReflections, reflectionSummary } from "./reflection-engine-h10.js?v=sprint-h12-coach-intelligence-20260721";
-import { mindIqSummary } from "./mindiq-engine-h11.js?v=sprint-h12-coach-intelligence-20260721";
+import { getFootballIqProgress } from "./football-iq-progression-w1-4.js?v=sprint-h8-adaptive-mission-hub-20260721";
+import { primaryFootballIqRecommendation } from "./football-iq-recommendations-w1-5.js?v=sprint-h8-adaptive-mission-hub-20260721";
+import { getReflections, reflectionSummary } from "./reflection-engine-h10.js?v=sprint-h10-reflect-world-20260721";
+import { mindIqSummary } from "./mindiq-engine-h11.js?v=sprint-h11-mindiq-world-20260721";
 
 const COACH_MEMORY_KEY = "pitchiq.coach.memory.v1";
 const COACH_PLAN_KEY = "pitchiq.coach.plan.v1";
@@ -39,7 +39,7 @@ export function resolveCoachRecommendation(profile=buildCoachProfile()){
     : lowReadiness
       ? `Your recent check-ins suggest ${mental?.skill||"calm"} support will help you get more from today's football work.`
       : profile.priority
-        ? `Your current mission results show the clearest opportunity for improvement while preserving your stronger habits.`
+        ? "Your current mission results show the clearest opportunity for improvement while preserving your stronger habits."
         : "Your recent activity supports continuing the next recommended Football IQ mission.";
   return {
     mission:mission ? { id:mission.id, title:mission.title, minutes:Number(mission.minutes||8), xp:Number(mission.xp||20), route:"football-iq", world:"Coach Intelligence" } : { id:"technical-foundation", title:"Build your technical foundation", minutes:8, xp:20, route:"training", world:"Coach Intelligence" },
