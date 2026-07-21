@@ -50,6 +50,7 @@ export function applyHomeWorldStack(root = document) {
   const footballIq = createWorldCard(actions, { world:"football-iq", route:"football-iq-library", icon:"◉", title:"Football IQ", description:"See, scan and decide earlier" });
   const reflect = createWorldCard(actions, { world:"reflect", route:"reflect-world", icon:"◎", title:"Reflect", description:"Turn every session into learning", after:footballIq });
   const mindIq = createWorldCard(actions, { world:"mindiq", route:"mindiq-world", icon:"◇", title:"MindIQ", description:"Build confidence, focus and resilience", after:reflect });
+  const coach = createWorldCard(actions, { world:"coach", route:"coach-world", icon:"✦", title:"Coach Intelligence", description:"Your next best action, explained", after:mindIq });
   const training = actions.querySelector('[data-route="training"]');
   const results = actions.querySelector('[data-route="results"]');
   const player = actions.querySelector('[data-route="player"], [data-home-world="lab"]');
@@ -57,6 +58,7 @@ export function applyHomeWorldStack(root = document) {
   setCopy(footballIq, "◉", "Football IQ", "See, scan and decide earlier", "football-iq");
   setCopy(reflect, "◎", "Reflect", "Turn every session into learning", "reflect");
   setCopy(mindIq, "◇", "MindIQ", "Build confidence, focus and resilience", "mindiq");
+  setCopy(coach, "✦", "Coach Intelligence", "Your next best action, explained", "coach");
   setCopy(training, "⚽", "Technical Training", "Build touch, control and ball mastery", "technical-training");
   setCopy(results, "▮▮▮", "Progress", "Track development and review your latest rep", "progress");
 
@@ -66,7 +68,7 @@ export function applyHomeWorldStack(root = document) {
     setCopy(player, "⚗", "PitchIQ Lab", "Explore experimental tools and camera features", "lab");
   }
 
-  home.dataset.homeWorlds = "h11-mindiq-world";
+  home.dataset.homeWorlds = "h12-coach-intelligence";
   return true;
 }
 
