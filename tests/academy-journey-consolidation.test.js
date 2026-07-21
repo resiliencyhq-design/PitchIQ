@@ -17,6 +17,13 @@ test("identity completion routes directly to the canonical Academy welcome", asy
   assert.match(journey, /\.trial-shell \.trial-hero/);
 });
 
+test("identity completion explicitly dispatches the canonical route after overlay removal", async () => {
+  const journey = await source(journeyUrl);
+  assert.match(journey, /function dispatchAcademyTrialRoute\(oldURL\)/);
+  assert.match(journey, /window\.queueMicrotask\(\(\) => dispatchAcademyTrialRoute\(oldURL\)\)/);
+  assert.match(journey, /window\.dispatchEvent\(new HashChangeEvent\("hashchange"/);
+});
+
 test("the personalised welcome owns the single Start Orientation action", async () => {
   const orientation = await source(orientationUrl);
   assert.match(orientation, /const ORIENTATION_ROUTE = "academy-trial"/);
@@ -39,6 +46,6 @@ test("first-step back restores the welcome rather than creating a route loop", a
 
 test("production cache keys load the consolidated Academy modules", async () => {
   const index = await source(indexUrl);
-  assert.match(index, /academy-journey\.js\?v=sprint-c-academy-journey-consolidation-20260721/);
+  assert.match(index, /academy-journey\.js\?v=sprint-c1-academy-trial-render-recovery-20260721/);
   assert.match(index, /academy-orientation-interactive\.js\?v=sprint-c-academy-journey-consolidation-20260721/);
 });
