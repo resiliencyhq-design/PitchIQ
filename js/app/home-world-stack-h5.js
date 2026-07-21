@@ -34,7 +34,6 @@ export const HOME_WORLDS = Object.freeze([
     icon: "▮▮▮",
     badge: "Development insights",
     modules: [
-      { id:"latest-results", title:"Latest Results", description:"Review your last rep", icon:"▮▮▮", route:"results" },
       { id:"player-twin", title:"Player Twin", description:"See how your development is changing", icon:"◈", route:"player-twin" },
       { id:"reflect", title:"Reflect", description:"Turn every session into learning", icon:"◎", route:"reflect-world" },
       { id:"progress", title:"Progress", description:"Track development and milestones", icon:"↗", route:"results" },

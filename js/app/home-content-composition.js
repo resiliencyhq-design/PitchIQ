@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h16-four-worlds-home-20260721";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h13-home-information-architecture-20260721";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
@@ -12,6 +12,7 @@ const FOOTBALL_IQ_STYLE_ID = "pitchiq-home-football-iq-h4-css";
 const WORLD_STACK_STYLE_ID = "pitchiq-home-world-stack-h5-css";
 const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
 const FOUR_WORLDS_STYLE_ID = "pitchiq-home-four-worlds-h16-css";
+const H13_STYLE_ID = "pitchiq-home-information-architecture-h13-css";
 
 function appendStylesheet(id, href) {
   let link = document.getElementById(id);
@@ -33,10 +34,63 @@ function ensureStylesheet() {
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h7-development-worlds-20260721");
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
   appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h16-four-worlds-home-20260721");
+  appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
 }
 
 function assignSlot(element, slot) {
   if (element && element.dataset.homeSlot !== slot) element.dataset.homeSlot = slot;
+}
+
+function transformRewardsCard(card) {
+  if (!card) return;
+  card.classList.add("home-rewards-card");
+  card.dataset.route = "reward";
+  card.setAttribute("aria-label", "Open Academy Rewards");
+  if (card.dataset.h13Rewards === "true") return;
+  card.dataset.h13Rewards = "true";
+  card.innerHTML = `<span>Academy Rewards</span><b>See what you've<br>earned</b><em>View rewards</em><img src="assets/Home/results-pack.png" alt="Academy reward pack">`;
+}
+
+function applyHomeInformationArchitecture(home, stack) {
+  const mission = stack.querySelector(".home-mock-mission");
+  const worlds = stack.querySelector(".home-actions-grid.home-world-quad-grid");
+  const worldsHeading = worlds?.previousElementSibling?.classList?.contains("home-academy-worlds-heading")
+    ? worlds.previousElementSibling
+    : null;
+  const supporting = stack.querySelector(".home-secondary-row");
+  const stats = supporting?.querySelector(".home-training-stats") || stack.querySelector(":scope > .home-training-stats");
+  const rewards = supporting?.querySelector(".home-pack-card") || stack.querySelector(".home-rewards-card");
+
+  if (stats) {
+    stats.dataset.homeSlot = "training-snapshot";
+    stats.classList.add("home-training-snapshot");
+    stack.prepend(stats);
+  }
+
+  if (mission) {
+    mission.dataset.homeSlot = "todays-mission";
+    stats ? stats.after(mission) : stack.prepend(mission);
+  }
+
+  if (worldsHeading && worlds) {
+    mission ? mission.after(worldsHeading) : stack.append(worldsHeading);
+    worldsHeading.after(worlds);
+  }
+
+  if (rewards) {
+    transformRewardsCard(rewards);
+    rewards.dataset.homeSlot = "academy-rewards";
+    if (supporting) {
+      supporting.classList.add("home-rewards-row");
+      supporting.dataset.homeSlot = "academy-rewards";
+      supporting.replaceChildren(rewards);
+      worlds ? worlds.after(supporting) : stack.append(supporting);
+    } else {
+      worlds ? worlds.after(rewards) : stack.append(rewards);
+    }
+  }
+
+  home.dataset.homeComposition = "h13-status-action-worlds-rewards";
 }
 
 export function applyHomeContentComposition(root = document) {
@@ -70,7 +124,7 @@ export function applyHomeContentComposition(root = document) {
   applyHomeAdaptiveMission(root);
   applyHomeWorldStack(root);
   applyHomeWorldPolish(root);
-  home.dataset.homeComposition = "h16-four-worlds";
+  applyHomeInformationArchitecture(home, stack);
   return true;
 }
 
