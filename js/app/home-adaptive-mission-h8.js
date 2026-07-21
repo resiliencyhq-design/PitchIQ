@@ -8,7 +8,7 @@ import { canonicalMissionCardModel } from "../data/mission-card-content-h15.js?v
 const HOME_SELECTOR="#home";
 const CARD_SELECTOR=".home-mock-mission";
 const STYLE_ID="pitchiq-home-adaptive-mission-h8-css";
-const STYLE_HREF="css/home-adaptive-mission-h8.css?v=sprint-h15-2-1-mission-overlay-compact-20260721";
+const STYLE_HREF="css/home-mission-overlay-h15-2-1.css?v=sprint-h15-2-1-mission-overlay-compact-20260721";
 const ADAPTIVE_CURRENT_KEY="pitchiq.adaptiveTraining.current.v1";
 const FALLBACK_MISSION=Object.freeze({id:"technical-foundation",title:"Build your technical foundation",world:"Technical Training",focus:"Touch, control and confident repetition",minutes:8,xp:20,route:"training",source:"fallback"});
 
