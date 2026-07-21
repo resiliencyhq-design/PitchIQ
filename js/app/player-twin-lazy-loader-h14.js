@@ -1,0 +1,4 @@
+const STYLE_ID="pitchiq-player-twin-h14-css";
+function ensureStyle(){if(document.getElementById(STYLE_ID))return;const link=document.createElement("link");link.id=STYLE_ID;link.rel="stylesheet";link.href="css/player-twin-h14.css?v=sprint-h14-player-twin-20260721";document.head.appendChild(link);}
+async function mount(){if(location.hash.replace(/^#/,"")!=="player-twin")return;ensureStyle();const module=await import("./player-twin-world-h14.js?v=sprint-h14-player-twin-20260721");module.mountPlayerTwinWorld();}
+if(typeof window!=="undefined"){window.addEventListener("hashchange",mount);window.addEventListener("pageshow",mount);mount();}
