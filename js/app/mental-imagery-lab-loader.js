@@ -1,4 +1,5 @@
 const MENTAL_IMAGERY_ROUTE = "lab-mental-imagery";
+const LAB_WORLD_ROUTE = "world-lab";
 let runtimePromise = null;
 
 function currentRoute() {
@@ -20,8 +21,32 @@ function ensureStylesheet() {
   document.head.appendChild(link);
 }
 
+function mentalImageryModuleMarkup() {
+  return `<button type="button" class="world-module-card" data-world-module-route="${MENTAL_IMAGERY_ROUTE}" data-mental-imagery-module="true">
+    <span aria-hidden="true">◉</span>
+    <span><strong>Mental Imagery</strong><small>2–5 minute game-preparation lock-ins</small></span>
+    <b aria-hidden="true">›</b>
+  </button>`;
+}
+
+function injectLabModule() {
+  if (currentRoute() !== LAB_WORLD_ROUTE) return false;
+  const world = document.querySelector('[data-development-world="lab"]');
+  const modules = world?.querySelector?.(".development-world-modules");
+  if (!modules || modules.querySelector("[data-mental-imagery-module]")) return false;
+
+  modules.insertAdjacentHTML("beforeend", mentalImageryModuleMarkup());
+  const count = modules.querySelectorAll(".world-module-card").length;
+  const countLabel = modules.querySelector("header small");
+  if (countLabel) countLabel.textContent = `${count} destinations`;
+  return true;
+}
+
 function loadMentalImageryRuntime() {
-  if (currentRoute() !== MENTAL_IMAGERY_ROUTE) return Promise.resolve(false);
+  if (currentRoute() !== MENTAL_IMAGERY_ROUTE) {
+    queueMicrotask(injectLabModule);
+    return Promise.resolve(false);
+  }
   ensureStylesheet();
   if (!runtimePromise) {
     runtimePromise = import("../lab/mental-imagery.js?v=sprint-l2-mental-imagery-lab-20260721")
@@ -37,6 +62,21 @@ function loadMentalImageryRuntime() {
     return loaded;
   });
 }
+
+const app = document.getElementById("app");
+if (app) {
+  new MutationObserver(() => queueMicrotask(injectLabModule)).observe(app, {
+    childList: true,
+    subtree: false
+  });
+}
+
+document.addEventListener("click", event => {
+  const module = event.target.closest?.('[data-world-module-route="lab-mental-imagery"]');
+  if (!module) return;
+  event.preventDefault();
+  window.location.hash = MENTAL_IMAGERY_ROUTE;
+}, true);
 
 window.addEventListener("hashchange", loadMentalImageryRuntime);
 window.addEventListener("pageshow", loadMentalImageryRuntime);
