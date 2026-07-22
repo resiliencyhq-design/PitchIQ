@@ -1,13 +1,17 @@
-/* Sprint H26 — State-only bottom navigation rules.
+/* Sprint H27 — State-only bottom navigation rules.
    Dimensions and presentation are owned by bottom-nav-compact-h19.css. */
 
 .app-shell > #nav.bottom-nav.visible button.active,
-.app-shell > #nav.bottom-nav.visible button[aria-current="page"] {
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"],
+.app-shell > #nav.bottom-nav.visible button.active::before,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"]::before,
+.app-shell > #nav.bottom-nav.visible button.active span,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"] span {
   color: #d7ff2e !important;
 }
 
 .app-shell > #nav.bottom-nav.visible button:not(.active):not([aria-current="page"]),
 .app-shell > #nav.bottom-nav.visible button:not(.active):not([aria-current="page"])::before,
 .app-shell > #nav.bottom-nav.visible button:not(.active):not([aria-current="page"]) span {
-  color: #d8e2dc !important;
+  color: #ffffff !important;
 }
