@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h13-home-information-architecture-20260721";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h28b-world-carousel-preview-20260722";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 import { applyHomePerformanceSnapshot } from "./home-performance-snapshot-h14.js?v=sprint-h14-mission-control-dashboard-20260721";
@@ -51,7 +51,7 @@ function ensureStylesheet() {
   appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h7-development-worlds-20260721");
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
-  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h16-four-worlds-home-20260721");
+  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h28b-world-carousel-preview-20260722");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
   appendStylesheet(H14_STYLE_ID, "css/home-performance-snapshot-h14.css?v=sprint-h14-mission-control-dashboard-20260721");
   appendStylesheet(H17_STYLE_ID, "css/home-compact-mission-h17.css?v=sprint-h17-compact-mission-hero-20260722");
@@ -89,9 +89,12 @@ function transformRewardsCard(card) {
 
 function applyHomeInformationArchitecture(home, stack) {
   const mission = stack.querySelector(".home-mock-mission");
-  const worlds = stack.querySelector(".home-actions-grid.home-world-quad-grid");
+  const worlds = stack.querySelector(".home-actions-grid.home-world-carousel, .home-actions-grid.home-world-quad-grid");
   const worldsHeading = worlds?.previousElementSibling?.classList?.contains("home-academy-worlds-heading")
     ? worlds.previousElementSibling
+    : null;
+  const worldsPreview = worlds?.nextElementSibling?.classList?.contains("home-world-preview")
+    ? worlds.nextElementSibling
     : null;
   const supporting = stack.querySelector(".home-secondary-row");
   const stats = supporting?.querySelector(".home-training-stats") || stack.querySelector(":scope > .home-training-stats");
@@ -111,22 +114,24 @@ function applyHomeInformationArchitecture(home, stack) {
   if (worldsHeading && worlds) {
     mission ? mission.after(worldsHeading) : stack.append(worldsHeading);
     worldsHeading.after(worlds);
+    if (worldsPreview) worlds.after(worldsPreview);
   }
 
   if (rewards) {
     transformRewardsCard(rewards);
     rewards.dataset.homeSlot = "academy-rewards";
+    const worldTail = worldsPreview || worlds;
     if (supporting) {
       supporting.classList.add("home-rewards-row");
       supporting.dataset.homeSlot = "academy-rewards";
       supporting.replaceChildren(rewards);
-      worlds ? worlds.after(supporting) : stack.append(supporting);
+      worldTail ? worldTail.after(supporting) : stack.append(supporting);
     } else {
-      worlds ? worlds.after(rewards) : stack.append(rewards);
+      worldTail ? worldTail.after(rewards) : stack.append(rewards);
     }
   }
 
-  home.dataset.homeComposition = "h14-mission-control-dashboard";
+  home.dataset.homeComposition = "h28b-world-carousel-preview";
 }
 
 export function applyHomeContentComposition(root = document) {
