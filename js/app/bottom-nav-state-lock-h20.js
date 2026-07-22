@@ -92,7 +92,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "sprint-c3-2-plus-h20-20260722";
+    window.__PITCHIQ_BUILD__ = "sprint-h20-compact-nav-state-lock-20260722";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -132,7 +132,7 @@
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
   <script type="module" src="js/app/onboard-haptics.js?v=step2-haptics-20260702"></script>
   <script type="module" src="js/app/onboard-tactical-web.js?v=sprint-8-4-1-marker-consolidation-20260712"></script>
-  <script type="module" src="js/app/academy-runtime-canonical.js?v=sprint-c3-2-canonical-visual-story-20260722"></script>
+  <script type="module" src="js/app/academy-runtime-canonical.js?v=sprint-c3-1-academy-cta-resilience-20260721"></script>
   <script type="module" src="js/app/academy-journey.js?v=sprint-c2-identity-overlay-route-guard-20260721"></script>
   <script type="module" src="js/app/academy-lab-loader.js?v=sprint-lab-auto-juggler-route-authority-20260721"></script>
   <script type="module" src="js/lab/calmsense.js?v=sprint-l1-1-calmsense-validation-20260721"></script>
