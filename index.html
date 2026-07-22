@@ -88,6 +88,7 @@
   <link rel="stylesheet" href="css/home-hero-progress-declutter-h24.css?v=sprint-h24-hero-level-xp-declutter-20260722"/>
   <link rel="stylesheet" href="css/home-hero-football-iq-ring.css?v=hotfix-pr256-reapply-football-iq-ring-20260722"/>
   <link rel="stylesheet" href="css/player-profile-recovery.css?v=sprint-player-profile-recovery-refactor-20260722"/>
+  <link rel="stylesheet" href="css/results-training-snapshot-h30.css?v=sprint-h30-training-snapshot-results-20260723"/>
 </head>
 <body>
   <div class="world"></div>
@@ -98,7 +99,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "sprint-player-profile-recovery-refactor-20260722";
+    window.__PITCHIQ_BUILD__ = "sprint-h30-training-snapshot-results-20260723";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -120,6 +121,7 @@
   <script type="module" src="js/app/home-dynamic-salutation.js?v=sprint-home-dynamic-salutation-20260722"></script>
   <script type="module" src="js/app/bottom-nav-state-lock-h20.js?v=hotfix-h20-nav-module-html-corruption-20260722"></script>
   <script type="module" src="js/app/streak-rewards-h20.js?v=sprint-h20-streak-reward-system-20260722"></script>
+  <script type="module" src="js/app/training-snapshot-results-h30.js?v=sprint-h30-training-snapshot-results-20260723"></script>
   <script type="module" src="js/app/mission-runtime-integration.js?v=sprint-20-1-mission-runtime-integration-20260719"></script>
   <script type="module" src="js/app/reflection-engine-h10.js?v=sprint-h10-reflect-world-20260721"></script>
   <script type="module" src="js/app/mindiq-engine-h11.js?v=sprint-h11-mindiq-world-20260721"></script>
@@ -143,7 +145,6 @@
   <script type="module" src="js/app/academy-journey.js?v=sprint-c2-identity-overlay-route-guard-20260721"></script>
   <script type="module" src="js/app/academy-lab-loader.js?v=sprint-lab-auto-juggler-route-authority-20260721"></script>
   <script type="module" src="js/lab/calmsense.js?v=sprint-l1-1-calmsense-validation-20260721"></script>
-  <script type="module" src="js/dev/visual-layout-studio.js?v=dev-observer-loop-fix-20260715"></script>
-  <script type="module" src="js/dev/dev-floating-panels.js?v=hero-bg-top-20260623"></script>
+  <script type="module" src="js/dev/visual-layout-studio.js?v=dev-layout-studio-20260714"></script>
 </body>
 </html>
