@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=hotfix-h30-carousel-reapply-latest-main-20260723";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h31-carousel-focus-polish-20260723";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
@@ -49,7 +49,7 @@ function ensureStylesheet() {
   appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h7-development-worlds-20260721");
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
-  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=hotfix-h30-carousel-reapply-latest-main-20260723");
+  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h31-carousel-focus-polish-20260723");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
   appendStylesheet(H17_STYLE_ID, "css/home-compact-mission-h17.css?v=sprint-h17-compact-mission-hero-20260722");
 }
@@ -77,13 +77,12 @@ function applyCompactPlayerLabels(home) {
 function applyHomeInformationArchitecture(home, stack) {
   const mission = stack.querySelector(".home-mock-mission");
   const worlds = stack.querySelector(".home-actions-grid.home-world-carousel, .home-actions-grid.home-world-quad-grid");
-  const worldsShell = worlds?.closest?.(".home-world-carousel-shell") || null;
-  const worldsAnchor = worldsShell || worlds;
-  const worldsHeading = worldsAnchor?.previousElementSibling?.classList?.contains("home-academy-worlds-heading")
-    ? worldsAnchor.previousElementSibling
+  const worldsShell = worlds?.closest?.(".home-world-carousel-shell") || worlds;
+  const worldsHeading = worldsShell?.previousElementSibling?.classList?.contains("home-academy-worlds-heading")
+    ? worldsShell.previousElementSibling
     : null;
-  const worldsPreview = worldsAnchor?.nextElementSibling?.classList?.contains("home-world-preview")
-    ? worldsAnchor.nextElementSibling
+  const worldsPreview = worldsShell?.nextElementSibling?.classList?.contains("home-world-preview")
+    ? worldsShell.nextElementSibling
     : null;
   const supporting = stack.querySelector(".home-secondary-row");
   const stats = supporting?.querySelector(".home-training-stats") || stack.querySelector(":scope > .home-training-stats");
@@ -96,16 +95,16 @@ function applyHomeInformationArchitecture(home, stack) {
     stack.prepend(mission);
   }
 
-  if (worldsHeading && worldsAnchor) {
+  if (worldsHeading && worldsShell) {
     mission ? mission.after(worldsHeading) : stack.append(worldsHeading);
-    worldsHeading.after(worldsAnchor);
-    if (worldsPreview) worldsAnchor.after(worldsPreview);
+    worldsHeading.after(worldsShell);
+    if (worldsPreview) worldsShell.after(worldsPreview);
   }
 
   if (rewards) rewards.remove();
   if (supporting && !supporting.children.length) supporting.remove();
 
-  home.dataset.homeComposition = "h30-carousel-plus-snapshot-results";
+  home.dataset.homeComposition = "h30-snapshot-results";
 }
 
 export function applyHomeContentComposition(root = document) {
