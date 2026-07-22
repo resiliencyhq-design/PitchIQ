@@ -8,7 +8,9 @@ const ACTIONS_SELECTOR = ".home-actions-grid";
 const WORLDS_HEADING_CLASS = "home-academy-worlds-heading";
 const WORLD_ROUTE_PREFIX = "world-";
 const DEFAULT_WORLD_ID = "academy";
-let selectedHomeWorldId = DEFAULT_WORLD_ID;
+let focusedWorldId = DEFAULT_WORLD_ID;
+let expandedWorldId = null;
+let carouselScrollTimer = null;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, character => ({
@@ -23,13 +25,13 @@ function ensureWorldsHeading(actions) {
     heading.className = WORLDS_HEADING_CLASS;
     actions.insertAdjacentElement("beforebegin", heading);
   }
-  heading.innerHTML = "<span>Explore</span><small>Preview each destination before you enter</small>";
+  heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
   return heading;
 }
 
-function worldSelectorMarkup(world, selectedWorldId) {
-  const selected = world.id === selectedWorldId;
-  return `<button type="button" class="home-world-carousel-item${selected ? " is-selected" : ""}" data-home-world-select="${escapeHtml(world.id)}" aria-pressed="${selected}" aria-label="Preview ${escapeHtml(world.title)}">
+function worldSelectorMarkup(world, expandedId) {
+  const expanded = world.id === expandedId;
+  return `<button type="button" class="home-world-carousel-item${expanded ? " is-selected" : ""}" data-home-world-select="${escapeHtml(world.id)}" aria-pressed="${expanded}" aria-expanded="${expanded}" aria-label="${expanded ? "Close" : "Preview"} ${escapeHtml(world.title)}">
     <span class="home-world-carousel-icon" aria-hidden="true">${escapeHtml(world.icon)}</span>
     <strong>${escapeHtml(world.title)}</strong>
   </button>`;
@@ -46,7 +48,7 @@ function destinationRoute(item) {
 function worldPreviewMarkup(world) {
   const route = destinationRoute(world);
   const ctaLabel = world.id === "rewards" ? "Open Rewards" : `Enter ${world.title}`;
-  return `<article class="home-world-preview" data-home-world-preview="${escapeHtml(world.id)}" aria-live="polite">
+  return `<article class="home-world-preview is-opening" data-home-world-preview="${escapeHtml(world.id)}" aria-live="polite">
     <span class="home-world-preview-art" aria-hidden="true"></span>
     <span class="home-world-preview-shade" aria-hidden="true"></span>
     <header>
@@ -64,30 +66,132 @@ function worldPreviewMarkup(world) {
   </article>`;
 }
 
-function ensurePreview(actions, world) {
-  let preview = actions.nextElementSibling;
-  if (!preview?.classList?.contains("home-world-preview")) {
-    preview = document.createElement("article");
-    actions.insertAdjacentElement("afterend", preview);
-  }
-  preview.outerHTML = worldPreviewMarkup(world);
+function previewElement(actions) {
+  const shell = actions.closest(".home-world-carousel-shell");
+  const candidate = shell?.nextElementSibling;
+  return candidate?.classList?.contains("home-world-preview") ? candidate : null;
 }
 
-function updateHomeWorldSelection(worldId, root = document) {
+function removePreview(actions) {
+  const preview = previewElement(actions);
+  if (!preview) return;
+  preview.classList.add("is-closing");
+  window.setTimeout(() => preview.remove(), 180);
+}
+
+function ensurePreview(actions, world) {
+  const shell = actions.closest(".home-world-carousel-shell") || actions;
+  const existing = previewElement(actions);
+  const markup = worldPreviewMarkup(world);
+  if (existing) {
+    existing.outerHTML = markup;
+  } else {
+    shell.insertAdjacentHTML("afterend", markup);
+  }
+}
+
+function ensureCarouselShell(actions) {
+  let shell = actions.parentElement;
+  if (!shell?.classList?.contains("home-world-carousel-shell")) {
+    shell = document.createElement("div");
+    shell.className = "home-world-carousel-shell";
+    actions.replaceWith(shell);
+    shell.appendChild(actions);
+  }
+  let previous = shell.querySelector('[data-home-world-arrow="previous"]');
+  let next = shell.querySelector('[data-home-world-arrow="next"]');
+  if (!previous) {
+    previous = document.createElement("button");
+    previous.type = "button";
+    previous.className = "home-world-carousel-arrow home-world-carousel-arrow-previous";
+    previous.dataset.homeWorldArrow = "previous";
+    previous.setAttribute("aria-label", "Previous destination");
+    previous.innerHTML = "‹";
+    shell.prepend(previous);
+  }
+  if (!next) {
+    next = document.createElement("button");
+    next.type = "button";
+    next.className = "home-world-carousel-arrow home-world-carousel-arrow-next";
+    next.dataset.homeWorldArrow = "next";
+    next.setAttribute("aria-label", "Next destination");
+    next.innerHTML = "›";
+    shell.append(next);
+  }
+  return shell;
+}
+
+function setExpandedState(actions, worldId) {
+  actions.querySelectorAll("[data-home-world-select]").forEach(button => {
+    const expanded = Boolean(worldId) && button.dataset.homeWorldSelect === worldId;
+    button.classList.toggle("is-selected", expanded);
+    button.setAttribute("aria-pressed", expanded ? "true" : "false");
+    button.setAttribute("aria-expanded", expanded ? "true" : "false");
+    const world = findHomeWorld(button.dataset.homeWorldSelect);
+    button.setAttribute("aria-label", `${expanded ? "Close" : "Preview"} ${world?.title || "destination"}`);
+  });
+}
+
+function focusWorld(worldId, root = document, { openPreview = false, scroll = true } = {}) {
   const world = findHomeWorld(worldId) || findHomeWorld(DEFAULT_WORLD_ID);
   const home = root.querySelector?.(HOME_SELECTOR);
   const actions = home?.querySelector?.(ACTIONS_SELECTOR);
   if (!world || !actions) return false;
 
-  selectedHomeWorldId = world.id;
-  actions.querySelectorAll("[data-home-world-select]").forEach(button => {
-    const selected = button.dataset.homeWorldSelect === selectedHomeWorldId;
-    button.classList.toggle("is-selected", selected);
-    button.setAttribute("aria-pressed", selected ? "true" : "false");
-  });
-  ensurePreview(actions, world);
-  home.dataset.selectedHomeWorld = selectedHomeWorldId;
+  focusedWorldId = world.id;
+  if (openPreview) {
+    expandedWorldId = expandedWorldId === world.id ? null : world.id;
+  } else {
+    expandedWorldId = null;
+  }
+
+  setExpandedState(actions, expandedWorldId);
+  if (expandedWorldId) ensurePreview(actions, world);
+  else removePreview(actions);
+
+  home.dataset.focusedHomeWorld = focusedWorldId;
+  if (expandedWorldId) home.dataset.expandedHomeWorld = expandedWorldId;
+  else delete home.dataset.expandedHomeWorld;
+
+  if (scroll) {
+    actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`)?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }
   return true;
+}
+
+function stepWorld(direction, root = document) {
+  const currentIndex = Math.max(0, HOME_WORLDS.findIndex(world => world.id === focusedWorldId));
+  const nextIndex = (currentIndex + direction + HOME_WORLDS.length) % HOME_WORLDS.length;
+  focusWorld(HOME_WORLDS[nextIndex].id, root, { openPreview: false, scroll: true });
+}
+
+function updateFocusFromScroll(actions) {
+  const shellRect = actions.getBoundingClientRect();
+  const centre = shellRect.left + shellRect.width / 2;
+  const buttons = [...actions.querySelectorAll("[data-home-world-select]")];
+  if (!buttons.length) return;
+  const nearest = buttons.reduce((best, button) => {
+    const rect = button.getBoundingClientRect();
+    const distance = Math.abs(rect.left + rect.width / 2 - centre);
+    return !best || distance < best.distance ? { button, distance } : best;
+  }, null);
+  if (nearest?.button?.dataset.homeWorldSelect) {
+    focusedWorldId = nearest.button.dataset.homeWorldSelect;
+    const home = actions.closest(HOME_SELECTOR);
+    if (home) home.dataset.focusedHomeWorld = focusedWorldId;
+    expandedWorldId = null;
+    setExpandedState(actions, null);
+    removePreview(actions);
+  }
+}
+
+function bindCarouselScroll(actions) {
+  if (actions.dataset.homeWorldScrollBound === "true") return;
+  actions.dataset.homeWorldScrollBound = "true";
+  actions.addEventListener("scroll", () => {
+    window.clearTimeout(carouselScrollTimer);
+    carouselScrollTimer = window.setTimeout(() => updateFocusFromScroll(actions), 120);
+  }, { passive: true });
 }
 
 export function applyHomeWorldStack(root = document) {
@@ -95,15 +199,18 @@ export function applyHomeWorldStack(root = document) {
   const actions = home?.querySelector?.(ACTIONS_SELECTOR);
   if (!home || !actions) return false;
 
-  const selected = findHomeWorld(home.dataset.selectedHomeWorld || selectedHomeWorldId) || HOME_WORLDS[0];
+  focusedWorldId = DEFAULT_WORLD_ID;
+  expandedWorldId = null;
   ensureWorldsHeading(actions);
   actions.className = "home-actions-grid home-world-carousel";
   actions.setAttribute("aria-label", "PitchIQ Home destinations");
-  actions.innerHTML = HOME_WORLDS.map(world => worldSelectorMarkup(world, selected.id)).join("");
-  ensurePreview(actions, selected);
-  selectedHomeWorldId = selected.id;
-  home.dataset.selectedHomeWorld = selected.id;
-  home.dataset.homeWorlds = "h29-unified-home-hub";
+  actions.innerHTML = HOME_WORLDS.map(world => worldSelectorMarkup(world, null)).join("");
+  ensureCarouselShell(actions);
+  removePreview(actions);
+  bindCarouselScroll(actions);
+  home.dataset.focusedHomeWorld = focusedWorldId;
+  delete home.dataset.expandedHomeWorld;
+  home.dataset.homeWorlds = "h30-collapsible-circular-carousel";
   return true;
 }
 
@@ -112,7 +219,14 @@ if (typeof document !== "undefined") {
     const selector = event.target.closest?.("[data-home-world-select]");
     if (selector) {
       event.preventDefault();
-      updateHomeWorldSelection(selector.dataset.homeWorldSelect, document);
+      focusWorld(selector.dataset.homeWorldSelect, document, { openPreview: true, scroll: true });
+      return;
+    }
+
+    const arrow = event.target.closest?.("[data-home-world-arrow]");
+    if (arrow) {
+      event.preventDefault();
+      stepWorld(arrow.dataset.homeWorldArrow === "previous" ? -1 : 1, document);
       return;
     }
 
