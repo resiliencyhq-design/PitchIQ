@@ -1,0 +1,92 @@
+/* Sprint H19 — Compact floating bottom navigation (Option 1)
+   Presentation-only override. Existing routes, shell ownership and visibility logic remain unchanged. */
+
+.app-shell > #nav.bottom-nav.visible {
+  width: min(calc(100% - 32px), 390px) !important;
+  min-height: 76px !important;
+  padding: 8px 10px !important;
+  margin: 8px auto calc(10px + env(safe-area-inset-bottom)) !important;
+  border-radius: 30px !important;
+  border: 1px solid rgba(215, 255, 46, .22) !important;
+  background: rgba(2, 16, 11, .94) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .34) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+}
+
+.app-shell > #nav.bottom-nav.visible button {
+  appearance: none;
+  border: 0 !important;
+  background: transparent !important;
+  min-width: 0 !important;
+  min-height: 58px !important;
+  padding: 6px 4px !important;
+  border-radius: 20px !important;
+  color: rgba(239, 246, 241, .64) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  font: inherit;
+}
+
+.app-shell > #nav.bottom-nav.visible button::before {
+  display: block;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.app-shell > #nav.bottom-nav.visible button[data-route="home"]::before { content: "⌂"; }
+.app-shell > #nav.bottom-nav.visible button[data-route="training"]::before { content: "⚡"; }
+.app-shell > #nav.bottom-nav.visible button[data-route="results"]::before { content: "▮▮▮"; font-size: 17px; letter-spacing: -2px; }
+.app-shell > #nav.bottom-nav.visible button[data-route="player"]::before { content: "●"; font-size: 18px; }
+
+.app-shell > #nav.bottom-nav.visible button span {
+  font-size: 13px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  white-space: nowrap;
+}
+
+.app-shell > #nav.bottom-nav.visible button.active,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"] {
+  color: #d7ff2e !important;
+  background: rgba(215, 255, 46, .08) !important;
+}
+
+.app-shell > #nav.bottom-nav.visible button:focus-visible {
+  outline: 2px solid rgba(215, 255, 46, .78);
+  outline-offset: 2px;
+}
+
+.app-shell:has(> #nav.bottom-nav.visible) > #app.app-scroll,
+.app-shell:has(> #nav.bottom-nav.visible) > #app {
+  padding-bottom: 8px !important;
+  scroll-padding-bottom: 8px !important;
+}
+
+.app-shell:has(> #nav.bottom-nav.visible) > #app .screen.active {
+  padding-bottom: 12px !important;
+}
+
+@media (max-width: 390px) {
+  .app-shell > #nav.bottom-nav.visible {
+    width: calc(100% - 24px) !important;
+    min-height: 72px !important;
+    border-radius: 28px !important;
+    padding: 7px 8px !important;
+  }
+
+  .app-shell > #nav.bottom-nav.visible button {
+    min-height: 54px !important;
+  }
+
+  .app-shell > #nav.bottom-nav.visible button span {
+    font-size: 12px !important;
+  }
+}
