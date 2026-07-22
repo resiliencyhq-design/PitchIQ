@@ -50,7 +50,7 @@ export const HOME_WORLDS = Object.freeze([
     icon: "⚗",
     badge: "Experimental",
     modules: [
-      { id:"pitchiq-lab", title:"PitchIQ Lab", description:"Experimental tools and camera features", icon:"⚗", route:"lab-juggling" },
+      { id:"auto-juggler", title:"Auto Juggler", description:"AI-powered ball tracking and juggling analysis", icon:"⚗", route:"lab-juggling" },
       { id:"calmsense", title:"CalmSense", description:"Measure breathing rhythm with your phone", icon:"◌", route:"lab-calmsense" },
       { id:"vibro-focus", title:"Vibro Focus", description:"Test calm, focus and recovery vibration patterns", icon:"≋", route:"lab-vibro-focus" },
     ],
