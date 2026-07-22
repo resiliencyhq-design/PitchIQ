@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="theme-color" content="#020807"/>
+  <title>PitchIQ Integrated v1</title>
+  <script>
+    (function(){
+      var host = location.hostname;
+      var isPrivateLan = /^192\.168\./.test(host) || /^10\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host);
+      var isLocalDev = host === "localhost" || host === "127.0.0.1" || host === "::1" || isPrivateLan;
+      var migrationKey = "pitchiq-sw-retirement-20260715";
+      var baseScope = new URL("./", location.href).href;
+      window.__PITCHIQ_LOCAL_DEV__ = isLocalDev;
+      function clearPitchIQCaches(){
+        if (!("caches" in window)) return Promise.resolve(false);
+        return caches.keys().then(function(keys){
+          var pitchIQKeys = keys.filter(function(key){ return /^pitchiq-/i.test(key); });
+          return Promise.all(pitchIQKeys.map(function(key){ return caches.delete(key); })).then(function(results){ return results.some(Boolean); });
+        });
+      }
+      function unregisterPitchIQWorkers(){
+        if (!("serviceWorker" in navigator)) return Promise.resolve(false);
+        return navigator.serviceWorker.getRegistrations().then(function(registrations){
+          var pitchIQRegistrations = registrations.filter(function(registration){ return registration.scope.indexOf(baseScope) === 0; });
+          return Promise.all(pitchIQRegistrations.map(function(registration){ return registration.unregister(); })).then(function(results){ return results.some(Boolean); });
+        });
+      }
+      if (isLocalDev) {
+        Promise.all([unregisterPitchIQWorkers(), clearPitchIQCaches()]).catch(function(error){ console.warn("[PitchIQ dev] Could not clear service-worker state", error); });
+        return;
+      }
+      if (sessionStorage.getItem(migrationKey) === "done") return;
+      sessionStorage.setItem(migrationKey, "running");
+      Promise.all([unregisterPitchIQWorkers(), clearPitchIQCaches()]).then(function(results){
+        sessionStorage.setItem(migrationKey, "done");
+        if (results.some(Boolean)) location.replace(location.href);
+      }).catch(function(error){
+        sessionStorage.setItem(migrationKey, "done");
+        console.warn("[PitchIQ] Could not retire legacy service-worker state", error);
+      });
+    })();
+  </script>
+  <link rel="manifest" href="manifest.json?v=hero-bg-top-20260623"/>
+  <link rel="stylesheet" href="css/style.css?v=onboarding-architecture-lock-20260628"/>
+  <link rel="stylesheet" href="css/onboard-step1-lock.css?v=step1-mvp-locked-20260628"/>
+  <link rel="stylesheet" href="css/onboard-step2-lock.css?v=step2-preferred-position-prompt-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-tactical-web.css?v=step2-selected-only-web-20260703"/>
+  <link rel="stylesheet" href="css/splash-fit.css?v=logo-down-20260628"/>
+  <link rel="stylesheet" href="css/onboarding-fix.css?v=hero-bg-top-20260623"/>
+  <link rel="stylesheet" href="css/academy-hero-asset.css?v=hero-bg-top-20260623"/>
+  <link rel="stylesheet" href="css/visual-layout-studio.css?v=hero-bg-top-20260623"/>
+  <link rel="stylesheet" href="css/onboard-step2-spawn.css?v=step2-inactive-after-spawn-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-final-polish.css?v=step2-remove-heading-overrides-20260714"/>
+  <link rel="stylesheet" href="css/onboard-step2-layout.css?v=step2-heading-consolidated-20260714"/>
+  <link rel="stylesheet" href="css/onboard-step2-marker.css?v=step2-direct-selected-puck-20260714"/>
+  <link rel="stylesheet" href="css/onboard-step2-web.css?v=step2-refactor-web-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-animation.css?v=sprint-8-4-1-marker-consolidation-20260712"/>
+  <link rel="stylesheet" href="css/onboard-jersey.css?v=sprint-8-4-number-flow-fix-20260710"/>
+  <link rel="stylesheet" href="css/onboard-number.css?v=sprint-8-3-4-hero-jersey-20260711"/>
+  <link rel="stylesheet" href="css/onboard-typography-lock.css?v=step2-heading-exact-match-20260714"/>
+  <link rel="stylesheet" href="css/onboard-step2-iphone-fit.css?v=step2-balanced-stack-target-20260714"/>
+  <link rel="stylesheet" href="css/onboard-step3-layout.css?v=step3-centred-layout-20260713"/>
+  <link rel="stylesheet" href="css/academy-trial.css?v=sprint-orientation-visual-story-layout-20260722"/>
+  <link rel="stylesheet" href="css/academy-orientation-polish.css?v=sprint-11a-1-orientation-polish-20260719"/>
+  <link rel="stylesheet" href="css/academy-orientation-interactive.css?v=sprint-11b-interactive-orientation-20260719"/>
+  <link rel="stylesheet" href="css/academy-runtime-canonical.css?v=sprint-c3-1-academy-cta-resilience-20260721"/>
+  <link rel="stylesheet" href="css/academy-journey.css?v=identity-info-removed-20260716"/>
+  <link rel="stylesheet" href="css/academy-identity-tile-v2.css?v=sprint-9-11-identity-tile-20260716"/>
+  <link rel="stylesheet" href="css/academy-identity-spacing.css?v=sprint-9-14-final-identity-spacing-20260717"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-pitch-first.css?v=sprint-10-3a-6-viewport-coordinate-lock-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-scene-isolation.css?v=sprint-10-3a-8-scene-isolation-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-final-polish.css?v=sprint-10-3a-9-final-identity-polish-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-canonical-cta.css?v=sprint-10-3a-12-canonical-cta-reuse-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-overlay-coordinate-lock.css?v=sprint-10-3a-13-overlay-coordinate-lock-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-final-cleanup.css?v=sprint-10-3a-14-final-cleanup-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-onboarding-shimmer-parity.css?v=sprint-10-3a-16-onboarding-shimmer-parity-20260718"/>
+  <link rel="stylesheet" href="css/academy-discover-strengths-tactical-motion.css?v=sprint-10-3a-17-tactical-reveal-motion-20260718"/>
+  <link rel="stylesheet" href="css/bottom-nav-layout-h6-1.css?v=sprint-h6-1-bottom-nav-layout-20260719"/>
+  <link rel="stylesheet" href="css/bottom-nav-compact-h19.css?v=sprint-h19-compact-floating-nav-20260722"/>
+</head>
+<body>
+  <div class="world"></div>
+  <div class="app-shell">
+    <main id="app" class="app-scroll"></main>
+    <nav id="nav" class="nav bottom-nav" aria-label="Main navigation"></nav>
+  </div>
+  <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
+  <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
+  <script>
+    window.__PITCHIQ_BUILD__ = "sprint-c3-2-canonical-visual-story-20260722";
+    window.addEventListener("error", function(event){
+      console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
+      var box = document.getElementById("pitchiq-boot-watchdog");
+      if (box) { box.style.display = "block"; box.querySelector("p").textContent = "JavaScript error: " + (event.message || "unknown error"); }
+    });
+    window.addEventListener("unhandledrejection", function(event){
+      console.error("[PitchIQ unhandled promise]", event.reason);
+      var box = document.getElementById("pitchiq-boot-watchdog");
+      if (box) { box.style.display = "block"; box.querySelector("p").textContent = "Unhandled promise: " + (event.reason && event.reason.message ? event.reason.message : event.reason || "unknown error"); }
+    });
+    setTimeout(function(){
+      var app = document.getElementById("app");
+      var box = document.getElementById("pitchiq-boot-watchdog");
+      if (app && box && app.children.length === 0) box.style.display = "block";
+    }, 2500);
+  </script>
+  <script type="module" src="js/app/main.js?v=sprint-b-production-consolidation-20260721"></script>
+  <script type="module" src="js/app/production-bootstrap.js?v=sprint-h8-adaptive-mission-hub-20260721"></script>
+  <script type="module" src="js/app/home-dynamic-salutation.js?v=sprint-home-dynamic-salutation-20260722"></script>
+  <script type="module" src="js/app/mission-runtime-integration.js?v=sprint-20-1-mission-runtime-integration-20260719"></script>
+  <script type="module" src="js/app/reflection-engine-h10.js?v=sprint-h10-reflect-world-20260721"></script>
+  <script type="module" src="js/app/mindiq-engine-h11.js?v=sprint-h11-mindiq-world-20260721"></script>
+  <script type="module" src="js/app/coach-intelligence-h12.js?v=sprint-h12-coach-intelligence-20260721"></script>
+  <script type="module" src="js/app/academy-mission-system-h13.js?v=sprint-h13-academy-mission-system-20260721"></script>
+  <script type="module" src="js/app/player-twin-h14.js?v=sprint-h14-player-twin-20260721"></script>
+  <script type="module" src="js/app/football-iq-lazy-loader-h7.js?v=sprint-h9-football-iq-world-20260721"></script>
+  <script type="module" src="js/app/reflect-lazy-loader-h10.js?v=sprint-h10-reflect-world-20260721"></script>
+  <script type="module" src="js/app/mindiq-lazy-loader-h11.js?v=sprint-h11-mindiq-world-20260721"></script>
+  <script type="module" src="js/app/coach-lazy-loader-h12.js?v=sprint-h12-coach-intelligence-20260721"></script>
+  <script type="module" src="js/app/academy-lazy-loader-h13.js?v=sprint-h13-academy-mission-system-20260721"></script>
+  <script type="module" src="js/app/player-twin-lazy-loader-h14.js?v=sprint-h14-player-twin-20260721"></script>
+  <script type="module" src="js/app/landing-swipe-iphone-hotfix.js?v=direct-landing-router-api-20260720"></script>
+  <script type="module" src="js/app/landing-handoff-authority.js?v=direct-landing-router-api-20260720"></script>
+  <script type="module" src="js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710"></script>
+  <script type="module" src="js/app/onboard-number.js?v=sprint-10-2-number-selector-routing-20260716"></script>
+  <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
+  <script type="module" src="js/app/onboard-haptics.js?v=step2-haptics-20260702"></script>
+  <script type="module" src="js/app/onboard-tactical-web.js?v=sprint-8-4-1-marker-consolidation-20260712"></script>
+  <script type="module" src="js/app/academy-runtime-canonical.js?v=sprint-c3-2-canonical-visual-story-20260722"></script>
+  <script type="module" src="js/app/academy-journey.js?v=sprint-c2-identity-overlay-route-guard-20260721"></script>
+  <script type="module" src="js/app/academy-lab-loader.js?v=sprint-lab-auto-juggler-route-authority-20260721"></script>
+  <script type="module" src="js/lab/calmsense.js?v=sprint-l1-1-calmsense-validation-20260721"></script>
+  <script type="module" src="js/dev/visual-layout-studio.js?v=dev-observer-loop-fix-20260715"></script>
+  <script type="module" src="js/dev/dev-floating-panels.js?v=hero-bg-top-20260623"></script>
+</body>
+</html>
