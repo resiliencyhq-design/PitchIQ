@@ -1,7 +1,6 @@
 import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h29-unified-home-hub-20260723";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
-import { applyHomePerformanceSnapshot } from "./home-performance-snapshot-h14.js?v=sprint-h14-mission-control-dashboard-20260721";
 
 const HOME_SELECTOR = "#home";
 const GRID_SELECTOR = ".home-v7-grid";
@@ -14,7 +13,6 @@ const WORLD_STACK_STYLE_ID = "pitchiq-home-world-stack-h5-css";
 const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
 const FOUR_WORLDS_STYLE_ID = "pitchiq-home-four-worlds-h16-css";
 const H13_STYLE_ID = "pitchiq-home-information-architecture-h13-css";
-const H14_STYLE_ID = "pitchiq-home-performance-snapshot-h14-css";
 const H17_STYLE_ID = "pitchiq-home-compact-mission-h17-css";
 
 const COMPACT_POSITION_CODES = {
@@ -53,7 +51,6 @@ function ensureStylesheet() {
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
   appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h29-unified-home-hub-20260723");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
-  appendStylesheet(H14_STYLE_ID, "css/home-performance-snapshot-h14.css?v=sprint-h14-mission-control-dashboard-20260721");
   appendStylesheet(H17_STYLE_ID, "css/home-compact-mission-h17.css?v=sprint-h17-compact-mission-hero-20260722");
 }
 
@@ -90,15 +87,11 @@ function applyHomeInformationArchitecture(home, stack) {
   const stats = supporting?.querySelector(".home-training-stats") || stack.querySelector(":scope > .home-training-stats");
   const rewards = supporting?.querySelector(".home-pack-card") || stack.querySelector(".home-rewards-card");
 
-  if (stats) {
-    stats.dataset.homeSlot = "training-snapshot";
-    stats.classList.add("home-training-snapshot");
-    stack.prepend(stats);
-  }
+  if (stats) stats.remove();
 
   if (mission) {
     mission.dataset.homeSlot = "todays-mission";
-    stats ? stats.after(mission) : stack.prepend(mission);
+    stack.prepend(mission);
   }
 
   if (worldsHeading && worlds) {
@@ -110,7 +103,7 @@ function applyHomeInformationArchitecture(home, stack) {
   if (rewards) rewards.remove();
   if (supporting && !supporting.children.length) supporting.remove();
 
-  home.dataset.homeComposition = "h29-unified-home-hub";
+  home.dataset.homeComposition = "h30-snapshot-results";
 }
 
 export function applyHomeContentComposition(root = document) {
@@ -146,7 +139,6 @@ export function applyHomeContentComposition(root = document) {
   applyHomeWorldStack(root);
   applyHomeWorldPolish(root);
   applyHomeInformationArchitecture(home, stack);
-  applyHomePerformanceSnapshot(root);
   return true;
 }
 
