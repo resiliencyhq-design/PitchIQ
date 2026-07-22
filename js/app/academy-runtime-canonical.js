@@ -19,6 +19,21 @@ function identity(){
     position: labels[position] || position || "Academy Player"
   };
 }
+function orientationRoleLine(position){
+  const lines = {
+    "Goalkeeper":"Lead. Organize. Protect.",
+    "Centre Back":"Read. Organize. Protect.",
+    "Left Back":"Scan. Support. Recover.",
+    "Right Back":"Scan. Support. Recover.",
+    "Defensive Midfielder":"Screen. Link. Control.",
+    "Central Midfielder":"Scan. Connect. Control.",
+    "Attacking Midfielder":"Create. Link. Lead.",
+    "Left Wing":"Stretch. Attack. Create.",
+    "Right Wing":"Stretch. Attack. Create.",
+    "Striker":"Move. Finish. Lead."
+  };
+  return lines[position] || "See. Calm. Improve.";
+}
 function shell(content){ return `<section class="screen app active trial-shell academy-runtime-canonical">${content}</section>`; }
 function top(title, allowBack=false){
   return `<header class="trial-top">${allowBack?'<button class="trial-back" type="button" data-canonical-back aria-label="Back">←</button>':'<span></span>'}<div class="trial-brand">${title.replace("IQ", "<em>IQ</em>")}</div><span></span></header>`;
@@ -34,7 +49,7 @@ function clearIdentityOverlay(){
 }
 function welcome(){
   const player = identity();
-  return shell(`${top("PitchIQ")}<article class="trial-hero"><div class="trial-shield">★</div><span class="trial-kicker">Welcome to PitchIQ Academy</span><h1>Let’s get you <em>match ready</em></h1><p>Meet your coach, learn the PitchIQ tools and play a few quick challenges.</p><div class="trial-identity-strip"><div><small>Player</small><b>${player.name.toUpperCase()}</b></div><div><small>Number</small><b>#${player.number}</b></div><div><small>Position</small><b>${player.position}</b></div></div><ul class="trial-benefits"><li><i>◷</i><span><b>Meet your coach</b><small>Hear the cues that guide training</small></span></li><li><i>◉</i><span><b>Learn the camera</b><small>Set up your training space</small></span></li><li><i>⚡</i><span><b>Play a quick challenge</b><small>Learn by playing</small></span></li></ul><div class="academy-canonical-cta-dock"><button class="trial-primary" type="button" data-canonical-next>Start Orientation →</button></div></article>`);
+  return shell(`<main class="orientation-story" aria-labelledby="orientationStoryTitle"><div class="orientation-brand">PITCH<em>IQ</em></div><section class="orientation-copy"><h1 id="orientationStoryTitle">LET’S GET YOU<br><em>MATCH READY</em></h1></section><section class="orientation-hero" aria-label="PitchIQ tactical orientation preview"><div class="orientation-art-placeholder" aria-hidden="true"></div><div class="orientation-tactical-label orientation-scan"><strong>SCAN</strong><span>See more<br>of the game</span></div><div class="orientation-tactical-label orientation-decide"><strong>DECIDE</strong><span>Make the right<br>choice faster</span></div><div class="orientation-tactical-label orientation-move"><strong>MOVE</strong><span>Create space<br>and support</span></div><div class="orientation-role-card"><div class="orientation-role-jersey">${player.number}</div><div><small>YOUR ROLE</small><strong>${player.position}</strong><span>${orientationRoleLine(player.position)}</span></div></div></section><section class="orientation-steps" aria-label="Orientation steps"><article><div class="orientation-step-number">1</div><div class="orientation-step-icon">●</div><h2>Meet your coach</h2><p>Hear the cues that<br>guide training</p></article><span class="orientation-step-arrow" aria-hidden="true">→</span><article><div class="orientation-step-number">2</div><div class="orientation-step-icon">◉</div><h2>Learn the camera</h2><p>Set up your<br>training space</p></article><span class="orientation-step-arrow" aria-hidden="true">→</span><article><div class="orientation-step-number">3</div><div class="orientation-step-icon">⚡</div><h2>Play a quick challenge</h2><p>Learn by<br>playing</p></article></section><button class="trial-primary orientation-primary" type="button" data-canonical-next>◉ &nbsp; BEGIN MISSION &nbsp; →</button><p class="orientation-footer">3 SHORT MISSIONS. 1 <em>BIGGER YOU.</em></p></main>`);
 }
 const steps = [
   {key:"coach", kicker:"Step 1 of 3", title:"Meet Your Coach", icon:"◷", body:"I’ll give you short cues while you train, so you always know what to notice next.", cue:"Listen for one simple cue at a time.", action:"Meet the camera →"},
