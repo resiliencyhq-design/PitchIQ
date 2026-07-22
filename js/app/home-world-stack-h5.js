@@ -11,6 +11,7 @@ const DEFAULT_WORLD_ID = "academy";
 let focusedWorldId = DEFAULT_WORLD_ID;
 let expandedWorldId = null;
 let carouselScrollTimer = null;
+let arrowPulseTimer = null;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, character => ({
@@ -119,6 +120,22 @@ function ensureCarouselShell(actions) {
   return shell;
 }
 
+function circularDistance(index, focusIndex, length) {
+  const direct = Math.abs(index - focusIndex);
+  return Math.min(direct, length - direct);
+}
+
+function setFocusState(actions, worldId) {
+  const focusIndex = Math.max(0, HOME_WORLDS.findIndex(world => world.id === worldId));
+  actions.querySelectorAll("[data-home-world-select]").forEach((button, index) => {
+    const distance = circularDistance(index, focusIndex, HOME_WORLDS.length);
+    button.classList.toggle("is-focused", distance === 0);
+    button.classList.toggle("is-near", distance === 1);
+    button.classList.toggle("is-far", distance > 1);
+    button.dataset.focusDistance = String(distance);
+  });
+}
+
 function setExpandedState(actions, worldId) {
   actions.querySelectorAll("[data-home-world-select]").forEach(button => {
     const expanded = Boolean(worldId) && button.dataset.homeWorldSelect === worldId;
@@ -139,6 +156,7 @@ function focusWorld(worldId, root = document, { openPreview = false, scroll = tr
   focusedWorldId = world.id;
   expandedWorldId = openPreview ? (expandedWorldId === world.id ? null : world.id) : null;
 
+  setFocusState(actions, focusedWorldId);
   setExpandedState(actions, expandedWorldId);
   if (expandedWorldId) ensurePreview(actions, world);
   else removePreview(actions);
@@ -151,6 +169,13 @@ function focusWorld(worldId, root = document, { openPreview = false, scroll = tr
     actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`)?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }
   return true;
+}
+
+function pulseArrow(arrow) {
+  window.clearTimeout(arrowPulseTimer);
+  document.querySelectorAll(".home-world-carousel-arrow.is-pulsing").forEach(button => button.classList.remove("is-pulsing"));
+  arrow.classList.add("is-pulsing");
+  arrowPulseTimer = window.setTimeout(() => arrow.classList.remove("is-pulsing"), 180);
 }
 
 function stepWorld(direction, root = document) {
@@ -174,8 +199,10 @@ function updateFocusFromScroll(actions) {
     const home = actions.closest(HOME_SELECTOR);
     if (home) home.dataset.focusedHomeWorld = focusedWorldId;
     expandedWorldId = null;
+    setFocusState(actions, focusedWorldId);
     setExpandedState(actions, null);
     removePreview(actions);
+    nearest.button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }
 }
 
@@ -200,11 +227,12 @@ export function applyHomeWorldStack(root = document) {
   actions.innerHTML = HOME_WORLDS.map(world => worldSelectorMarkup(world, null)).join("");
   ensureCarouselShell(actions);
   ensureWorldsHeading(actions);
+  setFocusState(actions, focusedWorldId);
   removePreview(actions);
   bindCarouselScroll(actions);
   home.dataset.focusedHomeWorld = focusedWorldId;
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h30-collapsible-circular-carousel";
+  home.dataset.homeWorlds = "h31-carousel-focus-polish";
   return true;
 }
 
@@ -220,6 +248,7 @@ if (typeof document !== "undefined") {
     const arrow = event.target.closest?.("[data-home-world-arrow]");
     if (arrow) {
       event.preventDefault();
+      pulseArrow(arrow);
       stepWorld(arrow.dataset.homeWorldArrow === "previous" ? -1 : 1, document);
       return;
     }
