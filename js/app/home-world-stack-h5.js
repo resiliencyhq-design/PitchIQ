@@ -23,13 +23,13 @@ function ensureWorldsHeading(actions) {
     heading.className = WORLDS_HEADING_CLASS;
     actions.insertAdjacentElement("beforebegin", heading);
   }
-  heading.innerHTML = "<span>Your Academy</span><small>Explore each world before you enter</small>";
+  heading.innerHTML = "<span>Explore</span><small>Preview each destination before you enter</small>";
   return heading;
 }
 
 function worldSelectorMarkup(world, selectedWorldId) {
   const selected = world.id === selectedWorldId;
-  return `<button type="button" class="home-world-carousel-item${selected ? " is-selected" : ""}" data-home-world-select="${escapeHtml(world.id)}" aria-pressed="${selected}" aria-label="Preview ${escapeHtml(world.title)} world">
+  return `<button type="button" class="home-world-carousel-item${selected ? " is-selected" : ""}" data-home-world-select="${escapeHtml(world.id)}" aria-pressed="${selected}" aria-label="Preview ${escapeHtml(world.title)}">
     <span class="home-world-carousel-icon" aria-hidden="true">${escapeHtml(world.icon)}</span>
     <strong>${escapeHtml(world.title)}</strong>
   </button>`;
@@ -39,8 +39,13 @@ function previewModuleMarkup(module) {
   return `<span class="home-world-preview-module"><b aria-hidden="true">${escapeHtml(module.icon)}</b><span>${escapeHtml(module.title)}</span></span>`;
 }
 
+function destinationRoute(item) {
+  return item.route || `${WORLD_ROUTE_PREFIX}${item.id}`;
+}
+
 function worldPreviewMarkup(world) {
-  const route = `${WORLD_ROUTE_PREFIX}${world.id}`;
+  const route = destinationRoute(world);
+  const ctaLabel = world.id === "rewards" ? "Open Rewards" : `Enter ${world.title}`;
   return `<article class="home-world-preview" data-home-world-preview="${escapeHtml(world.id)}" aria-live="polite">
     <span class="home-world-preview-art" aria-hidden="true"></span>
     <span class="home-world-preview-shade" aria-hidden="true"></span>
@@ -55,7 +60,7 @@ function worldPreviewMarkup(world) {
     <div class="home-world-preview-modules" aria-label="${escapeHtml(world.title)} highlights">
       ${world.modules.slice(0, 3).map(previewModuleMarkup).join("")}
     </div>
-    <button type="button" class="primary home-world-preview-enter" data-home-world-enter="${escapeHtml(route)}">Enter ${escapeHtml(world.title)} →</button>
+    <button type="button" class="primary home-world-preview-enter" data-home-world-enter="${escapeHtml(route)}">${escapeHtml(ctaLabel)} →</button>
   </article>`;
 }
 
@@ -93,12 +98,12 @@ export function applyHomeWorldStack(root = document) {
   const selected = findHomeWorld(home.dataset.selectedHomeWorld || selectedHomeWorldId) || HOME_WORLDS[0];
   ensureWorldsHeading(actions);
   actions.className = "home-actions-grid home-world-carousel";
-  actions.setAttribute("aria-label", "PitchIQ development worlds");
+  actions.setAttribute("aria-label", "PitchIQ Home destinations");
   actions.innerHTML = HOME_WORLDS.map(world => worldSelectorMarkup(world, selected.id)).join("");
   ensurePreview(actions, selected);
   selectedHomeWorldId = selected.id;
   home.dataset.selectedHomeWorld = selected.id;
-  home.dataset.homeWorlds = "h28b-world-carousel-preview";
+  home.dataset.homeWorlds = "h29-unified-home-hub";
   return true;
 }
 
