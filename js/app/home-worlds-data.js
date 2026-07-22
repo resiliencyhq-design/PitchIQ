@@ -47,6 +47,19 @@ export const HOME_WORLDS = Object.freeze([
       { id:"vibro-focus", title:"Vibro Focus", description:"Test calm, focus and recovery vibration patterns", icon:"≋", route:"lab-vibro-focus" },
     ],
   },
+  {
+    id: "rewards",
+    title: "Rewards",
+    purpose: "See what you've earned and what unlocks next",
+    icon: "🎁",
+    badge: "Academy rewards",
+    route: "reward",
+    modules: [
+      { id:"current-streak", title:"Current Streak", description:"Keep your daily momentum going", icon:"🔥" },
+      { id:"xp-progress", title:"XP Progress", description:"Track your next reward unlock", icon:"↗" },
+      { id:"latest-unlock", title:"Latest Unlock", description:"Review your newest earned item", icon:"✦" },
+    ],
+  },
 ]);
 
 export function findHomeWorld(worldId) {
