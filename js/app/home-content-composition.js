@@ -15,6 +15,7 @@ const WORLD_POLISH_STYLE_ID = "pitchiq-home-world-polish-h6-css";
 const FOUR_WORLDS_STYLE_ID = "pitchiq-home-four-worlds-h16-css";
 const H13_STYLE_ID = "pitchiq-home-information-architecture-h13-css";
 const H14_STYLE_ID = "pitchiq-home-performance-snapshot-h14-css";
+const H17_STYLE_ID = "pitchiq-home-compact-mission-h17-css";
 
 function appendStylesheet(id, href) {
   let link = document.getElementById(id);
@@ -38,6 +39,7 @@ function ensureStylesheet() {
   appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h16-four-worlds-home-20260721");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=sprint-h13-home-information-architecture-20260721");
   appendStylesheet(H14_STYLE_ID, "css/home-performance-snapshot-h14.css?v=sprint-h14-mission-control-dashboard-20260721");
+  appendStylesheet(H17_STYLE_ID, "css/home-compact-mission-h17.css?v=sprint-h17-compact-mission-hero-20260722");
 }
 
 function assignSlot(element, slot) {

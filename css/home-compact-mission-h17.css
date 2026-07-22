@@ -1,0 +1,153 @@
+/* Sprint H17 — Compact Today's Mission hero (Option A)
+   Presentation-only override. Existing mission rendering, routing and runtime data remain unchanged. */
+
+#home .home-mock-mission.home-adaptive-mission-h8.home-option-a-structure-h15-2{
+  gap:10px!important;
+  padding:12px!important;
+  border-radius:24px!important;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-header{
+  min-height:28px;
+  padding:0 2px;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-header-label{
+  font-size:11px;
+}
+
+/* The old header arrow has no action and is removed from the compact composition. */
+#home .home-option-a-structure-h15-2 .home-mission-header-arrow{
+  display:none!important;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-hero{
+  min-height:0;
+  height:clamp(188px,48vw,222px);
+  aspect-ratio:auto;
+  border-radius:18px;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-hero img{
+  object-position:center 42%;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-hero:after{
+  background:
+    linear-gradient(90deg,rgba(2,9,7,.92) 0%,rgba(2,9,7,.72) 42%,rgba(2,9,7,.16) 76%),
+    linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.12) 52%,rgba(2,8,6,.68));
+}
+
+/* Move the existing live mission copy over the hero artwork without changing its content. */
+#home .home-option-a-structure-h15-2 .home-mission-copy{
+  position:absolute!important;
+  z-index:2;
+  inset:46px 42% auto 18px!important;
+  width:auto!important;
+  padding:0!important;
+  gap:7px;
+  pointer-events:none;
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-copy h2{
+  font-size:clamp(27px,7.2vw,36px);
+  line-height:.98;
+  text-wrap:balance;
+  text-shadow:0 3px 18px rgba(0,0,0,.58);
+}
+
+#home .home-option-a-structure-h15-2 .home-mission-copy p{
+  max-width:210px!important;
+  font-size:14px;
+  line-height:1.32;
+  color:rgba(247,250,248,.9);
+  text-shadow:0 2px 12px rgba(0,0,0,.62);
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-meta{
+  min-height:62px;
+  border-radius:16px;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-meta>span{
+  grid-template-columns:24px minmax(0,1fr)!important;
+  gap:6px;
+  padding:8px 10px;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-meta i{
+  font-size:21px;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-meta strong{
+  font-size:11px;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-action{
+  min-height:54px;
+  padding:0 18px!important;
+  border-radius:18px!important;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-action span{
+  font-size:16px;
+}
+
+#home .home-option-a-structure-h15-2 .home-adaptive-mission-action b{
+  font-size:25px;
+}
+
+@media(max-width:390px){
+  #home .home-mock-mission.home-adaptive-mission-h8.home-option-a-structure-h15-2{
+    padding:10px!important;
+    gap:9px!important;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-mission-hero{
+    height:184px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-mission-copy{
+    inset:42px 38% auto 15px!important;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-mission-copy h2{
+    font-size:28px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-mission-copy p{
+    max-width:180px!important;
+    font-size:13px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-adaptive-mission-meta{
+    min-height:58px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-adaptive-mission-meta>span{
+    grid-template-columns:20px minmax(0,1fr)!important;
+    padding:7px 6px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-adaptive-mission-meta i{
+    font-size:18px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-adaptive-mission-meta strong{
+    font-size:10px;
+  }
+}
+
+@media(max-height:740px){
+  #home .home-option-a-structure-h15-2 .home-mission-hero{
+    height:172px;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-mission-copy{
+    inset:38px 38% auto 15px!important;
+  }
+
+  #home .home-option-a-structure-h15-2 .home-adaptive-mission-action{
+    min-height:50px;
+  }
+}
