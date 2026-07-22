@@ -1,17 +1,17 @@
-import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h16-four-worlds-home-20260721";
+import { applyHomeContentComposition } from "./home-content-composition.js?v=hotfix-h30-carousel-reapply-latest-main-20260723";
 
 const APP_SELECTOR = "#app";
 const HOME_SELECTOR = "#home";
 const CANONICAL_HOME_CONTROL = '#nav [data-route="home"]';
 
 function markProductionBuild() {
-  document.documentElement.dataset.pitchiqProductionBuild = "sprint-h16";
+  document.documentElement.dataset.pitchiqProductionBuild = "h30-carousel-latest-main";
 }
 
 function applyCurrentHome() {
   const applied = applyHomeContentComposition(document);
   if (applied) {
-    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h16-four-worlds");
+    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h30-carousel");
   }
   return applied;
 }
