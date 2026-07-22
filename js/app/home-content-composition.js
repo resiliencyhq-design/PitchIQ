@@ -17,6 +17,21 @@ const H13_STYLE_ID = "pitchiq-home-information-architecture-h13-css";
 const H14_STYLE_ID = "pitchiq-home-performance-snapshot-h14-css";
 const H17_STYLE_ID = "pitchiq-home-compact-mission-h17-css";
 
+const COMPACT_POSITION_CODES = {
+  Goalkeeper: "GK",
+  "Centre Back": "CB",
+  "Left Back": "LB",
+  "Right Back": "RB",
+  "Defensive Midfielder": "CDM",
+  "Central Midfielder": "CM",
+  "Attacking Midfielder": "CAM",
+  "Left Wing": "LW",
+  "Right Wing": "RW",
+  Winger: "WG",
+  Striker: "ST",
+  "Full Back": "FB"
+};
+
 function appendStylesheet(id, href) {
   let link = document.getElementById(id);
   if (link) {
@@ -44,6 +59,22 @@ function ensureStylesheet() {
 
 function assignSlot(element, slot) {
   if (element && element.dataset.homeSlot !== slot) element.dataset.homeSlot = slot;
+}
+
+function applyCompactPlayerLabels(home) {
+  const positionValue = home.querySelector(".home-profile-position-value");
+  const styleLabel = home.querySelector(".home-profile-style-label");
+
+  if (positionValue) {
+    const fullPosition = positionValue.getAttribute("aria-label") || positionValue.textContent.trim();
+    const compactCode = COMPACT_POSITION_CODES[fullPosition] || fullPosition.toUpperCase().slice(0, 3);
+    positionValue.setAttribute("aria-label", fullPosition);
+    if (positionValue.textContent !== compactCode) positionValue.textContent = compactCode;
+  }
+
+  if (styleLabel && styleLabel.textContent.trim() !== "Style") {
+    styleLabel.textContent = "Style";
+  }
 }
 
 function transformRewardsCard(card) {
@@ -109,6 +140,7 @@ export function applyHomeContentComposition(root = document) {
   if (!hero) return false;
 
   hero.dataset.homeRegion = "hero-locked";
+  applyCompactPlayerLabels(home);
   assignSlot(grid.querySelector(":scope > .home-mock-mission, :scope > .home-content-stack > .home-mock-mission"), "todays-mission");
   assignSlot(grid.querySelector(":scope > .home-actions-grid, :scope > .home-content-stack > .home-actions-grid"), "academy-worlds");
   assignSlot(grid.querySelector(":scope > .home-secondary-row, :scope > .home-content-stack > .home-secondary-row"), "supporting-content");
