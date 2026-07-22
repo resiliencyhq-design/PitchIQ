@@ -1,0 +1,25 @@
+/* Sprint H24 — Hero progress declutter
+   Presentation-only override. Removes duplicated Level/XP content from the Home hero
+   without changing the hero grid, avatar, OVR, position, style, streak, or snapshot data. */
+.home-aaa .home-hero-card .home-level-panel{
+  display:none!important;
+}
+
+.home-aaa .home-hero-card .home-hero-left{
+  grid-template-rows:auto auto 1fr!important;
+}
+
+.home-aaa .home-hero-card .home-player-figure{
+  height:100%!important;
+  min-height:224px;
+}
+
+.home-aaa .home-hero-card .home-player-figure img{
+  max-height:246px;
+}
+
+@media(max-width:380px){
+  .home-aaa .home-hero-card .home-player-figure img{
+    max-height:232px;
+  }
+}
