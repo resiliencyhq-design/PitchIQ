@@ -58,7 +58,23 @@ function intro(){
   return shell(`${top("PitchIQ", "home", false)}<article class="trial-hero"><div class="trial-shield">★</div><span class="trial-kicker">Welcome to PitchIQ Academy</span><h1>Let’s get you <em>match ready</em></h1><p>Meet your coach, learn the PitchIQ tools and play a few quick challenges.</p><div class="trial-identity-strip"><div><small>Player</small><b>${player.name.toUpperCase()}</b></div><div><small>Number</small><b>#${player.number}</b></div><div><small>Position</small><b>${player.position}</b></div></div><ul class="trial-benefits"><li><i>◷</i><span><b>Meet your coach</b><small>Hear the cues that guide training</small></span></li><li><i>◉</i><span><b>Learn the camera</b><small>Set up your training space</small></span></li><li><i>⚽</i><span><b>Play mini challenges</b><small>Learn by playing</small></span></li></ul><button class="trial-primary" type="button" data-trial-route="academy-trials">Enter the Academy →</button></article>`);
 }
 function orientationPreview(){
-  return shell(`${top("Academy Orientation", "academy-trial")}<div class="trial-list-head"><span class="trial-kicker">Your welcome session</span><h1>Learn the Tools</h1><p>A quick guided warm-up will show you how your coach, camera and challenges work.</p></div><div class="trial-grid"><div class="trial-card available"><span class="trial-card-icon">◷</span><span><strong>Meet Your Coach</strong><small>Listen for simple cues during each activity.</small></span><span class="trial-new">1</span></div><div class="trial-card available"><span class="trial-card-icon">◉</span><span><strong>Camera Finder</strong><small>Learn how to set up your training space.</small></span><span class="trial-new">2</span></div><div class="trial-card available"><span class="trial-card-icon">⚡</span><span><strong>Quick Challenge</strong><small>Try a short game-like interaction.</small></span><span class="trial-new">3</span></div><button class="trial-primary" type="button" data-complete-orientation>Start Orientation →</button></div>`);
+  const player = playerIdentity();
+  return shell(`<main class="orientation-story" aria-labelledby="orientationStoryTitle"><div class="orientation-brand">PITCH<em>IQ</em></div><section class="orientation-copy"><h1 id="orientationStoryTitle">LET’S GET YOU<br><em>MATCH READY</em></h1></section><section class="orientation-hero" aria-label="PitchIQ tactical orientation preview"><div class="orientation-art-placeholder" aria-hidden="true"></div><div class="orientation-tactical-label orientation-scan"><strong>SCAN</strong><span>See more<br>of the game</span></div><div class="orientation-tactical-label orientation-decide"><strong>DECIDE</strong><span>Make the right<br>choice faster</span></div><div class="orientation-tactical-label orientation-move"><strong>MOVE</strong><span>Create space<br>and support</span></div><div class="orientation-role-card"><div class="orientation-role-jersey">${player.number}</div><div><small>YOUR ROLE</small><strong>${player.position}</strong><span>${orientationRoleLine(player.position)}</span></div></div></section><section class="orientation-steps" aria-label="Orientation steps"><article><div class="orientation-step-number">1</div><div class="orientation-step-icon">●</div><h2>Meet your coach</h2><p>Hear the cues that<br>guide training</p></article><span class="orientation-step-arrow" aria-hidden="true">→</span><article><div class="orientation-step-number">2</div><div class="orientation-step-icon">◉</div><h2>Learn the camera</h2><p>Set up your<br>training space</p></article><span class="orientation-step-arrow" aria-hidden="true">→</span><article><div class="orientation-step-number">3</div><div class="orientation-step-icon">⚡</div><h2>Play a quick challenge</h2><p>Learn by<br>playing</p></article></section><button class="trial-primary orientation-primary" type="button" data-complete-orientation>◉ &nbsp; BEGIN MISSION &nbsp; →</button><p class="orientation-footer">3 SHORT MISSIONS. 1 <em>BIGGER YOU.</em></p></main>`);
+}
+function orientationRoleLine(position){
+  const lines = {
+    "Goalkeeper":"Lead. Organize. Protect.",
+    "Centre Back":"Read. Organize. Protect.",
+    "Left Back":"Scan. Support. Recover.",
+    "Right Back":"Scan. Support. Recover.",
+    "Defensive Midfielder":"Screen. Link. Control.",
+    "Central Midfielder":"Scan. Connect. Control.",
+    "Attacking Midfielder":"Create. Link. Lead.",
+    "Left Wing":"Stretch. Attack. Create.",
+    "Right Wing":"Stretch. Attack. Create.",
+    "Striker":"Move. Finish. Lead."
+  };
+  return lines[position] || "See. Calm. Improve.";
 }
 function assessmentBrief(){
   return shell(`${top("Assessment Brief", "home")}<main class="lab-stage"><div class="lab-orb">⚽</div><span class="trial-kicker">Assessment brief</span><h1>Juggling Assessment</h1><p>Use good lighting and enough space so your full body and the ground stay visible.</p><div class="lab-facts"><div class="lab-fact"><b>◉</b><small>3–5m distance</small></div><div class="lab-fact"><b>♙</b><small>Full body in frame</small></div><div class="lab-fact"><b>☀</b><small>Good light</small></div></div><div class="lab-note"><strong>Today's assessment</strong><p>Complete your juggling attempt and record a manual reference count while camera-counting remains under development.</p></div><button class="trial-primary" type="button" data-lab-stage="guide">Continue</button></main>`);
@@ -199,69 +215,37 @@ function waitForFrame(video, token, timeoutMs=5000){
 async function startCamera(){
   elapsed = 0;
   provisionalCount = 0;
-  stopCamera();
   const token = ++cameraStartToken;
   const video = document.getElementById("labVideo");
   if(!video || !navigator.mediaDevices?.getUserMedia){
-    setCameraMessage("Camera access is not supported in this browser.", "error");
-    return false;
+    setCameraMessage("Camera access is unavailable in this browser.", "error");
+    return;
   }
   prepareVideo(video);
-  let lastError = null;
   for(const constraints of CAMERA_CONSTRAINTS){
-    if(token !== cameraStartToken || !document.contains(video)) return false;
-    let candidate = null;
+    if(token !== cameraStartToken) return;
     try{
-      setCameraMessage("Connecting to rear camera…");
-      candidate = await navigator.mediaDevices.getUserMedia(constraints);
-      if(token !== cameraStartToken){ candidate.getTracks().forEach(track => track.stop()); return false; }
-      const track = candidate.getVideoTracks()[0];
-      if(!track || track.readyState !== "live") throw new Error("Camera track is not live");
-      video.srcObject = candidate;
-      setCameraMessage("Waiting for camera image…");
+      setCameraMessage("Requesting camera access…");
+      const nextStream = await navigator.mediaDevices.getUserMedia(constraints);
+      if(token !== cameraStartToken){ nextStream.getTracks().forEach(track => track.stop()); return; }
+      stream = nextStream;
+      video.srcObject = stream;
       await playVideo(video);
       await waitForFrame(video, token);
-      if(video.videoWidth <= 0 || video.videoHeight <= 0) throw new Error("Camera frame dimensions are zero");
-      stream = candidate;
       const placeholder = document.getElementById("labCameraPlaceholder");
       if(placeholder) placeholder.hidden = true;
-      document.querySelector(".lab-camera")?.classList.add("camera-ready");
-      timerId = window.setInterval(() => {
+      timerId = setInterval(() => {
         elapsed += 1;
-        const timer = document.getElementById("labTime");
-        if(timer) timer.textContent = formatTime(elapsed);
-      },1000);
-      return true;
+        const label = document.getElementById("labTime");
+        if(label) label.textContent = formatTime(elapsed);
+      }, 1000);
+      return;
     }catch(error){
-      lastError = error;
-      candidate?.getTracks?.().forEach(track => track.stop());
-      if(video.srcObject === candidate) video.srcObject = null;
+      stream?.getTracks?.().forEach(track => track.stop());
+      stream = null;
     }
   }
-  const denied = lastError?.name === "NotAllowedError" || lastError?.name === "SecurityError";
-  const message = denied
-    ? "Camera permission was denied. Allow camera access in Safari settings and retry."
-    : `Camera started but no image was received${lastError?.name ? ` (${lastError.name})` : ""}. Go back and retry.`;
-  setCameraMessage(message, "error");
-  console.warn("[PitchIQ Assessment] Camera startup failed", lastError);
-  return false;
+  setCameraMessage("Camera could not start. Check Safari permissions and try again.", "error");
 }
-function injectHomeEntry(){
-  if(currentHash() && isFeatureRoute()) return;
-  const grid = document.querySelector(".home-v7-grid");
-  if(!grid || grid.querySelector(".home-trial-entry")) return;
-  const card = document.createElement("button");
-  card.type = "button";
-  card.className = "home-trial-entry";
-  card.innerHTML = `<span class="home-trial-entry-inner"><span><span>Optional prototype area</span><strong>Experimental Lab</strong><small>Test the camera-based juggling challenge.</small></span><b>→</b></span>`;
-  card.addEventListener("click", () => { labStage = "welcome"; routeTo("lab-juggling"); });
-  grid.appendChild(card);
-}
-window.addEventListener("hashchange", () => {
-  if(isFeatureRoute()) renderFeature();
-  else { stopCamera(); setTimeout(injectHomeEntry, 0); }
-});
-window.addEventListener("pagehide", stopCamera);
-document.addEventListener("visibilitychange", () => { if(document.hidden) stopCamera(); });
-new MutationObserver(() => { if(isFeatureRoute()) return; injectHomeEntry(); }).observe(app, {childList:true,subtree:true});
-if(isFeatureRoute()) renderFeature(); else injectHomeEntry();
+window.addEventListener("hashchange", renderFeature);
+renderFeature();
