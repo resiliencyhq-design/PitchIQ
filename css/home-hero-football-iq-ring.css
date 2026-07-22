@@ -1,0 +1,138 @@
+/* Sprint — Home hero Football IQ ring
+   Reuses the left-side space previously occupied by the Level/XP panel.
+   Keeps the hero height and right-side OVR/profile architecture unchanged. */
+
+.home-hero-left {
+  grid-template-rows: auto auto 1fr !important;
+  gap: 8px !important;
+}
+
+.home-greeting {
+  position: relative;
+  z-index: 2;
+}
+
+.home-greeting span {
+  font-size: 18px !important;
+}
+
+.home-greeting b {
+  font-size: clamp(38px, 10.5vw, 48px) !important;
+  line-height: .88 !important;
+}
+
+.home-football-iq {
+  align-self: end;
+  width: 100%;
+  max-width: 128px;
+  min-height: 128px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  isolation: isolate;
+  color: #f7fff8;
+}
+
+.home-football-iq::before,
+.home-football-iq::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.home-football-iq::before {
+  background:
+    conic-gradient(#d7ff2e calc(var(--football-iq, 0) * 1%), rgba(215,255,46,.12) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 0);
+  mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 0);
+  filter: drop-shadow(0 0 10px rgba(215,255,46,.28));
+}
+
+.home-football-iq::after {
+  inset: 9px;
+  border: 1px solid rgba(215,255,46,.2);
+  box-shadow: inset 0 0 24px rgba(215,255,46,.07);
+}
+
+.home-football-iq-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  text-align: center;
+}
+
+.home-football-iq-core small {
+  color: rgba(247,255,248,.82);
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.home-football-iq-ball {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  font-size: 31px;
+  line-height: 1;
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,.48));
+}
+
+.home-football-iq-core strong {
+  color: #d7ff2e;
+  font-size: 30px;
+  line-height: .9;
+  font-weight: 1000;
+  letter-spacing: -.06em;
+}
+
+.home-football-iq-core em {
+  color: #d7ff2e;
+  font-size: 8px;
+  line-height: 1.05;
+  font-style: normal;
+  font-weight: 1000;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.home-football-iq[data-state="empty"]::before {
+  background: conic-gradient(rgba(215,255,46,.18) 0 18%, rgba(215,255,46,.08) 18% 100%);
+}
+
+.home-football-iq[data-state="empty"] .home-football-iq-core strong,
+.home-football-iq[data-state="empty"] .home-football-iq-core em {
+  color: rgba(247,255,248,.72);
+}
+
+@keyframes homeFootballIQPulse {
+  0%, 86%, 100% { filter: drop-shadow(0 0 8px rgba(215,255,46,.18)); }
+  92% { filter: drop-shadow(0 0 17px rgba(215,255,46,.42)); }
+}
+
+.home-football-iq {
+  animation: homeFootballIQPulse 7s ease-in-out infinite;
+}
+
+@media (max-width: 380px) {
+  .home-greeting span { font-size: 16px !important; }
+  .home-greeting b { font-size: clamp(34px, 10vw, 43px) !important; }
+  .home-football-iq {
+    max-width: 116px;
+    min-height: 116px;
+  }
+  .home-football-iq-ball {
+    width: 38px;
+    height: 38px;
+    font-size: 28px;
+  }
+  .home-football-iq-core strong { font-size: 27px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-football-iq { animation: none; }
+}
