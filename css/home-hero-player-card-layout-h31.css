@@ -38,6 +38,28 @@
   transform:translateY(-5px);
 }
 
+/* Canonical Home bell rendering ownership.
+   The active app loads this Home hero stylesheet; keep the button shell and icon together here. */
+.home-aaa .home-hero-card .home-bell{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  min-height:44px;
+  padding:0;
+  overflow:hidden;
+}
+
+.home-aaa .home-hero-card .home-bell-icon{
+  display:block;
+  width:24px;
+  height:24px;
+  max-width:none;
+  object-fit:contain;
+  opacity:1;
+  visibility:visible;
+}
+
 @media(max-width:380px){
   .home-aaa .home-hero-card .home-profile-ovr-label{
     transform:translateY(4px);
