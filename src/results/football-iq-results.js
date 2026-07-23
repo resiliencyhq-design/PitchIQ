@@ -157,15 +157,51 @@ function renderNextUnlock(state) {
   </article>`;
 }
 
-function renderHero(profile, complete, score, eligibleCount, playerName) {
-  const label = playerName ? `WELL DONE, ${playerName.toUpperCase()}!` : "WELL DONE!";
-  const status = complete ? "Football IQ score unlocked" : `${eligibleCount} of 5 dimensions ready`;
+function previousEligibleScore(profile) {
+  const candidates = [
+    profile?.previousIntegratedFIQ?.score,
+    profile?.previousScore,
+    profile?.comparison?.previousScore,
+    profile?.history?.at?.(-2)?.integratedFIQ?.score,
+    profile?.history?.at?.(-2)?.score,
+  ];
+  return candidates.find(Number.isFinite) ?? null;
+}
 
-  return `<section class="r1-results-hero ${complete ? "is-complete" : "is-building"}">
+function heroMessage(score, previousScore, complete) {
+  if (!complete) {
+    return {
+      heading: "Your profile is building",
+      tone: "building",
+      comparison: null,
+    };
+  }
+
+  const delta = Number.isFinite(previousScore) ? Math.round(score - previousScore) : null;
+  if (Number.isFinite(delta) && delta >= 4) {
+    return { heading: "Excellent Progress!", tone: "improved", comparison: `+${delta} vs last result` };
+  }
+  if (Number.isFinite(delta) && delta <= -4) {
+    return { heading: "Good Work Today", tone: "reset", comparison: `${delta} vs last result` };
+  }
+  if (score >= 85) return { heading: "Outstanding Session!", tone: "elite", comparison: delta ? `${delta > 0 ? "+" : ""}${delta} vs last result` : null };
+  if (score >= 70) return { heading: "Great Session!", tone: "strong", comparison: delta ? `${delta > 0 ? "+" : ""}${delta} vs last result` : null };
+  return { heading: "Solid Session!", tone: "steady", comparison: delta ? `${delta > 0 ? "+" : ""}${delta} vs last result` : null };
+}
+
+function renderHero(profile, complete, score, eligibleCount, playerName) {
+  const safeName = String(playerName || "").trim();
+  const label = safeName ? `WELL DONE, ${safeName.toUpperCase()}!` : "WELL DONE!";
+  const previousScore = previousEligibleScore(profile);
+  const hero = heroMessage(score, previousScore, complete);
+  const status = complete ? "Football IQ score unlocked" : `${eligibleCount} of 5 dimensions ready`;
+  const scoreAttributes = complete ? `data-score-target="${score}" data-score-animate="true"` : "";
+
+  return `<section class="r1-results-hero r2-results-hero is-${hero.tone} ${complete ? "is-complete" : "is-building"}">
     <span>${escapeHtml(label)}</span>
-    <h1>${complete ? "Great Session!" : "Your profile is building"}</h1>
-    <div class="r1-score-block"><small>FOOTBALL IQ</small><strong>${complete ? score : "—"}</strong><b>/100</b></div>
-    <p>${escapeHtml(status)}</p>
+    <h1>${escapeHtml(hero.heading)}</h1>
+    <div class="r1-score-block r2-score-block"><small>FOOTBALL IQ</small><strong ${scoreAttributes}>${complete ? score : "—"}</strong><b>/100</b></div>
+    <div class="r2-hero-status"><p>${escapeHtml(status)}</p>${hero.comparison ? `<span class="r2-comparison-badge">${escapeHtml(hero.comparison)}</span>` : ""}</div>
   </section>`;
 }
 
@@ -176,7 +212,7 @@ function renderResultsShell(profile) {
   const eligibleCount = profile?.evidenceStatus?.eligibleConstructs?.length || 0;
   const stats = trainingStats(state);
 
-  return `<section class="screen app fiq-results r1-results active" id="results"><div class="r1-results-wrap">
+  return `<section class="screen app fiq-results r1-results r2-results active" id="results"><div class="r1-results-wrap">
     <header class="r1-results-top"><button type="button" data-route="home" aria-label="Back to Home">←</button><span>RESULTS</span><i aria-hidden="true"></i></header>
     ${renderHero(profile, complete, score, eligibleCount, state.profile?.name || "")}
     ${renderCoachCard(profile)}
