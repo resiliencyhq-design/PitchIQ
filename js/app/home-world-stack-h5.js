@@ -42,7 +42,9 @@ function ensureWorldsHeading(actions) {
     heading.className = WORLDS_HEADING_CLASS;
   }
   heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
-  card.prepend(heading);
+  const shell = card.querySelector(":scope > .home-world-carousel-shell");
+  if (shell) card.insertBefore(heading, shell);
+  else card.prepend(heading);
   return heading;
 }
 
@@ -266,7 +268,7 @@ export function applyHomeWorldStack(root = document) {
   bindCarouselScroll(actions);
   home.dataset.focusedHomeWorld = focusedWorldId;
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h33-explore-heading-dots-layout";
+  home.dataset.homeWorlds = "h33-explore-heading-above-carousel";
   return true;
 }
 
