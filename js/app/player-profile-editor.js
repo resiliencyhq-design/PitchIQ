@@ -6,17 +6,11 @@ const PROFILE_KEYS = Object.freeze({
   avatar: "pitchiqPlayerAvatar"
 });
 
-const POSITION_OPTIONS = Object.freeze([
-  ["GK", "Goalkeeper"],
-  ["CB", "Centre Back"],
-  ["LB", "Left Back"],
-  ["RB", "Right Back"],
-  ["CDM", "Defensive Midfielder"],
-  ["CM", "Central Midfielder"],
-  ["CAM", "Attacking Midfielder"],
-  ["LW", "Left Wing"],
-  ["RW", "Right Wing"],
-  ["ST", "Striker"]
+const POSITION_GROUPS = Object.freeze([
+  ["Goalkeeper", [["GK", "Goalkeeper"]]],
+  ["Defence", [["CB", "Centre Back"], ["LB", "Left Back"], ["RB", "Right Back"]]],
+  ["Midfield", [["CDM", "Defensive Midfielder"], ["CM", "Central Midfielder"], ["CAM", "Attacking Midfielder"]]],
+  ["Attack", [["LW", "Left Wing"], ["RW", "Right Wing"], ["ST", "Striker"]]]
 ]);
 
 const STYLE_OPTIONS = Object.freeze(["Creator", "Controller", "Finisher", "Engine", "Defender", "Sweeper"]);
@@ -34,6 +28,10 @@ function optionButtons(options, selected) {
   return options.map(([value, label]) => `<button type="button" class="player-editor-choice${value === selected ? " active" : ""}" data-player-editor-choice="${escapeHtml(value)}">${escapeHtml(label)}</button>`).join("");
 }
 
+function positionGroupsMarkup(selected) {
+  return POSITION_GROUPS.map(([group, options]) => `<section class="player-editor-position-group"><h3>${escapeHtml(group)}</h3><div class="player-editor-choice-grid" role="group" aria-label="${escapeHtml(group)} positions">${optionButtons(options, selected)}</div></section>`).join("");
+}
+
 function styleButtons(selected) {
   return STYLE_OPTIONS.map(value => `<button type="button" class="player-editor-choice${value === selected ? " active" : ""}" data-player-editor-choice="${escapeHtml(value)}">${escapeHtml(value)}</button>`).join("");
 }
@@ -49,7 +47,7 @@ function editorMarkup(field, profile) {
 
   if (field === "name") body = `<label class="player-editor-field"><span>Player name</span><input id="playerEditorInput" type="text" maxlength="18" value="${escapeHtml(value)}" autocomplete="name"></label>`;
   if (field === "number") body = `<label class="player-editor-field"><span>Jersey number</span><input id="playerEditorInput" type="number" min="1" max="99" inputmode="numeric" value="${escapeHtml(value || 1)}"></label>`;
-  if (field === "position") body = `<div class="player-editor-choice-grid" role="group" aria-label="Choose position">${optionButtons(POSITION_OPTIONS, value)}</div>`;
+  if (field === "position") body = `<div class="player-editor-position-groups" aria-label="Choose position">${positionGroupsMarkup(value)}</div>`;
   if (field === "style") body = `<div class="player-editor-choice-grid" role="group" aria-label="Choose player style">${styleButtons(value)}</div>`;
   if (field === "avatar") body = `<div class="player-editor-avatar-grid" role="group" aria-label="Choose avatar">${avatarButtons(value || "default")}</div>`;
 
@@ -83,6 +81,18 @@ function validate(field, value) {
   }
   if (["position", "style", "avatar"].includes(field) && !value) return "Choose an option.";
   return "";
+}
+
+function showSaveConfirmation(message = "Profile updated") {
+  document.querySelector(".player-editor-save-toast")?.remove();
+  const toast = document.createElement("div");
+  toast.className = "player-editor-save-toast";
+  toast.setAttribute("role", "status");
+  toast.textContent = `✓ ${message}`;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add("show"));
+  window.setTimeout(() => toast.classList.remove("show"), 1350);
+  window.setTimeout(() => toast.remove(), 1600);
 }
 
 export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer, notify, onPositionChanged }) {
@@ -123,10 +133,11 @@ export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer,
     const profile = profileFromState(state);
     persistCompatibilityKeys(profile);
     saveState(state);
-    closeEditor();
     if (field === "position" && previousPosition !== value) onPositionChanged?.();
+    closeEditor();
     rerenderPlayer();
-    notify?.("Player updated");
+    showSaveConfirmation("Profile updated");
+    notify?.("Profile updated");
   }
 
   function handleClick(event) {
