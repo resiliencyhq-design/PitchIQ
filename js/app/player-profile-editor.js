@@ -95,7 +95,7 @@ function showSaveConfirmation(message = "Profile updated") {
   window.setTimeout(() => toast.remove(), 1600);
 }
 
-export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer, notify, onPositionChanged }) {
+export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer, notify, onPositionChanged, resetPlayer }) {
   function closeEditor() {
     document.getElementById("playerEditorPanel")?.remove();
   }
@@ -146,9 +146,8 @@ export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer,
       event.preventDefault();
       const field = option.dataset.playerOption;
       if (["name", "number", "position", "style", "avatar"].includes(field)) openEditor(field);
-      if (field === "feedback") {
-        window.location.href = "mailto:?subject=PitchIQ%20Feedback";
-      }
+      if (field === "feedback") window.location.href = "mailto:?subject=PitchIQ%20Feedback";
+      if (field === "reset") resetPlayer?.();
       return;
     }
 
