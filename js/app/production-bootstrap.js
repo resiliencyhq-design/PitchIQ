@@ -1,17 +1,17 @@
-import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h34-carousel-edge-safe-centering-20260723";
+import { applyHomeContentComposition } from "./home-content-composition.js?v=refactor-explore-layout-ownership-20260723";
 
 const APP_SELECTOR = "#app";
 const HOME_SELECTOR = "#home";
 const CANONICAL_HOME_CONTROL = '#nav [data-route="home"]';
 
 function markProductionBuild() {
-  document.documentElement.dataset.pitchiqProductionBuild = "h34-carousel-edge-safe-centering";
+  document.documentElement.dataset.pitchiqProductionBuild = "explore-layout-ownership-refactor";
 }
 
 function applyCurrentHome() {
   const applied = applyHomeContentComposition(document);
   if (applied) {
-    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h34-carousel");
+    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-explore-layout-refactor");
   }
   return applied;
 }
