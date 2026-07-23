@@ -1,0 +1,102 @@
+.r2-results-hero {
+  isolation: isolate;
+}
+
+.r2-results-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(215,255,46,.04) 1px, transparent 1px),
+    linear-gradient(rgba(215,255,46,.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,.9), transparent 88%);
+}
+
+.r2-results-hero.is-elite {
+  border-color: rgba(215,255,46,.42);
+  box-shadow: 0 24px 64px rgba(0,0,0,.38), 0 0 34px rgba(215,255,46,.12);
+}
+
+.r2-results-hero.is-improved {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.44)),
+    radial-gradient(circle at 74% 42%, rgba(140,255,0,.24), transparent 28%),
+    linear-gradient(135deg, #071a10 0%, #06120d 52%, #020605 100%);
+}
+
+.r2-results-hero.is-reset {
+  border-color: rgba(255,177,26,.25);
+}
+
+.r2-score-block strong {
+  text-shadow: 0 0 24px rgba(215,255,46,.22);
+}
+
+.r2-hero-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.r2-hero-status p {
+  margin: 0;
+}
+
+.r2-comparison-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid rgba(215,255,46,.28);
+  border-radius: 999px;
+  color: #d7ff2e;
+  background: rgba(215,255,46,.08);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .02em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .r2-results-hero::after {
+    animation: r2HeroBreathe 3.2s ease-in-out infinite;
+  }
+
+  .r2-results-hero::before {
+    animation: r2GridDrift 12s linear infinite;
+  }
+
+  .r2-score-block strong {
+    animation: r2ScoreGlow 1.2s ease-out both;
+  }
+
+  .r2-comparison-badge {
+    animation: r2BadgeReveal .5s .35s ease-out both;
+  }
+}
+
+@keyframes r2HeroBreathe {
+  50% {
+    opacity: .72;
+    transform: scale(1.045);
+    box-shadow: 0 0 54px rgba(215,255,46,.34), inset 0 0 44px rgba(215,255,46,.1);
+  }
+}
+
+@keyframes r2GridDrift {
+  to { background-position: 28px 28px, 28px 28px; }
+}
+
+@keyframes r2ScoreGlow {
+  from { opacity: .25; transform: translateY(6px) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes r2BadgeReveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
