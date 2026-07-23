@@ -1,0 +1,50 @@
+/* H37 — Restore approved bottom navigation layout and state.
+   Preserves the duplicate-icon fix by styling the single pseudo-element icon owner only. */
+
+.app-shell > #nav.bottom-nav.visible {
+  width: min(calc(100% - 20px), 390px) !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 1px 6px !important;
+  margin: 1px auto calc(env(safe-area-inset-bottom, 0px) + 1px) !important;
+  border-radius: 20px !important;
+  gap: 1px !important;
+  align-self: end !important;
+}
+
+.app-shell > #nav.bottom-nav.visible button {
+  min-height: 44px !important;
+  height: 44px !important;
+  max-height: 44px !important;
+  padding: 2px !important;
+  gap: 1px !important;
+}
+
+.app-shell > #nav.bottom-nav.visible button,
+.app-shell > #nav.bottom-nav.visible button::before,
+.app-shell > #nav.bottom-nav.visible button b,
+.app-shell > #nav.bottom-nav.visible button span {
+  color: #ffffff !important;
+}
+
+.app-shell > #nav.bottom-nav.visible button.active,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"],
+.app-shell > #nav.bottom-nav.visible button.active::before,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"]::before,
+.app-shell > #nav.bottom-nav.visible button.active b,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"] b,
+.app-shell > #nav.bottom-nav.visible button.active span,
+.app-shell > #nav.bottom-nav.visible button[aria-current="page"] span {
+  color: #d7ff2e !important;
+}
+
+.app-shell:has(> #nav.bottom-nav.visible) > #app.app-scroll,
+.app-shell:has(> #nav.bottom-nav.visible) > #app {
+  padding-bottom: 4px !important;
+  scroll-padding-bottom: 4px !important;
+}
+
+.app-shell:has(> #nav.bottom-nav.visible) > #app .screen.active {
+  padding-bottom: 6px !important;
+}
