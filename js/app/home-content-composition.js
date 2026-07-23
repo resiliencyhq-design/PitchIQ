@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h19-home-intelligence-polish-20260723";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h35-carousel-swipe-performance-20260723";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
