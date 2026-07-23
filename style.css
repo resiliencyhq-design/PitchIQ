@@ -36,31 +36,6 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .camera-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}header h1{font-size:28px}.camera-wrap{height:52vh;min-height:380px}.camera-cue{font-size:76px}
 }
 
-/* Force Home bell PNG visibility */
-.home-bell{
-  width:40px !important;
-  height:40px !important;
-  min-height:40px !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  padding:0 !important;
-  font-size:0 !important;
-  color:transparent !important;
-}
-
-.home-bell img,
-.home-bell-icon{
-  width:40px !important;
-  height:40px !important;
-  display:block !important;
-  object-fit:contain !important;
-  opacity:1 !important;
-  visibility:visible !important;
-}
-
-
-
 /* Home hero visible glow patch */
 .home-hero-card.home-hero-locked{
   position:relative !important;
@@ -95,4 +70,3 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
   position:relative !important;
   z-index:2 !important;
 }
-
