@@ -1,4 +1,4 @@
-import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=refactor-carousel-presentation-2-5d-20260723";
+import { applyHomeWorldStack } from "./home-world-stack-h5.js?v=sprint-h19-home-intelligence-polish-20260723";
 import { applyHomeWorldPolish } from "./home-world-polish-h6.js?v=sprint-h6-world-card-polish-20260719";
 import { applyHomeAdaptiveMission } from "./home-adaptive-mission-h8.js?v=sprint-h8-adaptive-mission-hub-20260721";
 
@@ -49,7 +49,7 @@ function ensureStylesheet() {
   appendStylesheet(FOOTBALL_IQ_STYLE_ID, "css/home-football-iq-h4.css?v=sprint-h4-football-iq-world-card-20260719");
   appendStylesheet(WORLD_STACK_STYLE_ID, "css/home-world-stack-h5.css?v=sprint-h7-development-worlds-20260721");
   appendStylesheet(WORLD_POLISH_STYLE_ID, "css/home-world-polish-h6.css?v=sprint-h6-world-card-polish-20260719");
-  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=refactor-carousel-presentation-2-5d-20260723");
+  appendStylesheet(FOUR_WORLDS_STYLE_ID, "css/home-four-worlds-h16.css?v=sprint-h19-home-intelligence-polish-20260723");
   appendStylesheet(H13_STYLE_ID, "css/home-information-architecture-h13.css?v=refactor-explore-layout-ownership-20260723");
   appendStylesheet(H17_STYLE_ID, "css/home-compact-mission-h17.css?v=sprint-h17-compact-mission-hero-20260722");
 }
@@ -101,7 +101,7 @@ function applyHomeInformationArchitecture(home, stack) {
   if (rewards) rewards.remove();
   if (supporting && !supporting.children.length) supporting.remove();
 
-  home.dataset.homeComposition = "carousel-presentation-2-5d";
+  home.dataset.homeComposition = "h19-home-intelligence-polish";
 }
 
 export function applyHomeContentComposition(root = document) {
