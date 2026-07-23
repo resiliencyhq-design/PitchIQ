@@ -323,8 +323,12 @@ if (typeof document !== "undefined") {
       event.preventDefault();
       location.hash = module.dataset.worldModuleRoute;
     }
-  });
+  }, true);
 
-  window.addEventListener("hashchange", () => handleWorldRoute(document));
-  handleWorldRoute(document);
+  window.addEventListener("hashchange", () => handleWorldRoute());
+  window.addEventListener("pageshow", () => handleWorldRoute());
+  handleWorldRoute();
 }
+
+export { HOME_WORLDS } from "./home-worlds-data.js";
+export { renderDevelopmentWorld } from "./home-world-screen.js";
