@@ -1,16 +1,30 @@
-/* H37 — Restore approved bottom navigation layout and state.
-   Preserves the duplicate-icon fix by styling the single pseudo-element icon owner only. */
+/* H42 — Bottom navigation viewport anchor and locked presentation.
+   The app shell fills the real iPhone viewport; the nav is anchored directly
+   above the home-indicator safe area instead of occupying a grid row. */
+
+.app-shell {
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+}
 
 .app-shell > #nav.bottom-nav.visible {
-  width: min(calc(100% - 20px), 390px) !important;
+  position: absolute !important;
+  inset: auto 10px calc(env(safe-area-inset-bottom, 0px) + 6px) 10px !important;
+  grid-row: auto !important;
+  justify-self: stretch !important;
+  align-self: auto !important;
+  width: auto !important;
+  max-width: 390px !important;
   min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
   padding: 1px 6px !important;
-  margin: 1px auto 0 !important;
+  margin: 0 auto !important;
   border-radius: 20px !important;
   gap: 1px !important;
-  align-self: end !important;
+  z-index: 40 !important;
 }
 
 .app-shell > #nav.bottom-nav.visible button {
@@ -39,12 +53,14 @@
   color: #d7ff2e !important;
 }
 
+/* The nav now overlays the viewport, so scrolling screens reserve exactly its
+   footprint plus the device safe area. Final cards can scroll fully above it. */
 .app-shell:has(> #nav.bottom-nav.visible) > #app.app-scroll,
 .app-shell:has(> #nav.bottom-nav.visible) > #app {
-  padding-bottom: 4px !important;
-  scroll-padding-bottom: 4px !important;
+  padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px) + 14px) !important;
+  scroll-padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px) + 14px) !important;
 }
 
 .app-shell:has(> #nav.bottom-nav.visible) > #app .screen.active {
-  padding-bottom: 6px !important;
+  padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px) + 18px) !important;
 }
