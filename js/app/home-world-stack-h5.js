@@ -42,7 +42,7 @@ function ensureWorldsHeading(actions) {
     heading = document.createElement("header");
     heading.className = WORLDS_HEADING_CLASS;
   }
-  heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
+  heading.innerHTML = "<span>Explore</span><small>Tap to preview • Swipe to browse</small>";
   const shell = card.querySelector(":scope > .home-world-carousel-shell");
   if (shell) card.insertBefore(heading, shell);
   else card.prepend(heading);
