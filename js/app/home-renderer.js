@@ -3,6 +3,7 @@ import { REWARDS } from "../data/rewards.js";
 import { footballIQScore, playerOverall, trainingStats } from "./player-metrics.js";
 import { missionTileAttributes, resolveHomeMission } from "./home-mission-tile.js";
 import "./mission-brief.js?v=mission-pr3-universal-brief-20260724";
+import "./mission-results-handoff.js?v=mission-pr4-results-handoff-20260724";
 
 const POSITION_LABELS = {
   ST: "Striker", LW: "Left Wing", RW: "Right Wing", CAM: "Attacking Midfielder",
