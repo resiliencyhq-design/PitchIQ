@@ -88,20 +88,20 @@ function applyHomeInformationArchitecture(home, stack) {
 
   if (stats) stats.remove();
 
-  if (worldsBlock) {
-    stack.prepend(worldsBlock);
-    if (worldsPreview) worldsBlock.after(worldsPreview);
-  }
-
   if (mission) {
     mission.dataset.homeSlot = "todays-mission";
-    worldsPreview ? worldsPreview.after(mission) : worldsBlock ? worldsBlock.after(mission) : stack.prepend(mission);
+    stack.prepend(mission);
+  }
+
+  if (worldsBlock) {
+    mission ? mission.after(worldsBlock) : stack.prepend(worldsBlock);
+    if (worldsPreview) worldsBlock.after(worldsPreview);
   }
 
   if (rewards) rewards.remove();
   if (supporting && !supporting.children.length) supporting.remove();
 
-  home.dataset.homeComposition = "h19-home-intelligence-polish";
+  home.dataset.homeComposition = "h36-mission-before-explore";
 }
 
 export function applyHomeContentComposition(root = document) {
