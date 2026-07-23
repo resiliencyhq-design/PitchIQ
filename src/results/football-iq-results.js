@@ -1,4 +1,7 @@
 import { getLatestFootballIQProfile } from "../profile/football-iq-storage.js";
+import { loadState, normalizeState } from "../../js/services/storage.js";
+import { xpNeed, rewardProgressXp } from "../../js/game/progression.js";
+import { REWARDS } from "../../js/data/rewards.js";
 
 const CONSTRUCTS = [
   ["awareness", "Awareness", "Notice the important information around you before the ball arrives."],
@@ -14,12 +17,6 @@ const CONFIDENCE_COPY = {
   strong_confidence: "Strong confidence",
 };
 
-const CHALLENGE_COPY = {
-  transfers_strongly: ["Strong transfer", "Your thinking stayed effective when the challenge became more game-like."],
-  transfers_inconsistently: ["Developing transfer", "Some of your strengths carried into pressure. More practice can make them more consistent."],
-  more_evidence_needed: ["More evidence needed", "Complete more Match Challenges to build a clearer picture of transfer."],
-};
-
 function escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -29,96 +26,169 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
-function formatDate(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Assessment date unavailable";
-  return new Intl.DateTimeFormat("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-}
-
 function confidenceLabel(value) {
   return CONFIDENCE_COPY[value] || "More evidence needed";
 }
 
-function renderConstructCard([id, label, explanation], profile) {
-  const construct = profile?.constructs?.[id];
-  const eligible = Boolean(construct?.eligible && Number.isFinite(construct?.score));
-  const status = eligible ? confidenceLabel(construct.confidence) : "Building evidence";
-  const score = eligible ? construct.score : "—";
+function completedTrainingSeconds(state) {
+  return (state.analytics?.sessions || []).reduce(
+    (total, session) => total + (session.durationSeconds || 45),
+    0,
+  );
+}
 
-  return `<article class="fiq-dimension-card${eligible ? " is-eligible" : " is-building"}">
-    <header><span>${escapeHtml(label)}</span><b>${score}</b></header>
-    <p>${escapeHtml(explanation)}</p>
-    <footer><span>${escapeHtml(status)}</span><small>${eligible ? "Current evidence supports this score." : "Complete more varied challenges to unlock this score."}</small></footer>
+function trainingStats(state) {
+  const sessions = state.analytics?.sessions || [];
+  const attempts = sessions.reduce(
+    (total, session) => total + (Array.isArray(session.results) ? session.results.length : 0),
+    0,
+  );
+  const correct = sessions.reduce(
+    (total, session) => total + (Array.isArray(session.results)
+      ? session.results.filter(result => result.correct).length
+      : 0),
+    0,
+  );
+  const savedResult = state.game?.lastResult;
+  const accuracy = attempts
+    ? Math.round((correct / attempts) * 100)
+    : (savedResult?.attempts ? savedResult.accuracy : null);
+  const reaction = Number.isFinite(state.analytics?.bestReaction)
+    ? `${(state.analytics.bestReaction / 1000).toFixed(2)}s`
+    : "—";
+
+  return {
+    accuracy: Number.isFinite(accuracy) ? `${accuracy}%` : "—",
+    reaction,
+    combo: state.game?.bestCombo ? `x${state.game.bestCombo}` : "—",
+    xpEarned: state.game?.lastXp || 0,
+    level: state.game?.level || 1,
+    xp: state.game?.xp || 0,
+    timeMinutes: Math.floor(Math.max(state.game?.trainingSeconds || 0, completedTrainingSeconds(state)) / 60),
+  };
+}
+
+function constructEntries(profile) {
+  return CONSTRUCTS.map(([id, label, explanation]) => {
+    const construct = profile?.constructs?.[id];
+    const eligible = Boolean(construct?.eligible && Number.isFinite(construct?.score));
+    return {
+      id,
+      label,
+      explanation,
+      eligible,
+      score: eligible ? construct.score : null,
+      confidence: eligible ? confidenceLabel(construct.confidence) : "Building evidence",
+    };
+  });
+}
+
+function coachCopy(profile) {
+  const eligible = constructEntries(profile).filter(item => item.eligible).sort((a, b) => b.score - a.score);
+  const strengths = eligible.slice(0, 2);
+  const focus = eligible.length ? eligible.at(-1) : null;
+
+  return {
+    strengths: strengths.length
+      ? strengths.map(item => `Strong ${item.label.toLowerCase()} today.`)
+      : ["Keep completing challenges to build a clearer picture of your game."],
+    focus: focus
+      ? `Keep building ${focus.label.toLowerCase()} in your next session.`
+      : "Complete another varied challenge to unlock your next focus.",
+  };
+}
+
+function renderCoachCard(profile) {
+  const coach = coachCopy(profile);
+  return `<article class="r1-card r1-coach-card">
+    <header><span>COACH SAYS</span><b aria-hidden="true">“</b></header>
+    <div class="r1-coach-points">
+      ${coach.strengths.map(point => `<p><span aria-hidden="true">✓</span>${escapeHtml(point)}</p>`).join("")}
+      <p class="is-focus"><span aria-hidden="true">→</span>${escapeHtml(coach.focus)}</p>
+    </div>
+    <strong>Keep it up, smart player.</strong>
   </article>`;
 }
 
-function mentalityDimensions(profile) {
-  const dimensions = profile?.matchMentality?.dimensions;
-  if (!dimensions || typeof dimensions !== "object") return [];
-  return Object.entries(dimensions).map(([id, value]) => ({
-    id,
-    label: id.replace(/([A-Z])/g, " $1").replace(/^./, (letter) => letter.toUpperCase()),
-    band: value?.band || "emerging",
-  }));
+function renderKeyStats(stats) {
+  const items = [
+    ["Accuracy", stats.accuracy, "◎"],
+    ["Reaction", stats.reaction, "ϟ"],
+    ["Combo", stats.combo, "⌁"],
+    ["XP Earned", stats.xpEarned, "XP"],
+  ];
+
+  return `<article class="r1-card r1-stats-card"><h2>KEY STATS</h2><div class="r1-stats-grid">
+    ${items.map(([label, value, icon]) => `<div><span aria-hidden="true">${icon}</span><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join("")}
+  </div></article>`;
 }
 
-function bandLabel(value) {
-  return String(value || "emerging")
-    .replaceAll("_", " ")
-    .replace(/^./, (letter) => letter.toUpperCase());
+function renderSkillDevelopment(profile) {
+  const entries = constructEntries(profile);
+  return `<article class="r1-card r1-skills-card"><h2>SKILL DEVELOPMENT</h2><div class="r1-skill-list">
+    ${entries.map(item => `<div class="${item.eligible ? "is-ready" : "is-building"}"><span>${escapeHtml(item.label)}</span><b>${item.eligible ? item.score : "—"}</b><small>${escapeHtml(item.confidence)}</small></div>`).join("")}
+  </div></article>`;
 }
 
-function renderMentality(profile) {
-  const dimensions = mentalityDimensions(profile);
-  if (!dimensions.length) {
-    return `<article class="fiq-insight-card"><span>Match Mentality</span><h2>Still building</h2><p>Keep completing challenges. Your response to mistakes and pressure will help build this part of your profile.</p></article>`;
+function renderProgress(stats) {
+  const need = xpNeed(stats.level);
+  const progress = Math.min(100, Math.round((stats.xp / Math.max(1, need)) * 100));
+  const remaining = Math.max(0, need - stats.xp);
+  return `<article class="r1-card r1-progress-card">
+    <div class="r1-level-badge" aria-label="Level ${stats.level}">${stats.level}</div>
+    <div class="r1-progress-copy"><header><h2>LEVEL ${stats.level}</h2><b>${stats.xp} / ${need} XP</b></header><div class="r1-xpbar"><i style="width:${progress}%"></i></div><small>★ ${remaining} XP to reach Level ${stats.level + 1}</small></div>
+  </article>`;
+}
+
+function renderNextUnlock(state) {
+  const earnedXp = rewardProgressXp(state);
+  const reward = REWARDS
+    .filter(item => !state.game.unlocked.includes(item.id))
+    .sort((a, b) => a.unlockXp - b.unlockXp)
+    .find(item => item.unlockXp > earnedXp) || null;
+
+  if (!reward) {
+    return `<article class="r1-card r1-unlock-card"><div><span>NEXT UNLOCK</span><h2>More rewards coming</h2><p>Keep training to build your collection.</p></div></article>`;
   }
 
-  return `<article class="fiq-insight-card"><span>Match Mentality</span><h2>Skills under pressure</h2><p>These are behaviours you can strengthen through practice.</p><div class="fiq-mentality-grid">${dimensions.map((dimension) => `<div><b>${escapeHtml(dimension.label)}</b><small>${escapeHtml(bandLabel(dimension.band))}</small></div>`).join("")}</div></article>`;
+  return `<article class="r1-card r1-unlock-card">
+    <img src="${escapeHtml(reward.art)}" alt="" loading="lazy">
+    <div><span>NEXT UNLOCK</span><h2>${escapeHtml(reward.name)}</h2><p>${Math.max(0, reward.unlockXp - earnedXp)} XP remaining</p></div>
+  </article>`;
 }
 
-function renderMatchChallenge(profile) {
-  const indicator = profile?.matchChallenge?.indicator || "more_evidence_needed";
-  const [title, text] = CHALLENGE_COPY[indicator] || CHALLENGE_COPY.more_evidence_needed;
-  return `<article class="fiq-insight-card"><span>Match Challenge</span><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></article>`;
+function renderHero(profile, complete, score, eligibleCount, playerName) {
+  const label = playerName ? `WELL DONE, ${playerName.toUpperCase()}!` : "WELL DONE!";
+  const status = complete ? "Football IQ score unlocked" : `${eligibleCount} of 5 dimensions ready`;
+
+  return `<section class="r1-results-hero ${complete ? "is-complete" : "is-building"}">
+    <span>${escapeHtml(label)}</span>
+    <h1>${complete ? "Great Session!" : "Your profile is building"}</h1>
+    <div class="r1-score-block"><small>FOOTBALL IQ</small><strong>${complete ? score : "—"}</strong><b>/100</b></div>
+    <p>${escapeHtml(status)}</p>
+  </section>`;
 }
 
-function renderEmptyState() {
-  return `<section class="screen app fiq-results active" id="results"><div class="fiq-results-wrap">
-    <header class="fiq-results-top"><button type="button" data-route="home">BACK</button><span>FOOTBALL IQ PROFILE</span></header>
-    <section class="fiq-hero fiq-hero-empty"><span>YOUR PROFILE IS STARTING</span><h1>More evidence needed</h1><p>Complete Football IQ assessments to build an accurate picture of how you see, read and solve the game.</p><div class="fiq-evidence-progress"><b>0 of 5 dimensions ready</b><small>No score is shown until the evidence is strong enough.</small></div></section>
-    <section class="fiq-dimensions"><header><span>Five Football IQ dimensions</span><h2>Every area can be developed.</h2></header>${CONSTRUCTS.map((construct) => renderConstructCard(construct, null)).join("")}</section>
-    <section class="fiq-closing"><h2>This is your starting point.</h2><p>Every challenge helps build a clearer picture of your Football IQ.</p><button class="primary mega" data-route="home">BACK TO ACADEMY</button></section>
+function renderResultsShell(profile) {
+  const state = normalizeState(loadState());
+  const complete = profile?.evidenceStatus?.state === "complete" && Number.isFinite(profile?.integratedFIQ?.score);
+  const score = complete ? profile.integratedFIQ.score : "—";
+  const eligibleCount = profile?.evidenceStatus?.eligibleConstructs?.length || 0;
+  const stats = trainingStats(state);
+
+  return `<section class="screen app fiq-results r1-results active" id="results"><div class="r1-results-wrap">
+    <header class="r1-results-top"><button type="button" data-route="home" aria-label="Back to Home">←</button><span>RESULTS</span><i aria-hidden="true"></i></header>
+    ${renderHero(profile, complete, score, eligibleCount, state.profile?.name || "")}
+    ${renderCoachCard(profile)}
+    ${renderKeyStats(stats)}
+    ${renderSkillDevelopment(profile)}
+    ${renderProgress(stats)}
+    ${renderNextUnlock(state)}
+    <section class="r1-results-actions"><button class="primary mega" data-development-route="open">MY DEVELOPMENT</button><button class="ghost" data-route="home">BACK TO ACADEMY</button></section>
   </div></section>`;
 }
 
 export function renderFootballIQResults({ profile } = {}) {
   const resolvedProfile = profile === undefined ? getLatestFootballIQProfile() : profile;
-  if (!resolvedProfile) return renderEmptyState();
-
-  const complete = resolvedProfile.evidenceStatus?.state === "complete" && Number.isFinite(resolvedProfile.integratedFIQ?.score);
-  const eligibleCount = resolvedProfile.evidenceStatus?.eligibleConstructs?.length || 0;
-  const score = complete ? resolvedProfile.integratedFIQ.score : "—";
-  const heroTitle = complete ? "Your Football IQ" : "Your profile is building";
-  const heroMessage = complete
-    ? "This score combines evidence from all five Football IQ dimensions."
-    : "Complete more varied challenges before an overall score is shown.";
-
-  return `<section class="screen app fiq-results active" id="results"><div class="fiq-results-wrap">
-    <header class="fiq-results-top"><button type="button" data-route="home">BACK</button><span>FOOTBALL IQ PROFILE</span></header>
-    <section class="fiq-hero${complete ? " is-complete" : " is-building"}">
-      <span>${complete ? "PROFILE UNLOCKED" : "PROFILE IN PROGRESS"}</span>
-      <h1>${escapeHtml(heroTitle)}</h1>
-      <div class="fiq-score" aria-label="${complete ? `Football IQ score ${score}` : "Football IQ score not yet available"}">${score}</div>
-      <p>${escapeHtml(heroMessage)}</p>
-      <div class="fiq-hero-meta"><span>${escapeHtml(formatDate(resolvedProfile.assessmentDate))}</span><b>${eligibleCount} of 5 dimensions ready</b></div>
-    </section>
-    <section class="fiq-dimensions"><header><span>Your five dimensions</span><h2>You’re building a clearer picture of your game.</h2></header>${CONSTRUCTS.map((construct) => renderConstructCard(construct, resolvedProfile)).join("")}</section>
-    <section class="fiq-insights">${renderMentality(resolvedProfile)}${renderMatchChallenge(resolvedProfile)}</section>
-    <section class="fiq-closing"><h2>Turn insight into development.</h2><p>See your strongest area and the next skills worth building.</p><button class="primary mega" data-development-route="open">MY DEVELOPMENT</button><button class="primary mega" data-route="home">BACK TO ACADEMY</button></section>
-  </div></section>`;
+  return renderResultsShell(resolvedProfile || null);
 }
