@@ -10,6 +10,14 @@ const WORLDS_HEADING_CLASS = "home-academy-worlds-heading";
 const PAGINATION_CLASS = "home-world-carousel-pagination";
 const WORLD_ROUTE_PREFIX = "world-";
 const DEFAULT_WORLD_ID = "academy";
+const FOCUS_STORAGE_KEY = "pitchiq.home.focusedWorld.v1";
+const WORLD_TOKENS = Object.freeze({
+  academy: { accent: "#d7ff2e", glow: "rgba(215,255,46,.22)", surface: "rgba(33,54,8,.18)" },
+  train: { accent: "#67caff", glow: "rgba(76,190,255,.22)", surface: "rgba(8,42,62,.22)" },
+  review: { accent: "#c082ff", glow: "rgba(171,80,255,.22)", surface: "rgba(45,17,68,.22)" },
+  lab: { accent: "#ffb24f", glow: "rgba(255,155,37,.22)", surface: "rgba(62,34,8,.22)" },
+  rewards: { accent: "#ffd34f", glow: "rgba(255,210,74,.22)", surface: "rgba(60,43,7,.22)" },
+});
 let focusedWorldId = DEFAULT_WORLD_ID;
 let expandedWorldId = null;
 let carouselScrollTimer = null;
@@ -20,6 +28,31 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, character => ({
     "&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;",
   })[character]);
+}
+
+function readStoredWorldId() {
+  try {
+    const stored = localStorage.getItem(FOCUS_STORAGE_KEY);
+    return findHomeWorld(stored)?.id || DEFAULT_WORLD_ID;
+  } catch (_) {
+    return DEFAULT_WORLD_ID;
+  }
+}
+
+function persistFocusedWorld(worldId) {
+  try { localStorage.setItem(FOCUS_STORAGE_KEY, worldId); } catch (_) {}
+}
+
+function triggerHaptic(pattern) {
+  try { navigator.vibrate?.(pattern); } catch (_) {}
+}
+
+function applyWorldTokens(home, worldId) {
+  const tokens = WORLD_TOKENS[worldId] || WORLD_TOKENS[DEFAULT_WORLD_ID];
+  home.style.setProperty("--home-world-accent", tokens.accent);
+  home.style.setProperty("--home-world-glow", tokens.glow);
+  home.style.setProperty("--home-world-surface", tokens.surface);
+  home.dataset.homeWorldTheme = worldId;
 }
 
 function ensureExploreCard(actions) {
@@ -201,12 +234,13 @@ function centreCarouselItem(actions, button, behavior = "smooth") {
   actions.scrollTo({ left, behavior });
 }
 
-function focusWorld(worldId, root = document, { openPreview = false, scroll = true } = {}) {
+function focusWorld(worldId, root = document, { openPreview = false, scroll = true, haptic = false } = {}) {
   const world = findHomeWorld(worldId) || findHomeWorld(DEFAULT_WORLD_ID);
   const home = root.querySelector?.(HOME_SELECTOR);
   const actions = home?.querySelector?.(ACTIONS_SELECTOR);
   if (!world || !actions) return false;
 
+  const previousWorldId = focusedWorldId;
   focusedWorldId = world.id;
   expandedWorldId = openPreview ? (expandedWorldId === world.id ? null : world.id) : null;
 
@@ -216,8 +250,13 @@ function focusWorld(worldId, root = document, { openPreview = false, scroll = tr
   else removePreview(actions);
 
   home.dataset.focusedHomeWorld = focusedWorldId;
+  applyWorldTokens(home, focusedWorldId);
+  persistFocusedWorld(focusedWorldId);
   if (expandedWorldId) home.dataset.expandedHomeWorld = expandedWorldId;
   else delete home.dataset.expandedHomeWorld;
+
+  if (haptic && previousWorldId !== focusedWorldId) triggerHaptic(18);
+  if (openPreview && expandedWorldId) triggerHaptic(32);
 
   if (scroll) {
     const button = actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`);
@@ -236,7 +275,7 @@ function pulseArrow(arrow) {
 function stepWorld(direction, root = document) {
   const currentIndex = Math.max(0, HOME_WORLDS.findIndex(world => world.id === focusedWorldId));
   const nextIndex = (currentIndex + direction + HOME_WORLDS.length) % HOME_WORLDS.length;
-  focusWorld(HOME_WORLDS[nextIndex].id, root, { openPreview: false, scroll: true });
+  focusWorld(HOME_WORLDS[nextIndex].id, root, { openPreview: false, scroll: true, haptic: true });
 }
 
 function updateFocusFromScroll(actions) {
@@ -249,14 +288,7 @@ function updateFocusFromScroll(actions) {
     return !best || distance < best.distance ? { button, distance } : best;
   }, null);
   if (nearest?.button?.dataset.homeWorldSelect) {
-    focusedWorldId = nearest.button.dataset.homeWorldSelect;
-    const home = actions.closest(HOME_SELECTOR);
-    if (home) home.dataset.focusedHomeWorld = focusedWorldId;
-    expandedWorldId = null;
-    setFocusState(actions, focusedWorldId);
-    setExpandedState(actions, null);
-    removePreview(actions);
-    centreCarouselItem(actions, nearest.button);
+    focusWorld(nearest.button.dataset.homeWorldSelect, document, { openPreview: false, scroll: true, haptic: true });
   }
 }
 
@@ -275,7 +307,7 @@ export function applyHomeWorldStack(root = document) {
   const actions = home?.querySelector?.(ACTIONS_SELECTOR);
   if (!home || !actions) return false;
 
-  focusedWorldId = DEFAULT_WORLD_ID;
+  focusedWorldId = readStoredWorldId();
   expandedWorldId = null;
   actions.className = "home-actions-grid home-world-carousel";
   actions.setAttribute("aria-label", "PitchIQ Home destinations");
@@ -291,8 +323,9 @@ export function applyHomeWorldStack(root = document) {
     centreCarouselItem(actions, button, "auto");
   });
   home.dataset.focusedHomeWorld = focusedWorldId;
+  applyWorldTokens(home, focusedWorldId);
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h34-carousel-edge-safe-centering";
+  home.dataset.homeWorlds = "h19-home-intelligence-polish";
   return true;
 }
 
@@ -301,7 +334,7 @@ if (typeof document !== "undefined") {
     const selector = event.target.closest?.("[data-home-world-select]");
     if (selector) {
       event.preventDefault();
-      focusWorld(selector.dataset.homeWorldSelect, document, { openPreview: true, scroll: true });
+      focusWorld(selector.dataset.homeWorldSelect, document, { openPreview: true, scroll: true, haptic: true });
       return;
     }
 
@@ -316,6 +349,7 @@ if (typeof document !== "undefined") {
     const enter = event.target.closest?.("[data-home-world-enter]");
     if (enter) {
       event.preventDefault();
+      triggerHaptic(42);
       location.hash = enter.dataset.homeWorldEnter;
       return;
     }
