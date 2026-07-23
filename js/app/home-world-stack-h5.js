@@ -157,14 +157,23 @@ function circularDistance(index, focusIndex, length) {
   return Math.min(direct, length - direct);
 }
 
+function circularSide(index, focusIndex, length) {
+  if (index === focusIndex) return "center";
+  const forward = (index - focusIndex + length) % length;
+  const backward = (focusIndex - index + length) % length;
+  return forward <= backward ? "right" : "left";
+}
+
 function setFocusState(actions, worldId) {
   const focusIndex = Math.max(0, HOME_WORLDS.findIndex(world => world.id === worldId));
   actions.querySelectorAll("[data-home-world-select]").forEach((button, index) => {
     const distance = circularDistance(index, focusIndex, HOME_WORLDS.length);
+    const side = circularSide(index, focusIndex, HOME_WORLDS.length);
     button.classList.toggle("is-focused", distance === 0);
     button.classList.toggle("is-near", distance === 1);
     button.classList.toggle("is-far", distance > 1);
     button.dataset.focusDistance = String(distance);
+    button.dataset.focusSide = side;
   });
   const card = actions.closest(`.${EXPLORE_CARD_CLASS}`);
   card?.querySelectorAll("[data-home-world-dot]").forEach(dot => {
