@@ -1,0 +1,46 @@
+/* Sprint H31 — Hero right-side player card content layout
+   Content-position adjustment only. Card dimensions, silhouette, borders and radii remain unchanged. */
+
+.home-aaa .home-hero-card .home-profile-card-values{
+  height:100%;
+}
+
+.home-aaa .home-hero-card .home-profile-ovr-label{
+  transform:translateY(6px);
+}
+
+.home-aaa .home-hero-card .home-profile-ovr-value{
+  transform:translateY(8px);
+}
+
+.home-aaa .home-hero-card .home-profile-position-label{
+  margin-bottom:1px!important;
+}
+
+.home-aaa .home-hero-card .home-profile-position-value{
+  margin-bottom:5px!important;
+}
+
+.home-aaa .home-hero-card .home-profile-style-label{
+  margin-top:0!important;
+  margin-bottom:1px!important;
+}
+
+.home-aaa .home-hero-card .home-profile-style-value{
+  margin-top:0!important;
+  line-height:.95!important;
+}
+
+@media(max-width:380px){
+  .home-aaa .home-hero-card .home-profile-ovr-label{
+    transform:translateY(4px);
+  }
+
+  .home-aaa .home-hero-card .home-profile-ovr-value{
+    transform:translateY(6px);
+  }
+
+  .home-aaa .home-hero-card .home-profile-position-value{
+    margin-bottom:3px!important;
+  }
+}
