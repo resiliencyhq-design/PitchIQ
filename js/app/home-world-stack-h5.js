@@ -7,6 +7,7 @@ const HOME_SELECTOR = "#home";
 const ACTIONS_SELECTOR = ".home-actions-grid";
 const EXPLORE_CARD_CLASS = "home-explore-card";
 const WORLDS_HEADING_CLASS = "home-academy-worlds-heading";
+const PAGINATION_CLASS = "home-world-carousel-pagination";
 const WORLD_ROUTE_PREFIX = "world-";
 const DEFAULT_WORLD_ID = "academy";
 let focusedWorldId = DEFAULT_WORLD_ID;
@@ -39,10 +40,23 @@ function ensureWorldsHeading(actions) {
   if (!heading) {
     heading = document.createElement("header");
     heading.className = WORLDS_HEADING_CLASS;
-    card.prepend(heading);
   }
   heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
+  card.prepend(heading);
   return heading;
+}
+
+function ensurePagination(actions) {
+  const card = ensureExploreCard(actions);
+  let pagination = card.querySelector(`:scope > .${PAGINATION_CLASS}`);
+  if (!pagination) {
+    pagination = document.createElement("div");
+    pagination.className = PAGINATION_CLASS;
+    pagination.setAttribute("aria-label", "Explore destination position");
+  }
+  pagination.innerHTML = HOME_WORLDS.map(world => `<span class="home-world-carousel-dot" data-home-world-dot="${escapeHtml(world.id)}" aria-hidden="true"></span>`).join("");
+  card.append(pagination);
+  return pagination;
 }
 
 function worldSelectorMarkup(world, expandedId) {
@@ -149,6 +163,10 @@ function setFocusState(actions, worldId) {
     button.classList.toggle("is-far", distance > 1);
     button.dataset.focusDistance = String(distance);
   });
+  const card = actions.closest(`.${EXPLORE_CARD_CLASS}`);
+  card?.querySelectorAll("[data-home-world-dot]").forEach(dot => {
+    dot.classList.toggle("is-active", dot.dataset.homeWorldDot === worldId);
+  });
 }
 
 function setExpandedState(actions, worldId) {
@@ -242,12 +260,13 @@ export function applyHomeWorldStack(root = document) {
   actions.innerHTML = HOME_WORLDS.map(world => worldSelectorMarkup(world, null)).join("");
   ensureCarouselShell(actions);
   ensureWorldsHeading(actions);
+  ensurePagination(actions);
   setFocusState(actions, focusedWorldId);
   removePreview(actions);
   bindCarouselScroll(actions);
   home.dataset.focusedHomeWorld = focusedWorldId;
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h32-explore-container-option1";
+  home.dataset.homeWorlds = "h33-explore-heading-dots-layout";
   return true;
 }
 
