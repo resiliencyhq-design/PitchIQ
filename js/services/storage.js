@@ -1,7 +1,7 @@
 const KEY = "pitchiq_integrated_v1";
 
 const defaults = {
-  profile: { name: "", position: "Winger", goal: "React faster", createdAt: null },
+  profile: { name: "", number: "1", position: "Winger", style: "Creator", avatar: "default", goal: "React faster", createdAt: null },
   game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 0, trainingSeconds: 0, lastResult: null },
   analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [0, 0, 0, 0, 0, 0, 0] },
   settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" }
@@ -37,7 +37,10 @@ export function normalizeState(input) {
   const state = input && typeof input === "object" ? input : {};
   state.profile ||= {};
   state.profile.name ||= "";
+  state.profile.number ||= localStorage.getItem("pitchiqJerseyNumber") || "1";
   state.profile.position ||= "Winger";
+  state.profile.style ||= localStorage.getItem("pitchiqPlayerStyle") || "Creator";
+  state.profile.avatar ||= localStorage.getItem("pitchiqPlayerAvatar") || "default";
   state.profile.goal ||= "React faster";
   state.profile.createdAt ??= null;
 
