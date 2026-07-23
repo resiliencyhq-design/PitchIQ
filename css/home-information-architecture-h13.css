@@ -3,54 +3,54 @@
   flex-direction: column;
 }
 
-#home .home-training-snapshot {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-training-snapshot {
   order: 1;
   width: 100%;
   margin: 0;
 }
 
-#home .home-training-snapshot > span {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-training-snapshot > span {
   display: block;
   margin-bottom: 12px;
 }
 
-#home .home-mock-mission {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-mock-mission {
   order: 2;
 }
 
-#home .home-academy-worlds-heading {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-academy-worlds-heading {
   order: 3;
 }
 
-#home .home-world-quad-grid {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-world-quad-grid {
   order: 4;
 }
 
-#home .home-rewards-row {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-rewards-row {
   order: 5;
   display: block;
   width: 100%;
 }
 
-#home .home-rewards-card {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-rewards-card {
   width: 100%;
   min-height: 178px;
 }
 
-#home .home-rewards-card b {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-rewards-card b {
   max-width: 62%;
 }
 
-#home .home-rewards-card img {
+#home[data-home-composition="h13-status-action-worlds-rewards"] .home-rewards-card img {
   object-fit: contain;
 }
 
 @media (max-width: 430px) {
-  #home .home-training-snapshot .training-stats-grid {
+  #home[data-home-composition="h13-status-action-worlds-rewards"] .home-training-snapshot .training-stats-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  #home .home-rewards-card {
+  #home[data-home-composition="h13-status-action-worlds-rewards"] .home-rewards-card {
     min-height: 164px;
   }
 }
