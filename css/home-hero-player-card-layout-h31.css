@@ -1,4 +1,4 @@
-/* Sprint H31 — Hero right-side player card content layout
+/* Sprint H35 — Hero right-side player card content layout
    Content-position adjustment only. Card dimensions, silhouette, borders and radii remain unchanged. */
 
 .home-aaa .home-hero-card .home-profile-card-values{
@@ -14,21 +14,26 @@
 }
 
 .home-aaa .home-hero-card .home-profile-position-label{
-  margin-bottom:1px!important;
+  margin-bottom:0!important;
 }
 
 .home-aaa .home-hero-card .home-profile-position-value{
-  margin-bottom:5px!important;
-}
-
-.home-aaa .home-hero-card .home-profile-style-label{
-  margin-top:0!important;
   margin-bottom:1px!important;
 }
 
+.home-aaa .home-hero-card .home-profile-style-label{
+  margin-top:-1px!important;
+  margin-bottom:0!important;
+}
+
 .home-aaa .home-hero-card .home-profile-style-value{
+  max-width:100%;
   margin-top:0!important;
-  line-height:.95!important;
+  padding-bottom:6px;
+  font-size:clamp(12px,3.15vw,17px)!important;
+  letter-spacing:-.035em!important;
+  line-height:.88!important;
+  white-space:nowrap;
 }
 
 @media(max-width:380px){
@@ -41,6 +46,12 @@
   }
 
   .home-aaa .home-hero-card .home-profile-position-value{
-    margin-bottom:3px!important;
+    margin-bottom:0!important;
+  }
+
+  .home-aaa .home-hero-card .home-profile-style-value{
+    padding-bottom:7px;
+    font-size:clamp(11px,3vw,15px)!important;
+    letter-spacing:-.045em!important;
   }
 }
