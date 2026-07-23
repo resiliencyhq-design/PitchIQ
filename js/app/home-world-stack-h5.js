@@ -5,6 +5,7 @@ import { handleWorldRoute } from "./home-world-screen.js";
 
 const HOME_SELECTOR = "#home";
 const ACTIONS_SELECTOR = ".home-actions-grid";
+const EXPLORE_CARD_CLASS = "home-explore-card";
 const WORLDS_HEADING_CLASS = "home-academy-worlds-heading";
 const WORLD_ROUTE_PREFIX = "world-";
 const DEFAULT_WORLD_ID = "academy";
@@ -19,13 +20,26 @@ function escapeHtml(value) {
   })[character]);
 }
 
+function ensureExploreCard(actions) {
+  const shell = actions.closest(".home-world-carousel-shell") || actions;
+  let card = shell.closest(`.${EXPLORE_CARD_CLASS}`);
+  if (!card) {
+    card = document.createElement("section");
+    card.className = EXPLORE_CARD_CLASS;
+    card.setAttribute("aria-label", "Explore PitchIQ destinations");
+    shell.replaceWith(card);
+    card.appendChild(shell);
+  }
+  return card;
+}
+
 function ensureWorldsHeading(actions) {
-  const shell = actions.closest(".home-world-carousel-shell");
-  let heading = shell?.previousElementSibling || actions.previousElementSibling;
-  if (!heading?.classList?.contains(WORLDS_HEADING_CLASS)) {
+  const card = ensureExploreCard(actions);
+  let heading = card.querySelector(`:scope > .${WORLDS_HEADING_CLASS}`);
+  if (!heading) {
     heading = document.createElement("header");
     heading.className = WORLDS_HEADING_CLASS;
-    (shell || actions).insertAdjacentElement("beforebegin", heading);
+    card.prepend(heading);
   }
   heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
   return heading;
@@ -69,8 +83,8 @@ function worldPreviewMarkup(world) {
 }
 
 function previewElement(actions) {
-  const shell = actions.closest(".home-world-carousel-shell");
-  const candidate = shell?.nextElementSibling;
+  const card = actions.closest(`.${EXPLORE_CARD_CLASS}`);
+  const candidate = card?.nextElementSibling;
   return candidate?.classList?.contains("home-world-preview") ? candidate : null;
 }
 
@@ -82,11 +96,11 @@ function removePreview(actions) {
 }
 
 function ensurePreview(actions, world) {
-  const shell = actions.closest(".home-world-carousel-shell") || actions;
+  const card = actions.closest(`.${EXPLORE_CARD_CLASS}`) || actions.closest(".home-world-carousel-shell") || actions;
   const existing = previewElement(actions);
   const markup = worldPreviewMarkup(world);
   if (existing) existing.outerHTML = markup;
-  else shell.insertAdjacentHTML("afterend", markup);
+  else card.insertAdjacentHTML("afterend", markup);
 }
 
 function ensureCarouselShell(actions) {
@@ -117,6 +131,7 @@ function ensureCarouselShell(actions) {
     next.innerHTML = "›";
     shell.append(next);
   }
+  ensureExploreCard(actions);
   return shell;
 }
 
@@ -232,7 +247,7 @@ export function applyHomeWorldStack(root = document) {
   bindCarouselScroll(actions);
   home.dataset.focusedHomeWorld = focusedWorldId;
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h31-carousel-focus-polish";
+  home.dataset.homeWorlds = "h32-explore-container-option1";
   return true;
 }
 

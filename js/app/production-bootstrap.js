@@ -1,17 +1,17 @@
-import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h31-carousel-focus-polish-20260723";
+import { applyHomeContentComposition } from "./home-content-composition.js?v=sprint-h32-explore-container-option1-20260723";
 
 const APP_SELECTOR = "#app";
 const HOME_SELECTOR = "#home";
 const CANONICAL_HOME_CONTROL = '#nav [data-route="home"]';
 
 function markProductionBuild() {
-  document.documentElement.dataset.pitchiqProductionBuild = "h31-carousel-focus-polish";
+  document.documentElement.dataset.pitchiqProductionBuild = "h32-explore-container-option1";
 }
 
 function applyCurrentHome() {
   const applied = applyHomeContentComposition(document);
   if (applied) {
-    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h31-carousel");
+    document.querySelector(HOME_SELECTOR)?.setAttribute("data-production-owner", "canonical-home-plus-h32-explore");
   }
   return applied;
 }
