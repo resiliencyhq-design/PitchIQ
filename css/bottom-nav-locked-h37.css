@@ -7,7 +7,7 @@
   height: auto !important;
   max-height: none !important;
   padding: 1px 6px !important;
-  margin: 1px auto calc(env(safe-area-inset-bottom, 0px) + 1px) !important;
+  margin: 1px auto 0 !important;
   border-radius: 20px !important;
   gap: 1px !important;
   align-self: end !important;
