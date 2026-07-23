@@ -23,6 +23,7 @@ let expandedWorldId = null;
 let carouselScrollTimer = null;
 let arrowPulseTimer = null;
 let programmaticScrollUntil = 0;
+let carouselSnapLockedUntil = 0;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, character => ({
@@ -230,7 +231,9 @@ function centreCarouselItem(actions, button, behavior = "smooth") {
   const target = button.offsetLeft + button.offsetWidth / 2 - actions.clientWidth / 2;
   const maxScroll = Math.max(0, actions.scrollWidth - actions.clientWidth);
   const left = Math.min(maxScroll, Math.max(0, target));
-  programmaticScrollUntil = performance.now() + (behavior === "smooth" ? 420 : 80);
+  const smooth = behavior === "smooth";
+  programmaticScrollUntil = performance.now() + (smooth ? 320 : 60);
+  carouselSnapLockedUntil = performance.now() + (smooth ? 300 : 60);
   actions.scrollTo({ left, behavior });
 }
 
@@ -273,9 +276,11 @@ function pulseArrow(arrow) {
 }
 
 function stepWorld(direction, root = document) {
+  if (performance.now() < carouselSnapLockedUntil) return false;
   const currentIndex = Math.max(0, HOME_WORLDS.findIndex(world => world.id === focusedWorldId));
   const nextIndex = (currentIndex + direction + HOME_WORLDS.length) % HOME_WORLDS.length;
-  focusWorld(HOME_WORLDS[nextIndex].id, root, { openPreview: false, scroll: true, haptic: true });
+  carouselSnapLockedUntil = performance.now() + 300;
+  return focusWorld(HOME_WORLDS[nextIndex].id, root, { openPreview: false, scroll: true, haptic: true });
 }
 
 function updateFocusFromScroll(actions) {
@@ -288,8 +293,42 @@ function updateFocusFromScroll(actions) {
     return !best || distance < best.distance ? { button, distance } : best;
   }, null);
   if (nearest?.button?.dataset.homeWorldSelect) {
-    focusWorld(nearest.button.dataset.homeWorldSelect, document, { openPreview: false, scroll: true, haptic: true });
+    focusWorld(nearest.button.dataset.homeWorldSelect, document, { openPreview: false, scroll: false, haptic: true });
+    centreCarouselItem(actions, nearest.button);
   }
+}
+
+function bindCarouselSwipe(actions) {
+  if (actions.dataset.homeWorldSwipeBound === "true") return;
+  actions.dataset.homeWorldSwipeBound = "true";
+  let startX = 0;
+  let startY = 0;
+  let startTime = 0;
+  let tracking = false;
+
+  actions.addEventListener("pointerdown", event => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (performance.now() < carouselSnapLockedUntil) return;
+    startX = event.clientX;
+    startY = event.clientY;
+    startTime = performance.now();
+    tracking = true;
+  }, { passive: true });
+
+  actions.addEventListener("pointerup", event => {
+    if (!tracking) return;
+    tracking = false;
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    const elapsed = Math.max(1, performance.now() - startTime);
+    const velocity = Math.abs(deltaX) / elapsed;
+    const horizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+    const shouldStep = horizontal && (Math.abs(deltaX) >= 34 || velocity >= 0.35);
+    if (!shouldStep) return;
+    stepWorld(deltaX < 0 ? 1 : -1, document);
+  }, { passive: true });
+
+  actions.addEventListener("pointercancel", () => { tracking = false; }, { passive: true });
 }
 
 function bindCarouselScroll(actions) {
@@ -298,7 +337,7 @@ function bindCarouselScroll(actions) {
   actions.addEventListener("scroll", () => {
     window.clearTimeout(carouselScrollTimer);
     if (performance.now() < programmaticScrollUntil) return;
-    carouselScrollTimer = window.setTimeout(() => updateFocusFromScroll(actions), 140);
+    carouselScrollTimer = window.setTimeout(() => updateFocusFromScroll(actions), 110);
   }, { passive: true });
 }
 
@@ -317,6 +356,7 @@ export function applyHomeWorldStack(root = document) {
   ensurePagination(actions);
   setFocusState(actions, focusedWorldId);
   removePreview(actions);
+  bindCarouselSwipe(actions);
   bindCarouselScroll(actions);
   requestAnimationFrame(() => {
     const button = actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`);
