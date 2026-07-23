@@ -42,7 +42,7 @@ function ensureWorldsHeading(actions) {
     heading = document.createElement("header");
     heading.className = WORLDS_HEADING_CLASS;
   }
-  heading.innerHTML = "<span>Explore</span><small>Tap to preview • swipe or use arrows to browse</small>";
+  heading.innerHTML = "<span>Explore</span><small>Tap to preview • Swipe to browse</small>";
   const shell = card.querySelector(":scope > .home-world-carousel-shell");
   if (shell) card.insertBefore(heading, shell);
   else card.prepend(heading);
@@ -323,12 +323,8 @@ if (typeof document !== "undefined") {
       event.preventDefault();
       location.hash = module.dataset.worldModuleRoute;
     }
-  }, true);
+  });
 
-  window.addEventListener("hashchange", () => handleWorldRoute());
-  window.addEventListener("pageshow", () => handleWorldRoute());
-  handleWorldRoute();
+  window.addEventListener("hashchange", () => handleWorldRoute(document));
+  handleWorldRoute(document);
 }
-
-export { HOME_WORLDS } from "./home-worlds-data.js";
-export { renderDevelopmentWorld } from "./home-world-screen.js";
