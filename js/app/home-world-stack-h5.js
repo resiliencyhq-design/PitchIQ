@@ -14,6 +14,7 @@ let focusedWorldId = DEFAULT_WORLD_ID;
 let expandedWorldId = null;
 let carouselScrollTimer = null;
 let arrowPulseTimer = null;
+let programmaticScrollUntil = 0;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, character => ({
@@ -182,6 +183,15 @@ function setExpandedState(actions, worldId) {
   });
 }
 
+function centreCarouselItem(actions, button, behavior = "smooth") {
+  if (!button) return;
+  const target = button.offsetLeft + button.offsetWidth / 2 - actions.clientWidth / 2;
+  const maxScroll = Math.max(0, actions.scrollWidth - actions.clientWidth);
+  const left = Math.min(maxScroll, Math.max(0, target));
+  programmaticScrollUntil = performance.now() + (behavior === "smooth" ? 420 : 80);
+  actions.scrollTo({ left, behavior });
+}
+
 function focusWorld(worldId, root = document, { openPreview = false, scroll = true } = {}) {
   const world = findHomeWorld(worldId) || findHomeWorld(DEFAULT_WORLD_ID);
   const home = root.querySelector?.(HOME_SELECTOR);
@@ -201,7 +211,8 @@ function focusWorld(worldId, root = document, { openPreview = false, scroll = tr
   else delete home.dataset.expandedHomeWorld;
 
   if (scroll) {
-    actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`)?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const button = actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`);
+    centreCarouselItem(actions, button);
   }
   return true;
 }
@@ -220,8 +231,7 @@ function stepWorld(direction, root = document) {
 }
 
 function updateFocusFromScroll(actions) {
-  const shellRect = actions.getBoundingClientRect();
-  const centre = shellRect.left + shellRect.width / 2;
+  const centre = actions.getBoundingClientRect().left + actions.clientWidth / 2;
   const buttons = [...actions.querySelectorAll("[data-home-world-select]")];
   if (!buttons.length) return;
   const nearest = buttons.reduce((best, button) => {
@@ -237,7 +247,7 @@ function updateFocusFromScroll(actions) {
     setFocusState(actions, focusedWorldId);
     setExpandedState(actions, null);
     removePreview(actions);
-    nearest.button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    centreCarouselItem(actions, nearest.button);
   }
 }
 
@@ -246,7 +256,8 @@ function bindCarouselScroll(actions) {
   actions.dataset.homeWorldScrollBound = "true";
   actions.addEventListener("scroll", () => {
     window.clearTimeout(carouselScrollTimer);
-    carouselScrollTimer = window.setTimeout(() => updateFocusFromScroll(actions), 120);
+    if (performance.now() < programmaticScrollUntil) return;
+    carouselScrollTimer = window.setTimeout(() => updateFocusFromScroll(actions), 140);
   }, { passive: true });
 }
 
@@ -266,9 +277,13 @@ export function applyHomeWorldStack(root = document) {
   setFocusState(actions, focusedWorldId);
   removePreview(actions);
   bindCarouselScroll(actions);
+  requestAnimationFrame(() => {
+    const button = actions.querySelector(`[data-home-world-select="${CSS.escape(focusedWorldId)}"]`);
+    centreCarouselItem(actions, button, "auto");
+  });
   home.dataset.focusedHomeWorld = focusedWorldId;
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h33-explore-heading-above-carousel";
+  home.dataset.homeWorlds = "h34-carousel-edge-safe-centering";
   return true;
 }
 
