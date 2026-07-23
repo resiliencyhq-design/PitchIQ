@@ -105,7 +105,9 @@ function worldSelectorMarkup(world, expandedId) {
 }
 
 function previewModuleMarkup(module) {
-  return `<span class="home-world-preview-module"><b aria-hidden="true">${escapeHtml(module.icon)}</b><span>${escapeHtml(module.title)}</span></span>`;
+  const label = `<b aria-hidden="true">${escapeHtml(module.icon)}</b><span>${escapeHtml(module.title)}</span>`;
+  if (!module.route) return `<span class="home-world-preview-module is-static">${label}</span>`;
+  return `<button type="button" class="home-world-preview-module is-actionable" data-home-world-preview-route="${escapeHtml(module.route)}" aria-label="Open ${escapeHtml(module.title)}">${label}</button>`;
 }
 
 function destinationRoute(item) {
@@ -365,7 +367,7 @@ export function applyHomeWorldStack(root = document) {
   home.dataset.focusedHomeWorld = focusedWorldId;
   applyWorldTokens(home, focusedWorldId);
   delete home.dataset.expandedHomeWorld;
-  home.dataset.homeWorlds = "h19-home-intelligence-polish";
+  home.dataset.homeWorlds = "h43-direct-preview-module-routing";
   return true;
 }
 
@@ -383,6 +385,14 @@ if (typeof document !== "undefined") {
       event.preventDefault();
       pulseArrow(arrow);
       stepWorld(arrow.dataset.homeWorldArrow === "previous" ? -1 : 1, document);
+      return;
+    }
+
+    const previewRoute = event.target.closest?.("[data-home-world-preview-route]");
+    if (previewRoute) {
+      event.preventDefault();
+      triggerHaptic(32);
+      location.hash = previewRoute.dataset.homeWorldPreviewRoute;
       return;
     }
 
