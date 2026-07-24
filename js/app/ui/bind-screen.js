@@ -13,25 +13,21 @@ function bindOnboarding(root, app) {
   const nameNext = root.querySelector('[data-action="onboard-next-name"]');
   if (input) {
     const update = () => {
-      const preview = root.querySelector("#jerseyNamePreview");
-      if (preview) preview.textContent = (input.value.trim() || "NAME").toUpperCase();
       if (nameNext) nameNext.disabled = !input.value.trim();
     };
     input.addEventListener("input", update);
     update();
   }
 
-  const numberInput = root.querySelector("#numberInput");
+  const numberPanel = root.querySelector(".onboard-number-step");
   const numberNext = root.querySelector('[data-action="onboard-next-number"]');
-  if (numberInput) {
-    const update = () => {
-      numberInput.value = numberInput.value.replace(/\D/g, "").slice(0, 2);
-      const preview = root.querySelector("#jerseyNumberPreview");
-      if (preview) preview.textContent = numberInput.value || "10";
-      if (numberNext) numberNext.disabled = !numberInput.value;
+  if (numberPanel && numberNext) {
+    const getNumber = () => {
+      const selected = numberPanel.dataset.selectedNumber || localStorage.getItem("pitchiqJerseyNumber") || "1";
+      const parsed = Number.parseInt(selected, 10);
+      return parsed >= 1 && parsed <= 99 ? String(parsed) : "";
     };
-    numberInput.addEventListener("input", update);
-    update();
+    numberNext.addEventListener("click", () => app.saveIdentityStep("number", getNumber()));
   }
 
   root.querySelectorAll("[data-pos]").forEach((button) =>
@@ -46,7 +42,6 @@ function bindOnboarding(root, app) {
   );
 
   nameNext?.addEventListener("click", () => app.saveIdentityStep("name", input.value.trim()));
-  numberNext?.addEventListener("click", () => app.saveIdentityStep("number", numberInput.value));
   root.querySelector('[data-action="onboard-next-position"]')?.addEventListener("click", () => {
     const existing = app.state.profile?.position || localStorage.getItem("pitchiqSelectedPosition") || "";
     app.saveIdentityStep("position", app.selectedPosition || existing);
