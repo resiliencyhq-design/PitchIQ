@@ -2,12 +2,28 @@ import { StateStore } from "./state-store.js";
 
 const KEY = "pitchiq_integrated_v1";
 
+const DEFAULT_NOTIFICATION_PREFERENCES = {
+  trainingEnabled: false,
+  trainingTime: "18:00",
+  trainingDays: [1, 2, 3, 4, 5],
+  rewardAlerts: true,
+  levelUpAlerts: true,
+  streakAlerts: true,
+  permissionStatus: "default",
+};
+
 const defaults = {
   profile: { name: "", number: "1", position: "Winger", style: "Creator", avatar: "default", goal: "React faster", createdAt: null },
   firstRun: { version: 1, status: "not_started", currentStep: "landing", completedSteps: [], completedAt: null },
   game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 0, trainingSeconds: 0, lastResult: null },
   analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [0, 0, 0, 0, 0, 0, 0] },
-  settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" }
+  settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" },
+  notifications: {
+    preferences: DEFAULT_NOTIFICATION_PREFERENCES,
+    items: [],
+    rewardSnapshot: { level: 1, unlocked: [] },
+    trainingSnapshot: { sessionIds: [], bestAccuracy: 0, bestCombo: 0, bestScore: 0, weeklyXpMilestones: [] },
+  },
 };
 
 const LEGACY_SEEDED_WEEKLY_XP = [80, 140, 220, 180, 310, 120, 0];
@@ -60,6 +76,31 @@ export function normalizeState(input) {
   state.settings.reduceMotion ??= false;
   state.settings.highContrast ??= false;
   state.settings.cameraPreference ||= "environment";
+
+  state.notifications ||= {};
+  state.notifications.preferences = {
+    ...DEFAULT_NOTIFICATION_PREFERENCES,
+    ...(state.notifications.preferences && typeof state.notifications.preferences === "object" ? state.notifications.preferences : {}),
+  };
+  state.notifications.preferences.trainingDays = Array.isArray(state.notifications.preferences.trainingDays)
+    ? state.notifications.preferences.trainingDays
+    : [...DEFAULT_NOTIFICATION_PREFERENCES.trainingDays];
+  state.notifications.items = Array.isArray(state.notifications.items) ? state.notifications.items : [];
+  state.notifications.rewardSnapshot = state.notifications.rewardSnapshot && typeof state.notifications.rewardSnapshot === "object"
+    ? state.notifications.rewardSnapshot
+    : { level: 1, unlocked: [] };
+  state.notifications.rewardSnapshot.unlocked = Array.isArray(state.notifications.rewardSnapshot.unlocked)
+    ? state.notifications.rewardSnapshot.unlocked
+    : [];
+  state.notifications.trainingSnapshot = state.notifications.trainingSnapshot && typeof state.notifications.trainingSnapshot === "object"
+    ? state.notifications.trainingSnapshot
+    : { sessionIds: [], bestAccuracy: 0, bestCombo: 0, bestScore: 0, weeklyXpMilestones: [] };
+  state.notifications.trainingSnapshot.sessionIds = Array.isArray(state.notifications.trainingSnapshot.sessionIds)
+    ? state.notifications.trainingSnapshot.sessionIds
+    : [];
+  state.notifications.trainingSnapshot.weeklyXpMilestones = Array.isArray(state.notifications.trainingSnapshot.weeklyXpMilestones)
+    ? state.notifications.trainingSnapshot.weeklyXpMilestones
+    : [];
 
   return state;
 }
