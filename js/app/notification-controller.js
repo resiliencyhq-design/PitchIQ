@@ -75,6 +75,7 @@ export class NotificationController {
     this.preferences = readPreferences();
     this.notifications = readNotifications();
     this.open = false;
+    this.dirty = false;
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.handleDocumentChange = this.handleDocumentChange.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -175,18 +176,29 @@ export class NotificationController {
     });
   }
 
+  markDirty() {
+    if (this.dirty) return;
+    this.dirty = true;
+    const save = document.querySelector("[data-action='save-notifications']");
+    if (save) save.disabled = false;
+  }
+
   openCentre() {
     this.open = true;
+    this.dirty = false;
     this.renderSheet();
     document.body.classList.add("notification-centre-open");
   }
 
-  closeCentre() {
+  closeCentre({ force = false } = {}) {
+    if (this.dirty && !force && !window.confirm("Discard notification changes?")) return false;
     const wasOpen = this.open || Boolean(document.getElementById("notificationCentre"));
     this.open = false;
+    this.dirty = false;
     document.getElementById("notificationCentre")?.remove();
     document.body.classList.remove("notification-centre-open");
     if (wasOpen) this.onChange();
+    return true;
   }
 
   markRead(id) {
@@ -218,7 +230,8 @@ export class NotificationController {
       ? `Training reminder set for ${formatTime(this.preferences.trainingTime)}`
       : "Notification preferences saved";
     window.dispatchEvent(new CustomEvent("pitchiq:toast", { detail: { message } }));
-    this.closeCentre();
+    this.dirty = false;
+    this.closeCentre({ force: true });
   }
 
   async requestPermission() {
@@ -236,13 +249,19 @@ export class NotificationController {
     if (event.target.closest?.("[data-action='save-notifications']")) { event.preventDefault(); this.savePreferencesFromSheet(); return; }
     if (event.target.closest?.("[data-action='request-notification-permission']")) { event.preventDefault(); this.requestPermission(); return; }
     const day = event.target.closest?.("[data-notification-day]");
-    if (day) { event.preventDefault(); day.classList.toggle("is-selected"); day.setAttribute("aria-pressed", String(day.classList.contains("is-selected"))); return; }
+    if (day) {
+      event.preventDefault();
+      day.classList.toggle("is-selected");
+      day.setAttribute("aria-pressed", String(day.classList.contains("is-selected")));
+      this.markDirty();
+      return;
+    }
     const item = event.target.closest?.("[data-notification-id]");
     if (item) {
       event.preventDefault();
       this.markRead(item.dataset.notificationId);
       const action = item.dataset.notificationAction;
-      this.closeCentre();
+      this.closeCentre({ force: true });
       if (action === "open-player") this.goto("player");
       if (action === "open-rewards" || action === "open-results") this.goto("results");
       if (action === "open-training") this.goto("training");
@@ -250,9 +269,11 @@ export class NotificationController {
   }
 
   handleDocumentChange(event) {
+    if (!event.target.closest?.("#notificationCentre")) return;
     if (event.target.matches?.("[name='trainingEnabled']")) {
       document.getElementById("notificationTrainingControls")?.toggleAttribute("data-disabled", !event.target.checked);
     }
+    this.markDirty();
   }
 
   handleKeydown(event) {
@@ -267,7 +288,7 @@ export class NotificationController {
     const sheet = document.createElement("div");
     sheet.id = "notificationCentre";
     sheet.className = "notification-centre";
-    sheet.innerHTML = `<button class="notification-backdrop" data-action="close-notifications" aria-label="Close notifications"></button><section class="notification-sheet" role="dialog" aria-modal="true" aria-labelledby="notificationCentreTitle"><div class="notification-handle" aria-hidden="true"></div><header><div><span>PitchIQ</span><h2 id="notificationCentreTitle">Notifications</h2></div><button type="button" data-action="close-notifications" aria-label="Close">×</button></header><div class="notification-section"><div class="notification-setting-row"><span><b>⚽ Training reminder</b><small>Choose when PitchIQ reminds you to train.</small></span><label class="notification-switch"><input type="checkbox" name="trainingEnabled" ${this.preferences.trainingEnabled ? "checked" : ""}><i></i></label></div><div id="notificationTrainingControls" class="notification-training-controls" ${this.preferences.trainingEnabled ? "" : "data-disabled"}><label>Training time<input type="time" name="trainingTime" value="${escapeHtml(this.preferences.trainingTime)}"></label><div class="notification-days" aria-label="Reminder days">${dayButton(1, "M", this.preferences.trainingDays)}${dayButton(2, "T", this.preferences.trainingDays)}${dayButton(3, "W", this.preferences.trainingDays)}${dayButton(4, "T", this.preferences.trainingDays)}${dayButton(5, "F", this.preferences.trainingDays)}${dayButton(6, "S", this.preferences.trainingDays)}${dayButton(0, "S", this.preferences.trainingDays)}</div></div></div><div class="notification-section notification-toggles"><label><span><b>🎁 Reward unlocks</b><small>Highlight the bell when a reward is ready.</small></span><input type="checkbox" name="rewardAlerts" ${this.preferences.rewardAlerts ? "checked" : ""}></label><label><span><b>🏆 Level ups</b><small>Show XP level milestones.</small></span><input type="checkbox" name="levelUpAlerts" ${this.preferences.levelUpAlerts ? "checked" : ""}></label><label><span><b>🔥 Streak reminder</b><small>Remind me before my streak expires.</small></span><input type="checkbox" name="streakAlerts" ${this.preferences.streakAlerts ? "checked" : ""}></label></div><div class="notification-section"><div class="notification-permission"><span><b>iPhone notifications</b><small>${permissionStatus === "granted" ? "Enabled on this device." : permissionStatus === "denied" ? "Blocked in device settings." : permissionStatus === "unsupported" ? "Not supported in this browser." : "Enable device alerts after installing PitchIQ to the Home Screen."}</small></span>${permissionAvailable && permissionStatus === "default" ? '<button type="button" data-action="request-notification-permission">Enable</button>' : ""}</div></div><div class="notification-section notification-inbox"><h3>Recent activity</h3>${recent.length ? recent.map(notificationItem).join("") : '<div class="notification-empty">No notifications yet.</div>'}</div><button type="button" class="notification-save" data-action="save-notifications">Save</button></section>`;
+    sheet.innerHTML = `<button class="notification-backdrop" data-action="close-notifications" aria-label="Close notifications"></button><section class="notification-sheet" role="dialog" aria-modal="true" aria-labelledby="notificationCentreTitle" tabindex="-1"><div class="notification-handle" aria-hidden="true"></div><header><div><span>PitchIQ</span><h2 id="notificationCentreTitle">Notifications</h2></div><button type="button" data-action="close-notifications" aria-label="Close">×</button></header><div class="notification-section"><div class="notification-setting-row"><span><b>⚽ Training reminder</b><small>Choose when PitchIQ reminds you to train.</small></span><label class="notification-switch"><input type="checkbox" name="trainingEnabled" ${this.preferences.trainingEnabled ? "checked" : ""}><i></i></label></div><div id="notificationTrainingControls" class="notification-training-controls" ${this.preferences.trainingEnabled ? "" : "data-disabled"}><label>Training time<input type="time" name="trainingTime" value="${escapeHtml(this.preferences.trainingTime)}"></label><div class="notification-days" aria-label="Reminder days">${dayButton(1, "M", this.preferences.trainingDays)}${dayButton(2, "T", this.preferences.trainingDays)}${dayButton(3, "W", this.preferences.trainingDays)}${dayButton(4, "T", this.preferences.trainingDays)}${dayButton(5, "F", this.preferences.trainingDays)}${dayButton(6, "S", this.preferences.trainingDays)}${dayButton(0, "S", this.preferences.trainingDays)}</div></div></div><div class="notification-section notification-toggles"><label><span><b>🎁 Reward unlocks</b><small>Highlight the bell when a reward is ready.</small></span><input type="checkbox" name="rewardAlerts" ${this.preferences.rewardAlerts ? "checked" : ""}></label><label><span><b>🏆 Level ups</b><small>Show XP level milestones.</small></span><input type="checkbox" name="levelUpAlerts" ${this.preferences.levelUpAlerts ? "checked" : ""}></label><label><span><b>🔥 Streak reminder</b><small>Remind me before my streak expires.</small></span><input type="checkbox" name="streakAlerts" ${this.preferences.streakAlerts ? "checked" : ""}></label></div><div class="notification-section"><div class="notification-permission"><span><b>iPhone notifications</b><small>${permissionStatus === "granted" ? "Enabled on this device." : permissionStatus === "denied" ? "Blocked in device settings." : permissionStatus === "unsupported" ? "Not supported in this browser." : "Enable device alerts after installing PitchIQ to the Home Screen."}</small></span>${permissionAvailable && permissionStatus === "default" ? '<button type="button" data-action="request-notification-permission">Enable</button>' : ""}</div></div><div class="notification-section notification-inbox"><h3>Recent activity</h3>${recent.length ? recent.map(notificationItem).join("") : '<div class="notification-empty">No notifications yet.</div>'}</div><div class="notification-save-wrap"><button type="button" class="notification-save" data-action="save-notifications" disabled>Save changes</button></div></section>`;
     document.body.appendChild(sheet);
     sheet.querySelector(".notification-sheet")?.focus?.();
   }
@@ -279,6 +300,6 @@ export class NotificationController {
     localStorage.removeItem(TRAINING_SNAPSHOT_KEY);
     this.preferences = readPreferences();
     this.notifications = [];
-    this.closeCentre();
+    this.closeCentre({ force: true });
   }
 }
