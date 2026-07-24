@@ -46,8 +46,38 @@ function dayButton(day, label, selectedDays) {
   return `<button type="button" class="notification-day${selected ? " is-selected" : ""}" data-notification-day="${day}" aria-pressed="${selected}">${label}</button>`;
 }
 
+function relativeTime(createdAt) {
+  const timestamp = Number(createdAt);
+  if (!Number.isFinite(timestamp)) return "";
+  const delta = Math.max(0, Date.now() - timestamp);
+  const minutes = Math.floor(delta / 60000);
+  if (minutes < 1) return "Now";
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days}d ago`;
+  return new Date(timestamp).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
+function notificationIcon(type) {
+  if (type === "reward") return "🎁";
+  if (type === "level") return "🏆";
+  if (type === "streak") return "🔥";
+  if (type === "training") return "⚽";
+  if (type === "personal-best") return "🎯";
+  if (type === "weekly") return "📈";
+  if (type === "mindiq") return "🧠";
+  if (type === "coach") return "👤";
+  if (type === "mission") return "📋";
+  if (type === "achievement") return "🏅";
+  return "📣";
+}
+
 function notificationItem(item) {
-  return `<button type="button" class="notification-item${item.read ? "" : " is-unread"}" data-notification-id="${escapeHtml(item.id)}" data-notification-action="${escapeHtml(item.action || "")}"><span>${item.type === "reward" ? "🎁" : item.type === "level" ? "🏆" : item.type === "streak" ? "🔥" : item.type === "training" ? "⚽" : "📣"}</span><span><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.body || "")}</small></span></button>`;
+  const time = relativeTime(item.createdAt);
+  return `<button type="button" class="notification-item${item.read ? "" : " is-unread"}" data-notification-id="${escapeHtml(item.id)}" data-notification-action="${escapeHtml(item.action || "")}"><span>${notificationIcon(item.type)}</span><span><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.body || "")}</small>${time ? `<em>${escapeHtml(time)}</em>` : ""}</span></button>`;
 }
 
 function formatTime(value = "18:00") {
@@ -104,7 +134,7 @@ export class NotificationController {
   createNotification({ id, type = "system", title, body = "", action = "", createdAt = Date.now() }) {
     if (!id || this.notifications.some((item) => item.id === id)) return false;
     this.notifications.unshift({ id, type, title, body, action, createdAt, read: false });
-    this.notifications = this.notifications.slice(0, 30);
+    this.notifications = this.notifications.slice(0, 40);
     writeNotifications(this.notifications);
     this.onChange();
     return true;
@@ -133,7 +163,7 @@ export class NotificationController {
     const sessionId = String(session.id || summary.endedAt || "");
     if (!sessionId) return;
 
-    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [] });
+    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [], bestAccuracy: 0, bestCombo: 0, bestScore: 0, weeklyXpMilestones: [] });
     const sessionIds = Array.isArray(snapshot.sessionIds) ? snapshot.sessionIds.map(String) : [];
     if (sessionIds.includes(sessionId) || this.notifications.some((item) => item.id === `training-${sessionId}`)) return;
 
@@ -160,20 +190,60 @@ export class NotificationController {
       action: "open-results",
       createdAt: summary.endedAt || session.endedAt || Date.now(),
     });
-
     if (!created) return;
-    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({ sessionIds: [sessionId, ...sessionIds].slice(0, 30) }));
+
+    const bestAccuracy = finiteNumber(snapshot.bestAccuracy);
+    const bestCombo = finiteNumber(snapshot.bestCombo);
+    const bestScore = finiteNumber(snapshot.bestScore);
+    if ((accuracy > bestAccuracy && accuracy >= 70) || (combo > bestCombo && combo >= 4) || (score > bestScore && score > 0)) {
+      const metric = accuracy > bestAccuracy && accuracy >= 70 ? `${accuracy}% accuracy` : combo > bestCombo && combo >= 4 ? `combo x${combo}` : `${score} points`;
+      this.createNotification({ id: `personal-best-${sessionId}`, type: "personal-best", title: "New personal best", body: `${metric} is your new benchmark.`, action: "open-results", createdAt: summary.endedAt || Date.now() });
+    }
+
+    const state = this.getState() || {};
+    const weeklyXp = Array.isArray(state.analytics?.weeklyXp) ? state.analytics.weeklyXp.reduce((total, value) => total + finiteNumber(value), 0) : 0;
+    const milestone = [100, 250, 500, 1000].filter((value) => weeklyXp >= value).at(-1) || 0;
+    const milestones = Array.isArray(snapshot.weeklyXpMilestones) ? snapshot.weeklyXpMilestones : [];
+    if (milestone && !milestones.includes(milestone)) {
+      this.createNotification({ id: `weekly-xp-${milestone}`, type: "weekly", title: `${milestone} weekly XP`, body: "Your training consistency is building momentum.", action: "open-player" });
+      milestones.push(milestone);
+    }
+
+    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({
+      sessionIds: [sessionId, ...sessionIds].slice(0, 40),
+      bestAccuracy: Math.max(bestAccuracy, accuracy),
+      bestCombo: Math.max(bestCombo, combo),
+      bestScore: Math.max(bestScore, score),
+      weeklyXpMilestones: milestones.slice(-8),
+    }));
   }
 
   createStreakReminder({ streak = 0, id = "streak-expiry" } = {}) {
     if (!this.preferences.streakAlerts || streak <= 0) return false;
-    return this.createNotification({
-      id,
-      type: "streak",
-      title: `${streak}-day streak at risk`,
-      body: "Complete a short training rep today to keep it alive.",
-      action: "open-training",
-    });
+    return this.createNotification({ id, type: "streak", title: `${streak}-day streak at risk`, body: "Complete a short training rep today to keep it alive.", action: "open-training" });
+  }
+
+  createActivityEvent({ id, type = "system", title, body = "", action = "" } = {}) {
+    return this.createNotification({ id, type, title, body, action });
+  }
+
+  markAllRead() {
+    if (!this.notifications.some((item) => !item.read)) return false;
+    this.notifications = this.notifications.map((item) => ({ ...item, read: true }));
+    writeNotifications(this.notifications);
+    this.renderSheet();
+    this.onChange();
+    return true;
+  }
+
+  dismissNotification(id) {
+    const next = this.notifications.filter((item) => item.id !== id);
+    if (next.length === this.notifications.length) return false;
+    this.notifications = next;
+    writeNotifications(this.notifications);
+    this.renderSheet();
+    this.onChange();
+    return true;
   }
 
   markDirty() {
@@ -226,9 +296,7 @@ export class NotificationController {
       streakAlerts: Boolean(root.querySelector("[name='streakAlerts']")?.checked),
     };
     writePreferences(this.preferences);
-    const message = this.preferences.trainingEnabled
-      ? `Training reminder set for ${formatTime(this.preferences.trainingTime)}`
-      : "Notification preferences saved";
+    const message = this.preferences.trainingEnabled ? `Training reminder set for ${formatTime(this.preferences.trainingTime)}` : "Notification preferences saved";
     window.dispatchEvent(new CustomEvent("pitchiq:toast", { detail: { message } }));
     this.dirty = false;
     this.closeCentre({ force: true });
@@ -248,6 +316,9 @@ export class NotificationController {
     if (event.target.closest?.("[data-action='close-notifications']")) { event.preventDefault(); this.closeCentre(); return; }
     if (event.target.closest?.("[data-action='save-notifications']")) { event.preventDefault(); this.savePreferencesFromSheet(); return; }
     if (event.target.closest?.("[data-action='request-notification-permission']")) { event.preventDefault(); this.requestPermission(); return; }
+    if (event.target.closest?.("[data-action='mark-all-notifications-read']")) { event.preventDefault(); this.markAllRead(); return; }
+    const dismiss = event.target.closest?.("[data-action='dismiss-notification']");
+    if (dismiss) { event.preventDefault(); event.stopPropagation(); this.dismissNotification(dismiss.dataset.notificationId); return; }
     const day = event.target.closest?.("[data-notification-day]");
     if (day) {
       event.preventDefault();
@@ -284,11 +355,12 @@ export class NotificationController {
     document.getElementById("notificationCentre")?.remove();
     const permissionAvailable = "Notification" in window;
     const permissionStatus = permissionAvailable ? Notification.permission : "unsupported";
-    const recent = this.notifications.slice(0, 5);
+    const recent = this.notifications.slice(0, 10);
+    const unreadCount = this.getUnreadCount();
     const sheet = document.createElement("div");
     sheet.id = "notificationCentre";
     sheet.className = "notification-centre";
-    sheet.innerHTML = `<button class="notification-backdrop" data-action="close-notifications" aria-label="Close notifications"></button><section class="notification-sheet" role="dialog" aria-modal="true" aria-labelledby="notificationCentreTitle" tabindex="-1"><div class="notification-handle" aria-hidden="true"></div><header><div><span>PitchIQ</span><h2 id="notificationCentreTitle">Notifications</h2></div><button type="button" data-action="close-notifications" aria-label="Close">×</button></header><div class="notification-section"><div class="notification-setting-row"><span><b>⚽ Training reminder</b><small>Choose when PitchIQ reminds you to train.</small></span><label class="notification-switch"><input type="checkbox" name="trainingEnabled" ${this.preferences.trainingEnabled ? "checked" : ""}><i></i></label></div><div id="notificationTrainingControls" class="notification-training-controls" ${this.preferences.trainingEnabled ? "" : "data-disabled"}><label>Training time<input type="time" name="trainingTime" value="${escapeHtml(this.preferences.trainingTime)}"></label><div class="notification-days" aria-label="Reminder days">${dayButton(1, "M", this.preferences.trainingDays)}${dayButton(2, "T", this.preferences.trainingDays)}${dayButton(3, "W", this.preferences.trainingDays)}${dayButton(4, "T", this.preferences.trainingDays)}${dayButton(5, "F", this.preferences.trainingDays)}${dayButton(6, "S", this.preferences.trainingDays)}${dayButton(0, "S", this.preferences.trainingDays)}</div></div></div><div class="notification-section notification-toggles"><label><span><b>🎁 Reward unlocks</b><small>Highlight the bell when a reward is ready.</small></span><input type="checkbox" name="rewardAlerts" ${this.preferences.rewardAlerts ? "checked" : ""}></label><label><span><b>🏆 Level ups</b><small>Show XP level milestones.</small></span><input type="checkbox" name="levelUpAlerts" ${this.preferences.levelUpAlerts ? "checked" : ""}></label><label><span><b>🔥 Streak reminder</b><small>Remind me before my streak expires.</small></span><input type="checkbox" name="streakAlerts" ${this.preferences.streakAlerts ? "checked" : ""}></label></div><div class="notification-section"><div class="notification-permission"><span><b>iPhone notifications</b><small>${permissionStatus === "granted" ? "Enabled on this device." : permissionStatus === "denied" ? "Blocked in device settings." : permissionStatus === "unsupported" ? "Not supported in this browser." : "Enable device alerts after installing PitchIQ to the Home Screen."}</small></span>${permissionAvailable && permissionStatus === "default" ? '<button type="button" data-action="request-notification-permission">Enable</button>' : ""}</div></div><div class="notification-section notification-inbox"><h3>Recent activity</h3>${recent.length ? recent.map(notificationItem).join("") : '<div class="notification-empty">No notifications yet.</div>'}</div><div class="notification-save-wrap"><button type="button" class="notification-save" data-action="save-notifications" disabled>Save changes</button></div></section>`;
+    sheet.innerHTML = `<button class="notification-backdrop" data-action="close-notifications" aria-label="Close notifications"></button><section class="notification-sheet" role="dialog" aria-modal="true" aria-labelledby="notificationCentreTitle" tabindex="-1"><div class="notification-handle" aria-hidden="true"></div><header><div><span>PitchIQ</span><h2 id="notificationCentreTitle">Notifications</h2></div><button type="button" data-action="close-notifications" aria-label="Close">×</button></header><div class="notification-section"><div class="notification-setting-row"><span><b>⚽ Training reminder</b><small>Choose when PitchIQ reminds you to train.</small></span><label class="notification-switch"><input type="checkbox" name="trainingEnabled" ${this.preferences.trainingEnabled ? "checked" : ""}><i></i></label></div><div id="notificationTrainingControls" class="notification-training-controls" ${this.preferences.trainingEnabled ? "" : "data-disabled"}><label>Training time<input type="time" name="trainingTime" value="${escapeHtml(this.preferences.trainingTime)}"></label><div class="notification-days" aria-label="Reminder days">${dayButton(1, "M", this.preferences.trainingDays)}${dayButton(2, "T", this.preferences.trainingDays)}${dayButton(3, "W", this.preferences.trainingDays)}${dayButton(4, "T", this.preferences.trainingDays)}${dayButton(5, "F", this.preferences.trainingDays)}${dayButton(6, "S", this.preferences.trainingDays)}${dayButton(0, "S", this.preferences.trainingDays)}</div></div></div><div class="notification-section notification-toggles"><label><span><b>🎁 Reward unlocks</b><small>Highlight the bell when a reward is ready.</small></span><input type="checkbox" name="rewardAlerts" ${this.preferences.rewardAlerts ? "checked" : ""}></label><label><span><b>🏆 Level ups</b><small>Show XP level milestones.</small></span><input type="checkbox" name="levelUpAlerts" ${this.preferences.levelUpAlerts ? "checked" : ""}></label><label><span><b>🔥 Streak reminder</b><small>Remind me before my streak expires.</small></span><input type="checkbox" name="streakAlerts" ${this.preferences.streakAlerts ? "checked" : ""}></label></div><div class="notification-section"><div class="notification-permission"><span><b>iPhone notifications</b><small>${permissionStatus === "granted" ? "Enabled on this device." : permissionStatus === "denied" ? "Blocked in device settings." : permissionStatus === "unsupported" ? "Not supported in this browser." : "Enable device alerts after installing PitchIQ to the Home Screen."}</small></span>${permissionAvailable && permissionStatus === "default" ? '<button type="button" data-action="request-notification-permission">Enable</button>' : ""}</div></div><div class="notification-section notification-inbox"><div class="notification-inbox-heading"><h3>Recent activity</h3>${unreadCount ? '<button type="button" data-action="mark-all-notifications-read">Mark all read</button>' : ""}</div>${recent.length ? recent.map((item) => `<div class="notification-item-wrap">${notificationItem(item)}<button type="button" class="notification-dismiss" data-action="dismiss-notification" data-notification-id="${escapeHtml(item.id)}" aria-label="Dismiss ${escapeHtml(item.title)}">×</button></div>`).join("") : '<div class="notification-empty">No notifications yet.</div>'}</div><div class="notification-save-dock"><button type="button" class="notification-save" data-action="save-notifications" disabled>Save changes</button></div></section>`;
     document.body.appendChild(sheet);
     sheet.querySelector(".notification-sheet")?.focus?.();
   }
