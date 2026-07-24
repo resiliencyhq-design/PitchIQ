@@ -12,6 +12,7 @@ import {
   renderSplash,
   renderTraining,
 } from "./routes.js?v=step1-art-align-20260620";
+import { FirstRunController } from "./controllers/first-run-controller.js";
 import { TrainingController } from "./controllers/training-controller.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
@@ -37,19 +38,30 @@ function syncPlayer() {
   return player;
 }
 
+const firstRun = new FirstRunController({
+  playerService: PlayerService,
+  onChange: (nextState) => {
+    state.firstRun = nextState;
+    saveState(state);
+  },
+});
+state.firstRun = firstRun.getState();
+
 function onboardingComplete() {
-  const player = syncPlayer();
-  return Boolean(player.name && player.position);
+  return firstRun.isComplete();
 }
 
 function completeOnboarding(name, position, number = localStorage.getItem("pitchiqJerseyNumber") || state.profile.number) {
   state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ name, position, number }) };
+  firstRun.completeStep("name");
+  firstRun.completeStep("number");
+  firstRun.completeStep("position");
   saveState(state);
 }
 
 function guardRoute(route) {
-  if (!validRoutes.has(route)) return "home";
-  if (protectedRoutes.has(route) && !onboardingComplete()) return "onboard";
+  if (!validRoutes.has(route)) return firstRun.getEntryRoute();
+  if (protectedRoutes.has(route) && !onboardingComplete()) return firstRun.getEntryRoute();
   if (protectedRoutes.has(route)) syncPlayer();
   return route;
 }
@@ -188,8 +200,9 @@ function resetPlayer() {
   if (!window.confirm("Reset PitchIQ profile?")) return;
   resetState();
   PlayerService.resetPlayer();
+  firstRun.reset();
   notifications?.reset();
-  Object.assign(state, normalizeState(loadState()));
+  Object.assign(state, normalizeState(loadState()), { firstRun: firstRun.getState() });
   selectedPosition = "";
   onboardingStep = 1;
   ["pitchiq-onboarding-step", "pitchiq-number-flow-lock", "pitchiq-onboarding-lock"].forEach((key) => sessionStorage.removeItem(key));
@@ -232,6 +245,7 @@ const training = new TrainingController({
 const api = {
   state,
   training,
+  firstRun,
   goto,
   setOnboardStep,
   completeOnboarding,
@@ -262,8 +276,11 @@ createPlayerProfileEditor({
 
 window.PitchIQApp = Object.freeze({
   ...(window.PitchIQApp || {}),
+  firstRun,
+  getFirstRun: () => firstRun,
   enterFromLanding: () => {
-    const target = onboardingComplete() ? "home" : "onboard";
+    if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
+    const target = firstRun.getEntryRoute();
     goto(target);
     return target;
   },
@@ -274,6 +291,14 @@ window.PitchIQApp = Object.freeze({
   },
 });
 
+import("./academy-journey.js?v=first-run-reconnect-20260724").catch((error) => {
+  console.warn("[PitchIQ] Academy journey failed to load", error);
+});
+import("./academy-runtime-canonical.js?v=first-run-reconnect-20260724").catch((error) => {
+  console.warn("[PitchIQ] Academy runtime failed to load", error);
+});
+
 if (devMode) console.info("[PitchIQ] developer mode enabled");
-render(onboardingComplete() ? "home" : "splash");
+firstRun.repair();
+render(firstRun.getEntryRoute());
 window.__PITCHIQ_READY__ = true;
