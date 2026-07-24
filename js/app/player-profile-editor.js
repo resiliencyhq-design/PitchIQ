@@ -120,7 +120,29 @@ export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer,
     notify?.("Profile updated");
   }
 
+  function openPlayerSettings() {
+    const panel = document.getElementById("playerSettingsPanel");
+    if (panel) panel.hidden = false;
+  }
+
+  function closePlayerSettings() {
+    const panel = document.getElementById("playerSettingsPanel");
+    if (panel) panel.hidden = true;
+  }
+
   function handleClick(event) {
+    if (event.target.closest?.('[data-action="player-settings-open"]')) {
+      event.preventDefault();
+      openPlayerSettings();
+      return;
+    }
+
+    if (event.target.closest?.('[data-action="player-settings-close"]')) {
+      event.preventDefault();
+      closePlayerSettings();
+      return;
+    }
+
     const option = event.target.closest?.("[data-player-option]");
     if (option) {
       event.preventDefault();
