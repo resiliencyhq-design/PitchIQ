@@ -3,8 +3,8 @@ const LAB_WORLD_ROUTE = "world-lab";
 let runtimePromise = null;
 
 function currentRoute() {
-  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
-    || window.location.hash.replace(/^#/, "").toLowerCase();
+  return window.location.hash.replace(/^#/, "").toLowerCase()
+    || window.PitchIQApp?.navigation?.getCurrentRoute?.();
 }
 
 function ensureStylesheet() {
@@ -79,7 +79,7 @@ document.addEventListener("click", event => {
   const module = event.target.closest?.('[data-world-module-route="lab-mental-imagery"]');
   if (!module) return;
   event.preventDefault();
-  window.PitchIQApp?.navigationAdapter?.go?.(MENTAL_IMAGERY_ROUTE, "mental-imagery-module");
+  window.PitchIQApp?.navigationAdapter?.goFeature?.(MENTAL_IMAGERY_ROUTE, "mental-imagery-module");
 }, true);
 
 window.addEventListener("pitchiq:route-change", event => loadMentalImageryRuntime(event.detail?.route));
