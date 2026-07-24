@@ -100,11 +100,13 @@ function completeOnboarding(patch = {}) {
 }
 
 function resetPlayer() {
-  const state = loadCanonicalState();
-  state.profile = normalizePlayer({});
-  saveState(state);
   Object.values(LEGACY_KEYS).forEach(key => localStorage.removeItem(key));
   localStorage.removeItem(MIGRATION_KEY);
+
+  const state = normalizeState(loadState());
+  state.profile = normalizePlayer({});
+  saveState(state);
+
   window.dispatchEvent(new CustomEvent("pitchiq:player-reset"));
   return clone(state.profile);
 }
