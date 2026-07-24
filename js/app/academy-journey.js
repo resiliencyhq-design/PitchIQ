@@ -1,7 +1,5 @@
-const PLAYER_NAME_KEY = "pitchiqPlayerName";
-const JERSEY_NUMBER_KEY = "pitchiqJerseyNumber";
-const SELECTED_POSITION_KEY = "pitchiqSelectedPosition";
-const ONBOARDING_COMPLETE_KEY = "pitchiqOnboardingComplete";
+import { PlayerService } from "../services/player-service.js";
+
 const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
 const ACADEMY_FEATURE_HASHES = new Set(["#academy-trial", "#academy-trials", "#lab-juggling"]);
 
@@ -20,10 +18,11 @@ function positionLabel(value) {
 }
 
 function identity() {
-  const positionCode = localStorage.getItem(SELECTED_POSITION_KEY) || "—";
+  const player = PlayerService.getPlayer();
+  const positionCode = player.position || "—";
   return {
-    name: localStorage.getItem(PLAYER_NAME_KEY) || "PLAYER",
-    number: localStorage.getItem(JERSEY_NUMBER_KEY) || "1",
+    name: player.name || "PLAYER",
+    number: player.number || "1",
     positionCode,
     position: positionLabel(positionCode)
   };
@@ -179,10 +178,11 @@ function beginFirstAssessment(event) {
   event.stopImmediatePropagation();
 
   const player = identity();
-  localStorage.setItem(PLAYER_NAME_KEY, player.name);
-  localStorage.setItem(JERSEY_NUMBER_KEY, player.number);
-  localStorage.setItem(SELECTED_POSITION_KEY, localStorage.getItem(SELECTED_POSITION_KEY) || "");
-  localStorage.setItem(ONBOARDING_COMPLETE_KEY, "true");
+  PlayerService.completeOnboarding({
+    name: player.name,
+    number: player.number,
+    position: player.positionCode === "—" ? "" : player.positionCode
+  });
   localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
   identityJourneyComplete = true;
   removeIdentityScene({ restoreSource: false });
