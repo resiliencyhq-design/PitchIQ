@@ -1,20 +1,15 @@
-const ROUTES = ["home", "training", "results", "player"];
+const ROUTES = new Set(["home", "training", "results", "player"]);
+let route = "home";
 
 function currentRoute(){
-  const activeScreen = document.querySelector("#app > .screen.active[id]");
-  if (activeScreen && ROUTES.includes(activeScreen.id)) return activeScreen.id;
-
-  const hashRoute = window.location.hash.replace(/^#/, "").toLowerCase();
-  if (ROUTES.includes(hashRoute)) return hashRoute;
-
-  return "home";
+  return route;
 }
 
-function syncBottomNavState(){
+function syncBottomNavState(nextRoute = route){
+  if (ROUTES.has(nextRoute)) route = nextRoute;
   const nav = document.getElementById("nav");
   if (!nav) return false;
 
-  const route = currentRoute();
   nav.querySelectorAll("[data-route]").forEach(button => {
     const isActive = button.dataset.route === route;
     button.classList.toggle("active", isActive);
@@ -25,24 +20,20 @@ function syncBottomNavState(){
   return true;
 }
 
-function scheduleSync(){
-  queueMicrotask(syncBottomNavState);
+function handleRouteChange(event){
+  syncBottomNavState(event.detail?.route);
 }
 
-if (typeof document !== "undefined") {
-  const app = document.getElementById("app");
-  const nav = document.getElementById("nav");
-
-  if (app) new MutationObserver(scheduleSync).observe(app, { childList: true, subtree: false });
-  if (nav) new MutationObserver(scheduleSync).observe(nav, { childList: true, subtree: true });
-
-  document.addEventListener("click", event => {
-    if (event.target.closest?.("#nav [data-route]")) scheduleSync();
-  }, true);
-
-  window.addEventListener("hashchange", scheduleSync);
-  window.addEventListener("pageshow", scheduleSync);
-  scheduleSync();
+if (typeof window !== "undefined") {
+  window.addEventListener("pitchiq:route-change", handleRouteChange);
+  window.addEventListener("pageshow", () => {
+    const controllerRoute = window.PitchIQApp?.navigation?.getCurrentRoute?.();
+    syncBottomNavState(controllerRoute || route);
+  });
+  queueMicrotask(() => {
+    const controllerRoute = window.PitchIQApp?.navigation?.getCurrentRoute?.();
+    syncBottomNavState(controllerRoute || route);
+  });
 }
 
 export { currentRoute, syncBottomNavState };
