@@ -179,6 +179,9 @@ function resetPlayer() {
   PlayerService.resetPlayer();
   Object.assign(state, normalizeState(loadState()));
   selectedPosition = "";
+  onboardingStep = 1;
+  sessionStorage.removeItem("pitchiq-onboarding-step");
+  sessionStorage.removeItem("pitchiq-onboarding-number-step");
   training.home();
   goto("splash");
 }
