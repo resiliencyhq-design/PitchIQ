@@ -4,6 +4,7 @@ const KEY = "pitchiq_integrated_v1";
 
 const defaults = {
   profile: { name: "", number: "1", position: "Winger", style: "Creator", avatar: "default", goal: "React faster", createdAt: null },
+  firstRun: { version: 1, status: "not_started", currentStep: "landing", completedSteps: [], completedAt: null },
   game: { xp: 0, level: 1, streak: 1, coins: 0, dailyDone: false, packOpened: false, unlocked: [], lastXp: 0, bestCombo: 0, trainingSeconds: 0, lastResult: null },
   analytics: { sessions: [], bestReaction: null, reactionHistory: [], weeklyXp: [0, 0, 0, 0, 0, 0, 0] },
   settings: { sound: true, haptics: true, reduceMotion: false, highContrast: false, cameraPreference: "environment" }
@@ -21,6 +22,13 @@ export function normalizeState(input) {
   state.profile.avatar ||= localStorage.getItem("pitchiqPlayerAvatar") || "default";
   state.profile.goal ||= "React faster";
   state.profile.createdAt ??= null;
+
+  state.firstRun ||= {};
+  state.firstRun.version = 1;
+  state.firstRun.status ||= "not_started";
+  state.firstRun.currentStep ||= "landing";
+  state.firstRun.completedSteps = Array.isArray(state.firstRun.completedSteps) ? state.firstRun.completedSteps : [];
+  state.firstRun.completedAt ??= null;
 
   state.game ||= {};
   state.game.xp ??= 0;
