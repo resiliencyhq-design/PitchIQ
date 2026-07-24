@@ -13,6 +13,7 @@ import {
   renderTraining,
 } from "./routes.js?v=onboarding-canonical-ui-runtime-20260724";
 import { FirstRunController } from "./controllers/first-run-controller.js";
+import { NavigationController } from "./controllers/navigation-controller.js";
 import { TrainingController } from "./controllers/training-controller.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
@@ -20,8 +21,8 @@ import { NotificationController } from "./notification-controller.js?v=sprint-n1
 
 const state = normalizeState(loadState());
 const appElement = document.getElementById("app");
-const validRoutes = new Set(["splash", "onboard", "home", "training", "results", "player"]);
-const protectedRoutes = new Set(["home", "training", "results", "player"]);
+const validRoutes = ["splash", "onboard", "home", "training", "results", "player"];
+const protectedRoutes = ["home", "training", "results", "player"];
 const devMode = new URLSearchParams(window.location.search).has("dev");
 let currentRoute = "splash";
 let nav = document.getElementById("nav");
@@ -46,10 +47,6 @@ const firstRun = new FirstRunController({
 });
 state.firstRun = firstRun.getState();
 
-function onboardingComplete() {
-  return firstRun.isComplete();
-}
-
 function cleanIdentityValue(step, value) {
   if (step === "name") return String(value || "").trim().slice(0, 18);
   if (step === "number") {
@@ -73,13 +70,6 @@ function saveIdentityStep(step, value) {
   saveState(state);
   render("onboard");
   return firstRun.getState();
-}
-
-function guardRoute(route) {
-  if (!validRoutes.has(route)) return firstRun.getEntryRoute();
-  if (protectedRoutes.has(route) && !onboardingComplete()) return firstRun.getEntryRoute();
-  if (protectedRoutes.has(route)) syncPlayer();
-  return route;
 }
 
 function drills() {
@@ -134,7 +124,7 @@ function renderDeveloperPanel() {
   const panel = document.createElement("aside");
   panel.id = "pitchiq-dev-panel";
   panel.hidden = !devPanelOpen;
-  panel.innerHTML = `<strong>PitchIQ Developer</strong>${["splash", "onboard", "home", "training", "results", "player"].map((route) => `<button type="button" data-dev-route="${route}">${route}</button>`).join("")}<button type="button" data-dev-border>Toggle dev border</button><button type="button" data-dev-reset>Reset onboarding</button>`;
+  panel.innerHTML = `<strong>PitchIQ Developer</strong>${validRoutes.map((route) => `<button type="button" data-dev-route="${route}">${route}</button>`).join("")}<button type="button" data-dev-border>Toggle dev border</button><button type="button" data-dev-reset>Reset onboarding</button>`;
   toggle.addEventListener("click", () => { devPanelOpen = !devPanelOpen; sessionStorage.setItem("pitchiq-dev-open", devPanelOpen ? "1" : "0"); renderDeveloperPanel(); });
   panel.querySelectorAll("[data-dev-route]").forEach((button) => button.addEventListener("click", () => goto(button.dataset.devRoute)));
   panel.querySelector("[data-dev-border]").addEventListener("click", () => { devBorderEnabled = !devBorderEnabled; localStorage.setItem("pitchiqDevBorderEnabled", String(devBorderEnabled)); renderDeveloperPanel(); });
@@ -172,11 +162,11 @@ function showRenderError(error, route) {
   bindScreen(appElement, api);
 }
 
-function render(route = currentRoute) {
+function renderResolvedRoute(route) {
   try {
     ensureShell();
     applyDeveloperBorder();
-    currentRoute = guardRoute(route);
+    currentRoute = route;
     notifications?.syncProgression();
     appElement.innerHTML = renderRoute(currentRoute);
     document.body.classList.toggle("pitchiq-splash-active", currentRoute === "splash");
@@ -193,11 +183,24 @@ function render(route = currentRoute) {
   }
 }
 
+const navigation = new NavigationController({
+  validRoutes,
+  protectedRoutes,
+  firstRun,
+  syncPlayer,
+  beforeNavigate: (route) => {
+    notifications?.closeCentre();
+    if (route === "training" && training.stage === "results") training.home();
+  },
+  renderRoute: renderResolvedRoute,
+});
+
+function render(route = currentRoute) {
+  return navigation.go(route, { source: "render-compat" });
+}
+
 function goto(route) {
-  notifications?.closeCentre();
-  route = guardRoute(route);
-  if (route === "training" && training.stage === "results") training.home();
-  render(route);
+  return navigation.go(route, { source: "goto" });
 }
 
 function enterAcademy() {
@@ -261,6 +264,7 @@ const api = {
   state,
   training,
   firstRun,
+  navigation,
   goto,
   saveIdentityStep,
   enterAcademy,
@@ -292,22 +296,17 @@ createPlayerProfileEditor({
 window.PitchIQApp = Object.freeze({
   ...(window.PitchIQApp || {}),
   firstRun,
+  navigation,
   getFirstRun: () => firstRun,
   enterFromLanding: () => {
     if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
-    const target = firstRun.getEntryRoute();
-    goto(target);
-    return target;
+    return goto(firstRun.getEntryRoute());
   },
   enterHomeFromModule: () => {
     const target = firstRun.getEntryRoute();
-    if (target !== "home") {
-      goto(target);
-      return target;
-    }
+    if (target !== "home") return goto(target);
     window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-    goto("home");
-    return "home";
+    return goto("home");
   },
 });
 
