@@ -5,8 +5,8 @@ const LAB_RETURN_ROUTE = "home";
 let labRuntimePromise = null;
 
 function currentRoute(){
-  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
-    || window.location.hash.replace(/^#/, "").toLowerCase();
+  return window.location.hash.replace(/^#/, "").toLowerCase()
+    || window.PitchIQApp?.navigation?.getCurrentRoute?.();
 }
 
 function openAutoJuggler(){
