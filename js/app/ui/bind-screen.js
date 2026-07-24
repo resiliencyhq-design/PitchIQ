@@ -38,6 +38,17 @@ function bindOnboarding(root, app) {
       app.selectedPosition,
       localStorage.getItem("pitchiqJerseyNumber") || app.state.profile.number,
     );
-    app.goto("home");
+
+    if (app.firstRun?.getCurrentStep?.() === "know-your-strengths") {
+      app.firstRun.completeStep("know-your-strengths");
+    }
+
+    const academy = window.PitchIQAcademy;
+    if (academy && typeof academy.enter === "function") {
+      academy.enter();
+      return;
+    }
+
+    window.location.hash = "academy-trial";
   });
 }
