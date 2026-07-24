@@ -35,6 +35,10 @@ function defaultState() {
   };
 }
 
+function hasValue(value) {
+  return value !== undefined && value !== null && String(value).trim() !== "";
+}
+
 export class FirstRunController {
   constructor({ storage = window.localStorage, playerService, onChange = () => {} } = {}) {
     this.storage = storage;
@@ -67,7 +71,7 @@ export class FirstRunController {
 
   completeStep(step) {
     const index = FIRST_RUN_STEPS.indexOf(step);
-    if (index < 0 || step === "complete") return this.getState();
+    if (index < 0 || step === "complete" || step !== this.state.currentStep) return this.getState();
 
     const completedSteps = new Set(this.state.completedSteps);
     completedSteps.add(step);
@@ -104,12 +108,22 @@ export class FirstRunController {
 
   repair() {
     const player = this.playerService?.getPlayer?.() || {};
-    const requiredIdentity = [
+    const contract = safeParse(this.storage.getItem("pitchiqPlayerContract")) || {};
+    const requirements = [
       ["name", player.name],
       ["number", player.number || this.storage.getItem("pitchiqJerseyNumber")],
-      ["position", player.position],
+      ["position", player.position || this.storage.getItem("pitchiqSelectedPosition")],
+      ["player-contract", contract.accepted && contract.guardianEmail],
+      ["avatar", player.avatar || this.storage.getItem("pitchiqAvatar")],
+      ["player-style", player.playerStyle || this.storage.getItem("pitchiqPlayerStyle")],
     ];
-    const firstMissing = requiredIdentity.find(([, value]) => !value)?.[0];
+
+    const currentIndex = FIRST_RUN_STEPS.indexOf(this.state.currentStep);
+    const firstMissing = requirements.find(([step, value]) => {
+      const stepIndex = FIRST_RUN_STEPS.indexOf(step);
+      return stepIndex <= currentIndex && !hasValue(value);
+    })?.[0];
+
     if (firstMissing) return this.setCurrentStep(firstMissing);
     return this.getState();
   }
