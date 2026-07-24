@@ -1,7 +1,10 @@
+import { stateStore } from "../services/storage.js";
+
 const PREFERENCES_KEY = "pitchiqNotificationPreferences";
 const NOTIFICATIONS_KEY = "pitchiqNotifications";
 const REWARD_SNAPSHOT_KEY = "pitchiqRewardNotificationSnapshot";
 const TRAINING_SNAPSHOT_KEY = "pitchiqTrainingNotificationSnapshot";
+const MIGRATION_KEY = "pitchiqNotificationStateMigrationV1";
 
 const DEFAULT_PREFERENCES = Object.freeze({
   trainingEnabled: false,
@@ -13,26 +16,60 @@ const DEFAULT_PREFERENCES = Object.freeze({
   permissionStatus: "default",
 });
 
+const DEFAULT_REWARD_SNAPSHOT = Object.freeze({ level: 1, unlocked: [] });
+const DEFAULT_TRAINING_SNAPSHOT = Object.freeze({ sessionIds: [], bestAccuracy: 0, bestCombo: 0, bestScore: 0, weeklyXpMilestones: [] });
+
 function safeParse(value, fallback) {
   try { return value ? JSON.parse(value) : fallback; } catch { return fallback; }
 }
 
-function readPreferences() {
-  const saved = safeParse(localStorage.getItem(PREFERENCES_KEY), {});
-  return { ...DEFAULT_PREFERENCES, ...saved };
+function clone(value) {
+  try { return structuredClone(value); } catch { return JSON.parse(JSON.stringify(value)); }
 }
 
-function writePreferences(preferences) {
-  localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+function normalizeNotificationState(value = {}) {
+  return {
+    preferences: { ...DEFAULT_PREFERENCES, ...(value.preferences || {}) },
+    items: Array.isArray(value.items) ? value.items : [],
+    rewardSnapshot: { ...DEFAULT_REWARD_SNAPSHOT, ...(value.rewardSnapshot || {}) },
+    trainingSnapshot: { ...DEFAULT_TRAINING_SNAPSHOT, ...(value.trainingSnapshot || {}) },
+  };
 }
 
-function readNotifications() {
-  const saved = safeParse(localStorage.getItem(NOTIFICATIONS_KEY), []);
-  return Array.isArray(saved) ? saved : [];
+function migrateLegacyNotificationState() {
+  const existing = normalizeNotificationState(stateStore.getSnapshot().notifications);
+  if (localStorage.getItem(MIGRATION_KEY) === "true") return existing;
+
+  const legacyPreferences = safeParse(localStorage.getItem(PREFERENCES_KEY), null);
+  const legacyItems = safeParse(localStorage.getItem(NOTIFICATIONS_KEY), null);
+  const legacyRewardSnapshot = safeParse(localStorage.getItem(REWARD_SNAPSHOT_KEY), null);
+  const legacyTrainingSnapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), null);
+
+  const migrated = normalizeNotificationState({
+    preferences: legacyPreferences || existing.preferences,
+    items: Array.isArray(legacyItems) ? legacyItems : existing.items,
+    rewardSnapshot: legacyRewardSnapshot || existing.rewardSnapshot,
+    trainingSnapshot: legacyTrainingSnapshot || existing.trainingSnapshot,
+  });
+
+  stateStore.update(state => {
+    state.notifications = migrated;
+  }, { source: "notification-legacy-migration" });
+  localStorage.setItem(MIGRATION_KEY, "true");
+  return clone(migrated);
 }
 
-function writeNotifications(notifications) {
-  localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+function readNotificationState() {
+  return normalizeNotificationState(stateStore.getSnapshot().notifications);
+}
+
+function writeNotificationState(patch, source) {
+  let nextState;
+  stateStore.update(state => {
+    state.notifications = normalizeNotificationState({ ...state.notifications, ...patch });
+    nextState = clone(state.notifications);
+  }, { source });
+  return nextState;
 }
 
 function escapeHtml(value = "") {
@@ -102,8 +139,11 @@ export class NotificationController {
     this.getState = getState || (() => ({}));
     this.goto = goto || (() => {});
     this.onChange = onChange || (() => {});
-    this.preferences = readPreferences();
-    this.notifications = readNotifications();
+    const persisted = migrateLegacyNotificationState();
+    this.preferences = persisted.preferences;
+    this.notifications = persisted.items;
+    this.rewardSnapshot = persisted.rewardSnapshot;
+    this.trainingSnapshot = persisted.trainingSnapshot;
     this.open = false;
     this.dirty = false;
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
@@ -114,6 +154,14 @@ export class NotificationController {
     document.addEventListener("change", this.handleDocumentChange);
     document.addEventListener("keydown", this.handleKeydown);
     window.addEventListener("pitchiq:training-complete", this.handleTrainingComplete);
+  }
+
+  persist(patch, source) {
+    const next = writeNotificationState(patch, source);
+    this.preferences = next.preferences;
+    this.notifications = next.items;
+    this.rewardSnapshot = next.rewardSnapshot;
+    this.trainingSnapshot = next.trainingSnapshot;
   }
 
   getBellState() {
@@ -135,7 +183,7 @@ export class NotificationController {
     if (!id || this.notifications.some((item) => item.id === id)) return false;
     this.notifications.unshift({ id, type, title, body, action, createdAt, read: false });
     this.notifications = this.notifications.slice(0, 40);
-    writeNotifications(this.notifications);
+    this.persist({ items: this.notifications }, "notification-created");
     this.onChange();
     return true;
   }
@@ -144,7 +192,7 @@ export class NotificationController {
     const state = this.getState() || {};
     const level = Number(state.game?.level || 1);
     const unlocked = Array.isArray(state.game?.unlocked) ? state.game.unlocked : [];
-    const snapshot = safeParse(localStorage.getItem(REWARD_SNAPSHOT_KEY), { level, unlocked: [] });
+    const snapshot = this.rewardSnapshot;
     if (this.preferences.levelUpAlerts && level > Number(snapshot.level || 1)) {
       this.createNotification({ id: `level-${level}`, type: "level", title: `Level ${level} reached`, body: "Your player level has increased.", action: "open-player" });
     }
@@ -153,7 +201,7 @@ export class NotificationController {
         this.createNotification({ id: `reward-${rewardId}`, type: "reward", title: "New reward unlocked", body: "A new reward is waiting for you.", action: "open-rewards" });
       });
     }
-    localStorage.setItem(REWARD_SNAPSHOT_KEY, JSON.stringify({ level, unlocked }));
+    this.persist({ rewardSnapshot: { level, unlocked } }, "notification-reward-snapshot");
   }
 
   handleTrainingComplete(event) {
@@ -163,7 +211,7 @@ export class NotificationController {
     const sessionId = String(session.id || summary.endedAt || "");
     if (!sessionId) return;
 
-    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [], bestAccuracy: 0, bestCombo: 0, bestScore: 0, weeklyXpMilestones: [] });
+    const snapshot = this.trainingSnapshot;
     const sessionIds = Array.isArray(snapshot.sessionIds) ? snapshot.sessionIds.map(String) : [];
     if (sessionIds.includes(sessionId) || this.notifications.some((item) => item.id === `training-${sessionId}`)) return;
 
@@ -203,19 +251,21 @@ export class NotificationController {
     const state = this.getState() || {};
     const weeklyXp = Array.isArray(state.analytics?.weeklyXp) ? state.analytics.weeklyXp.reduce((total, value) => total + finiteNumber(value), 0) : 0;
     const milestone = [100, 250, 500, 1000].filter((value) => weeklyXp >= value).at(-1) || 0;
-    const milestones = Array.isArray(snapshot.weeklyXpMilestones) ? snapshot.weeklyXpMilestones : [];
+    const milestones = Array.isArray(snapshot.weeklyXpMilestones) ? [...snapshot.weeklyXpMilestones] : [];
     if (milestone && !milestones.includes(milestone)) {
       this.createNotification({ id: `weekly-xp-${milestone}`, type: "weekly", title: `${milestone} weekly XP`, body: "Your training consistency is building momentum.", action: "open-player" });
       milestones.push(milestone);
     }
 
-    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({
-      sessionIds: [sessionId, ...sessionIds].slice(0, 40),
-      bestAccuracy: Math.max(bestAccuracy, accuracy),
-      bestCombo: Math.max(bestCombo, combo),
-      bestScore: Math.max(bestScore, score),
-      weeklyXpMilestones: milestones.slice(-8),
-    }));
+    this.persist({
+      trainingSnapshot: {
+        sessionIds: [sessionId, ...sessionIds].slice(0, 40),
+        bestAccuracy: Math.max(bestAccuracy, accuracy),
+        bestCombo: Math.max(bestCombo, combo),
+        bestScore: Math.max(bestScore, score),
+        weeklyXpMilestones: milestones.slice(-8),
+      },
+    }, "notification-training-snapshot");
   }
 
   createStreakReminder({ streak = 0, id = "streak-expiry" } = {}) {
@@ -230,7 +280,7 @@ export class NotificationController {
   markAllRead() {
     if (!this.notifications.some((item) => !item.read)) return false;
     this.notifications = this.notifications.map((item) => ({ ...item, read: true }));
-    writeNotifications(this.notifications);
+    this.persist({ items: this.notifications }, "notification-mark-all-read");
     this.renderSheet();
     this.onChange();
     return true;
@@ -240,7 +290,7 @@ export class NotificationController {
     const next = this.notifications.filter((item) => item.id !== id);
     if (next.length === this.notifications.length) return false;
     this.notifications = next;
-    writeNotifications(this.notifications);
+    this.persist({ items: this.notifications }, "notification-dismissed");
     this.renderSheet();
     this.onChange();
     return true;
@@ -278,7 +328,7 @@ export class NotificationController {
       changed = true;
       return { ...item, read: true };
     });
-    if (changed) writeNotifications(this.notifications);
+    if (changed) this.persist({ items: this.notifications }, "notification-read");
     return changed;
   }
 
@@ -295,7 +345,7 @@ export class NotificationController {
       levelUpAlerts: Boolean(root.querySelector("[name='levelUpAlerts']")?.checked),
       streakAlerts: Boolean(root.querySelector("[name='streakAlerts']")?.checked),
     };
-    writePreferences(this.preferences);
+    this.persist({ preferences: this.preferences }, "notification-preferences-saved");
     const message = this.preferences.trainingEnabled ? `Training reminder set for ${formatTime(this.preferences.trainingTime)}` : "Notification preferences saved";
     window.dispatchEvent(new CustomEvent("pitchiq:toast", { detail: { message } }));
     this.dirty = false;
@@ -306,7 +356,7 @@ export class NotificationController {
     if (!("Notification" in window)) return;
     const status = await Notification.requestPermission();
     this.preferences = { ...this.preferences, permissionStatus: status };
-    writePreferences(this.preferences);
+    this.persist({ preferences: this.preferences }, "notification-permission-updated");
     this.renderSheet();
   }
 
@@ -366,12 +416,13 @@ export class NotificationController {
   }
 
   reset() {
-    localStorage.removeItem(PREFERENCES_KEY);
-    localStorage.removeItem(NOTIFICATIONS_KEY);
-    localStorage.removeItem(REWARD_SNAPSHOT_KEY);
-    localStorage.removeItem(TRAINING_SNAPSHOT_KEY);
-    this.preferences = readPreferences();
-    this.notifications = [];
+    this.persist({
+      preferences: { ...DEFAULT_PREFERENCES },
+      items: [],
+      rewardSnapshot: { ...DEFAULT_REWARD_SNAPSHOT },
+      trainingSnapshot: { ...DEFAULT_TRAINING_SNAPSHOT },
+    }, "notification-reset");
+    [PREFERENCES_KEY, NOTIFICATIONS_KEY, REWARD_SNAPSHOT_KEY, TRAINING_SNAPSHOT_KEY, MIGRATION_KEY].forEach(key => localStorage.removeItem(key));
     this.closeCentre({ force: true });
   }
 }
