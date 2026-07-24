@@ -18,7 +18,7 @@ import { TrainingController } from "./controllers/training-controller.js";
 import { createNavigationAdapter } from "./navigation/navigation-adapter.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
-import { NotificationController } from "./notification-controller.js?v=sprint-n1-notification-centre-20260724";
+import { NotificationController } from "./notification-controller.js?v=notification-close-recursion-20260724";
 
 const state = normalizeState(loadState());
 const appElement = document.getElementById("app");
