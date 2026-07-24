@@ -1,10 +1,4 @@
-const PROFILE_KEYS = Object.freeze({
-  name: "pitchiqPlayerName",
-  number: "pitchiqJerseyNumber",
-  position: "pitchiqSelectedPosition",
-  style: "pitchiqPlayerStyle",
-  avatar: "pitchiqPlayerAvatar"
-});
+import { PlayerService } from "../services/player-service.js";
 
 const POSITION_GROUPS = Object.freeze([
   ["Goalkeeper", [["GK", "Goalkeeper"]]],
@@ -54,20 +48,6 @@ function editorMarkup(field, profile) {
   return `<aside class="player-editor-panel" id="playerEditorPanel" data-player-editor-field="${escapeHtml(field)}" aria-label="${escapeHtml(labels[field])}"><div class="player-editor-card"><header><div><span class="kicker">Player profile</span><h2>${escapeHtml(labels[field])}</h2></div><button type="button" data-player-editor-close aria-label="Close editor">×</button></header>${body}<p class="player-editor-error" id="playerEditorError" role="alert"></p><div class="player-editor-actions"><button type="button" data-player-editor-close>Cancel</button><button type="button" class="primary" data-player-editor-save>Save changes</button></div></div></aside>`;
 }
 
-function profileFromState(state) {
-  return {
-    name: state.profile?.name || localStorage.getItem(PROFILE_KEYS.name) || "",
-    number: state.profile?.number || localStorage.getItem(PROFILE_KEYS.number) || "1",
-    position: state.profile?.position || localStorage.getItem(PROFILE_KEYS.position) || "Winger",
-    style: state.profile?.style || localStorage.getItem(PROFILE_KEYS.style) || "Creator",
-    avatar: state.profile?.avatar || localStorage.getItem(PROFILE_KEYS.avatar) || "default"
-  };
-}
-
-function persistCompatibilityKeys(profile) {
-  Object.entries(PROFILE_KEYS).forEach(([field, key]) => localStorage.setItem(key, String(profile[field] ?? "")));
-}
-
 function readEditorValue(panel, field) {
   if (["position", "style", "avatar"].includes(field)) return panel.querySelector("[data-player-editor-choice].active")?.dataset.playerEditorChoice || "";
   return panel.querySelector("#playerEditorInput")?.value?.trim() || "";
@@ -101,8 +81,7 @@ export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer,
   }
 
   function openEditor(field) {
-    const state = getState();
-    const profile = profileFromState(state);
+    const profile = PlayerService.getPlayer();
     closeEditor();
     document.body.insertAdjacentHTML("beforeend", editorMarkup(field, profile));
     const panel = document.getElementById("playerEditorPanel");
@@ -126,14 +105,15 @@ export function createPlayerProfileEditor({ getState, saveState, rerenderPlayer,
       return;
     }
 
-    const state = getState();
-    const previousPosition = state.profile?.position;
-    state.profile ||= {};
-    state.profile[field] = field === "number" ? String(Number(value)) : value;
-    const profile = profileFromState(state);
-    persistCompatibilityKeys(profile);
-    saveState(state);
-    if (field === "position" && previousPosition !== value) onPositionChanged?.();
+    const previousPosition = PlayerService.getPlayer().position;
+    const nextValue = field === "number" ? String(Number(value)) : value;
+    const profile = PlayerService.updatePlayer({ [field]: nextValue });
+    const state = getState?.();
+    if (state) {
+      state.profile = { ...(state.profile || {}), ...profile };
+      saveState?.(state);
+    }
+    if (field === "position" && previousPosition !== nextValue) onPositionChanged?.();
     closeEditor();
     rerenderPlayer();
     showSaveConfirmation("Profile updated");
