@@ -15,6 +15,7 @@ import {
 import { FirstRunController } from "./controllers/first-run-controller.js";
 import { NavigationController } from "./controllers/navigation-controller.js";
 import { TrainingController } from "./controllers/training-controller.js";
+import { createNavigationAdapter } from "./navigation/navigation-adapter.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
 import { NotificationController } from "./notification-controller.js?v=sprint-n1-notification-centre-20260724";
@@ -194,13 +195,14 @@ const navigation = new NavigationController({
   },
   renderRoute: renderResolvedRoute,
 });
+const navigationAdapter = createNavigationAdapter({ navigation, firstRun });
 
 function render(route = currentRoute) {
   return navigation.go(route, { source: "render-compat" });
 }
 
 function goto(route) {
-  return navigation.go(route, { source: "goto" });
+  return navigationAdapter.go(route, "goto");
 }
 
 function enterAcademy() {
@@ -265,6 +267,7 @@ const api = {
   training,
   firstRun,
   navigation,
+  navigationAdapter,
   goto,
   saveIdentityStep,
   enterAcademy,
@@ -297,17 +300,10 @@ window.PitchIQApp = Object.freeze({
   ...(window.PitchIQApp || {}),
   firstRun,
   navigation,
+  navigationAdapter,
   getFirstRun: () => firstRun,
-  enterFromLanding: () => {
-    if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
-    return goto(firstRun.getEntryRoute());
-  },
-  enterHomeFromModule: () => {
-    const target = firstRun.getEntryRoute();
-    if (target !== "home") return goto(target);
-    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-    return goto("home");
-  },
+  enterFromLanding: navigationAdapter.enterFromLanding,
+  enterHomeFromModule: navigationAdapter.enterHomeFromModule,
 });
 
 import("./academy-journey.js?v=first-run-reconnect-20260724").catch((error) => {
