@@ -59,6 +59,14 @@ function formatTime(value = "18:00") {
   return `${displayHour}:${minute}${suffix}`;
 }
 
+function finiteNumber(...values) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number)) return number;
+  }
+  return 0;
+}
+
 export class NotificationController {
   constructor({ getState, goto, onChange } = {}) {
     this.getState = getState || (() => ({}));
@@ -121,32 +129,39 @@ export class NotificationController {
     const detail = event.detail || {};
     const summary = detail.summary || {};
     const session = detail.session || {};
-    const sessionId = String(session.id || summary.endedAt || Date.now());
-    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [] });
-    if (snapshot.sessionIds.includes(sessionId)) return;
+    const sessionId = String(session.id || summary.endedAt || "");
+    if (!sessionId) return;
 
-    const accuracy = Number(summary.accuracy || 0);
-    const combo = Number(summary.combo || 0);
-    const score = Number(summary.score || 0);
-    const xp = Number(summary.xp || 0);
+    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [] });
+    const sessionIds = Array.isArray(snapshot.sessionIds) ? snapshot.sessionIds.map(String) : [];
+    if (sessionIds.includes(sessionId) || this.notifications.some((item) => item.id === `training-${sessionId}`)) return;
+
+    const results = Array.isArray(session.results) ? session.results : [];
+    const correct = results.filter((result) => result?.correct).length;
+    const derivedAccuracy = results.length ? Math.round((correct / results.length) * 100) : 0;
+    const derivedXp = results.reduce((total, result) => total + finiteNumber(result?.xpAwarded), 0);
+    const accuracy = finiteNumber(summary.accuracy, derivedAccuracy);
+    const combo = finiteNumber(summary.combo, session.combo);
+    const score = finiteNumber(summary.score, session.score);
+    const xp = finiteNumber(summary.xp, summary.xpEarned, session.xp, derivedXp);
     const title = accuracy >= 80 ? "Strong training rep" : combo >= 5 ? "Combo milestone" : "Training complete";
     const bodyParts = [];
-    if (accuracy) bodyParts.push(`${accuracy}% accuracy`);
-    if (combo) bodyParts.push(`best combo x${combo}`);
-    if (xp) bodyParts.push(`+${xp} XP`);
-    if (!bodyParts.length && score) bodyParts.push(`${score} points`);
+    if (accuracy > 0) bodyParts.push(`${accuracy}% accuracy`);
+    if (combo > 0) bodyParts.push(`best combo x${combo}`);
+    if (xp > 0) bodyParts.push(`+${xp} XP`);
+    if (!bodyParts.length && score > 0) bodyParts.push(`${score} points`);
 
-    this.createNotification({
+    const created = this.createNotification({
       id: `training-${sessionId}`,
       type: "training",
       title,
       body: bodyParts.join(" • ") || "Your latest rep is ready to review.",
       action: "open-results",
-      createdAt: summary.endedAt || Date.now(),
+      createdAt: summary.endedAt || session.endedAt || Date.now(),
     });
 
-    const sessionIds = [sessionId, ...snapshot.sessionIds].slice(0, 30);
-    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({ sessionIds }));
+    if (!created) return;
+    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({ sessionIds: [sessionId, ...sessionIds].slice(0, 30) }));
   }
 
   createStreakReminder({ streak = 0, id = "streak-expiry" } = {}) {
