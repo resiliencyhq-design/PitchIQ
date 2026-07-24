@@ -261,6 +261,8 @@ createPlayerProfileEditor({
 
 window.PitchIQApp = Object.freeze({
   ...(window.PitchIQApp || {}),
+  firstRun,
+  getFirstRun: () => firstRun,
   enterFromLanding: () => {
     if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
     const target = firstRun.getEntryRoute();
@@ -272,6 +274,13 @@ window.PitchIQApp = Object.freeze({
     goto("home");
     return "home";
   },
+});
+
+import("./academy-journey.js?v=first-run-reconnect-20260724").catch((error) => {
+  console.warn("[PitchIQ] Academy journey failed to load", error);
+});
+import("./academy-runtime-canonical.js?v=first-run-reconnect-20260724").catch((error) => {
+  console.warn("[PitchIQ] Academy runtime failed to load", error);
 });
 
 if (devMode) console.info("[PitchIQ] developer mode enabled");
