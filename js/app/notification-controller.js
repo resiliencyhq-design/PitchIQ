@@ -77,11 +77,7 @@ export class NotificationController {
   }
 
   getViewModel() {
-    return {
-      bellState: this.getBellState(),
-      unreadCount: this.getUnreadCount(),
-      isOpen: this.open,
-    };
+    return { bellState: this.getBellState(), unreadCount: this.getUnreadCount(), isOpen: this.open };
   }
 
   createNotification({ id, type = "system", title, body = "", action = "", createdAt = Date.now() }) {
