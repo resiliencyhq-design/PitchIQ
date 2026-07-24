@@ -28,6 +28,14 @@ const defaults = {
 
 const LEGACY_SEEDED_WEEKLY_XP = [80, 140, 220, 180, 310, 120, 0];
 
+function cloneMutable(value) {
+  try {
+    return structuredClone(value);
+  } catch {
+    return JSON.parse(JSON.stringify(value));
+  }
+}
+
 export function normalizeState(input) {
   const state = input && typeof input === "object" ? input : {};
   state.profile ||= {};
@@ -113,7 +121,10 @@ const stateStore = new StateStore({
 });
 
 export function loadState() {
-  return stateStore.load();
+  // StateStore snapshots are intentionally immutable. The existing runtime still
+  // updates its compatibility state object directly, so expose a detached mutable
+  // copy until all callers have migrated to StateStore.update().
+  return cloneMutable(stateStore.load());
 }
 
 export function saveState(state) {
