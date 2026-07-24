@@ -84,8 +84,13 @@ function render(){
 function goHome(){
   localStorage.setItem(ACADEMY_ACCEPTED_KEY, "true");
   localStorage.setItem(AVATAR_KEY, selectedAvatar);
+  const handoff = window.PitchIQApp?.enterHomeFromModule;
+  if(typeof handoff === "function"){
+    handoff();
+    return;
+  }
   window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-  window.location.reload();
+  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "home", source: "academy" } }));
 }
 function runReaction(){
   const signal = app.querySelector("[data-reaction-signal]");
@@ -134,23 +139,11 @@ function handleCanonicalClick(event){
   localStorage.setItem(AVATAR_KEY, selectedAvatar);
   app.querySelectorAll("[data-canonical-avatar]").forEach(choice => choice.classList.toggle("selected", choice.dataset.canonicalAvatar===selectedAvatar));
 }
-function enterAcademy(event){
-  const button = event.target.closest?.('[data-action="save-profile"]');
-  if(!button || !button.closest(".academy-welcome-step")) return;
-  event.preventDefault(); event.stopImmediatePropagation();
-  localStorage.setItem("pitchiqOnboardingComplete", "true");
-  localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
-  stage = "welcome"; reactionReady = false;
-  clearIdentityOverlay();
-  if(route() !== CANONICAL_ROUTE) window.location.hash = CANONICAL_ROUTE;
-  queueMicrotask(render);
-}
 function handleRoute(){
   if(route() === LEGACY_ROUTE){ window.location.replace(`${window.location.pathname}${window.location.search}#${CANONICAL_ROUTE}`); return; }
   if(route() === CANONICAL_ROUTE) queueMicrotask(render);
 }
 
-document.addEventListener("click", enterAcademy, true);
 document.addEventListener("click", handleCanonicalClick, true);
 window.addEventListener("hashchange", handleRoute);
 handleRoute();
