@@ -1,0 +1,211 @@
+const PREFERENCES_KEY = "pitchiqNotificationPreferences";
+const NOTIFICATIONS_KEY = "pitchiqNotifications";
+const REWARD_SNAPSHOT_KEY = "pitchiqRewardNotificationSnapshot";
+
+const DEFAULT_PREFERENCES = Object.freeze({
+  trainingEnabled: false,
+  trainingTime: "18:00",
+  trainingDays: [1, 2, 3, 4, 5],
+  rewardAlerts: true,
+  levelUpAlerts: true,
+  streakAlerts: true,
+  permissionStatus: "default",
+});
+
+function safeParse(value, fallback) {
+  try { return value ? JSON.parse(value) : fallback; } catch { return fallback; }
+}
+
+function readPreferences() {
+  const saved = safeParse(localStorage.getItem(PREFERENCES_KEY), {});
+  return { ...DEFAULT_PREFERENCES, ...saved };
+}
+
+function writePreferences(preferences) {
+  localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+}
+
+function readNotifications() {
+  const saved = safeParse(localStorage.getItem(NOTIFICATIONS_KEY), []);
+  return Array.isArray(saved) ? saved : [];
+}
+
+function writeNotifications(notifications) {
+  localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+}
+
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
+  })[character]);
+}
+
+function dayButton(day, label, selectedDays) {
+  const selected = selectedDays.includes(day);
+  return `<button type="button" class="notification-day${selected ? " is-selected" : ""}" data-notification-day="${day}" aria-pressed="${selected}">${label}</button>`;
+}
+
+function notificationItem(item) {
+  return `<button type="button" class="notification-item${item.read ? "" : " is-unread"}" data-notification-id="${escapeHtml(item.id)}" data-notification-action="${escapeHtml(item.action || "")}"><span>${item.type === "reward" ? "🎁" : item.type === "level" ? "🏆" : item.type === "streak" ? "🔥" : "⚽"}</span><span><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.body || "")}</small></span></button>`;
+}
+
+export class NotificationController {
+  constructor({ getState, goto, onChange } = {}) {
+    this.getState = getState || (() => ({}));
+    this.goto = goto || (() => {});
+    this.onChange = onChange || (() => {});
+    this.preferences = readPreferences();
+    this.notifications = readNotifications();
+    this.open = false;
+    this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    this.handleDocumentChange = this.handleDocumentChange.bind(this);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    document.addEventListener("click", this.handleDocumentClick);
+    document.addEventListener("change", this.handleDocumentChange);
+    document.addEventListener("keydown", this.handleKeydown);
+  }
+
+  getBellState() {
+    const unread = this.notifications.filter((item) => !item.read);
+    if (unread.some((item) => item.type === "reward")) return "reward";
+    if (unread.some((item) => item.type === "streak")) return "streak";
+    return unread.length ? "unread" : "default";
+  }
+
+  getUnreadCount() {
+    return this.notifications.filter((item) => !item.read).length;
+  }
+
+  getViewModel() {
+    return {
+      bellState: this.getBellState(),
+      unreadCount: this.getUnreadCount(),
+      isOpen: this.open,
+    };
+  }
+
+  createNotification({ id, type = "system", title, body = "", action = "", createdAt = Date.now() }) {
+    if (!id || this.notifications.some((item) => item.id === id)) return false;
+    this.notifications.unshift({ id, type, title, body, action, createdAt, read: false });
+    this.notifications = this.notifications.slice(0, 30);
+    writeNotifications(this.notifications);
+    this.onChange();
+    return true;
+  }
+
+  syncProgression() {
+    const state = this.getState() || {};
+    const level = Number(state.game?.level || 1);
+    const unlocked = Array.isArray(state.game?.unlocked) ? state.game.unlocked : [];
+    const snapshot = safeParse(localStorage.getItem(REWARD_SNAPSHOT_KEY), { level, unlocked: [] });
+    if (this.preferences.levelUpAlerts && level > Number(snapshot.level || 1)) {
+      this.createNotification({ id: `level-${level}`, type: "level", title: `Level ${level} reached`, body: "Your player level has increased.", action: "open-player" });
+    }
+    if (this.preferences.rewardAlerts) {
+      unlocked.filter((rewardId) => !snapshot.unlocked.includes(rewardId)).forEach((rewardId) => {
+        this.createNotification({ id: `reward-${rewardId}`, type: "reward", title: "New reward unlocked", body: "A new reward is waiting for you.", action: "open-rewards" });
+      });
+    }
+    localStorage.setItem(REWARD_SNAPSHOT_KEY, JSON.stringify({ level, unlocked }));
+  }
+
+  openCentre() {
+    this.open = true;
+    this.renderSheet();
+    document.body.classList.add("notification-centre-open");
+  }
+
+  closeCentre() {
+    this.open = false;
+    document.getElementById("notificationCentre")?.remove();
+    document.body.classList.remove("notification-centre-open");
+    this.onChange();
+  }
+
+  markRead(id) {
+    let changed = false;
+    this.notifications = this.notifications.map((item) => {
+      if (item.id !== id || item.read) return item;
+      changed = true;
+      return { ...item, read: true };
+    });
+    if (changed) writeNotifications(this.notifications);
+    return changed;
+  }
+
+  savePreferencesFromSheet() {
+    const root = document.getElementById("notificationCentre");
+    if (!root) return;
+    const selectedDays = [...root.querySelectorAll("[data-notification-day].is-selected")].map((button) => Number(button.dataset.notificationDay));
+    this.preferences = {
+      ...this.preferences,
+      trainingEnabled: Boolean(root.querySelector("[name='trainingEnabled']")?.checked),
+      trainingTime: root.querySelector("[name='trainingTime']")?.value || "18:00",
+      trainingDays: selectedDays,
+      rewardAlerts: Boolean(root.querySelector("[name='rewardAlerts']")?.checked),
+      levelUpAlerts: Boolean(root.querySelector("[name='levelUpAlerts']")?.checked),
+      streakAlerts: Boolean(root.querySelector("[name='streakAlerts']")?.checked),
+    };
+    writePreferences(this.preferences);
+    this.closeCentre();
+  }
+
+  async requestPermission() {
+    if (!("Notification" in window)) return;
+    const status = await Notification.requestPermission();
+    this.preferences = { ...this.preferences, permissionStatus: status };
+    writePreferences(this.preferences);
+    this.renderSheet();
+  }
+
+  handleDocumentClick(event) {
+    const bell = event.target.closest?.("[data-action='open-notifications']");
+    if (bell) { event.preventDefault(); event.stopPropagation(); this.openCentre(); return; }
+    if (event.target.closest?.("[data-action='close-notifications']")) { event.preventDefault(); this.closeCentre(); return; }
+    if (event.target.closest?.("[data-action='save-notifications']")) { event.preventDefault(); this.savePreferencesFromSheet(); return; }
+    if (event.target.closest?.("[data-action='request-notification-permission']")) { event.preventDefault(); this.requestPermission(); return; }
+    const day = event.target.closest?.("[data-notification-day]");
+    if (day) { event.preventDefault(); day.classList.toggle("is-selected"); day.setAttribute("aria-pressed", String(day.classList.contains("is-selected"))); return; }
+    const item = event.target.closest?.("[data-notification-id]");
+    if (item) {
+      event.preventDefault();
+      this.markRead(item.dataset.notificationId);
+      const action = item.dataset.notificationAction;
+      this.closeCentre();
+      if (action === "open-player") this.goto("player");
+      if (action === "open-rewards") this.goto("results");
+    }
+  }
+
+  handleDocumentChange(event) {
+    if (event.target.matches?.("[name='trainingEnabled']")) {
+      document.getElementById("notificationTrainingControls")?.toggleAttribute("data-disabled", !event.target.checked);
+    }
+  }
+
+  handleKeydown(event) {
+    if (event.key === "Escape" && this.open) this.closeCentre();
+  }
+
+  renderSheet() {
+    document.getElementById("notificationCentre")?.remove();
+    const permissionAvailable = "Notification" in window;
+    const permissionStatus = permissionAvailable ? Notification.permission : "unsupported";
+    const recent = this.notifications.slice(0, 5);
+    const sheet = document.createElement("div");
+    sheet.id = "notificationCentre";
+    sheet.className = "notification-centre";
+    sheet.innerHTML = `<button class="notification-backdrop" data-action="close-notifications" aria-label="Close notifications"></button><section class="notification-sheet" role="dialog" aria-modal="true" aria-labelledby="notificationCentreTitle"><div class="notification-handle" aria-hidden="true"></div><header><div><span>PitchIQ</span><h2 id="notificationCentreTitle">Notifications</h2></div><button type="button" data-action="close-notifications" aria-label="Close">×</button></header><div class="notification-section"><div class="notification-setting-row"><span><b>⚽ Training reminder</b><small>Choose when PitchIQ reminds you to train.</small></span><label class="notification-switch"><input type="checkbox" name="trainingEnabled" ${this.preferences.trainingEnabled ? "checked" : ""}><i></i></label></div><div id="notificationTrainingControls" class="notification-training-controls" ${this.preferences.trainingEnabled ? "" : "data-disabled"}><label>Training time<input type="time" name="trainingTime" value="${escapeHtml(this.preferences.trainingTime)}"></label><div class="notification-days" aria-label="Reminder days">${dayButton(1, "M", this.preferences.trainingDays)}${dayButton(2, "T", this.preferences.trainingDays)}${dayButton(3, "W", this.preferences.trainingDays)}${dayButton(4, "T", this.preferences.trainingDays)}${dayButton(5, "F", this.preferences.trainingDays)}${dayButton(6, "S", this.preferences.trainingDays)}${dayButton(0, "S", this.preferences.trainingDays)}</div></div></div><div class="notification-section notification-toggles"><label><span><b>🎁 Reward unlocks</b><small>Highlight the bell when a reward is ready.</small></span><input type="checkbox" name="rewardAlerts" ${this.preferences.rewardAlerts ? "checked" : ""}></label><label><span><b>🏆 Level ups</b><small>Show XP level milestones.</small></span><input type="checkbox" name="levelUpAlerts" ${this.preferences.levelUpAlerts ? "checked" : ""}></label><label><span><b>🔥 Streak reminder</b><small>Remind me before my streak expires.</small></span><input type="checkbox" name="streakAlerts" ${this.preferences.streakAlerts ? "checked" : ""}></label></div><div class="notification-section"><div class="notification-permission"><span><b>iPhone notifications</b><small>${permissionStatus === "granted" ? "Enabled on this device." : permissionStatus === "denied" ? "Blocked in device settings." : permissionStatus === "unsupported" ? "Not supported in this browser." : "Enable device alerts after installing PitchIQ to the Home Screen."}</small></span>${permissionAvailable && permissionStatus === "default" ? '<button type="button" data-action="request-notification-permission">Enable</button>' : ""}</div></div>${recent.length ? `<div class="notification-section notification-inbox"><h3>Recent</h3>${recent.map(notificationItem).join("")}</div>` : ""}<button type="button" class="notification-save" data-action="save-notifications">Save</button></section>`;
+    document.body.appendChild(sheet);
+    sheet.querySelector(".notification-sheet")?.focus?.();
+  }
+
+  reset() {
+    localStorage.removeItem(PREFERENCES_KEY);
+    localStorage.removeItem(NOTIFICATIONS_KEY);
+    localStorage.removeItem(REWARD_SNAPSHOT_KEY);
+    this.preferences = readPreferences();
+    this.notifications = [];
+    this.closeCentre();
+  }
+}
