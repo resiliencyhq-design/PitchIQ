@@ -1,10 +1,13 @@
 import { SessionService } from "../../services/session-service.js";
 
 export class TrainingController {
-  constructor({ state, render, save }) {
+  constructor({ state, render, renderResults, save, onAnswer, onComplete }) {
     this.state = state;
     this.render = render;
+    this.renderResults = renderResults;
     this.save = save;
+    this.onAnswer = onAnswer;
+    this.onComplete = onComplete;
     this.session = new SessionService();
     this.stage = "home";
     this.selectedDrillId = null;
@@ -31,6 +34,7 @@ export class TrainingController {
   start(position) {
     this.session.start({ position, drillId: this.selectedDrillId, level: this.state.game?.level || 1 });
     this.summary = null;
+    this.state.game.lastXp = 0;
     this.stage = "setup";
     this.render();
   }
@@ -46,9 +50,30 @@ export class TrainingController {
     this.render();
   }
 
+  beginCountdown() {
+    this.session.stopTimer();
+    this.stage = "countdown";
+    const sequence = ["3", "2", "1", "GO"];
+    let index = 0;
+    this.session.countdown = sequence[index];
+    this.session.timer = setInterval(() => {
+      index += 1;
+      if (index < sequence.length) {
+        this.session.countdown = sequence[index];
+        this.render();
+      } else {
+        this.session.stopTimer();
+        this.session.countdown = null;
+        this.beginLive();
+      }
+    }, 1000);
+    this.render();
+  }
+
   answer(correct) {
     if (this.stage !== "live") return;
-    this.session.answer(correct);
+    const result = this.session.answer(correct);
+    this.onAnswer?.(result, this.session.session);
     this.render();
   }
 
@@ -60,8 +85,10 @@ export class TrainingController {
       this.state.game.lastXp = this.summary.xp;
     }
     this.stage = "results";
+    this.onComplete?.(this.summary, this.session.session);
     this.save();
-    this.render();
+    if (this.renderResults) this.renderResults();
+    else this.render();
   }
 
   cancel() { this.session.stopTimer(); this.stage = "home"; this.session.reset(); this.render(); }

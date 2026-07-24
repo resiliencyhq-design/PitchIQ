@@ -4,7 +4,7 @@ export function bindTrainingInteractions(root, controller, { position }) {
     button.addEventListener("click", () => {
       switch (button.dataset.action) {
         case "start-mission-training": controller.start(position()); break;
-        case "training-setup-continue": controller.beginLive(); break;
+        case "training-setup-continue": controller.beginCountdown(); break;
         case "training-setup-cancel": controller.cancel(); break;
         case "correct": controller.answer(true); break;
         case "wrong": controller.answer(false); break;

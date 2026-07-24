@@ -1,5 +1,6 @@
 import { loadState, normalizeState, resetState, saveState } from "../services/storage.js";
 import { PlayerService } from "../services/player-service.js";
+import { addXP, completeDaily } from "../game/progression.js";
 import { sparkles, toast } from "../components/ui.js";
 import { recommendedDrills } from "../data/drills.js";
 import {
@@ -25,6 +26,8 @@ let nav = document.getElementById("nav");
 let selectedPosition = "";
 let onboardingStep = 1;
 let voiceStatusMessage = "";
+let devPanelOpen = sessionStorage.getItem("pitchiq-dev-open") === "1";
+let devBorderEnabled = localStorage.getItem("pitchiqDevBorderEnabled") !== "false";
 
 function syncPlayer() {
   const player = PlayerService.getPlayer();
@@ -37,8 +40,8 @@ function onboardingComplete() {
   return Boolean(player.name && player.position);
 }
 
-function completeOnboarding(name, position) {
-  state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ name, position }) };
+function completeOnboarding(name, position, number = localStorage.getItem("pitchiqJerseyNumber") || state.profile.number) {
+  state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ name, position, number }) };
   saveState(state);
 }
 
@@ -76,6 +79,32 @@ function ensureShell() {
   nav.innerHTML = renderNav();
 }
 
+function applyDeveloperBorder() {
+  document.body.classList.toggle("pitchiq-dev-border", devMode && devBorderEnabled);
+  document.querySelector(".app-shell")?.classList.toggle("DeveloperIPhoneFrame", devMode && devBorderEnabled);
+}
+
+function renderDeveloperPanel() {
+  document.getElementById("pitchiq-dev-toggle")?.remove();
+  document.getElementById("pitchiq-dev-panel")?.remove();
+  if (!devMode) return;
+  applyDeveloperBorder();
+  const toggle = document.createElement("button");
+  toggle.id = "pitchiq-dev-toggle";
+  toggle.type = "button";
+  toggle.textContent = devPanelOpen ? "×" : "☰";
+  toggle.setAttribute("aria-label", "Toggle developer navigation");
+  const panel = document.createElement("aside");
+  panel.id = "pitchiq-dev-panel";
+  panel.hidden = !devPanelOpen;
+  panel.innerHTML = `<strong>PitchIQ Developer</strong>${["splash", "onboard", "home", "training", "results", "player"].map((route) => `<button type="button" data-dev-route="${route}">${route}</button>`).join("")}<button type="button" data-dev-border>Toggle dev border</button><button type="button" data-dev-reset>Reset onboarding</button>`;
+  toggle.addEventListener("click", () => { devPanelOpen = !devPanelOpen; sessionStorage.setItem("pitchiq-dev-open", devPanelOpen ? "1" : "0"); renderDeveloperPanel(); });
+  panel.querySelectorAll("[data-dev-route]").forEach((button) => button.addEventListener("click", () => goto(button.dataset.devRoute)));
+  panel.querySelector("[data-dev-border]").addEventListener("click", () => { devBorderEnabled = !devBorderEnabled; localStorage.setItem("pitchiqDevBorderEnabled", String(devBorderEnabled)); renderDeveloperPanel(); });
+  panel.querySelector("[data-dev-reset]").addEventListener("click", resetPlayer);
+  document.body.append(toggle, panel);
+}
+
 function immersive() {
   return currentRoute === "training" && ["setup", "countdown", "live", "exit-confirm"].includes(training.stage);
 }
@@ -109,6 +138,7 @@ function showRenderError(error, route) {
 function render(route = currentRoute) {
   try {
     ensureShell();
+    applyDeveloperBorder();
     currentRoute = guardRoute(route);
     appElement.innerHTML = renderRoute(currentRoute);
     document.body.classList.toggle("pitchiq-splash-active", currentRoute === "splash");
@@ -117,6 +147,7 @@ function render(route = currentRoute) {
     nav.classList.toggle("visible", !["splash", "onboard"].includes(currentRoute) && !immersive());
     sparkles(document.getElementById("particles"));
     bindScreen(appElement, api);
+    renderDeveloperPanel();
     saveState(state);
     window.dispatchEvent(new CustomEvent("pitchiq:render", { detail: { route: currentRoute } }));
   } catch (error) {
@@ -152,7 +183,36 @@ function resetPlayer() {
   goto("splash");
 }
 
-const training = new TrainingController({ state, save: () => saveState(state), render: () => render("training") });
+function recordTrainingAnswer(result) {
+  if (!result?.correct) return;
+  addXP(state, result.xpAwarded);
+}
+
+function completeTraining(summary, session) {
+  if (!summary || !session) return;
+  completeDaily(state);
+  state.game.bestCombo = Math.max(state.game.bestCombo || 0, summary.combo || 0);
+  state.game.trainingSeconds = (state.game.trainingSeconds || 0) + (session.drill.seconds || 45);
+  state.analytics.sessions.push({
+    id: session.id,
+    drill: session.drill.id,
+    difficulty: training.difficulty,
+    score: summary.score,
+    durationSeconds: session.drill.seconds || 45,
+    results: session.results,
+    endedAt: summary.endedAt,
+  });
+  window.dispatchEvent(new CustomEvent("pitchiq:training-complete", { detail: { summary, session } }));
+}
+
+const training = new TrainingController({
+  state,
+  save: () => saveState(state),
+  render: () => render("training"),
+  renderResults: () => render("results"),
+  onAnswer: recordTrainingAnswer,
+  onComplete: completeTraining,
+});
 const api = {
   state,
   training,

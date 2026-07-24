@@ -33,7 +33,11 @@ function bindOnboarding(root, app) {
   next?.addEventListener("click", () => app.setOnboardStep(2));
   root.querySelector('[data-action="onboard-next-position"]')?.addEventListener("click", () => app.setOnboardStep(3));
   root.querySelector('[data-action="save-profile"]')?.addEventListener("click", () => {
-    app.completeOnboarding(input?.value?.trim() || "Player", app.selectedPosition);
+    app.completeOnboarding(
+      input?.value?.trim() || "Player",
+      app.selectedPosition,
+      localStorage.getItem("pitchiqJerseyNumber") || app.state.profile.number,
+    );
     app.goto("home");
   });
 }
