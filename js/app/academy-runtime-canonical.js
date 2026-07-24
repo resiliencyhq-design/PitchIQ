@@ -16,6 +16,7 @@ let selectedPlayerStyle = localStorage.getItem(PLAYER_STYLE_KEY) || "playmaker";
 
 function route(){ return window.location.hash.replace(/^#/, "").toLowerCase(); }
 function firstRun(){ return window.PitchIQApp?.firstRun || window.PitchIQApp?.getFirstRun?.(); }
+function navigationAdapter(){ return window.PitchIQApp?.navigationAdapter; }
 function identity(){
   const labels = {LW:"Left Wing",ST:"Striker",RW:"Right Wing",CAM:"Central Attacking Midfielder",CM:"Central Midfielder",CDM:"Defensive Midfielder",LB:"Left Back",CB:"Centre Back",RB:"Right Back",GK:"Goalkeeper"};
   const position = localStorage.getItem("pitchiqSelectedPosition") || "";
@@ -115,12 +116,7 @@ function goHome(){
   localStorage.setItem(AVATAR_KEY, selectedAvatar);
   localStorage.setItem(PLAYER_STYLE_KEY, selectedPlayerStyle);
   const handoff = window.PitchIQApp?.enterHomeFromModule;
-  if(typeof handoff === "function"){
-    handoff();
-    return;
-  }
-  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "home", source: "academy" } }));
+  if(typeof handoff === "function") handoff("academy");
 }
 function runReaction(){
   const signal = app.querySelector("[data-reaction-signal]");
@@ -210,8 +206,9 @@ function handleCanonicalClick(event){
   app.querySelectorAll("[data-player-style]").forEach(choice => choice.classList.toggle("selected", choice.dataset.playerStyle===selectedPlayerStyle));
 }
 function handleRoute(){
-  if(route() === LEGACY_ROUTE){ window.location.replace(`${window.location.pathname}${window.location.search}#${CANONICAL_ROUTE}`); return; }
-  if(route() === CANONICAL_ROUTE){ resumeStage(); queueMicrotask(render); }
+  const adapter = navigationAdapter();
+  const normalized = adapter?.normalizeAcademyRoute?.(route()) || route();
+  if(normalized === CANONICAL_ROUTE){ resumeStage(); queueMicrotask(render); }
 }
 
 document.addEventListener("click", handleCanonicalClick, true);
@@ -221,5 +218,9 @@ handleRoute();
 window.PitchIQAcademy = Object.freeze({
   render,
   advance,
-  enter: () => { resumeStage(); window.location.hash=CANONICAL_ROUTE; queueMicrotask(render); }
+  enter: () => {
+    resumeStage();
+    navigationAdapter()?.enterAcademy?.();
+    queueMicrotask(render);
+  }
 });
