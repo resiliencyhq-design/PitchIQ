@@ -1,7 +1,6 @@
 const app = document.getElementById("app");
 const nav = document.getElementById("nav");
 const CANONICAL_ROUTE = "academy-trial";
-const LEGACY_ROUTE = "academy-trials";
 const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
 const AVATAR_KEY = "pitchiqAcademyAvatar";
 const EMAIL_KEY = "pitchiqGuardianEmail";
@@ -115,12 +114,7 @@ function goHome(){
   localStorage.setItem(AVATAR_KEY, selectedAvatar);
   localStorage.setItem(PLAYER_STYLE_KEY, selectedPlayerStyle);
   const handoff = window.PitchIQApp?.enterHomeFromModule;
-  if(typeof handoff === "function"){
-    handoff();
-    return;
-  }
-  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "home", source: "academy" } }));
+  if(typeof handoff === "function") handoff("academy");
 }
 function runReaction(){
   const signal = app.querySelector("[data-reaction-signal]");
@@ -210,8 +204,8 @@ function handleCanonicalClick(event){
   app.querySelectorAll("[data-player-style]").forEach(choice => choice.classList.toggle("selected", choice.dataset.playerStyle===selectedPlayerStyle));
 }
 function handleRoute(){
-  if(route() === LEGACY_ROUTE){ window.location.replace(`${window.location.pathname}${window.location.search}#${CANONICAL_ROUTE}`); return; }
-  if(route() === CANONICAL_ROUTE){ resumeStage(); queueMicrotask(render); }
+  const normalized = window.PitchIQApp?.normalizeAcademyRoute?.() || route();
+  if(normalized === CANONICAL_ROUTE){ resumeStage(); queueMicrotask(render); }
 }
 
 document.addEventListener("click", handleCanonicalClick, true);
@@ -221,5 +215,8 @@ handleRoute();
 window.PitchIQAcademy = Object.freeze({
   render,
   advance,
-  enter: () => { resumeStage(); window.location.hash=CANONICAL_ROUTE; queueMicrotask(render); }
+  enter: () => {
+    resumeStage();
+    window.PitchIQApp?.enterAcademy?.("academy-runtime");
+  }
 });
