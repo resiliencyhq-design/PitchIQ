@@ -1,0 +1,11 @@
+.mission-complete-screen{min-height:100%;padding:0 14px calc(22px + env(safe-area-inset-bottom));color:#f7fff8;background:radial-gradient(circle at 50% 12%,rgba(215,255,46,.16),transparent 28%),linear-gradient(180deg,#020908,#04100d 54%,#020806)}
+.mission-complete-wrap{width:min(100%,430px);margin:0 auto;padding-top:max(38px,env(safe-area-inset-top));text-align:center}
+.mission-complete-badge{display:grid;place-items:center;width:92px;height:92px;margin:0 auto 18px;border:2px solid rgba(215,255,46,.5);border-radius:50%;background:rgba(215,255,46,.12);box-shadow:0 0 44px rgba(215,255,46,.18);color:#d7ff2e;font-size:44px;font-weight:950}
+.mission-complete-kicker,.mission-complete-reward>span,.mission-complete-objectives>span{color:#d7ff2e;font-size:11px;font-weight:900;letter-spacing:.1em}
+.mission-complete-wrap h1{margin:12px 0 10px;font-size:clamp(34px,9vw,46px);line-height:.98}
+.mission-complete-wrap>p{max-width:320px;margin:0 auto;color:#a9b8b0;line-height:1.5}
+.mission-complete-reward,.mission-complete-objectives{margin-top:16px;border:1px solid rgba(215,255,46,.14);border-radius:22px;background:linear-gradient(180deg,rgba(10,26,21,.96),rgba(4,15,12,.98));box-shadow:0 20px 48px rgba(0,0,0,.28)}
+.mission-complete-reward{padding:20px}.mission-complete-reward b,.mission-complete-reward small{display:block}.mission-complete-reward b{margin-top:8px;font-size:30px}.mission-complete-reward small{margin-top:4px;color:#96a69e}
+.mission-complete-objectives{padding:18px;text-align:left}.mission-complete-objectives ol{display:grid;gap:10px;margin:14px 0 0;padding:0;list-style:none}.mission-complete-objectives li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center;padding:12px;border-radius:15px;background:rgba(255,255,255,.035)}.mission-complete-objectives li>span{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:rgba(215,255,46,.12);color:#d7ff2e;font-weight:900}.mission-complete-objectives b,.mission-complete-objectives small{display:block}.mission-complete-objectives small{margin-top:3px;color:#83948b;font-size:11px}
+.mission-complete-home,.mission-complete-open{width:100%;margin-top:16px;min-height:54px}
+@media(max-width:360px){.mission-complete-screen{padding-inline:10px}.mission-complete-wrap{padding-top:max(28px,env(safe-area-inset-top))}}
