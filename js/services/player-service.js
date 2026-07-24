@@ -1,4 +1,4 @@
-import { loadState, saveState, normalizeState } from "./storage.js";
+import { loadState, normalizeState, stateStore } from "./storage.js";
 
 const LEGACY_KEYS = Object.freeze({
   name: "pitchiqPlayerName",
@@ -56,8 +56,7 @@ function migrateLegacyPlayer(state) {
   const normalized = normalizeState(state);
   const legacy = readLegacyPlayer();
   const current = normalizePlayer(normalized.profile);
-
-  normalized.profile = normalizePlayer({
+  const nextPlayer = normalizePlayer({
     ...current,
     name: current.name || legacy.name,
     number: current.number || legacy.number,
@@ -66,10 +65,12 @@ function migrateLegacyPlayer(state) {
     avatar: current.avatar || legacy.avatar
   });
 
+  const next = stateStore.update(draft => {
+    draft.profile = nextPlayer;
+  }, { source: "player-legacy-migration" });
   localStorage.setItem(MIGRATION_KEY, "true");
-  writeCompatibilityKeys(normalized.profile, Boolean(normalized.profile.name && normalized.profile.position));
-  saveState(normalized);
-  return normalized;
+  writeCompatibilityKeys(nextPlayer, Boolean(nextPlayer.name && nextPlayer.position));
+  return next;
 }
 
 function loadCanonicalState() {
@@ -85,30 +86,29 @@ function getPlayer() {
 }
 
 function updatePlayer(patch = {}, options = {}) {
-  const state = loadCanonicalState();
-  const nextPlayer = normalizePlayer({ ...state.profile, ...patch });
-  state.profile = nextPlayer;
-  saveState(state);
+  const current = loadCanonicalState();
+  const nextPlayer = normalizePlayer({ ...current.profile, ...patch });
+  stateStore.update(draft => {
+    draft.profile = nextPlayer;
+  }, { source: "player-update" });
   writeCompatibilityKeys(nextPlayer, options.onboardingComplete);
   window.dispatchEvent(new CustomEvent("pitchiq:player-updated", { detail: { player: clone(nextPlayer) } }));
   return clone(nextPlayer);
 }
 
 function completeOnboarding(patch = {}) {
-  const player = updatePlayer({ ...patch, createdAt: patch.createdAt ?? Date.now() }, { onboardingComplete: true });
-  return player;
+  return updatePlayer({ ...patch, createdAt: patch.createdAt ?? Date.now() }, { onboardingComplete: true });
 }
 
 function resetPlayer() {
   Object.values(LEGACY_KEYS).forEach(key => localStorage.removeItem(key));
   localStorage.removeItem(MIGRATION_KEY);
-
-  const state = normalizeState(loadState());
-  state.profile = normalizePlayer({});
-  saveState(state);
-
+  const nextPlayer = normalizePlayer({});
+  stateStore.update(draft => {
+    draft.profile = nextPlayer;
+  }, { source: "player-reset" });
   window.dispatchEvent(new CustomEvent("pitchiq:player-reset"));
-  return clone(state.profile);
+  return clone(nextPlayer);
 }
 
 export const PlayerService = Object.freeze({
