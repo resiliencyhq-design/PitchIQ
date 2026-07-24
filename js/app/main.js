@@ -201,13 +201,15 @@ function goto(route) {
 }
 
 function enterAcademy() {
-  if (firstRun.getCurrentStep() !== "know-your-strengths") return;
+  if (firstRun.getCurrentStep() !== "know-your-strengths") return firstRun.getState();
+  firstRun.completeStep("know-your-strengths");
   const academy = window.PitchIQAcademy;
   if (academy && typeof academy.enter === "function") {
     academy.enter();
-    return;
+    return firstRun.getState();
   }
   window.location.hash = "academy-trial";
+  return firstRun.getState();
 }
 
 function resetPlayer() {
@@ -312,7 +314,7 @@ window.PitchIQApp = Object.freeze({
 import("./academy-journey.js?v=first-run-reconnect-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy journey failed to load", error);
 });
-import("./academy-runtime-canonical.js?v=first-run-reconnect-20260724").catch((error) => {
+import("./academy-runtime-canonical.js?v=academy-handoff-loop-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy runtime failed to load", error);
 });
 
