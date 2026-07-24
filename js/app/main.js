@@ -285,6 +285,11 @@ window.PitchIQApp = Object.freeze({
     return target;
   },
   enterHomeFromModule: () => {
+    const target = firstRun.getEntryRoute();
+    if (target !== "home") {
+      goto(target);
+      return target;
+    }
     window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
     goto("home");
     return "home";

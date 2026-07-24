@@ -1,7 +1,6 @@
 const app = document.getElementById("app");
 const nav = document.getElementById("nav");
 const FEATURE_ROUTES = new Set(["lab-juggling"]);
-const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
 const AVATAR_KEY = "pitchiqAcademyAvatar";
 const CAMERA_CONSTRAINTS = [
   {audio:false,video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}},
@@ -45,9 +44,13 @@ function stopCamera(){
 function routeTo(route){ stopCamera(); window.location.hash = route; }
 function returnHome(){
   stopCamera();
-  const cleanUrl = `${window.location.pathname}${window.location.search}`;
-  window.history.replaceState(null, "", cleanUrl);
-  window.location.reload();
+  const handoff = window.PitchIQApp?.enterHomeFromModule;
+  if(typeof handoff === "function"){
+    handoff();
+    return;
+  }
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "home", source: "lab-juggling" } }));
 }
 function shell(content){ return `<section class="screen app active trial-shell">${content}</section>`; }
 function top(title, backRoute="home", allowBack=true){
@@ -66,15 +69,11 @@ function labCamera(){
   return shell(`${top("Juggling Assessment", "home")}<main class="lab-stage"><div class="lab-recording"><span><i></i>ASSESSMENT LIVE</span><b id="labTime">00:00</b></div><div class="lab-camera"><video id="labVideo" playsinline muted autoplay></video><div class="lab-camera-placeholder" id="labCameraPlaceholder">Requesting camera access…</div><div class="lab-camera-guide"></div></div><p class="lab-manual">Automatic touch detection is not active yet. Record a manual reference count during this MVP assessment.</p><div class="lab-count" id="labCount">0</div><div class="lab-count-label">Reference touches</div><button class="trial-primary" type="button" data-lab-touch style="margin:16px 0">+ Record touch</button><button class="trial-danger" type="button" data-lab-stage="result">Complete assessment</button></main>`);
 }
 function labResult(){
-  return shell(`${top("Assessment Report", "home", false)}<main class="lab-stage"><span class="trial-kicker">Academy assessment report</span><h1>Assessment Complete</h1><div class="result-card"><div class="lab-count">${provisionalCount}</div><div class="lab-count-label">Reference touches</div><div class="result-meta"><div><small>Time</small><b>${formatTime(elapsed)}</b></div><div><small>Status</small><b>Completed</b></div></div></div><div class="lab-note"><strong>Coach note</strong><p>Your first result establishes a starting point. Future assessments will add automatic counting and deeper feedback.</p></div><button class="trial-primary" type="button" data-lab-stage="accepted">Continue →</button></main>`);
-}
-function academyAccepted(){
-  const player = playerIdentity();
-  return shell(`${top("PitchIQ Academy", "home", false)}<main class="academy-accepted"><div class="trial-shield">★</div><span class="trial-kicker">Orientation complete</span><h1>ACADEMY<br><em>ACCEPTED</em></h1><p>Welcome, ${player.name}. You know the tools and your coach is ready.</p><button class="trial-primary" type="button" data-lab-stage="avatar">Choose your avatar →</button></main>`);
+  return shell(`${top("Assessment Report", "home", false)}<main class="lab-stage"><span class="trial-kicker">Assessment report</span><h1>Assessment Complete</h1><div class="result-card"><div class="lab-count">${provisionalCount}</div><div class="lab-count-label">Reference touches</div><div class="result-meta"><div><small>Time</small><b>${formatTime(elapsed)}</b></div><div><small>Status</small><b>Completed</b></div></div></div><div class="lab-note"><strong>Coach note</strong><p>This Lab result is saved separately and does not change Academy induction progress.</p></div><button class="trial-primary" type="button" data-lab-stage="avatar">Choose a Lab avatar →</button></main>`);
 }
 function avatarSelection(){
   const options = [["captain","🧭"],["playmaker","⚡"],["guardian","🛡️"]];
-  return shell(`${top("Academy Avatar", "home", false)}<main class="lab-stage"><span class="trial-kicker">Identity reward</span><h1>Choose Your Avatar</h1><p>Select the academy identity that represents how you play.</p><div class="avatar-grid">${options.map(([id,icon])=>`<button class="avatar-choice ${selectedAvatar===id?"selected":""}" type="button" data-avatar="${id}" aria-label="Choose ${id}">${icon}</button>`).join("")}</div><button class="trial-primary" type="button" data-complete-academy>Welcome home →</button></main>`);
+  return shell(`${top("Lab Avatar", "home", false)}<main class="lab-stage"><span class="trial-kicker">Experiment reward</span><h1>Choose a Lab Avatar</h1><p>This selection is for the experimental juggling flow only.</p><div class="avatar-grid">${options.map(([id,icon])=>`<button class="avatar-choice ${selectedAvatar===id?"selected":""}" type="button" data-avatar="${id}" aria-label="Choose ${id}">${icon}</button>`).join("")}</div><button class="trial-primary" type="button" data-complete-lab>Return home →</button></main>`);
 }
 function formatTime(seconds){ return `00:${String(Math.min(99, seconds)).padStart(2,"0")}`; }
 function renderFeature(){
@@ -86,7 +85,6 @@ function renderFeature(){
   if(labStage === "countdown") app.innerHTML = countdown();
   if(labStage === "camera") app.innerHTML = labCamera();
   if(labStage === "result") app.innerHTML = labResult();
-  if(labStage === "accepted") app.innerHTML = academyAccepted();
   if(labStage === "avatar") app.innerHTML = avatarSelection();
   bindFeature();
 }
@@ -121,8 +119,7 @@ function bindFeature(){
     localStorage.setItem(AVATAR_KEY, selectedAvatar);
     app.querySelectorAll("[data-avatar]").forEach(choice => choice.classList.toggle("selected", choice.dataset.avatar === selectedAvatar));
   }));
-  app.querySelector("[data-complete-academy]")?.addEventListener("click", () => {
-    localStorage.setItem(ACADEMY_ACCEPTED_KEY, "true");
+  app.querySelector("[data-complete-lab]")?.addEventListener("click", () => {
     localStorage.setItem(AVATAR_KEY, selectedAvatar);
     returnHome();
   });
