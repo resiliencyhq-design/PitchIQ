@@ -18,7 +18,7 @@ import { TrainingController } from "./controllers/training-controller.js";
 import { createNavigationAdapter } from "./navigation/navigation-adapter.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
-import { NotificationController } from "./notification-controller.js?v=notification-close-recursion-20260724";
+import { NotificationController } from "./notification-controller.js?v=sprint-n1-notification-centre-20260724";
 
 const state = normalizeState(loadState());
 const appElement = document.getElementById("app");
@@ -194,6 +194,9 @@ const navigation = new NavigationController({
     if (route === "training" && training.stage === "results") training.home();
   },
   renderRoute: renderResolvedRoute,
+  onRouteChange: (route, context) => {
+    window.dispatchEvent(new CustomEvent("pitchiq:route-change", { detail: { route, source: context.source || "navigation" } }));
+  },
 });
 const navigationAdapter = createNavigationAdapter({ navigation, firstRun });
 
@@ -310,7 +313,7 @@ window.PitchIQApp = Object.freeze({
 import("./academy-journey.js?v=remove-strengths-second-owner-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy journey failed to load", error);
 });
-import("./academy-runtime-canonical.js?v=platform-2-0-b3-academy-navigation-20260724").catch((error) => {
+import("./academy-runtime-canonical.js?v=remove-strengths-second-owner-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy runtime failed to load", error);
 });
 
