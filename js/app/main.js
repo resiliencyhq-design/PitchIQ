@@ -213,7 +213,7 @@ function enterAcademy() {
     academy.enter();
     return firstRun.getState();
   }
-  window.location.hash = "academy-trial";
+  navigationAdapter.enterAcademy();
   return firstRun.getState();
 }
 
@@ -310,7 +310,7 @@ window.PitchIQApp = Object.freeze({
 import("./academy-journey.js?v=remove-strengths-second-owner-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy journey failed to load", error);
 });
-import("./academy-runtime-canonical.js?v=remove-strengths-second-owner-20260724").catch((error) => {
+import("./academy-runtime-canonical.js?v=platform-2-0-b3-academy-navigation-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy runtime failed to load", error);
 });
 

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createNavigationAdapter } from "../js/app/navigation/navigation-adapter.js";
 
-function createFixture({ step = "landing", entryRoute = "onboard" } = {}) {
+function createFixture({ step = "landing", entryRoute = "onboard", hash = "" } = {}) {
   const calls = [];
   const navigation = {
     go(route, context) {
@@ -17,13 +17,14 @@ function createFixture({ step = "landing", entryRoute = "onboard" } = {}) {
     getEntryRoute: () => entryRoute,
   };
   const historyCalls = [];
+  const location = { pathname: "/PitchIQ/", search: "?dev=1", hash };
   const adapter = createNavigationAdapter({
     navigation,
     firstRun,
     history: { replaceState: (...args) => historyCalls.push(args) },
-    location: { pathname: "/PitchIQ/", search: "?dev=1" },
+    location,
   });
-  return { adapter, calls, completed, historyCalls };
+  return { adapter, calls, completed, historyCalls, location };
 }
 
 test("enterFromLanding completes landing and uses the guarded entry route", () => {
@@ -45,4 +46,16 @@ test("enterHomeFromModule clears academy hash before guarded Home navigation", (
   assert.equal(fixture.adapter.enterHomeFromModule("academy"), "home");
   assert.deepEqual(fixture.historyCalls, [[null, "", "/PitchIQ/?dev=1"]]);
   assert.deepEqual(fixture.calls, [{ route: "home", context: { source: "academy" } }]);
+});
+
+test("enterAcademy writes the canonical academy hash through the adapter", () => {
+  const fixture = createFixture();
+  assert.equal(fixture.adapter.enterAcademy(), "academy-trial");
+  assert.deepEqual(fixture.historyCalls, [[null, "", "/PitchIQ/?dev=1#academy-trial"]]);
+});
+
+test("normalizeAcademyRoute upgrades the legacy plural hash", () => {
+  const fixture = createFixture();
+  assert.equal(fixture.adapter.normalizeAcademyRoute("#academy-trials"), "academy-trial");
+  assert.deepEqual(fixture.historyCalls, [[null, "", "/PitchIQ/?dev=1#academy-trial"]]);
 });
