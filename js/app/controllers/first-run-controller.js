@@ -113,9 +113,9 @@ export class FirstRunController {
       ["name", player.name],
       ["number", player.number || this.storage.getItem("pitchiqJerseyNumber")],
       ["position", player.position || this.storage.getItem("pitchiqSelectedPosition")],
-      ["player-contract", contract.accepted && contract.guardianEmail],
-      ["avatar", player.avatar || this.storage.getItem("pitchiqAvatar")],
-      ["player-style", player.playerStyle || this.storage.getItem("pitchiqPlayerStyle")],
+      ["player-contract", contract.accepted && this.storage.getItem("pitchiqGuardianEmail")],
+      ["avatar", player.avatar || this.storage.getItem("pitchiqAcademyAvatar")],
+      ["player-style", player.style || player.playerStyle || this.storage.getItem("pitchiqPlayerStyle")],
     ];
 
     const currentIndex = FIRST_RUN_STEPS.indexOf(this.state.currentStep);
