@@ -48,7 +48,7 @@
   <link rel="stylesheet" href="css/style.css?v=onboarding-architecture-lock-20260628"/>
   <link rel="stylesheet" href="css/onboard-step1-lock.css?v=step1-mvp-locked-20260628"/>
   <link rel="stylesheet" href="css/onboard-step2-lock.css?v=step2-preferred-position-prompt-20260703"/>
-  <link rel="stylesheet" href="css/onboard-step2-tactical-web.css?v=step2-selected-only-web-20260703"/>
+  <link rel="stylesheet" href="css/onboard-step2-tactical-web.css?v=restore-position-tactical-web-20260724"/>
   <link rel="stylesheet" href="css/splash-fit.css?v=logo-down-20260628"/>
   <link rel="stylesheet" href="css/onboarding-fix.css?v=hero-bg-top-20260623"/>
   <link rel="stylesheet" href="css/academy-hero-asset.css?v=hero-bg-top-20260623"/>
@@ -104,7 +104,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "sprint-n1-notification-centre-20260724";
+    window.__PITCHIQ_BUILD__ = "restore-position-tactical-web-20260724";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -145,5 +145,6 @@
   <script type="module" src="js/app/onboard-jersey.js?v=sprint-8-4-number-flow-fix-20260710"></script>
   <script type="module" src="js/app/onboard-number.js?v=sprint-10-2-number-selector-routing-20260716"></script>
   <script type="module" src="js/app/onboard-step2-spawn.js?v=step2-direct-selected-puck-20260714"></script>
+  <script type="module" src="js/app/onboard-tactical-web.js?v=restore-position-tactical-web-20260724"></script>
 </body>
 </html>
