@@ -33,11 +33,12 @@ function bindOnboarding(root, app) {
   next?.addEventListener("click", () => app.setOnboardStep(2));
   root.querySelector('[data-action="onboard-next-position"]')?.addEventListener("click", () => app.setOnboardStep(3));
   root.querySelector('[data-action="save-profile"]')?.addEventListener("click", () => {
-    app.completeOnboarding(
-      input?.value?.trim() || "Player",
-      app.selectedPosition,
-      localStorage.getItem("pitchiqJerseyNumber") || app.state.profile.number,
-    );
+    const existingProfile = app.state.profile || {};
+    const name = input?.value?.trim() || existingProfile.name || "Player";
+    const position = app.selectedPosition || existingProfile.position || localStorage.getItem("pitchiqSelectedPosition") || "";
+    const number = localStorage.getItem("pitchiqJerseyNumber") || existingProfile.number;
+
+    app.completeOnboarding(name, position, number);
 
     if (app.firstRun?.getCurrentStep?.() === "know-your-strengths") {
       app.firstRun.completeStep("know-your-strengths");
