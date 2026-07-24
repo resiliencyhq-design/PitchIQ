@@ -11,7 +11,7 @@ import {
   renderResults,
   renderSplash,
   renderTraining,
-} from "./routes.js?v=step1-art-align-20260620";
+} from "./routes.js?v=onboarding-canonical-ui-runtime-20260724";
 import { FirstRunController } from "./controllers/first-run-controller.js";
 import { TrainingController } from "./controllers/training-controller.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
@@ -50,11 +50,25 @@ function onboardingComplete() {
   return firstRun.isComplete();
 }
 
+function cleanIdentityValue(step, value) {
+  if (step === "name") return String(value || "").trim().slice(0, 18);
+  if (step === "number") {
+    const parsed = Number.parseInt(String(value || "").replace(/\D/g, ""), 10);
+    return parsed >= 1 && parsed <= 99 ? String(parsed) : "";
+  }
+  if (step === "position") return String(value || "").trim();
+  return "";
+}
+
 function saveIdentityStep(step, value) {
   if (step !== firstRun.getCurrentStep()) return firstRun.getState();
-  if (step === "name") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ name: value }) };
-  if (step === "number") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ number: value }) };
-  if (step === "position") state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ position: value }) };
+  const cleanValue = cleanIdentityValue(step, value);
+  if (!cleanValue) return firstRun.getState();
+
+  if (step === "name") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ name: cleanValue }) };
+  if (step === "number") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ number: cleanValue }) };
+  if (step === "position") state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ position: cleanValue }) };
+
   firstRun.completeStep(step);
   saveState(state);
   render("onboard");
