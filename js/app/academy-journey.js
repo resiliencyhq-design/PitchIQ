@@ -1,6 +1,5 @@
 import { PlayerService } from "../services/player-service.js";
 
-const ACADEMY_ACCEPTED_KEY = "pitchiqAcademyAccepted";
 const ACADEMY_FEATURE_HASHES = new Set(["#academy-trial", "#academy-trials", "#lab-juggling"]);
 
 const POSITION_LABELS = {
@@ -55,7 +54,7 @@ function identityMarkup() {
     </div>
     <p class="academy-discover-message">See the game. Stay <strong>calm.</strong> Make an impact.<br>Let’s unlock what makes you stand out.</p>
     <div class="onboard-step-footer academy-welcome-footer identity-canonical-cta-host">
-      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="save-profile" aria-label="Continue"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
+      <button class="primary mega splash-cta-v1 onboard-cta-v1" data-action="enter-academy" aria-label="Continue"><span>CONTINUE</span><b aria-hidden="true">→</b></button>
     </div>`;
 }
 
@@ -160,33 +159,15 @@ function alignOnboardingLabels() {
   syncIdentityScene();
 }
 
-function navigateToAcademyOrientation() {
-  const academy = window.PitchIQAcademy;
-  if (academy && typeof academy.enter === "function") {
-    academy.enter();
-    return;
-  }
-
-  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#academy-trial`);
-  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "academy-trial", source: "onboarding" } }));
-}
-
 function beginFirstAssessment(event) {
-  const button = event.target.closest?.('[data-action="save-profile"]');
+  const button = event.target.closest?.('[data-action="enter-academy"]');
   if (!button || !button.closest(".academy-welcome-step")) return;
   event.preventDefault();
   event.stopImmediatePropagation();
 
-  const player = identity();
-  PlayerService.completeOnboarding({
-    name: player.name,
-    number: player.number,
-    position: player.positionCode === "—" ? "" : player.positionCode
-  });
-  localStorage.removeItem(ACADEMY_ACCEPTED_KEY);
   identityJourneyComplete = true;
   removeIdentityScene({ restoreSource: false });
-  navigateToAcademyOrientation();
+  window.PitchIQApp?.enterAcademy?.();
 }
 
 function handleJourneyRender() {
