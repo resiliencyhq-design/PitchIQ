@@ -293,6 +293,7 @@ window.PitchIQApp = Object.freeze({
   ...(window.PitchIQApp || {}),
   firstRun,
   getFirstRun: () => firstRun,
+  enterAcademy,
   enterFromLanding: () => {
     if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
     const target = firstRun.getEntryRoute();
@@ -311,10 +312,10 @@ window.PitchIQApp = Object.freeze({
   },
 });
 
-import("./academy-journey.js?v=first-run-reconnect-20260724").catch((error) => {
+import("./academy-journey.js?v=remove-strengths-second-owner-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy journey failed to load", error);
 });
-import("./academy-runtime-canonical.js?v=academy-handoff-loop-20260724").catch((error) => {
+import("./academy-runtime-canonical.js?v=remove-strengths-second-owner-20260724").catch((error) => {
   console.warn("[PitchIQ] Academy runtime failed to load", error);
 });
 
