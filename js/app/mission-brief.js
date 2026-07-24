@@ -17,7 +17,7 @@ function ensureStyle() {
   const link = document.createElement("link");
   link.id = STYLE_ID;
   link.rel = "stylesheet";
-  link.href = "css/mission-brief-pr3.css?v=mission-pr3-universal-brief-20260724";
+  link.href = "css/mission-brief-pr3.css?v=refactor-mission-card-single-owner-20260724";
   document.head.appendChild(link);
 }
 
@@ -62,18 +62,23 @@ function routeViaNav(route) {
   if (button) button.click();
 }
 
-function openMissionBrief() {
+export function openMissionBrief() {
   const mission = prepareMissionBrief();
   ensureStyle();
   const app = document.getElementById("app");
-  if (!app) return;
+  if (!app) return false;
   app.innerHTML = renderMissionBrief(mission);
   document.getElementById("nav")?.classList.remove("visible");
+  return true;
+}
+
+function missionEntryFromEvent(event) {
+  return event.target.closest?.("[data-mission-entry='current']") || null;
 }
 
 if (typeof document !== "undefined") {
   document.addEventListener("click", event => {
-    const entry = event.target.closest?.("[data-mission-entry='current']");
+    const entry = missionEntryFromEvent(event);
     if (entry) {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -94,5 +99,14 @@ if (typeof document !== "undefined") {
       beginBriefedMission();
       routeViaNav("training");
     }
+  }, true);
+
+  document.addEventListener("keydown", event => {
+    if (!["Enter", " "].includes(event.key)) return;
+    const entry = missionEntryFromEvent(event);
+    if (!entry) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openMissionBrief();
   }, true);
 }
