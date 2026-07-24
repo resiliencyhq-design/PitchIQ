@@ -86,6 +86,8 @@ document.addEventListener("click", (event) => {
   }
 }, true);
 
+window.addEventListener("pitchiq:training-complete", recordCompletedSession);
+
 window.addEventListener("load", () => setTimeout(() => renderReadiness(), 100));
 window.addEventListener(READINESS_EVENT, (event) => {
   renderReadiness(event.detail || calculateReadiness());

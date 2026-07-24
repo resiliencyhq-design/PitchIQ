@@ -54,4 +54,7 @@ export function showPostTrainingCoachReflection(selection = readSelection()) {
   document.body.appendChild(overlay); activeReflection = overlay; overlay.querySelector("[data-reflection-response]")?.focus(); return overlay;
 }
 
-if (typeof document !== "undefined") document.addEventListener("click", event => { const action = event.target.closest?.("[data-action]")?.dataset.action; if (action === "finish-live-session") setTimeout(() => showPostTrainingCoachReflection(), 0); }, true);
+if (typeof document !== "undefined") {
+  document.addEventListener("click", event => { const action = event.target.closest?.("[data-action]")?.dataset.action; if (action === "finish-live-session") setTimeout(() => showPostTrainingCoachReflection(), 0); }, true);
+  window.addEventListener("pitchiq:training-complete", () => setTimeout(() => showPostTrainingCoachReflection(), 0));
+}
