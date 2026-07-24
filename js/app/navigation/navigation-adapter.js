@@ -9,6 +9,14 @@ export function createNavigationAdapter({ navigation, firstRun, history = window
     return navigation.go(route, { source });
   }
 
+  function goFeature(route, source = "feature") {
+    const normalized = String(route || "").replace(/^#/, "").toLowerCase();
+    if (!normalized) return navigation.getCurrentRoute?.() || firstRun.getEntryRoute();
+    history.replaceState(null, "", `${location.pathname}${location.search}#${normalized}`);
+    window.dispatchEvent(new CustomEvent("pitchiq:route-change", { detail: { route: normalized, source } }));
+    return normalized;
+  }
+
   function enterFromLanding() {
     if (firstRun.getCurrentStep() === "landing") firstRun.completeStep("landing");
     return go(firstRun.getEntryRoute(), "landing");
@@ -22,8 +30,7 @@ export function createNavigationAdapter({ navigation, firstRun, history = window
   }
 
   function enterAcademy() {
-    history.replaceState(null, "", `${location.pathname}${location.search}#${ACADEMY_ROUTE}`);
-    return ACADEMY_ROUTE;
+    return goFeature(ACADEMY_ROUTE, "academy");
   }
 
   function normalizeAcademyRoute(route) {
@@ -35,6 +42,7 @@ export function createNavigationAdapter({ navigation, firstRun, history = window
 
   return Object.freeze({
     go,
+    goFeature,
     enterFromLanding,
     enterHomeFromModule,
     enterAcademy,
