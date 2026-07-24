@@ -112,10 +112,11 @@ export class NotificationController {
   }
 
   closeCentre() {
+    const wasOpen = this.open || Boolean(document.getElementById("notificationCentre"));
     this.open = false;
     document.getElementById("notificationCentre")?.remove();
     document.body.classList.remove("notification-centre-open");
-    this.onChange();
+    if (wasOpen) this.onChange();
   }
 
   markRead(id) {
