@@ -26,7 +26,6 @@ const devMode = new URLSearchParams(window.location.search).has("dev");
 let currentRoute = "splash";
 let nav = document.getElementById("nav");
 let selectedPosition = "";
-let onboardingStep = 1;
 let voiceStatusMessage = "";
 let devPanelOpen = sessionStorage.getItem("pitchiq-dev-open") === "1";
 let devBorderEnabled = localStorage.getItem("pitchiqDevBorderEnabled") !== "false";
@@ -51,12 +50,15 @@ function onboardingComplete() {
   return firstRun.isComplete();
 }
 
-function completeOnboarding(name, position, number = localStorage.getItem("pitchiqJerseyNumber") || state.profile.number) {
-  state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ name, position, number }) };
-  firstRun.completeStep("name");
-  firstRun.completeStep("number");
-  firstRun.completeStep("position");
+function saveIdentityStep(step, value) {
+  if (step !== firstRun.getCurrentStep()) return firstRun.getState();
+  if (step === "name") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ name: value }) };
+  if (step === "number") state.profile = { ...state.profile, ...PlayerService.updatePlayer({ number: value }) };
+  if (step === "position") state.profile = { ...state.profile, ...PlayerService.completeOnboarding({ position: value }) };
+  firstRun.completeStep(step);
   saveState(state);
+  render("onboard");
+  return firstRun.getState();
 }
 
 function guardRoute(route) {
@@ -143,7 +145,7 @@ function trainingView() {
 function renderRoute(route) {
   const view = trainingView();
   if (route === "splash") return renderSplash();
-  if (route === "onboard") return renderOnboard();
+  if (route === "onboard") return renderOnboard(firstRun.getCurrentStep(), syncPlayer());
   if (route === "home") return renderHome(state, notifications?.getViewModel());
   if (route === "training") return renderTraining(state, view);
   if (route === "results") return renderResults(state, view);
@@ -184,16 +186,14 @@ function goto(route) {
   render(route);
 }
 
-function setOnboardStep(step) {
-  onboardingStep = step;
-  document.querySelectorAll("[data-onboard-step]").forEach((panel) => {
-    panel.hidden = Number(panel.dataset.onboardStep) !== onboardingStep;
-  });
-  const player = PlayerService.getPlayer();
-  const name = document.getElementById("confirmName");
-  const position = document.getElementById("confirmPosition");
-  if (name) name.textContent = player.name || document.getElementById("nameInput")?.value || "—";
-  if (position) position.textContent = selectedPosition || player.position || "—";
+function enterAcademy() {
+  if (firstRun.getCurrentStep() !== "know-your-strengths") return;
+  const academy = window.PitchIQAcademy;
+  if (academy && typeof academy.enter === "function") {
+    academy.enter();
+    return;
+  }
+  window.location.hash = "academy-trial";
 }
 
 function resetPlayer() {
@@ -204,7 +204,6 @@ function resetPlayer() {
   notifications?.reset();
   Object.assign(state, normalizeState(loadState()), { firstRun: firstRun.getState() });
   selectedPosition = "";
-  onboardingStep = 1;
   ["pitchiq-onboarding-step", "pitchiq-number-flow-lock", "pitchiq-onboarding-lock"].forEach((key) => sessionStorage.removeItem(key));
   training.home();
   goto("splash");
@@ -247,8 +246,8 @@ const api = {
   training,
   firstRun,
   goto,
-  setOnboardStep,
-  completeOnboarding,
+  saveIdentityStep,
+  enterAcademy,
   get selectedPosition() { return selectedPosition; },
   set selectedPosition(value) { selectedPosition = value; },
 };
