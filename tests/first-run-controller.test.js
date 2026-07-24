@@ -52,6 +52,29 @@ test("repair returns to earliest missing completed requirement", () => {
   assert.equal(controller.getCurrentStep(), "player-contract");
 });
 
+test("repair recognises canonical Academy contract, avatar and style keys", () => {
+  const storage = new MemoryStorage({
+    pitchiqFirstRun: JSON.stringify({
+      version: 1,
+      status: "complete",
+      currentStep: "complete",
+      completedSteps: FIRST_RUN_STEPS.slice(0, -1),
+      completedAt: "2026-07-24T00:00:00.000Z",
+    }),
+    pitchiqPlayerContract: JSON.stringify({ accepted: true, version: "2026-07" }),
+    pitchiqGuardianEmail: "guardian@example.com",
+    pitchiqAcademyAvatar: "captain",
+    pitchiqPlayerStyle: "playmaker",
+  });
+  const controller = new FirstRunController({
+    storage,
+    playerService: playerService({ name: "Alex", number: "10", position: "CAM" }),
+  });
+  controller.repair();
+  assert.equal(controller.getCurrentStep(), "complete");
+  assert.equal(controller.getEntryRoute(), "home");
+});
+
 test("reset returns first run to landing", () => {
   const storage = new MemoryStorage();
   const controller = new FirstRunController({ storage, playerService: playerService() });
