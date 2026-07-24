@@ -5,8 +5,8 @@ const STYLE_ID = "pitchiq-calmsense-h44-css";
 let state = null;
 
 function currentRoute() {
-  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
-    || location.hash.replace(/^#/, "").split("?")[0].toLowerCase();
+  return location.hash.replace(/^#/, "").split("?")[0].toLowerCase()
+    || window.PitchIQApp?.navigation?.getCurrentRoute?.();
 }
 
 function app() {
@@ -164,7 +164,7 @@ if (typeof document !== "undefined") {
     if (!button || currentRoute() !== ROUTE) return;
     if (button.matches("[data-calmsense-back]")) {
       stopSession();
-      window.PitchIQApp?.navigationAdapter?.go?.(RETURN_ROUTE, "calmsense-back");
+      window.PitchIQApp?.navigationAdapter?.goFeature?.(RETURN_ROUTE, "calmsense-back");
       return;
     }
     if (button.matches("[data-calmsense-start]")) { startSession(); return; }
