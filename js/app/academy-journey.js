@@ -13,7 +13,6 @@ const POSITION_LABELS = {
 
 let identityScene = null;
 let identitySource = null;
-let identityObserver = null;
 let identityJourneyComplete = ACADEMY_FEATURE_HASHES.has(window.location.hash.toLowerCase());
 
 function positionLabel(value) {
@@ -162,24 +161,15 @@ function alignOnboardingLabels() {
   syncIdentityScene();
 }
 
-function dispatchAcademyTrialRoute(oldURL) {
-  const newURL = window.location.href;
-  window.dispatchEvent(new HashChangeEvent("hashchange", { oldURL, newURL }));
-}
-
 function navigateToAcademyOrientation() {
-  const targetHash = "#academy-trial";
-  const oldURL = window.location.href;
+  const academy = window.PitchIQAcademy;
+  if (academy && typeof academy.enter === "function") {
+    academy.enter();
+    return;
+  }
 
-  if (window.location.hash !== targetHash) window.location.hash = targetHash;
-
-  window.queueMicrotask(() => dispatchAcademyTrialRoute(oldURL));
-
-  window.setTimeout(() => {
-    const welcomeVisible = Boolean(document.querySelector(".trial-shell .trial-hero"));
-    if (welcomeVisible) return;
-    dispatchAcademyTrialRoute(oldURL);
-  }, 80);
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#academy-trial`);
+  window.dispatchEvent(new CustomEvent("pitchiq:navigate", { detail: { route: "academy-trial", source: "onboarding" } }));
 }
 
 function beginFirstAssessment(event) {
@@ -199,18 +189,21 @@ function beginFirstAssessment(event) {
   navigateToAcademyOrientation();
 }
 
+function handleJourneyRender() {
+  alignOnboardingLabels();
+}
+
 function initialise() {
   alignOnboardingLabels();
   document.addEventListener("click", beginFirstAssessment, true);
-  identityObserver = new MutationObserver(() => alignOnboardingLabels());
-  identityObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["hidden", "class", "style", "aria-hidden"]
-  });
+  window.addEventListener("pitchiq:render", handleJourneyRender);
   window.addEventListener("hashchange", syncIdentityScene);
-  window.addEventListener("pagehide", () => removeIdentityScene({ restoreSource: false }), { once: true });
+  window.addEventListener("pagehide", () => {
+    document.removeEventListener("click", beginFirstAssessment, true);
+    window.removeEventListener("pitchiq:render", handleJourneyRender);
+    window.removeEventListener("hashchange", syncIdentityScene);
+    removeIdentityScene({ restoreSource: false });
+  }, { once: true });
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initialise, { once: true });
