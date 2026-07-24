@@ -67,6 +67,12 @@ function liveCueDisplay(cue) {
   return (cue?.label || cue?.display || "SCAN").toUpperCase();
 }
 
+function bindNavigation() {
+  nav?.querySelectorAll("[data-route]").forEach((button) => {
+    button.addEventListener("click", () => goto(button.dataset.route));
+  });
+}
+
 function ensureShell() {
   appElement.classList.add("scrollable-content", "app-scroll");
   if (!nav) {
@@ -77,6 +83,7 @@ function ensureShell() {
   }
   nav.className = "nav bottom-nav";
   nav.innerHTML = renderNav();
+  bindNavigation();
 }
 
 function applyDeveloperBorder() {
@@ -180,8 +187,7 @@ function resetPlayer() {
   Object.assign(state, normalizeState(loadState()));
   selectedPosition = "";
   onboardingStep = 1;
-  sessionStorage.removeItem("pitchiq-onboarding-step");
-  sessionStorage.removeItem("pitchiq-onboarding-number-step");
+  ["pitchiq-onboarding-step", "pitchiq-number-flow-lock", "pitchiq-onboarding-lock"].forEach((key) => sessionStorage.removeItem(key));
   training.home();
   goto("splash");
 }
