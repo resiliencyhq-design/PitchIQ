@@ -16,6 +16,7 @@ import { FirstRunController } from "./controllers/first-run-controller.js";
 import { TrainingController } from "./controllers/training-controller.js";
 import { createPlayerProfileEditor } from "./player-profile-editor.js?v=refactor-h39-player-reset-single-owner-20260723";
 import { bindScreen } from "./ui/bind-screen.js";
+import { NotificationController } from "./notification-controller.js?v=sprint-n1-notification-centre-20260724";
 
 const state = normalizeState(loadState());
 const appElement = document.getElementById("app");
@@ -29,6 +30,7 @@ let onboardingStep = 1;
 let voiceStatusMessage = "";
 let devPanelOpen = sessionStorage.getItem("pitchiq-dev-open") === "1";
 let devBorderEnabled = localStorage.getItem("pitchiqDevBorderEnabled") !== "false";
+let notifications;
 
 function syncPlayer() {
   const player = PlayerService.getPlayer();
@@ -142,7 +144,7 @@ function renderRoute(route) {
   const view = trainingView();
   if (route === "splash") return renderSplash();
   if (route === "onboard") return renderOnboard();
-  if (route === "home") return renderHome(state);
+  if (route === "home") return renderHome(state, notifications?.getViewModel());
   if (route === "training") return renderTraining(state, view);
   if (route === "results") return renderResults(state, view);
   return renderPlayer(state);
@@ -159,6 +161,7 @@ function render(route = currentRoute) {
     ensureShell();
     applyDeveloperBorder();
     currentRoute = guardRoute(route);
+    notifications?.syncProgression();
     appElement.innerHTML = renderRoute(currentRoute);
     document.body.classList.toggle("pitchiq-splash-active", currentRoute === "splash");
     document.body.classList.toggle("pitchiq-immersive-active", immersive());
@@ -175,6 +178,7 @@ function render(route = currentRoute) {
 }
 
 function goto(route) {
+  notifications?.closeCentre();
   route = guardRoute(route);
   if (route === "training" && training.stage === "results") training.home();
   render(route);
@@ -197,6 +201,7 @@ function resetPlayer() {
   resetState();
   PlayerService.resetPlayer();
   firstRun.reset();
+  notifications?.reset();
   Object.assign(state, normalizeState(loadState()), { firstRun: firstRun.getState() });
   selectedPosition = "";
   onboardingStep = 1;
@@ -208,6 +213,7 @@ function resetPlayer() {
 function recordTrainingAnswer(result) {
   if (!result?.correct) return;
   addXP(state, result.xpAwarded);
+  notifications?.syncProgression();
 }
 
 function completeTraining(summary, session) {
@@ -224,6 +230,7 @@ function completeTraining(summary, session) {
     results: session.results,
     endedAt: summary.endedAt,
   });
+  notifications?.syncProgression();
   window.dispatchEvent(new CustomEvent("pitchiq:training-complete", { detail: { summary, session } }));
 }
 
@@ -245,6 +252,14 @@ const api = {
   get selectedPosition() { return selectedPosition; },
   set selectedPosition(value) { selectedPosition = value; },
 };
+
+notifications = new NotificationController({
+  getState: () => state,
+  goto,
+  onChange: () => {
+    if (currentRoute === "home") render("home");
+  },
+});
 
 createPlayerProfileEditor({
   getState: () => state,

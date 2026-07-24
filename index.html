@@ -89,6 +89,7 @@
   <link rel="stylesheet" href="css/home-hero-progress-declutter-h24.css?v=sprint-h24-hero-level-xp-declutter-20260722"/>
   <link rel="stylesheet" href="css/home-hero-football-iq-ring.css?v=hotfix-pr256-reapply-football-iq-ring-20260722"/>
   <link rel="stylesheet" href="css/home-hero-player-card-layout-h31.css?v=sprint-h36-hero-lower-card-balance-20260723"/>
+  <link rel="stylesheet" href="css/notification-centre.css?v=sprint-n1-notification-centre-20260724"/>
   <link rel="stylesheet" href="css/player-profile-recovery.css?v=sprint-player-profile-recovery-refactor-20260722"/>
   <link rel="stylesheet" href="css/player-panel-nav-isolation-h38.css?v=hotfix-h38-player-panel-nav-isolation-20260723"/>
   <link rel="stylesheet" href="css/results-training-snapshot-h30.css?v=sprint-h30-training-snapshot-results-20260723"/>
@@ -103,7 +104,7 @@
   <div id="pitchiq-boot-watchdog" style="display:none;position:fixed;inset:18px;z-index:9999;background:#06120D;color:#F7FFF8;border:1px solid rgba(215,255,46,.35);border-radius:24px;padding:22px;font-family:system-ui;box-shadow:0 30px 90px rgba(0,0,0,.45)"><h1 style="margin:0 0 8px;color:#D7FF2E">PitchIQ did not finish loading</h1><p style="margin:0;color:#A9B8AD">The app shell loaded, but JavaScript did not render a screen. Refresh, then check the browser console for the first red error.</p></div>
   <div id="toast" class="toast" role="status" aria-live="polite">+20 XP</div>
   <script>
-    window.__PITCHIQ_BUILD__ = "hotfix-startup-player-service-20260724";
+    window.__PITCHIQ_BUILD__ = "sprint-n1-notification-centre-20260724";
     window.addEventListener("error", function(event){
       console.error("[PitchIQ boot error]", event.message, event.filename, event.lineno, event.colno);
       var box = document.getElementById("pitchiq-boot-watchdog");
@@ -120,7 +121,7 @@
       if (app && box && app.children.length === 0) box.style.display = "block";
     }, 2500);
   </script>
-  <script type="module" src="js/app/main.js?v=hotfix-startup-player-service-20260724"></script>
+  <script type="module" src="js/app/main.js?v=sprint-n1-notification-centre-20260724"></script>
   <script type="module" src="js/app/production-bootstrap.js?v=sprint-h34-carousel-edge-safe-centering-20260723"></script>
   <script type="module" src="js/app/home-dynamic-salutation.js?v=sprint-home-dynamic-salutation-20260722"></script>
   <script type="module" src="js/app/bottom-nav-state-lock-h20.js?v=hotfix-h20-nav-module-html-corruption-20260722"></script>
