@@ -1,6 +1,7 @@
 const PREFERENCES_KEY = "pitchiqNotificationPreferences";
 const NOTIFICATIONS_KEY = "pitchiqNotifications";
 const REWARD_SNAPSHOT_KEY = "pitchiqRewardNotificationSnapshot";
+const TRAINING_SNAPSHOT_KEY = "pitchiqTrainingNotificationSnapshot";
 
 const DEFAULT_PREFERENCES = Object.freeze({
   trainingEnabled: false,
@@ -46,7 +47,7 @@ function dayButton(day, label, selectedDays) {
 }
 
 function notificationItem(item) {
-  return `<button type="button" class="notification-item${item.read ? "" : " is-unread"}" data-notification-id="${escapeHtml(item.id)}" data-notification-action="${escapeHtml(item.action || "")}"><span>${item.type === "reward" ? "🎁" : item.type === "level" ? "🏆" : item.type === "streak" ? "🔥" : "⚽"}</span><span><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.body || "")}</small></span></button>`;
+  return `<button type="button" class="notification-item${item.read ? "" : " is-unread"}" data-notification-id="${escapeHtml(item.id)}" data-notification-action="${escapeHtml(item.action || "")}"><span>${item.type === "reward" ? "🎁" : item.type === "level" ? "🏆" : item.type === "streak" ? "🔥" : item.type === "training" ? "⚽" : "📣"}</span><span><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.body || "")}</small></span></button>`;
 }
 
 function formatTime(value = "18:00") {
@@ -69,9 +70,11 @@ export class NotificationController {
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.handleDocumentChange = this.handleDocumentChange.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
+    this.handleTrainingComplete = this.handleTrainingComplete.bind(this);
     document.addEventListener("click", this.handleDocumentClick);
     document.addEventListener("change", this.handleDocumentChange);
     document.addEventListener("keydown", this.handleKeydown);
+    window.addEventListener("pitchiq:training-complete", this.handleTrainingComplete);
   }
 
   getBellState() {
@@ -112,6 +115,49 @@ export class NotificationController {
       });
     }
     localStorage.setItem(REWARD_SNAPSHOT_KEY, JSON.stringify({ level, unlocked }));
+  }
+
+  handleTrainingComplete(event) {
+    const detail = event.detail || {};
+    const summary = detail.summary || {};
+    const session = detail.session || {};
+    const sessionId = String(session.id || summary.endedAt || Date.now());
+    const snapshot = safeParse(localStorage.getItem(TRAINING_SNAPSHOT_KEY), { sessionIds: [] });
+    if (snapshot.sessionIds.includes(sessionId)) return;
+
+    const accuracy = Number(summary.accuracy || 0);
+    const combo = Number(summary.combo || 0);
+    const score = Number(summary.score || 0);
+    const xp = Number(summary.xp || 0);
+    const title = accuracy >= 80 ? "Strong training rep" : combo >= 5 ? "Combo milestone" : "Training complete";
+    const bodyParts = [];
+    if (accuracy) bodyParts.push(`${accuracy}% accuracy`);
+    if (combo) bodyParts.push(`best combo x${combo}`);
+    if (xp) bodyParts.push(`+${xp} XP`);
+    if (!bodyParts.length && score) bodyParts.push(`${score} points`);
+
+    this.createNotification({
+      id: `training-${sessionId}`,
+      type: "training",
+      title,
+      body: bodyParts.join(" • ") || "Your latest rep is ready to review.",
+      action: "open-results",
+      createdAt: summary.endedAt || Date.now(),
+    });
+
+    const sessionIds = [sessionId, ...snapshot.sessionIds].slice(0, 30);
+    localStorage.setItem(TRAINING_SNAPSHOT_KEY, JSON.stringify({ sessionIds }));
+  }
+
+  createStreakReminder({ streak = 0, id = "streak-expiry" } = {}) {
+    if (!this.preferences.streakAlerts || streak <= 0) return false;
+    return this.createNotification({
+      id,
+      type: "streak",
+      title: `${streak}-day streak at risk`,
+      body: "Complete a short training rep today to keep it alive.",
+      action: "open-training",
+    });
   }
 
   openCentre() {
@@ -183,7 +229,8 @@ export class NotificationController {
       const action = item.dataset.notificationAction;
       this.closeCentre();
       if (action === "open-player") this.goto("player");
-      if (action === "open-rewards") this.goto("results");
+      if (action === "open-rewards" || action === "open-results") this.goto("results");
+      if (action === "open-training") this.goto("training");
     }
   }
 
@@ -214,6 +261,7 @@ export class NotificationController {
     localStorage.removeItem(PREFERENCES_KEY);
     localStorage.removeItem(NOTIFICATIONS_KEY);
     localStorage.removeItem(REWARD_SNAPSHOT_KEY);
+    localStorage.removeItem(TRAINING_SNAPSHOT_KEY);
     this.preferences = readPreferences();
     this.notifications = [];
     this.closeCentre();
