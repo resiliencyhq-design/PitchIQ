@@ -6,16 +6,16 @@ const FOOTBALL_IQ_ROUTES = new Set([
 
 let loaderPromise = null;
 
-function currentRoute() {
+function routeFromLocation() {
   return window.location.hash.replace(/^#/, "").split("/")[0].toLowerCase();
 }
 
-export function isFootballIqRoute(route = currentRoute()) {
+export function isFootballIqRoute(route = routeFromLocation()) {
   return FOOTBALL_IQ_ROUTES.has(route);
 }
 
-export function loadFootballIqWorld() {
-  if (!isFootballIqRoute()) return Promise.resolve(false);
+export function loadFootballIqWorld(route = routeFromLocation()) {
+  if (!isFootballIqRoute(route)) return Promise.resolve(false);
   if (!loaderPromise) {
     loaderPromise = import("./football-iq-library-w1-1.js?v=sprint-h9-football-iq-world-20260721")
       .then(() => Promise.all([
@@ -33,7 +33,7 @@ export function loadFootballIqWorld() {
 }
 
 if (typeof window !== "undefined") {
-  window.addEventListener("hashchange", loadFootballIqWorld);
-  window.addEventListener("pageshow", loadFootballIqWorld);
-  loadFootballIqWorld();
+  window.addEventListener("pitchiq:route-change", event => loadFootballIqWorld(event.detail?.route));
+  window.addEventListener("pageshow", () => loadFootballIqWorld(window.PitchIQApp?.navigation?.getCurrentRoute?.() || routeFromLocation()));
+  loadFootballIqWorld(window.PitchIQApp?.navigation?.getCurrentRoute?.() || routeFromLocation());
 }
