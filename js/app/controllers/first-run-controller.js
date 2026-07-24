@@ -1,3 +1,5 @@
+import { stateStore } from "../../services/storage.js";
+
 const FIRST_RUN_VERSION = 1;
 const STORAGE_KEY = "pitchiqFirstRun";
 
@@ -32,6 +34,18 @@ function defaultState() {
     currentStep: "landing",
     completedSteps: [],
     completedAt: null,
+  };
+}
+
+function normalizeFirstRun(value) {
+  const stored = value && typeof value === "object" ? value : {};
+  if (stored.version !== FIRST_RUN_VERSION || !FIRST_RUN_STEPS.includes(stored.currentStep)) return defaultState();
+  return {
+    ...defaultState(),
+    ...stored,
+    completedSteps: Array.isArray(stored.completedSteps)
+      ? stored.completedSteps.filter(step => FIRST_RUN_STEPS.includes(step))
+      : [],
   };
 }
 
@@ -83,7 +97,7 @@ export class FirstRunController {
       completedSteps: [...completedSteps],
       completedAt: nextStep === "complete" ? new Date().toISOString() : null,
     };
-    this.#save();
+    this.#save("first-run-complete-step");
     return this.getState();
   }
 
@@ -95,13 +109,16 @@ export class FirstRunController {
       currentStep: step,
       completedAt: step === "complete" ? this.state.completedAt || new Date().toISOString() : null,
     };
-    this.#save();
+    this.#save("first-run-set-step");
     return this.getState();
   }
 
   reset() {
     this.state = defaultState();
     this.storage.removeItem(STORAGE_KEY);
+    stateStore.update(draft => {
+      draft.firstRun = this.getState();
+    }, { source: "first-run-reset" });
     this.onChange(this.getState());
     return this.getState();
   }
@@ -129,21 +146,22 @@ export class FirstRunController {
   }
 
   #load() {
-    const stored = safeParse(this.storage.getItem(STORAGE_KEY));
-    if (!stored || stored.version !== FIRST_RUN_VERSION || !FIRST_RUN_STEPS.includes(stored.currentStep)) {
-      return defaultState();
-    }
-    return {
-      ...defaultState(),
-      ...stored,
-      completedSteps: Array.isArray(stored.completedSteps)
-        ? stored.completedSteps.filter((step) => FIRST_RUN_STEPS.includes(step))
-        : [],
-    };
+    const canonical = normalizeFirstRun(stateStore.getSnapshot().firstRun);
+    const legacy = safeParse(this.storage.getItem(STORAGE_KEY));
+    if (!legacy) return canonical;
+
+    const migrated = normalizeFirstRun(legacy);
+    stateStore.update(draft => {
+      draft.firstRun = migrated;
+    }, { source: "first-run-legacy-migration" });
+    this.storage.removeItem(STORAGE_KEY);
+    return migrated;
   }
 
-  #save() {
-    this.storage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+  #save(source) {
+    stateStore.update(draft => {
+      draft.firstRun = this.getState();
+    }, { source });
     this.onChange(this.getState());
   }
 }
