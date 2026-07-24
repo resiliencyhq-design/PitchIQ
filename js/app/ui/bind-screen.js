@@ -10,16 +10,30 @@ export function bindScreen(root, app) {
 
 function bindOnboarding(root, app) {
   const input = root.querySelector("#nameInput");
-  const next = root.querySelector('[data-action="onboard-next-name"]');
+  const nameNext = root.querySelector('[data-action="onboard-next-name"]');
   if (input) {
     const update = () => {
       const preview = root.querySelector("#jerseyNamePreview");
       if (preview) preview.textContent = (input.value.trim() || "NAME").toUpperCase();
-      if (next) next.disabled = !input.value.trim();
+      if (nameNext) nameNext.disabled = !input.value.trim();
     };
     input.addEventListener("input", update);
     update();
   }
+
+  const numberInput = root.querySelector("#numberInput");
+  const numberNext = root.querySelector('[data-action="onboard-next-number"]');
+  if (numberInput) {
+    const update = () => {
+      numberInput.value = numberInput.value.replace(/\D/g, "").slice(0, 2);
+      const preview = root.querySelector("#jerseyNumberPreview");
+      if (preview) preview.textContent = numberInput.value || "10";
+      if (numberNext) numberNext.disabled = !numberInput.value;
+    };
+    numberInput.addEventListener("input", update);
+    update();
+  }
+
   root.querySelectorAll("[data-pos]").forEach((button) =>
     button.addEventListener("click", () => {
       app.selectedPosition = button.dataset.pos;
@@ -30,26 +44,12 @@ function bindOnboarding(root, app) {
       if (positionNext) positionNext.disabled = false;
     }),
   );
-  next?.addEventListener("click", () => app.setOnboardStep(2));
-  root.querySelector('[data-action="onboard-next-position"]')?.addEventListener("click", () => app.setOnboardStep(3));
-  root.querySelector('[data-action="save-profile"]')?.addEventListener("click", () => {
-    const existingProfile = app.state.profile || {};
-    const name = input?.value?.trim() || existingProfile.name || "Player";
-    const position = app.selectedPosition || existingProfile.position || localStorage.getItem("pitchiqSelectedPosition") || "";
-    const number = localStorage.getItem("pitchiqJerseyNumber") || existingProfile.number;
 
-    app.completeOnboarding(name, position, number);
-
-    if (app.firstRun?.getCurrentStep?.() === "know-your-strengths") {
-      app.firstRun.completeStep("know-your-strengths");
-    }
-
-    const academy = window.PitchIQAcademy;
-    if (academy && typeof academy.enter === "function") {
-      academy.enter();
-      return;
-    }
-
-    window.location.hash = "academy-trial";
+  nameNext?.addEventListener("click", () => app.saveIdentityStep("name", input.value.trim()));
+  numberNext?.addEventListener("click", () => app.saveIdentityStep("number", numberInput.value));
+  root.querySelector('[data-action="onboard-next-position"]')?.addEventListener("click", () => {
+    const existing = app.state.profile?.position || localStorage.getItem("pitchiqSelectedPosition") || "";
+    app.saveIdentityStep("position", app.selectedPosition || existing);
   });
+  root.querySelector('[data-action="enter-academy"]')?.addEventListener("click", () => app.enterAcademy());
 }
