@@ -5,7 +5,8 @@ const STYLE_ID = "pitchiq-calmsense-h44-css";
 let state = null;
 
 function currentRoute() {
-  return location.hash.replace(/^#/, "").split("?")[0].toLowerCase();
+  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
+    || location.hash.replace(/^#/, "").split("?")[0].toLowerCase();
 }
 
 function app() {
@@ -149,8 +150,8 @@ function renderIntro() {
   render(introMarkup());
 }
 
-function handleRoute() {
-  if (currentRoute() === ROUTE) renderIntro();
+function handleRoute(route = currentRoute()) {
+  if (route === ROUTE) renderIntro();
   else {
     stopSession();
     state = null;
@@ -161,13 +162,18 @@ if (typeof document !== "undefined") {
   document.addEventListener("click", event => {
     const button = event.target.closest?.("button");
     if (!button || currentRoute() !== ROUTE) return;
-    if (button.matches("[data-calmsense-back]")) { stopSession(); location.hash = RETURN_ROUTE; return; }
+    if (button.matches("[data-calmsense-back]")) {
+      stopSession();
+      window.PitchIQApp?.navigationAdapter?.go?.(RETURN_ROUTE, "calmsense-back");
+      return;
+    }
     if (button.matches("[data-calmsense-start]")) { startSession(); return; }
     if (button.matches("[data-calmsense-stop]")) { finishSession(); return; }
     if (button.matches("[data-calmsense-again]")) renderIntro();
   }, true);
 
-  window.addEventListener("hashchange", handleRoute);
+  window.addEventListener("pitchiq:route-change", event => handleRoute(event.detail?.route));
+  window.addEventListener("pageshow", () => handleRoute());
   window.addEventListener("pagehide", stopSession);
   handleRoute();
 }

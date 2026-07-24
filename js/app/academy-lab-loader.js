@@ -5,7 +5,8 @@ const LAB_RETURN_ROUTE = "home";
 let labRuntimePromise = null;
 
 function currentRoute(){
-  return window.location.hash.replace(/^#/, "").toLowerCase();
+  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
+    || window.location.hash.replace(/^#/, "").toLowerCase();
 }
 
 function openAutoJuggler(){
@@ -26,8 +27,8 @@ function closeAutoJuggler(){
   if(back) back.click();
 }
 
-function loadLabRuntime(){
-  if(currentRoute() !== LAB_ROUTE){
+function loadLabRuntime(route = currentRoute()){
+  if(route !== LAB_ROUTE){
     closeAutoJuggler();
     return Promise.resolve(false);
   }
@@ -53,8 +54,9 @@ document.addEventListener("click", event => {
   if(!back || currentRoute() !== LAB_ROUTE) return;
 
   event.preventDefault();
-  window.location.hash = LAB_RETURN_ROUTE;
+  window.PitchIQApp?.navigationAdapter?.go?.(LAB_RETURN_ROUTE, "auto-juggler-back");
 }, true);
 
-window.addEventListener("hashchange", loadLabRuntime);
+window.addEventListener("pitchiq:route-change", event => loadLabRuntime(event.detail?.route));
+window.addEventListener("pageshow", () => loadLabRuntime());
 loadLabRuntime();

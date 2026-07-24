@@ -3,7 +3,8 @@ const LAB_WORLD_ROUTE = "world-lab";
 let runtimePromise = null;
 
 function currentRoute() {
-  return window.location.hash.replace(/^#/, "").toLowerCase();
+  return window.PitchIQApp?.navigation?.getCurrentRoute?.()
+    || window.location.hash.replace(/^#/, "").toLowerCase();
 }
 
 function ensureStylesheet() {
@@ -42,8 +43,8 @@ function injectLabModule() {
   return true;
 }
 
-function loadMentalImageryRuntime() {
-  if (currentRoute() !== MENTAL_IMAGERY_ROUTE) {
+function loadMentalImageryRuntime(route = currentRoute()) {
+  if (route !== MENTAL_IMAGERY_ROUTE) {
     queueMicrotask(injectLabModule);
     return Promise.resolve(false);
   }
@@ -78,9 +79,9 @@ document.addEventListener("click", event => {
   const module = event.target.closest?.('[data-world-module-route="lab-mental-imagery"]');
   if (!module) return;
   event.preventDefault();
-  window.location.hash = MENTAL_IMAGERY_ROUTE;
+  window.PitchIQApp?.navigationAdapter?.go?.(MENTAL_IMAGERY_ROUTE, "mental-imagery-module");
 }, true);
 
-window.addEventListener("hashchange", loadMentalImageryRuntime);
-window.addEventListener("pageshow", loadMentalImageryRuntime);
+window.addEventListener("pitchiq:route-change", event => loadMentalImageryRuntime(event.detail?.route));
+window.addEventListener("pageshow", () => loadMentalImageryRuntime());
 loadMentalImageryRuntime();
